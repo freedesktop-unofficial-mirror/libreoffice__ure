@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlScrollBar.idl,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: mi $ $Date: 2002-10-03 13:00:54 $
+ *  last change: $Author: vg $ $Date: 2003-06-27 08:58:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -67,9 +67,9 @@
 
 #ifndef __com_sun_star_awt_XScrollBar_idl__ 
 #include <com/sun/star/awt/XScrollBar.idl> 
-#endif 
- 
- 
+#endif
+
+
 //============================================================================= 
  
  module com {  module sun {  module star {  module awt {  
@@ -82,7 +82,8 @@ service UnoControlScrollBar
 { 
     service com::sun::star::awt::UnoControl;
     
-    interface com::sun::star::awt::XScrollBar;	 
+    interface com::sun::star::awt::XScrollBar;
+
 }; 
  
 //============================================================================= 
