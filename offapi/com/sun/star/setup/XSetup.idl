@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XSetup.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:43:44 $
+ *  last change: $Author: ok $ $Date: 2000-11-16 14:06:55 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,67 +58,74 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_setup_XSetup_idl__ 
-#define __com_sun_star_setup_XSetup_idl__ 
- 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
- 
-#include <com/sun/star/setup/OSType.idl> 
-#include <com/sun/star/setup/ModuleInfo.idl> 
-#include <com/sun/star/setup/InstallEnvironment.idl> 
-#include <com/sun/star/setup/InstallResponse.idl> 
-#include <com/sun/star/setup/VersionIdentifier.idl> 
-#include <com/sun/star/setup/SizeInfo.idl> 
-#include <com/sun/star/setup/MirrorEntry.idl> 
- 
- module com {  module sun {  module star {  module setup { 
- 
+#ifndef __com_sun_star_setup_XSetup_idl__
+#define __com_sun_star_setup_XSetup_idl__
+
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
+
+#include <com/sun/star/setup/OSType.idl>
+#include <com/sun/star/setup/UpdateType.idl>
+#include <com/sun/star/setup/ModuleInfo.idl>
+#include <com/sun/star/setup/InstallEnvironment.idl>
+#include <com/sun/star/setup/InstallResponse.idl>
+#include <com/sun/star/setup/VersionIdentifier.idl>
+#include <com/sun/star/setup/SizeInfo.idl>
+#include <com/sun/star/setup/MirrorEntry.idl>
+
+ module com {  module sun {  module star {  module setup {
+
 // DocMerge: empty anyway
 [ uik(5E99A5F0-C652-4f1f-970FFA60-9BADC522), ident("XSetup", 1.0) ]
 interface XSetup: com::sun::star::uno::XInterface
-{ 
+{
     // DocMerge: empty anyway
-    boolean					isVersionSupported			( [in] VersionIdentifier aVerIdentifier ); 
- 
-    // DocMerge: empty anyway
-    sequence <short>		getAvailableLanguages		( [in] VersionIdentifier aVerIdentifier ); 
- 
-    // DocMerge: empty anyway
-    ModuleInfo				getRootModule				( [in] VersionIdentifier aVerIdentifier ); 
- 
-    // DocMerge: empty anyway
-    string					getProductname				( [in] VersionIdentifier aVerIdentifier ); 
-        
-    // DocMerge: empty anyway
-    string					getDefaultDestinationPath	( [in] VersionIdentifier aVerIdentifier ); 
-        
-    // DocMerge: empty anyway
-    SizeInfo				getStandardSizeValues		( [in] VersionIdentifier aVerIdentifier ); 
-        
-    // DocMerge: empty anyway
-    string					getHelpText					( [in] VersionIdentifier aVerIdentifier, 
-                                                              [in] string strPagename ); 
- 
-    // DocMerge: empty anyway
-    string					getReadmeText				( [in] VersionIdentifier aVerIdentifier ); 
-        
-    // DocMerge: empty anyway
-    string					getLicenseText				( [in] VersionIdentifier aVerIdentifier ); 
- 
-    // DocMerge: empty anyway
-    string					getNativeLocation			( [in] VersionIdentifier aVerIdentifier ); 
+    boolean					isVersionSupported			( [in] VersionIdentifier aVerIdentifier );
 
     // DocMerge: empty anyway
-    sequence < any >   		getMirrorList				( [in] VersionIdentifier aVerIdentifier ); 
- 
+    sequence <short>		getAvailableLanguages		( [in] VersionIdentifier aVerIdentifier );
+
     // DocMerge: empty anyway
-    sequence < any >   		getActionListForInstall		( [in]  VersionIdentifier	aVerIdentifier, 
-                                                              [in]  InstallEnvironment	aEnvironment, 
-                                                              [out] InstallResponse 	aResponse ); 
-    }; 
- 
-}; }; }; }; 
- 
-#endif 
+    ModuleInfo				getRootModule				( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    string					getProductname				( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    string					getDefaultDestinationPath	( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    SizeInfo				getStandardSizeValues		( [in] VersionIdentifier aVerIdentifier,
+                                                          [in] sequence <short> seqLanguages );
+
+    // DocMerge: empty anyway
+    string					getHelpText					( [in] VersionIdentifier aVerIdentifier,
+                                                          [in] string strPagename );
+
+    // DocMerge: empty anyway
+    string					getReadmeText				( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    string					getLicenseText				( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    string					getNativeLocation			( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    sequence < any >   		getMirrorList				( [in] VersionIdentifier aVerIdentifier );
+
+    // DocMerge: empty anyway
+    UpdateType		   		isUpdateAvailable			( [in] VersionIdentifier aVerIdentifier,
+                                                          [out] VersionIdentifier aNewVerIdentifier );
+
+    // DocMerge: empty anyway
+    sequence < any >   		getActionListForInstall		( [in] VersionIdentifier aVerIdentifier,
+                                                          [in] VersionIdentifier aOldVerIdentifier,
+                                                          [in] InstallEnvironment aEnvironment,
+                                                          [out] InstallResponse aResponse );
+    };
+
+}; }; }; };
+
+#endif
