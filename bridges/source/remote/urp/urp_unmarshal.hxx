@@ -2,9 +2,9 @@
  *
  *  $RCSfile: urp_unmarshal.hxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: jbu $ $Date: 2001-08-31 16:16:52 $
+ *  last change: $Author: kso $ $Date: 2002-10-18 09:27:19 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -61,6 +61,9 @@
 #ifndef _URP_UNMARSHAL_HXX_
 #define _URP_UNMARSHAL_HXX_
 
+#include <stack>
+#include <vector>
+
 #ifndef _RTL_BYTESEQ_HXX_
 #include <rtl/byteseq.hxx>
 #endif
@@ -92,12 +95,27 @@ namespace bridges_urp
 {
 
 extern char g_bSystemIsLittleEndian;
-class ThreadId;	
+class ThreadId;
 struct urp_BridgeImpl;
 void SAL_CALL urp_releaseRemoteCallback(
     remote_Interface *pRemoteI,rtl_uString *pOid,
     typelib_TypeDescriptionReference *pTypeRef,
     uno_Environment *pEnvRemote	);
+
+struct UnpackItem
+{
+    void * pDest;
+    typelib_TypeDescription * pType;
+    bool bMustBeConstructed;
+
+    UnpackItem()
+    : pDest( 0 ), pType( 0 ), bMustBeConstructed( false ) {}
+    UnpackItem( void * d, typelib_TypeDescription * t, bool b = false )
+    : pDest( d ), pType( t ), bMustBeConstructed( b ) {}
+};
+
+typedef std::stack< UnpackItem > UnpackItemStack;
+typedef std::vector< typelib_TypeDescription * > TypeDescVector;
 
 class Unmarshal
 {
@@ -107,8 +125,7 @@ public:
         uno_Environment *pEnvRemote,
         remote_createStubFunc callback );
     ~Unmarshal();
-    
-    sal_Bool unpackRecursive( void *pDest , typelib_TypeDescription *pType );
+
     inline sal_Bool finished()
         { return m_base + m_nLength == m_pos; }
     inline sal_uInt32 getPos()
@@ -116,15 +133,15 @@ public:
 
     inline sal_Bool setSize( sal_Int32 nSize );
 
+    sal_Bool unpack( void *pDest, typelib_TypeDescription *pType );
     inline sal_Bool unpackCompressedSize( sal_Int32 *pData );
-    inline sal_Bool unpack( void *pDest, typelib_TypeDescription *pType );
     inline sal_Bool unpackInt8( void *pDest );
     inline sal_Bool unpackString( void *pDest );
     inline sal_Bool unpackInt16( void *pDest );
     inline sal_Bool unpackInt32( void *pDest );
     sal_Bool unpackType( void *pDest );
-    
-    sal_Bool unpackAny( void *pDest );
+
+    inline sal_Bool unpackAny( void *pDest );
     sal_Bool unpackOid( rtl_uString **ppOid );
     sal_Bool unpackTid( sal_Sequence **ppThreadId );
 
@@ -132,15 +149,18 @@ public:
         { return m_base; }
     inline sal_Bool isSystemLittleEndian()
         { return g_bSystemIsLittleEndian; }
-    
+
 private:
     inline sal_Bool checkOverflow( sal_Int32 nNextMem );
+
+    UnpackItemStack m_aItemsToUnpack;
+    TypeDescVector  m_aTypesToRelease;
 
     sal_Int32 m_nBufferSize;
     sal_Int8 *m_base;
     sal_Int8 *m_pos;
     sal_Int32 m_nLength;
-    
+
     remote_createStubFunc m_callback;
     uno_Environment *m_pEnvRemote;
     urp_BridgeImpl *m_pBridgeImpl;
@@ -186,7 +206,7 @@ inline sal_Bool Unmarshal::unpackInt8( void *pDest )
 inline sal_Bool Unmarshal::unpackInt32( void *pDest )
 {
     sal_uInt32 *p = ( sal_uInt32 * ) pDest;
-    sal_Bool bReturn = ! checkOverflow(4);		
+    sal_Bool bReturn = ! checkOverflow(4);
     if( bReturn )
     {
         if( isSystemLittleEndian() )
@@ -243,7 +263,7 @@ inline sal_Bool Unmarshal::unpackString( void *pDest )
 {
     sal_Int32 nLength;
     sal_Bool bReturn = unpackCompressedSize( &nLength );
-    
+
     bReturn = bReturn && ! checkOverflow( nLength );
     if( bReturn )
     {
@@ -259,7 +279,6 @@ inline sal_Bool Unmarshal::unpackString( void *pDest )
     }
     return bReturn;
 }
-
 
 inline sal_Bool Unmarshal::unpackCompressedSize( sal_Int32 *pData )
 {
@@ -279,145 +298,17 @@ inline sal_Bool Unmarshal::unpackCompressedSize( sal_Int32 *pData )
     return bReturn;
 }
 
-inline sal_Bool Unmarshal::unpack( void *pDest , typelib_TypeDescription *pType )
+inline sal_Bool Unmarshal::unpackAny( void *pDest )
 {
-    sal_Bool bReturn = sal_True;
-    switch( pType->eTypeClass )
-    {
-    case typelib_TypeClass_VOID:
-        // do nothing 
-        break;
-    case typelib_TypeClass_BYTE:
-    {
-        bReturn = unpackInt8( pDest );
-        break;
-    }
-    case typelib_TypeClass_BOOLEAN:
-    {
-        bReturn = ! checkOverflow( 1 );
-        if( bReturn )
-        {
-            *((sal_Bool*)pDest) = (sal_Bool ) ( *m_pos);
-            m_pos ++;
-        }
-        else
-        {
-            *((sal_Bool*)pDest) = 0;
-        }
-        break;
-    }
+    typelib_TypeDescriptionReference *pTypeRef =
+        * typelib_static_type_getByTypeClass( typelib_TypeClass_ANY );
 
-    case typelib_TypeClass_CHAR:
-    case typelib_TypeClass_SHORT:
-    case typelib_TypeClass_UNSIGNED_SHORT:
-    {		
-        unpackInt16( pDest );
-        break;
-    }
-    case typelib_TypeClass_ENUM:
-    case typelib_TypeClass_FLOAT:
-    case typelib_TypeClass_LONG:
-    case typelib_TypeClass_UNSIGNED_LONG:
-    {		
-        bReturn = unpackInt32( pDest );
-        break;
-    }
-    case typelib_TypeClass_DOUBLE:
-    case typelib_TypeClass_HYPER:
-    case typelib_TypeClass_UNSIGNED_HYPER:
-    {
-        sal_uInt64 *p = ( sal_uInt64 * ) pDest;
-        *p = 0;
-        bReturn = ! checkOverflow( 8 );
-        if( bReturn )
-        {			
-            if( isSystemLittleEndian() )
-            {
-                ((sal_Int8*) p )[7] = m_pos[0];
-                ((sal_Int8*) p )[6] = m_pos[1];
-                ((sal_Int8*) p )[5] = m_pos[2];
-                ((sal_Int8*) p )[4] = m_pos[3];
-                ((sal_Int8*) p )[3] = m_pos[4];
-                ((sal_Int8*) p )[2] = m_pos[5];
-                ((sal_Int8*) p )[1] = m_pos[6];
-                ((sal_Int8*) p )[0] = m_pos[7];
-            }
-            else
-            {
-                ((sal_Int8*) p )[0] = m_pos[0];
-                ((sal_Int8*) p )[1] = m_pos[1];
-                ((sal_Int8*) p )[2] = m_pos[2];
-                ((sal_Int8*) p )[3] = m_pos[3];
-                ((sal_Int8*) p )[4] = m_pos[4];
-                ((sal_Int8*) p )[5] = m_pos[5];
-                ((sal_Int8*) p )[6] = m_pos[6];
-                ((sal_Int8*) p )[7] = m_pos[7];
-            }
-            m_pos += 8;
-        }
-        break;
-    }
-    case typelib_TypeClass_STRING:
-    {
-        unpackString( pDest );
-        break;
-    }
-    case typelib_TypeClass_ANY:
-    {
-        bReturn = unpackAny( pDest );
-        break;
-    }
-    case typelib_TypeClass_INTERFACE:
-    {
-        *(remote_Interface**)pDest = 0;
+    typelib_TypeDescription * pTD = 0;
+    typelib_typedescriptionreference_getDescription( &pTD, pTypeRef );
 
-        rtl_uString *pString = 0;
-        bReturn = unpackOid( &pString ) && bReturn;
+    sal_Bool bReturn = unpack( pDest, pTD );
 
-        if( bReturn && pString && pString->length )
-        {
-            m_callback( (remote_Interface**) pDest ,
-                        pString,
-                        pType->pWeakRef ,
-                        m_pEnvRemote,
-                        urp_releaseRemoteCallback );
-        }
-        if( pString )
-        {
-            rtl_uString_release( pString );
-        }
-        break;
-    }
-    case typelib_TypeClass_TYPE:
-    {
-        bReturn = unpackType( pDest );
-        break;
-    }
-    case typelib_TypeClass_STRUCT:
-    case typelib_TypeClass_EXCEPTION:
-    case typelib_TypeClass_SEQUENCE:
-    {
-        bReturn = unpackRecursive( pDest, pType );
-        break;
-    }
-
-    case typelib_TypeClass_UNION:
-    case typelib_TypeClass_ARRAY:
-    case typelib_TypeClass_SERVICE:
-    case typelib_TypeClass_MODULE:
-    case typelib_TypeClass_INTERFACE_METHOD:
-    case typelib_TypeClass_INTERFACE_ATTRIBUTE:
-    case typelib_TypeClass_UNKNOWN:
-    default:
-    {
-        ::rtl::OUStringBuffer buffer( 128 );
-        buffer.appendAscii( RTL_CONSTASCII_STRINGPARAM("Unsupported typeclass during unmarshaling ("));
-        buffer.append( ( sal_Int32 ) pType->eTypeClass , 10 );
-        buffer.appendAscii( ")" );
-        m_pBridgeImpl->addError( buffer.makeStringAndClear() );
-        bReturn = sal_False;
-    }
-    }
+    typelib_typedescription_release( pTD );
 
     return bReturn;
 }
