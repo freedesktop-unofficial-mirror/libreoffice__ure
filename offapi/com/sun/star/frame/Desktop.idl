@@ -2,9 +2,9 @@
  *
  *  $RCSfile: Desktop.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:43:14 $
+ *  last change: $Author: as $ $Date: 2001-03-15 08:53:46 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,164 +58,159 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_frame_Desktop_idl__ 
-#define __com_sun_star_frame_Desktop_idl__ 
- 
-#ifndef __com_sun_star_frame_Frame_idl__ 
-#include <com/sun/star/frame/Frame.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_Locale_idl__ 
-#include <com/sun/star/lang/Locale.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_XPropertySet_idl__ 
-#include <com/sun/star/beans/XPropertySet.idl> 
-#endif 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module frame { 
- 
-interface XDesktop; 
-interface XComponentLoader; 
-interface XTasksSupplier; 
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_frame_Desktop_idl__
+#define __com_sun_star_frame_Desktop_idl__
+
+#ifndef __com_sun_star_frame_Frame_idl__
+#include <com/sun/star/frame/Frame.idl>
+#endif
+
+#ifndef __com_sun_star_lang_Locale_idl__
+#include <com/sun/star/lang/Locale.idl>
+#endif
+
+#ifndef __com_sun_star_beans_XPropertySet_idl__
+#include <com/sun/star/beans/XPropertySet.idl>
+#endif
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module frame {
+
+interface XDesktop;
+interface XComponentLoader;
+interface XTasksSupplier;
+
+//=============================================================================
+
 // DocMerge from xml: service com::sun::star::frame::Desktop
 /** is the environment for components which can instanciate within frames.
-    
-    
-    
+
+
+
     <p>A desktop environment contains tasks with one or more frames
     in which components can be loaded.</p>
  */
 service Desktop
-{ 
+{
     // DocMerge: empty anyway
-    service Frame; 
-    
+    service Frame;
+
     // DocMerge: empty anyway
-    interface XDesktop; 
-    
+    interface XDesktop;
+
     // DocMerge: empty anyway
-    interface XComponentLoader; 
-    
+    interface XComponentLoader;
+
     // DocMerge: empty anyway
-    interface XTasksSupplier; 
-    
+    interface XTasksSupplier;
+
     // DocMerge: empty anyway
-    interface com::sun::star::beans::XPropertySet; 
- 
-    //------------------------------------------------------------------------- 
-     
+    interface com::sun::star::beans::XPropertySet;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasBeamer
     /** determines if the beamer window is on or off.
      */
-    [property] boolean HasBeamer; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasBeamer;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasCommonTaskBar
     /** determines if the common task bar toolbar is on or off.
      */
-    [property] boolean HasCommonTaskBar; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasCommonTaskBar;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasStylist
     /** determines if the stylist window is on or off.
      */
-    [property] boolean HasStylist; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasStylist;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasExplorer
     /** determines if the explorer window is on or off.
      */
-    [property] boolean HasExplorer; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasExplorer;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasFunctionBar
     /** determines if the function toolbar is on or off.
      */
-    [property] boolean HasFunctionBar; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasFunctionBar;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasMacroBar
     /** determines if the macro toolbar is on or off.
      */
-    [property] boolean HasMacroBar; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasMacroBar;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasNavigator
     /** determines if the navigator window is on or off.
      */
-    [property] boolean HasNavigator; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasNavigator;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasObjectBar
     /** determines if the object toolbar is on or off.
      */
-    [property] boolean HasObjectBar; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasObjectBar;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasOptionBar
     /** determines if the option toolbar is on or off.
      */
-    [property] boolean HasOptionBar; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasOptionBar;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasStatusBar
     /** determines if the statusbar is on or off.
      */
-    [property] boolean HasStatusBar; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean HasStatusBar;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::frame::Desktop::HasToolBar
     /** determines if the tools toolbar is on or off.
      */
-    [property] boolean HasToolBar; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::frame::Desktop::ISOLocale
-    /** read-only property to get ISO-Language and ISO-Country.
-     */
-    [property] com::sun::star::lang::Locale ISOLocale; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; }; 
- 
-/*============================================================================= 
- 
+    [property] boolean HasToolBar;
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.3  2000/11/08 12:43:14  mi
+    moved from api
+
     Revision 1.1.1.1  2000/09/18 23:35:20  hjs
     initial import
-    
+
     Revision 1.7  2000/09/11 11:52:27  mi
     documentation merged from XML
-     
-    Revision 1.3  2000/02/09 15:45:28  mi 
-    #72875# HasDesigner is now HasStylist 
-     
-    Revision 1.2  2000/02/09 10:39:35  as 
-    #72208# new property ISOLocale 
-     
-    Revision 1.1.1.1  1999/11/11 09:48:43  jsc 
-    new 
- 
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.3  2000/02/09 15:45:28  mi
+    #72875# HasDesigner is now HasStylist
+
+    Revision 1.2  2000/02/09 10:39:35  as
+    #72208# new property ISOLocale
+
+    Revision 1.1.1.1  1999/11/11 09:48:43  jsc
+    new
+
+
+=============================================================================*/
+#endif
