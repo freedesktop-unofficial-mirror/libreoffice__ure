@@ -2,9 +2,9 @@
  *
  *  $RCSfile: jvmargs.cxx,v $
  *
- *  $Revision: 1.12 $
+ *  $Revision: 1.13 $
  *
- *  last change: $Author: sb $ $Date: 2002-12-06 10:48:59 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:13:20 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -65,7 +65,7 @@
 #else
 #define CLASSPATH_DELIMETER ";"
 
-#endif 
+#endif
 
 
 #include <string.h>
@@ -109,7 +109,7 @@ namespace stoc_javavm {
             OUString left = property.copy(0, index).trim();
             OUString right(property.copy(index + 1).trim());
 
-//  #ifdef DEBUG
+// #if OSL_DEBUG_LEVEL > 1
 //  	OString left_tmp = OUStringToOString(left, RTL_TEXTENCODING_ASCII_US);
 //  	OSL_TRACE("javavm - left %s", left_tmp.getStr());
 //  	OString right_tmp = OUStringToOString(right, RTL_TEXTENCODING_ASCII_US);
@@ -118,64 +118,64 @@ namespace stoc_javavm {
 
             if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("Debug"))))
                 setDebugPort(1199);
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("Java"))))
                 setEnabled(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("Version"))))
                 ;
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("Home"))))
             {
                 // we need a system path and not a file URL
                 OUString usSysPath;
                 oslFileError er= osl_getSystemPathFromFileURL( right.pData, &usSysPath.pData);
-                OSL_ASSERT( er == osl_File_E_None);                    
+                OSL_ASSERT( er == osl_File_E_None);
                 _java_home = usSysPath;
             }
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("VMType"))))
-                _vmtype = right;            
-            
+                _vmtype = right;
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("SystemClasspath"))))
                 addSystemClasspath(right);
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("UserClasspath"))))
                 addUserClasspath(right);
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("DisableAsyncGC"))))
                 setDisableAsyncGC(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("EnableClassGC"))))
                 setEnableClassGC(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("EnableVerboseGC"))))
                 setEnableVerboseGC(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("NativeStackSize"))))
                 setNativeStackSize(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("JavaStackSize"))))
                 setJavaStackSize(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("VerifyMode"))))
                 setVerifyMode(right);
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("MinHeapSize"))))
                 setMinHeapSize(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("MaxHeapSize"))))
                 setMaxHeapSize(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("DebugPort"))))
             setDebugPort(right.toInt32());
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("RuntimeLib"))))
                 setRuntimeLib(right);
-            
+
             else if(left.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("CheckSource"))))
                 setCheckSource(right.toInt32());
-            
+
             else
                 _props.push_back(property);
         }
@@ -183,7 +183,7 @@ namespace stoc_javavm {
         { // no '=', could be -X
             _props.push_back(property);
         }
-        
+
     }
 
 
