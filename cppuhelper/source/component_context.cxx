@@ -2,9 +2,9 @@
  *
  *  $RCSfile: component_context.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: dbo $ $Date: 2001-06-07 11:55:14 $
+ *  last change: $Author: dbo $ $Date: 2001-06-07 12:01:49 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -135,17 +135,17 @@ class ComponentContext
     
     struct ContextEntry
     {
-        bool bLateInitService;
         Any value;
+        bool bLateInitService;
         
         inline ContextEntry( bool bLateInitService_, Any const & value_ )
-            : bLateInitService( bLateInitService_ )
-            , value( value_ )
+            : value( value_ )
+            , bLateInitService( bLateInitService_ )
             {}
     };
     typedef ::std::hash_map< OUString, ContextEntry *, OUStringHash > t_map;
     t_map m_map;
-
+    
     Reference< lang::XMultiComponentFactory > m_xSMgr;
     // denotes if service manager has to be disposed by this context,
     // else it was retieved from a delegate which itself has to dispose it
