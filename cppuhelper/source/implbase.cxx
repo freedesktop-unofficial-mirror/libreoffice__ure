@@ -2,9 +2,9 @@
  *
  *  $RCSfile: implbase.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-15 12:33:12 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:34:42 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -149,7 +149,7 @@ ClassDataBase::~ClassDataBase() SAL_THROW( () )
 {
     delete pTypes;
     delete pId;
-    
+
     for ( sal_Int32 nPos = nType2Offset; nPos--; )
     {
         typelib_typedescription_release(
@@ -162,14 +162,14 @@ ClassDataBase::~ClassDataBase() SAL_THROW( () )
 void ClassData::writeTypeOffset( const Type & rType, sal_Int32 nOffset ) SAL_THROW( () )
 {
     arType2Offset[nType2Offset].nOffset = nOffset;
-    
+
     arType2Offset[nType2Offset].pTD = 0;
     typelib_typedescriptionreference_getDescription(
         (typelib_TypeDescription **)&arType2Offset[nType2Offset].pTD, rType.getTypeLibType() );
-    
+
     if (arType2Offset[nType2Offset].pTD)
         ++nType2Offset;
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     else
     {
         OString msg( "### cannot get type description for " );
@@ -187,20 +187,20 @@ void ClassData::initTypeProvider() SAL_THROW( () )
         // create id
         pId = new Sequence< sal_Int8 >( 16 );
         rtl_createUuid( (sal_uInt8 *)pId->getArray(), 0, sal_True );
-        
+
         // collect types
         Sequence< Type > * types = new Sequence< Type >(
             nType2Offset + 1 + (nClassCode == 4 ? 2 : nClassCode) );
         Type * pTypeAr = types->getArray();
-        
+
         // given types
         sal_Int32 nPos = nType2Offset;
         while (nPos--)
             pTypeAr[nPos] = ((typelib_TypeDescription *)arType2Offset[nPos].pTD)->pWeakRef;
-        
+
         // XTypeProvider
         pTypeAr[nType2Offset] = ::getCppuType( (const Reference< lang::XTypeProvider > *)0 );
-        
+
         // class code extra types: [[XComponent,] XWeak[, XAggregation]]
         switch (nClassCode)
         {
@@ -215,7 +215,7 @@ void ClassData::initTypeProvider() SAL_THROW( () )
         case 1:
             pTypeAr[nType2Offset +1] = ::getCppuType( (const Reference< XWeak > *)0 );
         }
-        
+
         pTypes = types;
     }
 }
@@ -265,7 +265,7 @@ Any ClassData::query( const Type & rType, lang::XTypeProvider * pBase ) SAL_THRO
     }
     if (rType == ::getCppuType( (const Reference< lang::XTypeProvider > *)0 ))
         return Any( &pBase, ::getCppuType( (const Reference< lang::XTypeProvider > *)0 ) );
-    
+
     return Any();
 }
 
@@ -318,7 +318,7 @@ void WeakComponentImplHelperBase::release()
         }
         catch (RuntimeException & exc) // don't break throw ()
         {
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             OString msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( 0, msg.getStr() );
 #endif
@@ -356,7 +356,7 @@ void WeakComponentImplHelperBase::dispose()
             MutexGuard aGuard( rBHelper.rMutex );
             rBHelper.bDisposed = sal_True;
             rBHelper.bInDispose = sal_False;
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             OString msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( 0, msg.getStr() );
 #endif
@@ -453,7 +453,7 @@ void WeakAggComponentImplHelperBase::release()
         }
         catch (RuntimeException & exc) // don't break throw ()
         {
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             OString msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( 0, msg.getStr() );
 #endif
@@ -491,7 +491,7 @@ void WeakAggComponentImplHelperBase::dispose()
             MutexGuard aGuard( rBHelper.rMutex );
             rBHelper.bDisposed = sal_True;
             rBHelper.bInDispose = sal_False;
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             OString msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( 0, msg.getStr() );
 #endif
