@@ -2,9 +2,9 @@
  *
  *  $RCSfile: DocumentDefinition.idl,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: obo $ $Date: 2004-11-17 14:31:37 $
+ *  last change: $Author: obo $ $Date: 2004-11-22 12:28:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,8 +58,8 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_sdb_DocumentDefinition_idl__
-#define __com_sun_star_sdb_DocumentDefinition_idl__
+#ifndef __com_sun_star_sdb_DocumentDefinition2_idl__
+#define __com_sun_star_sdb_DocumentDefinition2_idl__
 
 #ifndef __com_sun_star_beans_XPropertySet_idl__
 #include <com/sun/star/beans/XPropertySet.idl>
@@ -71,15 +71,15 @@ module com { module sun { module star { module sdb {
 
     <p>
     These documents typically process information from a connected
-    data source. A 
+    data source. A
     <type>
     Document
-    </type> 
-    could be a form or a report.	
+    </type>
+    could be a form or a report.
 */
 published service DocumentDefinition
 {
-    interface com::sun::star::beans::XPropertySet;	
+    interface com::sun::star::beans::XPropertySet;
 
     /** is the name of the document. If the document is part of the container,
         it is not possible to alter the name.*/
