@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testsameprocess.cxx,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:10 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:29:58 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,6 +58,9 @@
  *
  *
  ************************************************************************/
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 
 #ifndef _OSL_TIME_H_
@@ -135,15 +138,15 @@ void MyThread::run()
             {
                 break;
             }
-        
+
             Reference < XBridge > rBridge =
                 m_rBridgeFactory->createBridge(
                     OUString() ,
                     OUString( RTL_CONSTASCII_USTRINGPARAM("iiop")) ,
                     rConnection ,
                     (XInstanceProvider * ) new OInstanceProvider );
-            
-            
+
+
         }
         catch ( ... )
         {
@@ -182,20 +185,20 @@ int main( int argc, char *argv[] )
         createComponent( OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.Bridge.iiop")),
                          OUString( RTL_CONSTASCII_USTRINGPARAM("iiopbrdg")),
                          rSMgr );
-        
+
         Reference < XBridgeFactory > rFactory(
             createComponent( OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.BridgeFactory")),
                              OUString( RTL_CONSTASCII_USTRINGPARAM("brdgfctr")),
                              rSMgr ),
             UNO_QUERY );
 
-        
+
         MyThread threadAcceptor( rAcceptor , rFactory , OUString::createFromAscii( argv[1] ) );
 
         threadAcceptor.create();
         TimeValue value={2,0};
         osl_waitThread( &value );
-        
+
         try
         {
             Reference < XConnection > rConnection =
@@ -203,7 +206,7 @@ int main( int argc, char *argv[] )
 
             printf( "%s\n" , OUStringToOString( rConnection->getDescription(),
                                                 RTL_TEXTENCODING_ASCII_US ).pData->buffer );
-            
+
             if( rFactory.is() )
             {
 
@@ -212,7 +215,7 @@ int main( int argc, char *argv[] )
                     OUString( RTL_CONSTASCII_USTRINGPARAM("iiop")),
                     rConnection,
                     Reference < XInstanceProvider > () );
-                
+
                 Reference < XInterface > rInitialObject
                     = rBridge->getInstance( OUString( RTL_CONSTASCII_USTRINGPARAM("bla")) );
 
@@ -229,20 +232,20 @@ int main( int argc, char *argv[] )
             Reference < XBridge > rBridge = rFactory->getBridge(
                 OUString( RTL_CONSTASCII_USTRINGPARAM("bla blub")) );
             assert( ! rBridge.is() );
-            
+
         }
         catch( Exception & )
         {
             printf( "Login failed, got an Exception !\n" );
-        }		
+        }
 
         rAcceptor->stopAccepting();
         threadAcceptor.join();
 
         Reference < XComponent > rComp( rFactory , UNO_QUERY );
         rComp->dispose();
-        
-        
+
+
         rComp = Reference < XComponent > ( rSMgr , UNO_QUERY );
         rComp->dispose();
     }
