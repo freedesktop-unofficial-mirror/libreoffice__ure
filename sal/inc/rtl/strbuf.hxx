@@ -2,9 +2,9 @@
  *
  *  $RCSfile: strbuf.hxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: jsc $ $Date: 2001-04-26 13:34:01 $
+ *  last change: $Author: th $ $Date: 2001-05-09 15:24:15 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -130,7 +130,7 @@ public:
     /**
         Allocates a new string buffer that contains the same sequence of
         characters as the string buffer argument.
-    
+
         @param   value   a <code>OStringBuffer</code>.
      */
     OStringBuffer( const OStringBuffer & value )
@@ -143,7 +143,7 @@ public:
     /**
         Constructs a string buffer with no characters in it and an
         initial capacity specified by the <code>length</code> argument.
-    
+
         @param      length   the initial capacity.
      */
     OStringBuffer(sal_Int32 length)
@@ -158,7 +158,7 @@ public:
         sequence of characters as the string argument. The initial
         capacity of the string buffer is <code>16</code> plus the length
         of the string argument.
-    
+
         @param   value   the initial string value.
      */
     OStringBuffer(OString value)
@@ -189,20 +189,20 @@ public:
         Fill the string data in the new string and clear the buffer.<BR>
         This method is more efficient than the contructor of the string. It does
         not copy the buffer.
-    
+
         @return the string previously contained in the buffer.
      */
     OString makeStringAndClear()
     {
         OString aRet( pData );
-        RTL_STRING_NEW(&pData);
+        rtl_string_new(&pData);
         nCapacity = 0;
         return aRet;
     }
 
     /**
         Returns the length (character count) of this string buffer.
-    
+
         @return  the number of characters in this string buffer.
      */
     sal_Int32 getLength()
@@ -215,7 +215,7 @@ public:
         is the amount of storage available for newly inserted
         characters. The real buffer size is 2 bytes longer, because
         all strings are 0 terminated.
-    
+
         @return  the current capacity of this string buffer.
      */
     sal_Int32 getCapacity()
@@ -235,7 +235,7 @@ public:
         </ul>
         If the <code>minimumCapacity</code> argument is nonpositive, this
         method takes no action and simply returns.
-    
+
         @param   minimumCapacity   the minimum desired capacity.
      */
     void ensureCapacity(sal_Int32 minimumCapacity)
@@ -257,7 +257,7 @@ public:
         <p>
         The <code>newLength</code> argument must be greater than or equal
         to <code>0</code>.
-    
+
         @param      newLength   the new length of the buffer.
      */
     void setLength(sal_Int32 newLength)
@@ -304,7 +304,7 @@ public:
         <p>
         The offset argument must be greater than or equal to
         <code>0</code>, and less than the length of this string buffer.
-    
+
         @param      index   the index of the character to modify.
         @param      ch      the new character.
      */
@@ -320,7 +320,7 @@ public:
         The characters of the <code>String</code> argument are appended, in
         order, to the contents of this string buffer, increasing the
         length of this string buffer by the length of the argument.
-    
+
         @param   str   a string.
         @return  this string buffer.
      */
@@ -336,7 +336,7 @@ public:
         The characters of the array argument are appended, in order, to
         the contents of this string buffer. The length of this string
         buffer increases by the length of the argument.
-    
+
         @param   str   the characters to be appended.
         @return  this string buffer.
      */
@@ -352,7 +352,7 @@ public:
         Characters of the character array <code>str</code> are appended,
         in order, to the contents of this string buffer. The length of this
         string buffer increases by the value of <code>len</code>.
-    
+
         @param   str      the characters to be appended.
         @param   len      the number of characters to append.
         @return  this string buffer.
@@ -371,7 +371,7 @@ public:
         The argument is converted to a string as if by the method
         <code>String.valueOf</code>, and the characters of that
         string are then appended to this string buffer.
-    
+
         @param   b   a <code>sal_Bool</code>.
         @return  this string buffer.
      */
@@ -387,7 +387,7 @@ public:
         <p>
         The argument is appended to the contents of this string buffer.
         The length of this string buffer increases by <code>1</code>.
-    
+
         @param   ch   a <code>char</code>.
         @return  this string buffer.
      */
@@ -403,7 +403,7 @@ public:
         The argument is converted to a string as if by the method
         <code>String.valueOf</code>, and the characters of that
         string are then appended to this string buffer.
-    
+
         @param   i   an <code>sal_Int32</code>.
         @return  this string buffer.
      */
@@ -420,7 +420,7 @@ public:
         The argument is converted to a string as if by the method
         <code>String.valueOf</code>, and the characters of that
         string are then appended to this string buffer.
-    
+
         @param   l   a <code>long</code>.
         @return  this string buffer.
      */
@@ -437,7 +437,7 @@ public:
         The argument is converted to a string as if by the method
         <code>String.valueOf</code>, and the characters of that
         string are then appended to this string buffer.
-    
+
         @param   f   a <code>float</code>.
         @return  this string buffer.
      */
@@ -454,7 +454,7 @@ public:
         The argument is converted to a string as if by the method
         <code>String.valueOf</code>, and the characters of that
         string are then appended to this string buffer.
-    
+
         @param   d   a <code>double</code>.
         @return  this string buffer.
      */
@@ -474,7 +474,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      str      a string.
         @return     this string buffer.
@@ -492,7 +492,7 @@ public:
         contents of this string buffer at the position indicated by
         <code>offset</code>. The length of this string buffer increases by
         the length of the argument.
-    
+
         @param      offset   the offset.
         @param      ch       a character array.
         @return     this string buffer.
@@ -510,7 +510,7 @@ public:
         contents of this string buffer at the position indicated by
         <code>offset</code>. The length of this string buffer increases by
         the length of the argument.
-    
+
         @param      offset   the offset.
         @param      ch       a character array.
         @param       len     the number of characters to append.
@@ -535,7 +535,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      b        a <code>sal_Bool</code>.
         @return     this string buffer.
@@ -557,7 +557,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      ch       a <code>char</code>.
         @return     this string buffer.
@@ -579,7 +579,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      b        an <code>sal_Int32</code>.
         @return     this string buffer.
@@ -602,7 +602,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      b        a <code>long</code>.
         @return     this string buffer.
@@ -625,7 +625,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      b        a <code>float</code>.
         @return     this string buffer.
@@ -648,7 +648,7 @@ public:
         The offset argument must be greater than or equal to
         <code>0</code>, and less than or equal to the length of this
         string buffer.
-    
+
         @param      offset   the offset.
         @param      b        a <code>double</code>.
         @return     this string buffer.
@@ -660,12 +660,12 @@ public:
     }
 private:
     /**
-         A pointer to the data structur which contains the data.
+        A pointer to the data structur which contains the data.
      */
     rtl_String * pData;
 
     /**
-         The len of the pData->buffer.
+        The len of the pData->buffer.
      */
     sal_Int32       nCapacity;
 };
