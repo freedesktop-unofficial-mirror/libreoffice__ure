@@ -2,9 +2,9 @@
  *
  *  $RCSfile: socket.c,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: mfe $ $Date: 2001-02-26 16:15:15 $
+ *  last change: $Author: mfe $ $Date: 2001-02-27 14:34:48 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -1935,35 +1935,54 @@ void SAL_CALL osl_closeSocket(oslSocket Socket)
     pSockImpl= (oslSocketImpl*)Socket;
     pSockImpl->m_nLastError=0;
     nFD = pSockImpl->m_Socket;
+
+    pSockImpl->m_Socket = OSL_INVALID_SOCKET;
     
 #if defined(LINUX)
     pSockImpl->m_bIsInShutdown = sal_True;
 
     if ( pSockImpl->m_bIsAccepting == sal_True )
     {
-        oslSocketAddr aAddr = 0;
-        oslSocket     aSocket = 0;
-        oslAddrFamily aFamily = 0;
-        oslSocketType aType = 0;
-        
-        oslSocketResult tRes  = 0;
+        int nConnFD;
+        struct sockaddr aSockAddr;
+        socklen_t nSockLen = sizeof(aSockAddr);
 
-        aAddr = osl_getLocalAddrOfSocket(pSockImpl);
-        aType = osl_getSocketType(pSockImpl);
-        aFamily = osl_getFamilyOfSocketAddr(aAddr);        
+        nRet = getsockname(nFD, &aSockAddr, &nSockLen);
+#if defined(DEBUG)
+        if ( nRet < 0 )
+        {
+            perror("getsockname");
+        }
+#endif /* DEBUG */
         
-        aSocket=osl_createSocket(aFamily,aType,0);
-        
-        tRes = osl_connectSocketTo(aSocket, aAddr, 0);
-        
-        osl_destroySocket(aSocket);
+        if ( aSockAddr.sa_family == AF_INET )
+        {
+            struct sockaddr_in* pSockAddrIn = (struct sockaddr_in*) &aSockAddr;
+            
+            if ( pSockAddrIn->sin_addr.s_addr == htonl(INADDR_ANY) )
+            {
+                pSockAddrIn->sin_addr.s_addr = htonl(INADDR_LOOPBACK);
+            }
 
-        osl_destroySocketAddr(aAddr);
-        
+            nConnFD = socket(AF_INET, SOCK_STREAM, 0);
+#if defined(DEBUG)
+            if ( nConnFD < 0 )
+            {
+                perror("socket");
+            }
+#endif /* DEBUG */
+            
+            nRet = connect(nConnFD, &aSockAddr, sizeof(aSockAddr));
+#if defined(DEBUG)
+            if ( nRet < 0 )
+            {
+                perror("connect");
+            }
+#endif /* DEBUG */
+            close(nConnFD);
+        }
     }
-#endif
-
-    pSockImpl->m_Socket = OSL_INVALID_SOCKET;
+#endif /* LINUX */
     
     /* registrierten Callback ausfuehren */
     if (pSockImpl->m_CloseCallback != NULL)
