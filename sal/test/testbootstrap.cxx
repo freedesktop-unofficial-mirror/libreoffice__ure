@@ -14,7 +14,7 @@ int main( int argc, char *argv[] )
 {
     sal_Int32 nCount = rtl_getAppCommandArgCount();
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     fprintf( stdout, "rtl-commandargs (%d) real args:%i ", nCount, argc);
     for( sal_Int32 i = 0 ; i < nCount ; i ++ )
     {
@@ -36,7 +36,7 @@ int main( int argc, char *argv[] )
     OUString iniName;
     Bootstrap::get(OUString(RTL_CONSTASCII_USTRINGPARAM("iniName")), iniName, OUString());
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
      if(iniName.getLength())
     {
         OString tmp_iniName = OUStringToOString(iniName, RTL_TEXTENCODING_ASCII_US);
@@ -71,17 +71,17 @@ int main( int argc, char *argv[] )
 
         result = para == value;
 
-        if(!result) 
+        if(!result)
         {
             OString para_tmp = OUStringToOString(para, RTL_TEXTENCODING_ASCII_US);
             OString value_tmp = OUStringToOString(value, RTL_TEXTENCODING_ASCII_US);
-            
+
             fprintf(stderr, "para(%s) != value(%s)\n", para_tmp.getStr(), value_tmp.getStr());
         }
     }
     else
         fprintf(stderr, "bootstrap parameter couldn't be found\n");
-    
+
     // test the default case
     name = OUString( RTL_CONSTASCII_USTRINGPARAM( "no_one_has_set_this_name" ) );
       OSL_ASSERT( ! bootstrap.getFrom( name, value ) );
