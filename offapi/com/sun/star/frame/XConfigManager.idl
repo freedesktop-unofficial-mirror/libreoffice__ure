@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XConfigManager.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: mi $ $Date: 2001-11-01 10:29:29 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:05:21 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,71 +58,95 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_frame_XConfigManager_idl__ 
-#define __com_sun_star_frame_XConfigManager_idl__ 
- 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_XPropertyChangeListener_idl__ 
-#include <com/sun/star/beans/XPropertyChangeListener.idl> 
-#endif 
- 
-//============================================================================ 
- 
- module com { 
-  module sun { 
-   module star { 
-    module frame { 
- 
-//============================================================================ 
- 
-// DocMerge from xml: interface com::sun::star::frame::XConfigManager
+#ifndef __com_sun_star_frame_XConfigManager_idl__
+#define __com_sun_star_frame_XConfigManager_idl__
+
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
+
+#ifndef __com_sun_star_beans_XPropertyChangeListener_idl__
+#include <com/sun/star/beans/XPropertyChangeListener.idl>
+#endif
+
+//============================================================================
+
+ module com {
+  module sun {
+   module star {
+    module frame {
+
+//============================================================================
 /** @deprecated
  */
 interface XConfigManager: com::sun::star::uno::XInterface
-{ 
-    //------------------------------------------------------------------------- 
-    // DocMerge from xml: method com::sun::star::frame::XConfigManager::addPropertyChangeListener
-    /** add a listener to notify changes on "sKeyName"
+{
+    //-------------------------------------------------------------------------
+    /** add a listener to notify changes on well known variables
+        inside the real implementation
 
-        <p> If <var>sKeyName</var> specifies a group of keys, the listener gets one notify for each subkey.</p>
-    */
-    [oneway] void addPropertyChangeListener( [in] string sKeyName, [in] com::sun::star::beans::XPropertyChangeListener xListener ) ; 
- 
-    //------------------------------------------------------------------------- 
-     
- 
-    // DocMerge from xml: method com::sun::star::frame::XConfigManager::removePropertyChangeListener
-    /** remove a listener
-     */
-    [oneway] void removePropertyChangeListener( [in] string sKeyName, [in] com::sun::star::beans::XPropertyChangeListener xListener ) ; 
- 
-    //------------------------------------------------------------------------- 
-     
- 
-    // DocMerge from xml: method com::sun::star::frame::XConfigManager::substituteVariables
-    /** substitute variables in "sText"
-        
-        
         <p>
-        The value of "sText" is NOT changed.</p>
+        Listener can update his text values by calling <member>XConfigManager::substituteVariables()</member>
+        again. If <var>KeyName</var> specifies a group of keys, the listener gets one notify for each subkey.
+        </p>
+
+        @param KeyName
+            specifies variable about listener will be informed on changes
+
+        @param Listener
+            listener which will be informed
+
+        @see XConfigManager::removePropertyChangeListener()
+
+        @deprecated
+    */
+    [oneway] void addPropertyChangeListener(
+        [in] string KeyName,
+        [in] com::sun::star::beans::XPropertyChangeListener Listener );
+
+    //-------------------------------------------------------------------------
+    /** remove a registered listener
+
+        @param KeyName
+            specifies variable on which listener was registered
+
+        @param Listener
+            listener which will be deregistered
+
+        @see XConfigManager::addPropertyChangeListener()
+
+        @deprecated
      */
-    string substituteVariables( [in] string sText ) ; 
- 
-    //------------------------------------------------------------------------- 
-     
- 
-    // DocMerge from xml: method com::sun::star::frame::XConfigManager::flush
-    /** write data of INI-file to disk
+    [oneway] void removePropertyChangeListener(
+        [in] string KeyName,
+        [in] com::sun::star::beans::XPropertyChangeListener Listener);
+
+    //-------------------------------------------------------------------------
+    /** substitute variables (place holder) inside given parameter <var>Text</var>
+
+        <p>
+        The value of <var>Text</var> is NOT changed.
+        </p>
+
+        @param Text
+            original value including variables
+
+        @return
+            changed copy of <var>Text</var> without any variables
      */
-    [oneway] void flush() ; 
- 
-}; //XConfigManager 
-}; //frame 
-}; //star 
-}; //sun 
-}; //com 
- 
-#endif 
+    string substituteVariables( [in] string Text );
+
+    //-------------------------------------------------------------------------
+    /** was designed for additional functionality for interface <type scope="com::sun::star::registry">XSimpleRegistry</type>
+        and make no sense without that
+        @deprecated
+     */
+    [oneway] void flush();
+
+}; //XConfigManager
+}; //frame
+}; //star
+}; //sun
+}; //com
+
+#endif

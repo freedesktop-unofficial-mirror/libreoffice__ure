@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XConsolidationDescriptor.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: jsc $ $Date: 2001-03-16 16:41:38 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:08:16 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,172 +58,127 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_sheet_XConsolidationDescriptor_idl__ 
-#define __com_sun_star_sheet_XConsolidationDescriptor_idl__ 
- 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
- 
-#ifndef __com_sun_star_sheet_GeneralFunction_idl__ 
-#include <com/sun/star/sheet/GeneralFunction.idl> 
-#endif 
- 
-#ifndef __com_sun_star_table_CellRangeAddress_idl__ 
-#include <com/sun/star/table/CellRangeAddress.idl> 
-#endif 
- 
-#ifndef __com_sun_star_table_CellAddress_idl__ 
-#include <com/sun/star/table/CellAddress.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module sheet {  
- 
-//============================================================================= 
- 
-// DocMerge from xml: interface com::sun::star::sheet::XConsolidationDescriptor
-/** represents a description of how to consolidate multiple 
-    cell ranges.
-    
-    
-    
-    
-    
-    
-    
-    @deprecated@see com::sun::star::sheet::ConsolidationDescriptor
+
+#ifndef __com_sun_star_sheet_XConsolidationDescriptor_idl__
+#define __com_sun_star_sheet_XConsolidationDescriptor_idl__
+
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
+
+#ifndef __com_sun_star_sheet_GeneralFunction_idl__
+#include <com/sun/star/sheet/GeneralFunction.idl>
+#endif
+
+#ifndef __com_sun_star_table_CellRangeAddress_idl__
+#include <com/sun/star/table/CellRangeAddress.idl>
+#endif
+
+#ifndef __com_sun_star_table_CellAddress_idl__
+#include <com/sun/star/table/CellAddress.idl>
+#endif
+
+//=============================================================================
+
+module com {  module sun {  module star {  module sheet {
+
+//=============================================================================
+
+/** provides access to the settings of a consolidation descriptor.
+
+    @deprecated
+
+    @see com::sun::star::sheet::ConsolidationDescriptor
  */
 interface XConsolidationDescriptor: com::sun::star::uno::XInterface
-{ 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::getFunction
+{
+    //-------------------------------------------------------------------------
+
     /** returns the function by which the ranges are consolidated.
      */
-    com::sun::star::sheet::GeneralFunction getFunction(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::setFunction
+    com::sun::star::sheet::GeneralFunction getFunction();
+
+    //-------------------------------------------------------------------------
+
     /** sets the function by which the ranges are consolidated.
      */
-    void setFunction( [in] com::sun::star::sheet::GeneralFunction nFunction ); 
- 
-    //------------------------------------------------------------------------- 
-    // DOCUMENTATION CHANGED FOR XConsolidationDescriptor::getSources 
-     
-    // DocMerge from idl: method com::sun::star::sheet::XConsolidationDescriptor::getSources
+    void setFunction( [in] com::sun::star::sheet::GeneralFunction nFunction );
+
+    //-------------------------------------------------------------------------
+
     /** returns the cell ranges which are consolidated.
      */
-    sequence<com::sun::star::table::CellRangeAddress> getSources(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::setSources
+    sequence< com::sun::star::table::CellRangeAddress > getSources();
+
+    //-------------------------------------------------------------------------
+
     /** sets the cell ranges which are consolidated.
      */
-    void setSources( [in] sequence<com::sun::star::table::CellRangeAddress> aSources ); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::getStartOutputPosition
-    /** returns the position in the document where the
-        consolidated data are copied.
+    void setSources(
+            [in] sequence< com::sun::star::table::CellRangeAddress > aSources );
+
+    //-------------------------------------------------------------------------
+
+    /** returns the position of the top left cell of the cell range where
+        the consolidated data are copied.
      */
-    com::sun::star::table::CellAddress getStartOutputPosition(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::setStartOutputPosition
-    /** sets the position in the document where the
-        consolidated data are copied.
+    com::sun::star::table::CellAddress getStartOutputPosition();
+
+    //-------------------------------------------------------------------------
+
+    /** sets the position of the top left cell of the cell range
+        where the consolidated data are copied.
      */
-    void setStartOutputPosition( [in] com::sun::star::table::CellAddress aStartOutputPosition ); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::getUseColumnHeaders
-    /** returns whether column headers from the cell ranges 
-        are used to find matching data or not.
+    void setStartOutputPosition(
+            [in] com::sun::star::table::CellAddress aStartOutputPosition );
+
+    //-------------------------------------------------------------------------
+
+    /** returns, whether column headers from the cell ranges are used to
+        find matching data or not.
      */
-    boolean getUseColumnHeaders(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::setUseColumnHeaders
-    /** specifies if column headers from the cell ranges 
-        are used to find matching data.
+    boolean getUseColumnHeaders();
+
+    //-------------------------------------------------------------------------
+
+    /** specifies if column headers from the cell ranges are used to find
+        matching data.
      */
-    void setUseColumnHeaders( [in] boolean bUseColumnHeaders ); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::getUseRowHeaders
-    /** returns whether row headers from the cell ranges 
-        are used to find matching data or not.
+    void setUseColumnHeaders( [in] boolean bUseColumnHeaders );
+
+    //-------------------------------------------------------------------------
+
+    /** returns, whether row headers from the cell ranges are used to
+        find matching data or not.
      */
-    boolean getUseRowHeaders(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::setUseRowHeaders
-    /** specifies if row headers from the cell ranges 
-        are used to find matching data.
+    boolean getUseRowHeaders();
+
+    //-------------------------------------------------------------------------
+
+    /** specifies if row headers from the cell ranges are used to find
+        matching data.
      */
-    void setUseRowHeaders( [in] boolean bUseRowHeaders ); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::getInsertLinks
-    /** returns whether links to the original data 
-        are inserted in the output area or not.
+    void setUseRowHeaders( [in] boolean bUseRowHeaders );
+
+    //-------------------------------------------------------------------------
+
+    /** returns, whether links to the original data are inserted in the
+        output area or not.
      */
-    boolean getInsertLinks(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: method com::sun::star::sheet::XConsolidationDescriptor::setInsertLinks
-    /** specifies if links to the original data 
-        are inserted in the output area.
+    boolean getInsertLinks();
+
+    //-------------------------------------------------------------------------
+
+    /** specifies if links to the original data are inserted in the
+        output area.
      */
-    void setInsertLinks( [in] boolean bInsertLinks ); 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-    $Log: not supported by cvs2svn $
-    Revision 1.4  2000/12/21 08:35:12  mi
-    @see interface/service/... ident -> @see ident - for new docu generator
-    
-    Revision 1.3  2000/11/08 12:43:46  mi
-    moved from api
-    
-    Revision 1.2  2000/10/09 14:24:58  mi
-    #78715# exchanged stardiv::... by com::sun::star::... (especially in @see tags)
-    
-    Revision 1.1.1.1  2000/09/18 23:35:49  hjs
-    initial import
-    
-    Revision 1.5  2000/09/11 11:52:51  mi
-    documentation merged from XML
-     
-    Revision 1.3  2000/03/24 17:35:23  nn 
-    #74032# documentation added 
-     
-    Revision 1.2  2000/02/07 11:24:55  mi 
-    zu #70728# missing documentation marked 
-     
-    Revision 1.1.1.1  1999/11/11 09:48:45  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+    void setInsertLinks( [in] boolean bInsertLinks );
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
+

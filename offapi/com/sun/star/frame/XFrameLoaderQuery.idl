@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XFrameLoaderQuery.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: mi $ $Date: 2001-11-01 10:29:29 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:05:24 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,89 +58,59 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_frame_XFrameLoaderQuery_idl__ 
-#define __com_sun_star_frame_XFrameLoaderQuery_idl__ 
- 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_XPropertySet_idl__ 
-#include <com/sun/star/beans/XPropertySet.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_PropertyValue_idl__ 
-#include <com/sun/star/beans/PropertyValue.idl> 
-#endif 
- 
-//============================================================================ 
- 
- module com { 
-  module sun { 
-   module star { 
-    module frame { 
- 
-//============================================================================ 
- 
- 
-// DocMerge from xml: interface com::sun::star::frame::XFrameLoaderQuery
-/** Use this interface together with a XMultiServiceFactory to implement a frame
-    loader. You can support detailed information about supported properties with XFrameLoaderQuery
-    and create matching loader with XMultiServiceFactory.
-    
-    
-    
-    
-    
+#ifndef __com_sun_star_frame_XFrameLoaderQuery_idl__
+#define __com_sun_star_frame_XFrameLoaderQuery_idl__
+
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
+
+#ifndef __com_sun_star_beans_XPropertySet_idl__
+#include <com/sun/star/beans/XPropertySet.idl>
+#endif
+
+#ifndef __com_sun_star_beans_PropertyValue_idl__
+#include <com/sun/star/beans/PropertyValue.idl>
+#endif
+
+//============================================================================
+
+ module com {
+  module sun {
+   module star {
+    module frame {
+
+//============================================================================
+/** use service <type>FrameLoaderFactory</type> instead of this
     @deprecated
  */
 interface XFrameLoaderQuery: com::sun::star::uno::XInterface
-{ 
-    //------------------------------------------------------------------------- 
-     
- 
-    // DocMerge from idl: method com::sun::star::frame::XFrameLoaderQuery::getAvailableFilterNames
-    /** return filter names of all available frame loader 
-                <P> 
-                You can use a name of returned list to create a new frame loader 
-                 at a XMultiServiceFactory implementation. If you wish to get further 
-                 informations about loader properties use method getLoaderProperties() 
-                 of this interface.
+{
+    //-------------------------------------------------------------------------
+    /** use member <member scope="com::sun::star::container">XNameAccess::getElementNames()</member>
+        provided by service <type>FrameLoaderFactory</type> instead of this
+        @deprecated
      */
-    sequence< string > getAvailableFilterNames(); 
- 
-    //------------------------------------------------------------------------- 
-     
- 
-    // DocMerge from idl: method com::sun::star::frame::XFrameLoaderQuery::getLoaderProperties
-    /** return extended information about all supported properties of an frame loader 
-                <P> 
-                If you know a name of a loader call these method to get a set of all 
-                supported properties. Use these values to create a new loader with special 
-                arguments.
+    sequence< string > getAvailableFilterNames();
+
+    //-------------------------------------------------------------------------
+    /** use member <member scope="com::sun::star::container">XNameAccess::getByName()</member>
+        provided by service <type>FrameLoaderFactory</type> instead of this
+        @deprecated
      */
-    sequence< ::com::sun::star::beans::PropertyValue > getLoaderProperties( [in] string sFilterName ); 
- 
-    //------------------------------------------------------------------------- 
-     
- 
-    // DocMerge from xml: method com::sun::star::frame::XFrameLoaderQuery::searchFilter
-    /** search a filter for given parameter
-        
-        <p>
-        If you don't know a filter name of a loader, call these method to search for anyone
-        who supports a given parameter. Use returned name to get further information
-        by means of getLoaderProperties() or create a new frame loader at a
-        XMultiServiceFactory. Don't forget to add returned filter name to argument list
-        for faster creation! Otherwise, we must search for right loader again.
-        (We look for FilterName first!)</p>
+    sequence< ::com::sun::star::beans::PropertyValue > getLoaderProperties( [in] string sFilterName );
+
+    //-------------------------------------------------------------------------
+    /** use member <type scope="com::sun::star::container">XContainerQuery</type>
+        provided by service <type>FrameLoaderFactory</type> instead of this
+        @deprecated
      */
-    string searchFilter( [in] string sURL, [in] sequence< com::sun::star::beans::PropertyValue > seqArguments ); 
- 
-    }; // XFrameLoaderQuery 
-   }; // frame 
-  }; // star 
- }; // sun 
-}; // com 
- 
-#endif 
+    string searchFilter( [in] string sURL, [in] sequence< com::sun::star::beans::PropertyValue > seqArguments );
+
+    }; // XFrameLoaderQuery
+   }; // frame
+  }; // star
+ }; // sun
+}; // com
+
+#endif

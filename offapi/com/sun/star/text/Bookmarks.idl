@@ -2,9 +2,9 @@
  *
  *  $RCSfile: Bookmarks.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:44:26 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:10:03 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,52 +58,66 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_text_Bookmarks_idl__ 
-#define __com_sun_star_text_Bookmarks_idl__ 
- 
-#ifndef __com_sun_star_container_XNameAccess_idl__ 
-#include <com/sun/star/container/XNameAccess.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module text {  
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_text_Bookmarks_idl__
+#define __com_sun_star_text_Bookmarks_idl__
+
+#ifndef __com_sun_star_container_XNameAccess_idl__
+#include <com/sun/star/container/XNameAccess.idl>
+#endif
+#ifndef __com_sun_star_container_XIndexAccess_idl__
+#include <com/sun/star/container/XIndexAccess.idl>
+#endif
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module text {
+
+//=============================================================================
+
 // DocMerge from xml: service com::sun::star::text::Bookmarks
 /** This service specifies a collection of <type>Bookmark</type>s.
  */
 service Bookmarks
-{ 
- 
-     
+{
+
+
     // DocMerge from xml: service com::sun::star::text::Bookmarks: interface com::sun::star::container::XNameAccess
-    /** makes it possible to access the bookmarks by their names. 
-                 
+    /** makes it possible to access the bookmarks by their names.
+
                 <p>All contents support the service <type>Bookmark</type>.
      */
-    interface com::sun::star::container::XNameAccess; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
+    interface com::sun::star::container::XNameAccess;
+    /** makes it possible to access the bookmarks by their index.
+
+                <p>All contents support the service <type>Bookmark</type>.
+     */
+    interface com::sun::star::container::XIndexAccess;
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.3.24.1  2002/02/14 10:48:33  os
+    missing interface added
+    
+    Revision 1.3  2000/11/08 12:44:26  mi
+    moved from api
+
     Revision 1.1.1.1  2000/09/18 23:35:59  hjs
     initial import
-    
+
     Revision 1.3  2000/09/11 11:52:59  mi
     documentation merged from XML
-     
-    Revision 1.1.1.1  1999/11/11 09:48:46  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.1.1.1  1999/11/11 09:48:46  jsc
+    new
+
+
+=============================================================================*/
+#endif

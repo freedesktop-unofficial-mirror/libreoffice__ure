@@ -2,9 +2,9 @@
  *
  *  $RCSfile: Form.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:43:10 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:04:54 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,103 +58,96 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_form_component_Form_idl__ 
-#define __com_sun_star_form_component_Form_idl__ 
- 
-#ifndef __com_sun_star_form_FormComponent_idl__ 
-#include <com/sun/star/form/FormComponent.idl> 
-#endif 
- 
-#ifndef __com_sun_star_form_FormComponents_idl__ 
-#include <com/sun/star/form/FormComponents.idl> 
-#endif 
- 
-#ifndef __com_sun_star_form_XForm_idl__ 
-#include <com/sun/star/form/XForm.idl> 
-#endif 
- 
-#ifndef __com_sun_star_awt_XTabControllerModel_idl__ 
-#include <com/sun/star/awt/XTabControllerModel.idl> 
-#endif 
- 
-#ifndef __com_sun_star_script_XEventAttacherManager_idl__ 
-#include <com/sun/star/script/XEventAttacherManager.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module form {  module component {  
- 
-//============================================================================= 
- 
-// DocMerge from xml: service com::sun::star::form::component::Form
+#ifndef __com_sun_star_form_component_Form_idl__
+#define __com_sun_star_form_component_Form_idl__
+
+#ifndef __com_sun_star_form_FormComponent_idl__
+#include <com/sun/star/form/FormComponent.idl>
+#endif
+
+#ifndef __com_sun_star_form_FormComponents_idl__
+#include <com/sun/star/form/FormComponents.idl>
+#endif
+
+#ifndef __com_sun_star_form_XForm_idl__
+#include <com/sun/star/form/XForm.idl>
+#endif
+
+#ifndef __com_sun_star_awt_XTabControllerModel_idl__
+#include <com/sun/star/awt/XTabControllerModel.idl>
+#endif
+
+#ifndef __com_sun_star_script_XEventAttacherManager_idl__
+#include <com/sun/star/script/XEventAttacherManager.idl>
+#endif
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module form {  module component {
+
+//=============================================================================
+
 /** This service specifies a form which is a group of FormComponents.
-    
-    
-    
+
     <p>A form fulfills several tasks, like storing the structure of its
     form components, storing the information concerning tab ordering
     and control grouping, and last but not least, it provides the
-    event environment for its contained elements.
-    
-    </p>
+    event environment for its contained elements.</p>
+
     <p>A form acts on the one hand like a container of FormComponents
     and on the other hand like a FormComponent. This generic
     construction allows the definition of hierarchies of forms and their
-    dependent subforms.
-    
-    </p>@see service com::sun::star::form::FormComponent
+    dependent subforms.</p>
+
+    @see com::sun::star::form::FormControlModel
  */
 service Form
-{ 
-    // DocMerge: empty anyway
-    service com::sun::star::form::FormComponent; 
-    
-    // DocMerge: empty anyway
-    service com::sun::star::form::FormComponents; 
- 
-     
-    // DocMerge from xml: service com::sun::star::form::component::Form: interface com::sun::star::form::XForm
+{
+    service com::sun::star::form::FormComponent;
+
+    service com::sun::star::form::FormComponents;
+
     /** identifies a component as form.
      */
-    interface com::sun::star::form::XForm; 
- 
-     
-    // DocMerge from xml: service com::sun::star::form::component::Form: interface com::sun::star::awt::XTabControllerModel
-    /** The interface has to be implemented to supply the information 
-                for tab ordering and component grouping.
+    interface com::sun::star::form::XForm;
+
+
+    /** This interface has to be implemented to supply the information for tab ordering and component grouping.
+
+        @see com::sun::star::form::FormControlModel::TabIndex
      */
-    interface com::sun::star::awt::XTabControllerModel; 
- 
-     
-    // DocMerge from xml: service com::sun::star::form::component::Form: interface com::sun::star::script::XEventAttacherManager
-    /** The interface has to be implemented to supply the scripting 
-                environment for the contained components.
-     */
-    interface com::sun::star::script::XEventAttacherManager; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; }; };  
- 
-/*============================================================================= 
- 
+    interface com::sun::star::awt::XTabControllerModel;
+};
+
+//=============================================================================
+
+}; }; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.3.24.2  2002/07/26 09:49:15  fs
+    IDL review form layer
+    
+    Revision 1.3.24.1  2002/03/04 11:11:43  fs
+    #96998# moved XEventAttacherManager to css::form::FormComponents
+    
+    Revision 1.3  2000/11/08 12:43:10  mi
+    moved from api
+
     Revision 1.2  2000/10/09 14:24:56  mi
     #78715# exchanged stardiv::... by com::sun::star::... (especially in @see tags)
-    
+
     Revision 1.1.1.1  2000/09/18 23:35:19  hjs
     initial import
-    
+
     Revision 1.3  2000/09/11 11:52:26  mi
     documentation merged from XML
-     
-    Revision 1.1.1.1  1999/11/11 09:48:42  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.1.1.1  1999/11/11 09:48:42  jsc
+    new
+
+
+=============================================================================*/
+#endif

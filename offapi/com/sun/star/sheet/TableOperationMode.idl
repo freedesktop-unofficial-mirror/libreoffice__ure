@@ -2,9 +2,9 @@
  *
  *  $RCSfile: TableOperationMode.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:43:46 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:08:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,61 +58,53 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_sheet_TableOperationMode_idl__ 
-#define __com_sun_star_sheet_TableOperationMode_idl__ 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module sheet {  
- 
-//============================================================================= 
- 
-// DocMerge from xml: enum com::sun::star::sheet::TableOperationMode
+
+#ifndef __com_sun_star_sheet_TableOperationMode_idl__
+#define __com_sun_star_sheet_TableOperationMode_idl__
+
+//=============================================================================
+
+module com {  module sun {  module star {  module sheet {
+
+//=============================================================================
+
 /** used to specify if a table operation is applied to
     columns, rows, or both columns and rows.
  */
 enum TableOperationMode
-{ 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: value com::sun::star::sheet::TableOperationMode::COLUMN
+{
+    //-------------------------------------------------------------------------
+
     /** is applied to the columns.
+
+        <p>In this mode, the column contains values and the row
+        contains formulas.</p>
      */
-    COLUMN, 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: value com::sun::star::sheet::TableOperationMode::ROW
+    COLUMN,
+
+    //-------------------------------------------------------------------------
+
     /** is applied to the rows.
+
+        <p>In this mode, the row contains values and the column
+        contains formulas.</p>
      */
-    ROW, 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: value com::sun::star::sheet::TableOperationMode::BOTH
+    ROW,
+
+    //-------------------------------------------------------------------------
+
     /** is applied to rows and columns.
+
+        <p>In this mode, the row and the column contain values. A formula
+        using both row and column values is specified separately.</p>
      */
-    BOTH 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-    $Log: not supported by cvs2svn $
-    Revision 1.1.1.1  2000/09/18 23:35:49  hjs
-    initial import
-    
-    Revision 1.3  2000/09/11 11:52:50  mi
-    documentation merged from XML
-     
-    Revision 1.1.1.1  1999/11/11 09:48:45  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+    BOTH
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
+

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: TableRows.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: mi $ $Date: 2000-12-21 08:35:19 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 13:09:41 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,56 +58,49 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_table_TableRows_idl__ 
-#define __com_sun_star_table_TableRows_idl__ 
- 
-#ifndef __com_sun_star_table_XTableRows_idl__ 
-#include <com/sun/star/table/XTableRows.idl> 
-#endif 
- 
-#ifndef __com_sun_star_container_XIndexAccess_idl__ 
-#include <com/sun/star/container/XIndexAccess.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module table {  
- 
-//============================================================================= 
- 
-// DocMerge from xml: service com::sun::star::table::TableRows
-/** collection of all rows of a table or spreadsheet.@see TableRow
+
+#ifndef __com_sun_star_table_TableRows_idl__
+#define __com_sun_star_table_TableRows_idl__
+
+#ifndef __com_sun_star_table_XTableRows_idl__
+#include <com/sun/star/table/XTableRows.idl>
+#endif
+
+#ifndef __com_sun_star_container_XEnumerationAccess_idl__
+#include <com/sun/star/container/XEnumerationAccess.idl>
+#endif
+
+//=============================================================================
+
+module com {  module sun {  module star {  module table {
+
+//=============================================================================
+
+/** represents a collection of all rows of a table or spreadsheet.
+
+    @see com::sun::star::table::TableRow
  */
 service TableRows
-{ 
-    // DocMerge: empty anyway
-    interface com::sun::star::table::XTableRows; 
-    
-    // DocMerge: empty anyway
-    interface com::sun::star::container::XIndexAccess; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-    $Log: not supported by cvs2svn $
-    Revision 1.3  2000/11/08 12:44:19  mi
-    moved from api
-    
-    Revision 1.1.1.1  2000/09/18 23:35:55  hjs
-    initial import
-    
-    Revision 1.3  2000/09/11 11:52:57  mi
-    documentation merged from XML
-     
-    Revision 1.1.1.1  1999/11/11 09:48:46  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+{
+    //-------------------------------------------------------------------------
+
+    /** provides methods to insert and remove rows.
+     */
+    interface com::sun::star::table::XTableRows;
+
+    //-------------------------------------------------------------------------
+
+    /** creates an enumeration of all contained rows.
+
+        @see com::sun::star::table::TableRowsEnumeration
+     */
+    interface com::sun::star::container::XEnumerationAccess;
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
+

@@ -1,13 +1,17 @@
-#ifndef __com_sun_star_text_DefaultNumberingProvider_idl__ 
-#define __com_sun_star_text_DefaultNumberingProvider_idl__ 
+#ifndef __com_sun_star_text_DefaultNumberingProvider_idl__
+#define __com_sun_star_text_DefaultNumberingProvider_idl__
 
 #include <com/sun/star/text/XDefaultNumberingProvider.idl>
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module text {  
- 
-//============================================================================= 
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module text {
+
+//=============================================================================
+
+/** provides access to language dependent numbering types and supports
+    formatting of those numberings.
+ */
 service DefaultNumberingProvider
 {
         interface com::sun::star::text::XDefaultNumberingProvider;
