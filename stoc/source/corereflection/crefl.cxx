@@ -2,9 +2,9 @@
  *
  *  $RCSfile: crefl.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: dbo $ $Date: 2002-11-11 16:41:53 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:12:46 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -84,7 +84,7 @@ namespace stoc_corefl
 {
 
 static const sal_Int32 CACHE_SIZE = 256;
- 
+
 #define SERVICENAME "com.sun.star.reflection.CoreReflection"
 #define IMPLNAME	"com.sun.star.comp.stoc.CoreReflection"
 
@@ -151,7 +151,7 @@ Any IdlReflectionServiceImpl::queryInterface( const Type & rType )
         static_cast< XIdlReflection * >( this ),
         static_cast< XHierarchicalNameAccess * >( this ),
         static_cast< XServiceInfo * >( this ) ) );
-    
+
     return (aRet.hasValue() ? aRet : OComponentHelper::queryInterface( rType ));
 }
 //__________________________________________________________________________________________________
@@ -266,7 +266,7 @@ inline Reference< XIdlClass > IdlReflectionServiceImpl::constructClass(
     typelib_TypeDescription * pTypeDescr )
 {
     OSL_ENSURE( pTypeDescr->eTypeClass != typelib_TypeClass_TYPEDEF, "### unexpected typedef!" );
-    
+
     switch (pTypeDescr->eTypeClass)
     {
     case typelib_TypeClass_VOID:
@@ -284,25 +284,25 @@ inline Reference< XIdlClass > IdlReflectionServiceImpl::constructClass(
     case typelib_TypeClass_STRING:
     case typelib_TypeClass_ANY:
         return new IdlClassImpl( this, pTypeDescr->pTypeName, pTypeDescr->eTypeClass, pTypeDescr );
-        
+
     case TypeClass_ENUM:
         return new EnumIdlClassImpl( this, pTypeDescr->pTypeName, pTypeDescr->eTypeClass, pTypeDescr );
-        
+
     case typelib_TypeClass_STRUCT:
     case typelib_TypeClass_UNION:
     case typelib_TypeClass_EXCEPTION:
         return new CompoundIdlClassImpl( this, pTypeDescr->pTypeName, pTypeDescr->eTypeClass, pTypeDescr );
-        
+
     case typelib_TypeClass_ARRAY:
     case typelib_TypeClass_SEQUENCE:
         return new ArrayIdlClassImpl( this, pTypeDescr->pTypeName, pTypeDescr->eTypeClass, pTypeDescr );
-        
+
     case typelib_TypeClass_INTERFACE:
         return new InterfaceIdlClassImpl( this, pTypeDescr->pTypeName, pTypeDescr->eTypeClass, pTypeDescr );
-        
+
     case typelib_TypeClass_TYPE:
         return new IdlClassImpl( this, pTypeDescr->pTypeName, pTypeDescr->eTypeClass, pTypeDescr );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     case typelib_TypeClass_INTERFACE_METHOD:
     case typelib_TypeClass_INTERFACE_ATTRIBUTE:
     case typelib_TypeClass_SERVICE:
@@ -324,7 +324,7 @@ Reference< XIdlClass > IdlReflectionServiceImpl::forName( const OUString & rType
 {
     Reference< XIdlClass > xRet;
     Any aAny( _aElements.getValue( rTypeName ) );
-    
+
     if (aAny.hasValue())
     {
         if (aAny.getValueTypeClass() == TypeClass_INTERFACE)
@@ -342,7 +342,7 @@ Reference< XIdlClass > IdlReflectionServiceImpl::forName( const OUString & rType
             typelib_typedescription_release( pTD );
         }
     }
-    
+
     return xRet;
 }
 
@@ -362,19 +362,19 @@ Any IdlReflectionServiceImpl::getByHierarchicalName( const OUString & rName )
             // type retrieved from tdmgr
             OSL_ASSERT( (*(Reference< XInterface > *)aRet.getValue())->queryInterface(
                 ::getCppuType( (const Reference< XTypeDescription > *)0 ) ).hasValue() );
-            
+
             // if you are interested in a type then CALL forName()!!!
             // this way is NOT recommended for types, because this method looks for constants first
-            
+
             // if td manager found some type, it will be in the cache (hopefully.. we just got it)
             // so the second retrieving via c typelib callback chain should succeed...
-            
+
             // try to get _type_ by name
             typelib_TypeDescription * pTD = 0;
             typelib_typedescription_getByName( &pTD, rName.pData );
-            
+
             aRet.clear(); // kick XTypeDescription interface
-            
+
             if (pTD)
             {
                 Reference< XIdlClass > xIdlClass( constructClass( pTD ) );
@@ -383,7 +383,7 @@ Any IdlReflectionServiceImpl::getByHierarchicalName( const OUString & rName )
             }
         }
         // else is constant
-        
+
         // update
         if (aRet.hasValue())
             _aElements.setValue( rName, aRet );
@@ -415,7 +415,7 @@ Reference< XIdlClass > IdlReflectionServiceImpl::forType( typelib_TypeDescriptio
     Reference< XIdlClass > xRet;
     OUString aName( pTypeDescr->pTypeName );
     Any aAny( _aElements.getValue( aName ) );
-    
+
     if (aAny.hasValue())
     {
         if (aAny.getValueTypeClass() == TypeClass_INTERFACE)
@@ -426,7 +426,7 @@ Reference< XIdlClass > IdlReflectionServiceImpl::forType( typelib_TypeDescriptio
         if (pTypeDescr && (xRet = constructClass( pTypeDescr )).is())
             _aElements.setValue( aName, makeAny( xRet ) ); // update
     }
-    
+
     return xRet;
 }
 //__________________________________________________________________________________________________
@@ -501,7 +501,7 @@ uno_Interface * IdlReflectionServiceImpl::mapToUno(
     Reference< XInterface > xObj;
     if (extract( rObj, pTo, xObj, this ))
         return (uno_Interface *)getCpp2Uno().mapInterface( xObj.get(), pTo );
-    
+
     throw RuntimeException(
         OUString( RTL_CONSTASCII_USTRINGPARAM("illegal object given!") ),
         (XWeak *)(OWeakObject *)this );
@@ -566,7 +566,7 @@ sal_Bool SAL_CALL component_writeInfo(
         }
         catch (Exception & exc)
         {
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             OString cstr( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( 0, cstr.getStr() );
 #endif
