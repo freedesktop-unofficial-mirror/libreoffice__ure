@@ -2,9 +2,9 @@
  *
  *  $RCSfile: datatest.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: jbu $ $Date: 2002-09-18 12:15:51 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:59:18 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -80,8 +80,11 @@
 #include <osl/conditn.hxx>
 #include <osl/mutex.hxx>
 
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
-#include <string.h>	
+#include <string.h>
 
 using namespace ::rtl;
 using namespace ::osl;
@@ -101,7 +104,7 @@ using namespace ::com::sun::star::beans;
 /****
 * The following test class tests XDataInputStream and XDataOutputStream at equal terms,
 * so when errors occur, it may be in either one implementation.
-* The class also  uses stardiv.uno.io.pipe. If problems occur, make sure to run also the 
+* The class also  uses stardiv.uno.io.pipe. If problems occur, make sure to run also the
 * pipe test routines ( test.com.sun.star.io.pipe ).
 *
 *
@@ -114,23 +117,23 @@ public:
     ODataStreamTest( const Reference < XMultiServiceFactory > & rFactory ) :
         m_rFactory( rFactory )
         {}
-    
-public:	
-    virtual void SAL_CALL testInvariant(const OUString& TestName, const Reference < XInterface >& TestObject) 
-        throw (	IllegalArgumentException, 
+
+public:
+    virtual void SAL_CALL testInvariant(const OUString& TestName, const Reference < XInterface >& TestObject)
+        throw (	IllegalArgumentException,
                     RuntimeException);
 
-    virtual sal_Int32 SAL_CALL test(	const OUString& TestName, 
-                                        const Reference < XInterface >& TestObject, 
+    virtual sal_Int32 SAL_CALL test(	const OUString& TestName,
+                                        const Reference < XInterface >& TestObject,
                                         sal_Int32 hTestHandle)
-        throw (	IllegalArgumentException, 
+        throw (	IllegalArgumentException,
                 RuntimeException);
 
     virtual sal_Bool SAL_CALL testPassed(void) 								throw (	RuntimeException);
     virtual Sequence< OUString > SAL_CALL getErrors(void) 				throw (RuntimeException);
     virtual Sequence< Any > SAL_CALL getErrorExceptions(void) 		throw (RuntimeException);
-    virtual Sequence< OUString > SAL_CALL getWarnings(void) 				throw (RuntimeException);	
-    
+    virtual Sequence< OUString > SAL_CALL getWarnings(void) 				throw (RuntimeException);
+
 private:
     void testSimple( const Reference < XDataInputStream > & , const Reference < XDataOutputStream > &);
 
@@ -138,7 +141,7 @@ protected:
     Sequence<Any>  m_seqExceptions;
     Sequence<OUString> m_seqErrors;
     Sequence<OUString> m_seqWarnings;
-    
+
     Reference < XMultiServiceFactory > m_rFactory;
 };
 
@@ -147,8 +150,8 @@ protected:
 
 void ODataStreamTest::testInvariant(
     const OUString& TestName,
-    const Reference < XInterface >& TestObject ) 
-    throw (	IllegalArgumentException, 
+    const Reference < XInterface >& TestObject )
+    throw (	IllegalArgumentException,
             RuntimeException)
 {
     if( OUString::createFromAscii("com.sun.star.io.DataInputStream") == TestName ) {
@@ -156,25 +159,25 @@ void ODataStreamTest::testInvariant(
         Reference < XActiveDataSink > active( TestObject , UNO_QUERY );
         Reference < XInputStream >  input( TestObject , UNO_QUERY );
         Reference < XDataInputStream > dataInput( TestObject , UNO_QUERY );
-        
+
         WARNING_ASSERT( connect.is(), "XConnectable cannot be queried" );
         WARNING_ASSERT( active.is() , "XActiveDataSink cannot be queried" );
         ERROR_ASSERT( input.is() , "XInputStream cannot be queried" );
         ERROR_ASSERT( dataInput.is() , "XDataInputStream cannot be queried" );
 
-        
+
     }
     else if( OUString::createFromAscii("com.sun.star.io.DataInputStream") == TestName ) {
         Reference < XConnectable >  connect( TestObject , UNO_QUERY );
         Reference < XActiveDataSource > active( TestObject , UNO_QUERY );
         Reference < XOutputStream > output( TestObject , UNO_QUERY );
         Reference < XDataOutputStream > dataOutput( TestObject , UNO_QUERY );
-        
+
         WARNING_ASSERT( connect.is(), 		"XConnectable cannot be queried" );
         WARNING_ASSERT( active.is() , 	"XActiveDataSink cannot be queried" );
         ERROR_ASSERT( 	output.is() ,	"XInputStream cannot be queried" );
         ERROR_ASSERT( 	dataOutput.is(),	"XDataInputStream cannot be queried" );
-            
+
     }
 
     Reference < XServiceInfo >  info( TestObject, UNO_QUERY );
@@ -184,20 +187,20 @@ void ODataStreamTest::testInvariant(
         ERROR_ASSERT( info->supportsService( TestName ), "XServiceInfo test failed" );
         ERROR_ASSERT( ! info->supportsService( OUString::createFromAscii("bla bluzb") ) , "XServiceInfo test failed" );
     }
-    
-}												
+
+}
 
 
 sal_Int32 ODataStreamTest::test(
-    const OUString& TestName, 
-    const Reference < XInterface >& TestObject, 
+    const OUString& TestName,
+    const Reference < XInterface >& TestObject,
     sal_Int32 hTestHandle)
-    throw (	IllegalArgumentException, 
+    throw (	IllegalArgumentException,
             RuntimeException)
 {
-    if( OUString::createFromAscii("com.sun.star.io.DataInputStream") == TestName || 
+    if( OUString::createFromAscii("com.sun.star.io.DataInputStream") == TestName ||
         OUString::createFromAscii("com.sun.star.io.DataOutputStream") == TestName )  {
-        
+
         try
         {
             if( 0 == hTestHandle ) {
@@ -210,14 +213,14 @@ sal_Int32 ODataStreamTest::test(
                 Reference < XDataInputStream > rInput( TestObject , UNO_QUERY );
                 Reference < XDataOutputStream > rOutput( TestObject , UNO_QUERY );
 
-                
+
                 Reference < XInterface > x = m_rFactory->createInstance(
                     OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.io.Pipe" )));
 
                 Reference < XInputStream >   rPipeInput( x , UNO_QUERY );
                 Reference < XOutputStream >  rPipeOutput( x , UNO_QUERY );
-                
-                if( ! rSink.is() ) {					
+
+                if( ! rSink.is() ) {
                     x = m_rFactory->createInstance(
                         OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.io.DataInputStream")) );
                     rInput = Reference < XDataInputStream > ( x , UNO_QUERY);
@@ -241,7 +244,7 @@ sal_Int32 ODataStreamTest::test(
 
                 if( 1 == hTestHandle ) {
                     testSimple( rInput , rOutput );
-                }	
+                }
             }
         }
         catch( Exception & e )
@@ -253,9 +256,9 @@ sal_Int32 ODataStreamTest::test(
         {
             BUILD_ERROR( 0 , "unknown exception (Exception is  not base class)" );
         }
-        
+
         hTestHandle ++;
-        
+
         if( hTestHandle >= 2) {
             // all tests finished.
             hTestHandle = -1;
@@ -265,34 +268,34 @@ sal_Int32 ODataStreamTest::test(
         BUILD_ERROR( 0 , "service not supported by test." );
     }
     return hTestHandle;
-}													
-
-
-
-sal_Bool ODataStreamTest::testPassed(void) 										throw (RuntimeException) 
-{
-    return m_seqErrors.getLength() == 0;	
 }
 
 
-Sequence< OUString > ODataStreamTest::getErrors(void) 							throw (RuntimeException) 
+
+sal_Bool ODataStreamTest::testPassed(void) 										throw (RuntimeException)
+{
+    return m_seqErrors.getLength() == 0;
+}
+
+
+Sequence< OUString > ODataStreamTest::getErrors(void) 							throw (RuntimeException)
 {
     return m_seqErrors;
 }
 
 
-Sequence< Any > ODataStreamTest::getErrorExceptions(void) 					throw (RuntimeException) 
+Sequence< Any > ODataStreamTest::getErrorExceptions(void) 					throw (RuntimeException)
 {
     return m_seqExceptions;
 }
 
 
-Sequence< OUString > ODataStreamTest::getWarnings(void) 						throw (RuntimeException) 
+Sequence< OUString > ODataStreamTest::getWarnings(void) 						throw (RuntimeException)
 {
     return m_seqWarnings;
 }
 
-void ODataStreamTest::testSimple( 	const Reference < XDataInputStream > &rInput, 
+void ODataStreamTest::testSimple( 	const Reference < XDataInputStream > &rInput,
                                     const Reference < XDataOutputStream > &rOutput )
 {
     rOutput->writeLong( 0x34ff3c );
@@ -305,44 +308,44 @@ void ODataStreamTest::testSimple( 	const Reference < XDataInputStream > &rInput,
 
     rOutput->writeByte( 0x77 );
     ERROR_ASSERT( 0x77 == rInput->readByte() , "byte read/write mismatch" );
-    
+
     rOutput->writeBoolean( 25 );
     ERROR_ASSERT( rInput->readBoolean() , "boolean read/write mismatch" );
-    
+
     rOutput->writeBoolean( sal_False );
     ERROR_ASSERT( ! rInput->readBoolean() , "boolean read/write mismatch" );
-    
+
     rOutput->writeFloat( (float) 42.42 );
     ERROR_ASSERT( rInput->readFloat() == ((float)42.42) , "float read/write mismatch" );
-    
+
     rOutput->writeDouble( (double) 42.42 );
     ERROR_ASSERT( rInput->readDouble() == 42.42 , "double read/write mismatch" );
 
     rOutput->writeHyper( 0x123456789abcdef );
     ERROR_ASSERT( rInput->readHyper() == 0x123456789abcdef , "int64 read/write mismatch" );
-    
+
     rOutput->writeUTF( OUString::createFromAscii("Live long and prosper !") );
     ERROR_ASSERT( rInput->readUTF() == OUString::createFromAscii("Live long and prosper !") ,
                     "UTF read/write mismatch" );
-    
+
     Sequence<sal_Unicode> wc(0x10001);
     for( int i = 0 ; i < 0x10000  ; i ++ ) {
-        wc.getArray()[i] = L'c';	
+        wc.getArray()[i] = L'c';
     }
     wc.getArray()[0x10000] = 0;
     OUString str( wc.getArray() , 0x10000 );
     rOutput->writeUTF( str );
     ERROR_ASSERT( rInput->readUTF() == str , "error reading 64k block" );
-    
+
     rOutput->closeOutput();
     try
     {
         rInput->readLong();
-        ERROR_ASSERT( 0 , "eof-exception does not occur !" );	
+        ERROR_ASSERT( 0 , "eof-exception does not occur !" );
     }
     catch ( IOException & )
     {
-        //ok	
+        //ok
     }
     catch( ... )
     {
@@ -350,46 +353,46 @@ void ODataStreamTest::testSimple( 	const Reference < XDataInputStream > &rInput,
     }
 
     Sequence<sal_Int8> dummy (1);
-    ERROR_ASSERT( ! rInput->readBytes( dummy , 1 ), 	
+    ERROR_ASSERT( ! rInput->readBytes( dummy , 1 ),
                     "stream must be on eof !" );
-                    
+
     rInput->closeInput();
-    
+
     try
     {
         rOutput->writeByte( 1 );
         ERROR_ASSERT( 0 , "writing still possible though chain must be interrupted" );
     }
-    catch( IOException & ) 
+    catch( IOException & )
     {
-        // ok	
+        // ok
     }
     catch( ... ) {
         ERROR_ASSERT( 0 , "IOException	expected, but another exception was thrown" );
     }
-    
+
 }
 
 
 
-/** 
+/**
 * for external binding
 *
 *
 **/
 Reference < XInterface > SAL_CALL ODataStreamTest_CreateInstance( const Reference < XMultiServiceFactory > & rSMgr ) throw(Exception)
-{	
+{
     ODataStreamTest *p = new ODataStreamTest( rSMgr );
     return Reference < XInterface > ( SAL_STATIC_CAST( OWeakObject * , p ) );
 }
 
-Sequence<OUString> ODataStreamTest_getSupportedServiceNames( int i) throw () 
+Sequence<OUString> ODataStreamTest_getSupportedServiceNames( int i) throw ()
 {
     Sequence<OUString> aRet(1);
-    
+
     aRet.getArray()[0] = ODataStreamTest_getImplementationName( i);
-    
-    
+
+
     return aRet;
 }
 
@@ -397,13 +400,13 @@ OUString     ODataStreamTest_getServiceName( int i) throw ()
 {
     if( 1 == i ) {
         return OUString( RTL_CONSTASCII_USTRINGPARAM("test.com.sun.star.io.DataInputStream" ));
-    } 
+    }
     else {
-        return OUString( RTL_CONSTASCII_USTRINGPARAM("test.com.sun.star.io.DataOutputStream" ));	
+        return OUString( RTL_CONSTASCII_USTRINGPARAM("test.com.sun.star.io.DataOutputStream" ));
     }
 }
 
-OUString 	ODataStreamTest_getImplementationName( int i) throw () 
+OUString 	ODataStreamTest_getImplementationName( int i) throw ()
 {
     if( 1 == i ) {
         return OUString(
@@ -411,7 +414,7 @@ OUString 	ODataStreamTest_getImplementationName( int i) throw ()
     }
     else {
         return OUString( RTL_CONSTASCII_USTRINGPARAM(
-            "test.com.sun.star.comp.extensions.stm.DataOutputStream" ) );	
+            "test.com.sun.star.comp.extensions.stm.DataOutputStream" ) );
     }
 }
 
@@ -437,7 +440,7 @@ public:
         {}
     MyPersistObject( const OUString & sServiceName ) : m_sServiceName( sServiceName )
         {}
-    
+
 
 public:
     virtual OUString SAL_CALL getServiceName(void)  throw (RuntimeException);
@@ -451,41 +454,41 @@ public:
     virtual Reference< XPropertySetInfo > SAL_CALL getPropertySetInfo(void)
         throw (RuntimeException);
 
-    virtual void SAL_CALL setPropertyValue(const OUString& aPropertyName, const Any& aValue) 
-        throw (	UnknownPropertyException, 
-                PropertyVetoException, 
+    virtual void SAL_CALL setPropertyValue(const OUString& aPropertyName, const Any& aValue)
+        throw (	UnknownPropertyException,
+                PropertyVetoException,
                 IllegalArgumentException,
-                WrappedTargetException, 
+                WrappedTargetException,
                 RuntimeException);
     virtual Any SAL_CALL getPropertyValue(const OUString& PropertyName)
-        throw (	UnknownPropertyException, 
-                WrappedTargetException, 
+        throw (	UnknownPropertyException,
+                WrappedTargetException,
                 RuntimeException);
     virtual void SAL_CALL addPropertyChangeListener(
-        const OUString& aPropertyName, 
-        const Reference < XPropertyChangeListener > & xListener) 
-        throw (	UnknownPropertyException, 
-                WrappedTargetException, 
+        const OUString& aPropertyName,
+        const Reference < XPropertyChangeListener > & xListener)
+        throw (	UnknownPropertyException,
+                WrappedTargetException,
                 RuntimeException);
 
     virtual void SAL_CALL removePropertyChangeListener(
-        const OUString& aPropertyName, 
-        const Reference< XPropertyChangeListener > & aListener) 
-        throw (	UnknownPropertyException, 
-                WrappedTargetException, 
+        const OUString& aPropertyName,
+        const Reference< XPropertyChangeListener > & aListener)
+        throw (	UnknownPropertyException,
+                WrappedTargetException,
                 RuntimeException);
     virtual void SAL_CALL addVetoableChangeListener(
-        const OUString& PropertyName, 
-        const Reference< XVetoableChangeListener > & aListener) 
+        const OUString& PropertyName,
+        const Reference< XVetoableChangeListener > & aListener)
         throw (	UnknownPropertyException,
-                WrappedTargetException, 
+                WrappedTargetException,
                 RuntimeException);
 
     virtual void SAL_CALL removeVetoableChangeListener(
-        const OUString& PropertyName, 
-        const Reference<  XVetoableChangeListener >& aListener) 
-        throw (	UnknownPropertyException, 
-                WrappedTargetException, 
+        const OUString& PropertyName,
+        const Reference<  XVetoableChangeListener >& aListener)
+        throw (	UnknownPropertyException,
+                WrappedTargetException,
                 RuntimeException);
 
 public:
@@ -505,16 +508,16 @@ public:
 Reference <XPropertySetInfo > MyPersistObject::getPropertySetInfo(void)
     throw (RuntimeException)
 {
-    return Reference< XPropertySetInfo >();	
+    return Reference< XPropertySetInfo >();
 }
 
 void MyPersistObject::setPropertyValue(
     const OUString& aPropertyName,
-    const Any& aValue) 
-    throw (	UnknownPropertyException, 
-            PropertyVetoException, 
+    const Any& aValue)
+    throw (	UnknownPropertyException,
+            PropertyVetoException,
             IllegalArgumentException,
-            WrappedTargetException, 
+            WrappedTargetException,
             RuntimeException)
 {
     if( 0 == aPropertyName.compareToAscii("long")  ) {
@@ -552,8 +555,8 @@ void MyPersistObject::setPropertyValue(
 
 
 Any MyPersistObject::getPropertyValue(const OUString& aPropertyName)
-    throw (	UnknownPropertyException, 
-            WrappedTargetException, 
+    throw (	UnknownPropertyException,
+            WrappedTargetException,
             RuntimeException)
 {
     Any aValue;
@@ -561,10 +564,10 @@ Any MyPersistObject::getPropertyValue(const OUString& aPropertyName)
         aValue <<= m_l;
     }
     else if ( 0 == aPropertyName.compareToAscii("float") ) {
-        aValue <<= m_f;	
+        aValue <<= m_f;
     }
     else if( 0 == aPropertyName.compareToAscii("double") ) {
-        aValue <<= m_d;	
+        aValue <<= m_d;
     }
     else if( 0 == aPropertyName.compareToAscii("bool") ) {
         aValue <<= m_b;
@@ -573,7 +576,7 @@ Any MyPersistObject::getPropertyValue(const OUString& aPropertyName)
         aValue <<= m_byte;
     }
     else if( 0 == aPropertyName.compareToAscii("char" ) ) {
-        aValue <<= m_c;	
+        aValue <<= m_c;
     }
     else if( 0 == aPropertyName.compareToAscii("string") ) {
         aValue <<= m_s;
@@ -587,20 +590,20 @@ Any MyPersistObject::getPropertyValue(const OUString& aPropertyName)
 
 
 void MyPersistObject::addPropertyChangeListener(
-    const OUString& aPropertyName, 
-    const Reference< XPropertyChangeListener > & xListener) 
-    throw (	UnknownPropertyException, 
-            WrappedTargetException, 
+    const OUString& aPropertyName,
+    const Reference< XPropertyChangeListener > & xListener)
+    throw (	UnknownPropertyException,
+            WrappedTargetException,
             RuntimeException)
 {
-    
+
 }
 
 void MyPersistObject::removePropertyChangeListener(
-    const OUString& aPropertyName, 
-    const Reference < XPropertyChangeListener > & aListener) 
-    throw (	UnknownPropertyException, 
-            WrappedTargetException, 
+    const OUString& aPropertyName,
+    const Reference < XPropertyChangeListener > & aListener)
+    throw (	UnknownPropertyException,
+            WrappedTargetException,
             RuntimeException)
 {
 }
@@ -608,33 +611,33 @@ void MyPersistObject::removePropertyChangeListener(
 
 void MyPersistObject::addVetoableChangeListener(
     const OUString& PropertyName,
-    const Reference <XVetoableChangeListener >& aListener) 
+    const Reference <XVetoableChangeListener >& aListener)
     throw (	UnknownPropertyException,
-            WrappedTargetException, 
+            WrappedTargetException,
             RuntimeException)
 {
-    
+
 }
 
 void MyPersistObject::removeVetoableChangeListener(
-    const OUString& PropertyName, 
-    const Reference < XVetoableChangeListener > & aListener) 
-    throw (	UnknownPropertyException, 
-            WrappedTargetException, 
+    const OUString& PropertyName,
+    const Reference < XVetoableChangeListener > & aListener)
+    throw (	UnknownPropertyException,
+            WrappedTargetException,
             RuntimeException)
 {
-    
+
 }
 
 
-    
 
-OUString MyPersistObject::getServiceName() throw (RuntimeException) 
+
+OUString MyPersistObject::getServiceName() throw (RuntimeException)
 {
     return m_sServiceName;
 }
 
-void MyPersistObject::write( const Reference< XObjectOutputStream >  & rOut ) 
+void MyPersistObject::write( const Reference< XObjectOutputStream >  & rOut )
     throw (IOException,RuntimeException)
 {
     rOut->writeLong( m_l);
@@ -648,8 +651,8 @@ void MyPersistObject::write( const Reference< XObjectOutputStream >  & rOut )
 }
 
 
-void MyPersistObject::read( const Reference< XObjectInputStream > & rIn ) 
-    throw (IOException, RuntimeException) 
+void MyPersistObject::read( const Reference< XObjectInputStream > & rIn )
+    throw (IOException, RuntimeException)
 {
     m_l = rIn->readLong();
     m_f = rIn->readFloat();
@@ -662,26 +665,26 @@ void MyPersistObject::read( const Reference< XObjectInputStream > & rIn )
 }
 
 Reference < XInterface > SAL_CALL OMyPersistObject_CreateInstance(
-    const Reference < XMultiServiceFactory > & rSMgr ) 
+    const Reference < XMultiServiceFactory > & rSMgr )
     throw(Exception)
-{	
+{
     MyPersistObject *p = new MyPersistObject( );
     return Reference < XInterface > ( SAL_STATIC_CAST( OWeakObject * , p ) );
 }
 
-Sequence<OUString> OMyPersistObject_getSupportedServiceNames( ) throw () 
+Sequence<OUString> OMyPersistObject_getSupportedServiceNames( ) throw ()
 {
     Sequence<OUString> aRet(1);
     aRet.getArray()[0] = OMyPersistObject_getImplementationName();
     return aRet;
 }
 
-OUString     OMyPersistObject_getServiceName( ) throw () 
+OUString     OMyPersistObject_getServiceName( ) throw ()
 {
     return OUString( RTL_CONSTASCII_USTRINGPARAM("test.com.sun.star.io.PersistTest" ));
 }
 
-OUString 	OMyPersistObject_getImplementationName( ) throw () 
+OUString 	OMyPersistObject_getImplementationName( ) throw ()
 {
     return OUString( RTL_CONSTASCII_USTRINGPARAM( "test.com.sun.star.io.PersistTest" ) );
 }
@@ -695,10 +698,10 @@ class OObjectStreamTest :
 public:
     OObjectStreamTest( const Reference < XMultiServiceFactory > &r) : ODataStreamTest(r) {}
 
-public:	
+public:
     virtual void SAL_CALL testInvariant(const OUString& TestName,
-                               const Reference < XInterface >& TestObject) 
-        throw (	IllegalArgumentException, 
+                               const Reference < XInterface >& TestObject)
+        throw (	IllegalArgumentException,
                 RuntimeException);
 
     virtual sal_Int32 SAL_CALL test(
