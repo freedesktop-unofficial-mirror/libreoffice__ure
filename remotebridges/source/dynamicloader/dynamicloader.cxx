@@ -46,13 +46,13 @@ namespace dynamic_loader {
               _link(link),
               _resolver(resolver)
         {}
-    
+
         // XSingleServiceFactory
         Reference<XInterface> SAL_CALL createInstance() throw(Exception, RuntimeException);
-        Reference<XInterface> SAL_CALL createInstanceWithArguments(const Sequence<Any>& Arguments)	
-            throw(::com::sun::star::uno::Exception, 
+        Reference<XInterface> SAL_CALL createInstanceWithArguments(const Sequence<Any>& Arguments)
+            throw(::com::sun::star::uno::Exception,
                   ::com::sun::star::uno::RuntimeException);
-    
+
         // XServiceInfo
         OUString           SAL_CALL getImplementationName()                      throw(RuntimeException);
         sal_Bool           SAL_CALL supportsService(const OUString& ServiceName) throw(RuntimeException);
@@ -68,7 +68,7 @@ namespace dynamic_loader {
 
             throw Exception(message, Reference<XInterface>());
         }
-        
+
         Reference<XInterface> remoteObject = xResolver->resolve(_link);
         if(!remoteObject.is()) {
             OUString message(RTL_CONSTASCII_USTRINGPARAM("dynamic_loader::singleServiceFactory.createInstance - couldn't resolve link: "));
@@ -95,14 +95,14 @@ namespace dynamic_loader {
         return getRemoteFactory()->createInstance();
     }
 
-    Reference<XInterface> SAL_CALL SingleServiceFactory::createInstanceWithArguments(const Sequence<Any>& Arguments)	
-        throw(Exception, RuntimeException) 
+    Reference<XInterface> SAL_CALL SingleServiceFactory::createInstanceWithArguments(const Sequence<Any>& Arguments)
+        throw(Exception, RuntimeException)
     {
         OSL_TRACE("dynamic_loader::singleServiceFactory::createInstanceWithArguments");
 
         return getRemoteFactory()->createInstanceWithArguments(Arguments);
     }
-    
+
     // XServiceInfo
     OUString SAL_CALL SingleServiceFactory::getImplementationName() throw(RuntimeException) {
         return _link;
@@ -140,12 +140,12 @@ namespace dynamic_loader {
         virtual Sequence<OUString> SAL_CALL getSupportedServiceNames()                   throw(RuntimeException);
 
         // XImplementationLoader
-        virtual Reference<XInterface> SAL_CALL activate(const OUString & implementationName, 
-                                                        const OUString & implementationLoaderUrl, 
-                                                        const OUString& locationUrl, 
+        virtual Reference<XInterface> SAL_CALL activate(const OUString & implementationName,
+                                                        const OUString & implementationLoaderUrl,
+                                                        const OUString& locationUrl,
                                                         const Reference<XRegistryKey>& xKey)       throw(CannotActivateFactoryException, RuntimeException);
-        virtual sal_Bool              SAL_CALL writeRegistryInfo(const Reference<XRegistryKey>& xKey, 
-                                                                 const OUString& implementationLoaderUrl, 
+        virtual sal_Bool              SAL_CALL writeRegistryInfo(const Reference<XRegistryKey>& xKey,
+                                                                 const OUString& implementationLoaderUrl,
                                                                  const OUString& locationUrl)      throw(CannotRegisterImplementationException, RuntimeException);
     };
 
@@ -154,7 +154,7 @@ namespace dynamic_loader {
 
     Sequence<OUString> SAL_CALL DynamicLoader::getSupportedServiceNames_Static() throw() {
         return Sequence<OUString>(&servname, 1);
-    }	
+    }
 
     Reference<XInterface> SAL_CALL DynamicLoader::createInstance(const Reference<XMultiServiceFactory> & rSMgr) throw(Exception) {
         Reference<XInterface> xRet;
@@ -186,8 +186,8 @@ namespace dynamic_loader {
 
     // XServiceInfo
     OUString SAL_CALL DynamicLoader::getImplementationName() throw(RuntimeException) {
-        return implname;	
-    }	
+        return implname;
+    }
 
     sal_Bool SAL_CALL DynamicLoader::supportsService(const OUString & ServiceName) throw(RuntimeException)	{
         sal_Bool bSupport = sal_False;
@@ -198,7 +198,7 @@ namespace dynamic_loader {
             bSupport = pArray[i] == ServiceName;
 
         return bSupport;
-    }	
+    }
 
     Sequence<OUString> SAL_CALL DynamicLoader::getSupportedServiceNames() throw(RuntimeException) {
         return getSupportedServiceNames_Static();
@@ -206,11 +206,11 @@ namespace dynamic_loader {
 
 
     void DynamicLoader::parseUrl(const OUString & locationUrl, OUString * serviceName, OUString * link, OUString * resolver) throw(RuntimeException) {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OString tmp = OUStringToOString(locationUrl, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("DynamicLoader - locationUrl %s", tmp.getStr());
 #endif
-        
+
         // This is the default resolver
         *resolver = OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.UnoUrlResolver"));
 
@@ -236,25 +236,25 @@ namespace dynamic_loader {
                 if(left)
                     attribute = token.trim();
 
-                else 
+                else
                     value = token.trim();
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
                 OString attribute_tmp = OUStringToOString(attribute, RTL_TEXTENCODING_ASCII_US);
                 OSL_TRACE("DynamicLoader - attribute %s", attribute_tmp.getStr());
                 OString value_tmp = OUStringToOString(value, RTL_TEXTENCODING_ASCII_US);
                 OSL_TRACE("DynamicLoader - value %s", value_tmp.getStr());
 #endif
-                
+
                 if(attribute.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("servicename"))))
                     *serviceName = value;
-                
+
                 else if(attribute.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("link"))))
                     *link = value;
-                
+
                 else if(attribute.equals(OUString(RTL_CONSTASCII_USTRINGPARAM("resolver"))))
                     *resolver = value;
-                
+
                 else  {
                     OUString message(RTL_CONSTASCII_USTRINGPARAM("help called"));
 
@@ -312,8 +312,8 @@ namespace dynamic_loader {
 
 
     // XImplementationLoader
-    sal_Bool SAL_CALL DynamicLoader::writeRegistryInfo(const Reference<XRegistryKey> & xKey, 
-                                                       const OUString & implementationLoaderUrl, 
+    sal_Bool SAL_CALL DynamicLoader::writeRegistryInfo(const Reference<XRegistryKey> & xKey,
+                                                       const OUString & implementationLoaderUrl,
                                                        const OUString & locationUrl)
         throw(CannotRegisterImplementationException, RuntimeException)
     {
@@ -345,8 +345,8 @@ namespace dynamic_loader {
         return bSuccess;
     }
 
-    Reference<XInterface> SAL_CALL DynamicLoader::activate(const OUString & rImplName, 
-                                                           const OUString & loaderUrl, 
+    Reference<XInterface> SAL_CALL DynamicLoader::activate(const OUString & rImplName,
+                                                           const OUString & loaderUrl,
                                                            const OUString & locationUrl,
                                                            const Reference<XRegistryKey> & xKey)
         throw(CannotActivateFactoryException, RuntimeException)
@@ -359,7 +359,7 @@ namespace dynamic_loader {
 
         parseUrl(locationUrl, &serviceName, &link, &resolver);
 
-        XSingleServiceFactory * xFactory = (XSingleServiceFactory *)new SingleServiceFactory(_xSMgr, 
+        XSingleServiceFactory * xFactory = (XSingleServiceFactory *)new SingleServiceFactory(_xSMgr,
                                                                                              serviceName,
                                                                                              link,
                                                                                              resolver);
@@ -368,7 +368,7 @@ namespace dynamic_loader {
 
         if(xFactory)
             xReturn = Reference<XInterface>::query(xFactory);
-        
+
         return xReturn;
     }
 }
@@ -392,13 +392,13 @@ extern "C" {
 
 
                 Reference<XRegistryKey> xNewKey(pRegistryKey->createKey(x));
-            
+
                 const Sequence<OUString> rSNL = ::dynamic_loader::DynamicLoader::getSupportedServiceNames_Static();
                 const OUString * pArray = rSNL.getConstArray();
                 for (sal_Int32 nPos = rSNL.getLength(); nPos--;)
                     xNewKey->createKey(pArray[nPos]);
 
-            
+
                 bRes = sal_True;
             }
             catch (InvalidRegistryException &) {
@@ -411,13 +411,13 @@ extern "C" {
 
     SAL_DLLEXPORT void * SAL_CALL component_getFactory(const sal_Char * pImplName, XMultiServiceFactory * pServiceManager, XRegistryKey * pRegistryKey) {
         void * pRet = 0;
-    
+
         if (pServiceManager && OUString::createFromAscii(pImplName).equals(::dynamic_loader::DynamicLoader::implname)) {
             Reference<XSingleServiceFactory> xFactory(createOneInstanceFactory(pServiceManager,
                                                                                ::dynamic_loader::DynamicLoader::implname,
-                                                                               ::dynamic_loader::DynamicLoader::createInstance, 
+                                                                               ::dynamic_loader::DynamicLoader::createInstance,
                                                                                ::dynamic_loader::DynamicLoader::getSupportedServiceNames_Static()));
-        
+
             if (xFactory.is()) {
                 xFactory->acquire();
                 pRet = xFactory.get();
@@ -425,7 +425,7 @@ extern "C" {
         }
         else
             OSL_TRACE("DynamicLoader - warning - given wrong implName: %s", pImplName);
-    
+
         return pRet;
     }
 }
