@@ -2,9 +2,9 @@
  *
  *  $RCSfile: BaseFrame.idl,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: mi $ $Date: 2001-03-12 12:56:24 $
+ *  last change: $Author: os $ $Date: 2001-03-16 14:27:37 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -167,28 +167,28 @@ service BaseFrame
 
     //-------------------------------------------------------------------------
     /** contains the left border of the object.
-    
+
         @see BaseFrame::com::sun::star::table::BorderLine
      */
     [property] com::sun::star::table::BorderLine LeftBorder;
 
     //-------------------------------------------------------------------------
     /** contains the right border of the object.
-    
+
         @see BaseFrame::com::sun::star::table::BorderLine
      */
     [property] com::sun::star::table::BorderLine RightBorder;
 
     //-------------------------------------------------------------------------
     /** contains the top border of the object.
-    
+
         @see BaseFrame::com::sun::star::table::BorderLine
      */
     [property] com::sun::star::table::BorderLine TopBorder;
 
     //-------------------------------------------------------------------------
     /** contains the bottom border of the object.
-    
+
         @see BaseFrame::com::sun::star::table::BorderLine
      */
     [property] com::sun::star::table::BorderLine BottomBorder;
@@ -286,7 +286,7 @@ service BaseFrame
     [property] boolean IsSyncHeightToWidth;
     //-------------------------------------------------------------------------
     /** determines the horizontal orientation of the object.
-    
+
         @see BaseFrame::HoriOrientation
      */
     [property] short HoriOrient;
@@ -299,14 +299,14 @@ service BaseFrame
     //-------------------------------------------------------------------------
     /** determines the environment of the object to which the orientation
         is related.
-        
+
         @see BaseFrame::RelOrientation
      */
     [property] short HoriOrientRelation;
 
     //-------------------------------------------------------------------------
     /** determines the vertical orientation of the object.
-    
+
         @see BaseFrame::VertOrientation
      */
     [property] short VertOrient;
@@ -322,7 +322,7 @@ service BaseFrame
     //-------------------------------------------------------------------------
 
     /** determines the environment of the object to which the orientation is related.
-    
+
         @see BaseFrame::RelOrientation
      */
     [property] short VertOrientRelation;
@@ -374,7 +374,7 @@ service BaseFrame
 
     //-------------------------------------------------------------------------
     /** contains the size of the object.
-    
+
         @see BaseFrame::Height
         @see BaseFrame::Width
      */
@@ -386,7 +386,7 @@ service BaseFrame
     [property] boolean SizeProtected;
     //-------------------------------------------------------------------------
     /** determines the type of the surrounding text.
-    
+
         @see BaseFrame::WrapTextMode
      */
     [property] short Surround;
@@ -396,19 +396,6 @@ service BaseFrame
         is anchored wraps around the object.
      */
     [property] boolean SurroundAnchorOnly;
-
-    //-------------------------------------------------------------------------
-
-
-    /** contains the wrapping of the object.
-    
-        @see BaseFrame::WrapTextMode
-     */
-    [property] short TextWrap;
-
-
-
-
 };
 
 //=============================================================================
