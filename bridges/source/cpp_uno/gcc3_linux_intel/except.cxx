@@ -2,9 +2,9 @@
  *
  *  $RCSfile: except.cxx,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:06:54 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:26:07 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -85,7 +85,7 @@ using namespace ::__cxxabiv1;
 
 namespace CPPU_CURRENT_NAMESPACE
 {
-    
+
 void dummy_can_throw_anything( char const * )
 {
 }
@@ -93,16 +93,16 @@ void dummy_can_throw_anything( char const * )
 //==================================================================================================
 static OUString toUNOname( char const * p ) SAL_THROW( () )
 {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     char const * start = p;
 #endif
-    
+
     // example: N3com3sun4star4lang24IllegalArgumentExceptionE
-    
+
     OUStringBuffer buf( 64 );
     OSL_ASSERT( 'N' == *p );
     ++p; // skip N
-    
+
     while ('E' != *p)
     {
         // read chars count
@@ -117,8 +117,8 @@ static OUString toUNOname( char const * p ) SAL_THROW( () )
         if ('E' != *p)
             buf.append( (sal_Unicode)'.' );
     }
-    
-#ifdef DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
     OUString ret( buf.makeStringAndClear() );
     OString c_ret( OUStringToOString( ret, RTL_TEXTENCODING_ASCII_US ) );
     fprintf( stderr, "> toUNOname(): %s => %s\n", start, c_ret.getStr() );
@@ -132,17 +132,17 @@ static OUString toUNOname( char const * p ) SAL_THROW( () )
 class RTTI
 {
     typedef hash_map< OUString, type_info *, OUStringHash > t_rtti_map;
-    
+
     Mutex m_mutex;
     t_rtti_map m_rttis;
     t_rtti_map m_generatedRttis;
 
     void * m_hApp;
-    
+
 public:
     RTTI() SAL_THROW( () );
     ~RTTI() SAL_THROW( () );
-    
+
     type_info * getRTTI( typelib_CompoundTypeDescription * ) SAL_THROW( () );
 };
 //__________________________________________________________________________________________________
@@ -160,9 +160,9 @@ RTTI::~RTTI() SAL_THROW( () )
 type_info * RTTI::getRTTI( typelib_CompoundTypeDescription *pTypeDescr ) SAL_THROW( () )
 {
     type_info * rtti;
-    
+
     OUString const & unoName = *(OUString const *)&pTypeDescr->aBase.pTypeName;
-    
+
     MutexGuard guard( m_mutex );
     t_rtti_map::const_iterator iFind( m_rttis.find( unoName ) );
     if (iFind == m_rttis.end())
@@ -180,7 +180,7 @@ type_info * RTTI::getRTTI( typelib_CompoundTypeDescription *pTypeDescr ) SAL_THR
         }
         while (index >= 0);
         buf.append( 'E' );
-        
+
         OString symName( buf.makeStringAndClear() );
         rtti = (type_info *)dlsym( m_hApp, symName.getStr() );
 
@@ -200,7 +200,7 @@ type_info * RTTI::getRTTI( typelib_CompoundTypeDescription *pTypeDescr ) SAL_THR
                 // symbol and rtti-name is nearly identical,
                 // the symbol is prefixed with _ZTI
                 char const * rttiName = symName.getStr() +4;
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
                 fprintf( stderr,"generated rtti for %s\n", rttiName );
 #endif
                 if (pTypeDescr->pBaseTypeDescription)
@@ -216,7 +216,7 @@ type_info * RTTI::getRTTI( typelib_CompoundTypeDescription *pTypeDescr ) SAL_THR
                     // this class has no base class
                     rtti = new __class_type_info( strdup( rttiName ) );
                 }
-                
+
                 pair< t_rtti_map::iterator, bool > insertion(
                     m_generatedRttis.insert( t_rtti_map::value_type( unoName, rtti ) ) );
                 OSL_ENSURE( insertion.second, "### inserting new generated rtti failed?!" );
@@ -231,7 +231,7 @@ type_info * RTTI::getRTTI( typelib_CompoundTypeDescription *pTypeDescr ) SAL_THR
     {
         rtti = iFind->second;
     }
-    
+
     return rtti;
 }
 
@@ -253,7 +253,7 @@ static void deleteException( void * pExc )
 //==================================================================================================
 void raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cpp )
 {
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
     OString cstr(
         OUStringToOString(
             *reinterpret_cast< OUString const * >( &pUnoExc->pType->pTypeName ),
@@ -275,10 +275,10 @@ void raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cpp )
             *reinterpret_cast< OUString const * >( &pUnoExc->pType->pTypeName ),
             Reference< XInterface >() );
     }
-    
+
     pCppExc = __cxa_allocate_exception( pTypeDescr->nSize );
     ::uno_copyAndConvertData( pCppExc, pUnoExc->pData, pTypeDescr, pUno2Cpp );
-    
+
     // destruct uno exception
     ::uno_any_destruct( pUnoExc, 0 );
     // avoiding locked counts
@@ -307,7 +307,7 @@ void raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cpp )
             Reference< XInterface >() );
     }
     }
-    
+
     __cxa_throw( pCppExc, rtti, deleteException );
 }
 
@@ -321,16 +321,16 @@ void fillUnoException( __cxa_exception * header, uno_Any * pUnoExc, uno_Mapping 
             Reference< XInterface >() );
         Type const & rType = ::getCppuType( &aRE );
         uno_type_any_constructAndConvert( pUnoExc, &aRE, rType.getTypeLibType(), pCpp2Uno );
-#if defined _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OString cstr( OUStringToOString( aRE.Message, RTL_TEXTENCODING_ASCII_US ) );
         OSL_ENSURE( 0, cstr.getStr() );
 #endif
         return;
     }
-    
+
     typelib_TypeDescription * pExcTypeDescr = 0;
     OUString unoName( toUNOname( header->exceptionType->name() ) );
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
     OString cstr_unoName( OUStringToOString( unoName, RTL_TEXTENCODING_ASCII_US ) );
     fprintf( stderr, "> c++ exception occured: %s\n", cstr_unoName.getStr() );
 #endif
@@ -342,7 +342,7 @@ void fillUnoException( __cxa_exception * header, uno_Any * pUnoExc, uno_Mapping 
             Reference< XInterface >() );
         Type const & rType = ::getCppuType( &aRE );
         uno_type_any_constructAndConvert( pUnoExc, &aRE, rType.getTypeLibType(), pCpp2Uno );
-#if defined _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OString cstr( OUStringToOString( aRE.Message, RTL_TEXTENCODING_ASCII_US ) );
         OSL_ENSURE( 0, cstr.getStr() );
 #endif
