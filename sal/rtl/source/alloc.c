@@ -2,9 +2,9 @@
  *
  *  $RCSfile: alloc.c,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: mhu $ $Date: 2001-12-04 15:10:51 $
+ *  last change: $Author: cp $ $Date: 2001-12-12 19:47:19 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -128,7 +128,15 @@ static sal_uInt32 __rtl_memory_vmpagesize (void)
 #define PROT_HEAP (PROT_READ | PROT_WRITE | PROT_EXEC)
 #endif
 
-#ifndef MAP_ANON
+/* #95880# building on Solaris 8 provides MAP_ANON, but it 
+   is not available on Solaris 7 */ 
+#if defined (SOLARIS) && defined (INTEL)
+#ifdef MAP_ANON
+#undef MAP_ANON
+#endif
+#endif
+
+#ifndef MAP_ANON 
 static void* __rtl_memory_vmalloc (size_t n)
 {
     /* SYSV */
