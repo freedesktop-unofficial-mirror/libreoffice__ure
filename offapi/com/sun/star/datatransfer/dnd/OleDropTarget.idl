@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: DropTargetDragEvent.idl,v $
+ *  $RCSfile: OleDropTarget.idl,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: obr $ $Date: 2001-02-09 10:55:21 $
  *
@@ -59,57 +59,68 @@
  *
  ************************************************************************/
 
-#ifndef __com_sun_star_datatransfer_dnd_DropTargetDragEvent_idl__
-#define __com_sun_star_datatransfer_dnd_DropTargetDragEvent_idl__
+#ifndef __com_sun_star_datatransfer_dnd_OleDropTarget_idl__
+#define __com_sun_star_datatransfer_dnd_OleDropTarget_idl__
 
-#ifndef __com_sun_star_datatransfer_dnd_DropTargetEvent_idl__
-#include <com/sun/star/datatransfer/dnd/DropTargetEvent.idl>
+#ifndef __com_sun_star_lang_XComponent_idl__
+#include <com/sun/star/lang/XComponent.idl>
 #endif
 
-#ifndef __com_sun_star_awt_Point_idl__
-#include <com/sun/star/awt/Point.idl>
+#ifndef __com_sun_star_lang_XServiceInfo_idl__
+#include <com/sun/star/lang/XServiceInfo.idl>
+#endif
+
+#ifndef __com_sun_star_lang_XInitialization_idl__
+#include <com/sun/star/lang/XInitialization.idl>
+#endif
+
+#ifndef __com_sun_star_lang_XTypeProvider_idl__
+#include <com/sun/star/lang/XTypeProvider.idl>
 #endif
 
 //=============================================================================
 
 module com { module sun { module star { module datatransfer { module dnd {
 
-interface XDropTargetDragContext;
+//=============================================================================
+
+interface XDropTarget;
 
 //=============================================================================
-/** The DropTargetDragEvent is delivered from the DropTarget, to the currently
-     registered DropTargetListener. 
+/** This service connects the java like UNO drag and drop protocol to the protocol
+    used on window platforms. It realizes the drop target.
 
-    <p>It contains state regarding the current state of the operation to enable
-    the operations initiator to provide the end user with the appropriate drag 
-    over feedback.</p>
+    @see XDropTarget
 */
 
-struct DropTargetDragEvent: com::sun::star::datatransfer::dnd::DropTargetEvent
+service OleDropTarget
 {
     //-------------------------------------------------------------------------
-    /** the DropTargetContext of the current drag operation.
-     */
-
-    XDropTargetDragContext Context;
-    
-    //-------------------------------------------------------------------------
-    /** this value represents the currently selected drop action.
-     */
-
-    byte DropAction;
-    
-    //-------------------------------------------------------------------------
-    /** the cursor's current location within the windows's coordinates.
-     */
-
-    com::sun::star::awt::Point Location;
+    /** used to provide data to other applications via Ole DND protocol.
+    */
+    interface XDropTarget;
 
     //-------------------------------------------------------------------------
-    /** this value represents the action(s) supported by the source.
-     */
+    /** 
+        the service expects a windows window handle. It is passed as unsigned long.
 
-    byte SourceActions;
+    */
+    interface com::sun::star::lang::XInitialization;
+
+    //-------------------------------------------------------------------------
+    /** for shutdown and listener support.
+    */
+    interface com::sun::star::lang::XComponent;
+
+    //-------------------------------------------------------------------------
+    /** service should always support this interface.
+    */
+    interface com::sun::star::lang::XServiceInfo;
+
+    //-------------------------------------------------------------------------
+    /** service should always support this interface.
+    */
+    interface com::sun::star::lang::XTypeProvider;
 };
 
 //=============================================================================

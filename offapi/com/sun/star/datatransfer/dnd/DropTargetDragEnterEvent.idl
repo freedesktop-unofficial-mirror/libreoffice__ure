@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: DropTargetDragEvent.idl,v $
+ *  $RCSfile: DropTargetDragEnterEvent.idl,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: obr $ $Date: 2001-02-09 10:55:21 $
  *
@@ -59,57 +59,38 @@
  *
  ************************************************************************/
 
-#ifndef __com_sun_star_datatransfer_dnd_DropTargetDragEvent_idl__
-#define __com_sun_star_datatransfer_dnd_DropTargetDragEvent_idl__
+#ifndef __com_sun_star_datatransfer_dnd_DropTargetDragEnterEvent_idl__
+#define __com_sun_star_datatransfer_dnd_DropTargetDragEnterEvent_idl__
 
-#ifndef __com_sun_star_datatransfer_dnd_DropTargetEvent_idl__
-#include <com/sun/star/datatransfer/dnd/DropTargetEvent.idl>
+#ifndef __com_sun_star_datatransfer_dnd_DropTargetDragEvent_idl__
+#include <com/sun/star/datatransfer/dnd/DropTargetDragEvent.idl>
 #endif
 
-#ifndef __com_sun_star_awt_Point_idl__
-#include <com/sun/star/awt/Point.idl>
+#ifndef __com_sun_star_datatransfer_DataFlavor_idl__
+#include <com/sun/star/datatransfer/DataFlavor.idl>
 #endif
 
 //=============================================================================
 
 module com { module sun { module star { module datatransfer { module dnd {
 
-interface XDropTargetDragContext;
-
 //=============================================================================
-/** The DropTargetDragEvent is delivered from the DropTarget, to the currently
-     registered DropTargetListener. 
+/** The DropTargetDragEnterEvent is delivered from the DropTarget to the 
+    currently registered DropTargetListeners whenever the logical cursor 
+    associated with a Drag and Drop operation enters the visible geometry 
+    of a window associated with a DropTarget.
 
-    <p>It contains state regarding the current state of the operation to enable
-    the operations initiator to provide the end user with the appropriate drag 
-    over feedback.</p>
+    <p>It contains the dataflavors supported by the transferable object of
+    the current Drag and Drop operation. </p>
 */
 
-struct DropTargetDragEvent: com::sun::star::datatransfer::dnd::DropTargetEvent
+struct DropTargetDragEnterEvent: DropTargetDragEvent
 {
     //-------------------------------------------------------------------------
-    /** the DropTargetContext of the current drag operation.
+    /** The dataflavors supported by the transferable object.
      */
 
-    XDropTargetDragContext Context;
-    
-    //-------------------------------------------------------------------------
-    /** this value represents the currently selected drop action.
-     */
-
-    byte DropAction;
-    
-    //-------------------------------------------------------------------------
-    /** the cursor's current location within the windows's coordinates.
-     */
-
-    com::sun::star::awt::Point Location;
-
-    //-------------------------------------------------------------------------
-    /** this value represents the action(s) supported by the source.
-     */
-
-    byte SourceActions;
+    sequence< DataFlavor > SupportedDataFlavors;
 };
 
 //=============================================================================
