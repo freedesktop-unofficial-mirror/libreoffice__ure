@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testserver.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:10 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:30:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,7 +59,6 @@
  *
  ************************************************************************/
 #include <string.h>
-#include <assert.h>
 
 #ifndef _OSL_TIME_H_
 #include <osl/time.h>
@@ -128,7 +127,7 @@ public:
     virtual void SAL_CALL run();
 
     void latencyTest( const Reference< XConnection > &r );
-        
+
 private:
     Reference < XAcceptor > m_rAcceptor;
     Reference < XBridgeFactory > m_rBridgeFactory;
@@ -171,15 +170,15 @@ void MyThread::run()
             }
             else
             {
-        
+
                 Reference < XBridge > rBridge =
                     m_rBridgeFactory->createBridge(
                         OUString() ,
                         m_sProtocol,
                         rConnection ,
                         (XInstanceProvider * ) new OInstanceProvider(m_rSMgr) );
-            
-                
+
+
                 if( m_bReverse )
                 {
                     printf( "doing reverse callme test (test is ok, when on each line a +- appears\n" );
@@ -187,7 +186,7 @@ void MyThread::run()
                         OUString( RTL_CONSTASCII_USTRINGPARAM("blubber"  )));
                     Reference < XTestFactory > rFactory( r , UNO_QUERY );
                     Reference < XCallMe > rCallMe = rFactory->createCallMe();
-                
+
                     for( sal_Int32 i = 0 ; i < 1  ; i ++ )
                     {
                         rCallMe->callOneway(
