@@ -2,9 +2,9 @@
  *
  *  $RCSfile: idlccompile.cxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: hr $ $Date: 2002-02-21 11:31:12 $
+ *  last change: $Author: hr $ $Date: 2003-03-26 12:11:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -85,7 +85,6 @@
 #include <io.h>
 #endif
 
-#include <string.h>
 #ifdef	SAL_UNX
 #include <unistd.h>
 #if defined(MACOSX) || defined(FREEBSD) || defined(NETBSD)
@@ -146,7 +145,7 @@ OString convertToFileUrl(const OString& fileName)
         OUString uUrlFileName;
         OSL_VERIFY(FileBase::getFileURLFromSystemPath(uFileName, uUrlFileName) == FileBase::E_None);
         return OUStringToOString(uUrlFileName, osl_getThreadTextEncoding());
-    } 
+    }
 
     return fileName;
 }
@@ -159,13 +158,13 @@ OString makeTempName(const OString& prefix, const OString& postfix)
 
     if ( osl_getEnvironment(TMP.pData, &uTmpPath.pData) != osl_Process_E_None )
     {
-        if ( osl_getEnvironment(TEMP.pData, &uTmpPath.pData) != osl_Process_E_None )				
+        if ( osl_getEnvironment(TEMP.pData, &uTmpPath.pData) != osl_Process_E_None )
         {
 #if defined(SAL_W32) || defined(SAL_OS2)
             tmpPath = OString("c:\\temp");
 #else
             tmpPath = OString("/tmp");
-#endif		
+#endif
         }
     }
 
@@ -173,13 +172,22 @@ OString makeTempName(const OString& prefix, const OString& postfix)
         tmpPath = OUStringToOString(uTmpPath, RTL_TEXTENCODING_UTF8);
 
 #if defined(SAL_W32) || defined(SAL_UNX)
-    strcpy(tmpFilePattern, tmpPath);
-    strcat(tmpFilePattern, PATH_SEPARATOR);
-    strcat(tmpFilePattern, prefix.getStr());
-    strcat(tmpFilePattern, "XXXXXX");
-    
+
+    OSL_ASSERT( sizeof(tmpFilePattern) > ( strlen(tmpPath)
+                                           + RTL_CONSTASCII_LENGTH(
+                                                PATH_SEPARATOR )
+                                           + prefix.getLength()
+                                           + RTL_CONSTASCII_LENGTH(
+                                                "XXXXXX") ) );
+
+    tmpFilePattern[ sizeof(tmpFilePattern)-1 ] = '\0';
+    strncpy(tmpFilePattern, tmpPath, sizeof(tmpFilePattern)-1);
+    strncat(tmpFilePattern, PATH_SEPARATOR, sizeof(tmpFilePattern)-1-strlen(tmpFilePattern));
+    strncat(tmpFilePattern, prefix.getStr(), sizeof(tmpFilePattern)-1-strlen(tmpFilePattern));
+    strncat(tmpFilePattern, "XXXXXX", sizeof(tmpFilePattern)-1-strlen(tmpFilePattern));
+
 #ifdef SAL_UNX
-    int nDescriptor = mkstemp(tmpFilePattern); 
+    int nDescriptor = mkstemp(tmpFilePattern);
     if( -1 == nDescriptor )
     {
         fprintf( stderr,"idlc: couldn't create temporary file\n" );
@@ -188,34 +196,34 @@ OString makeTempName(const OString& prefix, const OString& postfix)
     // the file shall later be reopened by stdio functions
     close( nDescriptor );
 #else
-    (void) mktemp(tmpFilePattern); 
+    (void) mktemp(tmpFilePattern);
 #endif
     /** DBO (08/22/2002):
         since mkstemp() creates the file, it won't be removed anywhere later appending a postfix.
         Is the postfix necessarry?
     */
 //      if ( postfix.getLength() )
-//  		strcat(tmpFilePattern, postfix.getStr());
+//          strncat(tmpFilePattern, postfix.getStr(), sizeof(tmpFilePattern)-1-strlen(tmpFilePattern));
 #endif
 
 #ifdef __OS2__
-    strcpy(tmpFilePattern, tempnam(NULL, prefix.getStr());
+    strncpy(tmpFilePattern, tempnam(NULL, prefix.getStr()), sizeof(tmpFilePattern)-1);
 #endif
 
     return OString(tmpFilePattern);
-}	
+}
 
 sal_Bool copyFile(const OString& sourceFile, const OString& targetFile)
 {
     sal_Bool bRet = sal_True;
-    
+
     FILE* pSource = fopen(sourceFile.getStr(), "rb");
-    
+
     if ( !pSource )
         return sal_False;
 
     FILE* pTarget = fopen(targetFile.getStr(), "wb");
-    
+
     if ( !pTarget )
     {
         fclose(pSource);
@@ -239,28 +247,28 @@ sal_Bool copyFile(const OString& sourceFile, const OString& targetFile)
             }
         }
     }
-    
+
     fclose(pSource);
     if ( fflush(pTarget) )
         bRet = sal_False;
-    fclose(pTarget);	
+    fclose(pTarget);
 
     return bRet;
-}	
+}
 
 sal_Int32 SAL_CALL compileFile(const OString& fileName)
 {
     // preporcess input file
     OString tmpFile = makeTempName(OString("idli_"), OString(".idl"));
     OString preprocFile = makeTempName(OString("idlf_"), OString(".idl"));
-    
+
     if ( !copyFile(fileName, tmpFile) )
     {
-          fprintf(stderr, "%s: couldn't copy file '%s' to '%s'\n", 
+          fprintf(stderr, "%s: couldn't copy file '%s' to '%s'\n",
             idlc()->getOptions()->getProgramName().getStr(), fileName.getStr(), tmpFile.getStr());
-          exit(99);        
-    }	
-    
+          exit(99);
+    }
+
     idlc()->setFileName(fileName);
     idlc()->setMainFileName(fileName);
     idlc()->setRealFileName(tmpFile);
@@ -295,25 +303,25 @@ sal_Int32 SAL_CALL compileFile(const OString& fileName)
     }
 
     cppArgs.append(" ");
-    cppArgs.append(tmpFile);	
+    cppArgs.append(tmpFile);
     cppArgs.append(" ");
-    cppArgs.append(preprocFile);	
+    cppArgs.append(preprocFile);
 
     OString cmdFileName = makeTempName(OString("idlc_"), OString());
     FILE* pCmdFile = fopen(cmdFileName, "w");
 
     if ( !pCmdFile )
     {
-          fprintf(stderr, "%s: couldn't open temporary file for preprocessor commands: %s\n", 
+          fprintf(stderr, "%s: couldn't open temporary file for preprocessor commands: %s\n",
             idlc()->getOptions()->getProgramName().getStr(), cmdFileName.getStr());
-          exit(99);					
+          exit(99);
     }
     fprintf(pCmdFile, "%s", cppArgs.getStr());
     fclose(pCmdFile);
 
     OUString cmdArg(RTL_CONSTASCII_USTRINGPARAM("@"));
     cmdArg += OStringToOUString(cmdFileName, RTL_TEXTENCODING_UTF8);
-  
+
     OUString cpp;
     OUString startDir;
     OSL_VERIFY(osl_getExecutableFile(&cpp.pData) == osl_Process_E_None);
@@ -329,7 +337,7 @@ sal_Int32 SAL_CALL compileFile(const OString& fileName)
     oslProcess		hProcess = NULL;
     oslProcessError	procError = osl_Process_E_None;
 
-    procError = osl_executeProcess(cpp.pData, &cmdArg.pData, 1, osl_Process_WAIT, 
+    procError = osl_executeProcess(cpp.pData, &cmdArg.pData, 1, osl_Process_WAIT,
                                    0, startDir.pData, 0, 0, &hProcess);
 
     oslProcessInfo hInfo;
@@ -361,8 +369,8 @@ sal_Int32 SAL_CALL compileFile(const OString& fileName)
     if (unlink(cmdFileName.getStr()) != 0)
     {
         fprintf(stderr, "%s: Could not remove unocpp command file %s\n",
-                   pOptions->getProgramName().getStr(), cmdFileName.getStr());	
-        
+                   pOptions->getProgramName().getStr(), cmdFileName.getStr());
+
         exit(99);
     }
 
@@ -374,13 +382,13 @@ sal_Int32 SAL_CALL compileFile(const OString& fileName)
                        pOptions->getProgramName().getStr(), preprocFile.getStr());
             exit(99);
         }
-        exit(0);		
-    }	
+        exit(0);
+    }
 
-    // parse file			
+    // parse file
     yyin = fopen(preprocFile.getStr(), "r");
     if (yyin == NULL)
-    {	
+    {
         fprintf(stderr, "%s: Could not open cpp output file %s\n",
                    pOptions->getProgramName().getStr(), preprocFile.getStr());
         exit(99);
@@ -401,5 +409,5 @@ sal_Int32 SAL_CALL compileFile(const OString& fileName)
         exit(99);
     }
 
-    return nErrors;		
-}		
+    return nErrors;
+}
