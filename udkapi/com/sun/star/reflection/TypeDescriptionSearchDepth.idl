@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: TypeDescriptionProvider.idl,v $
+ *  $RCSfile: TypeDescriptionSearchDepth.idl,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: kso $ $Date: 2002-11-11 08:30:09 $
  *
@@ -58,20 +58,10 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_reflection_TypeDescriptionProvider_idl__
-#define __com_sun_star_reflection_TypeDescriptionProvider_idl__
 
-#ifndef __com_sun_star_container_XHierarchicalNameAccess_idl__
-#include <com/sun/star/container/XHierarchicalNameAccess.idl>
-#endif
+#ifndef __com_sun_star_reflection_TypeDescriptionSearchDepth_idl__
+#define __com_sun_star_reflection_TypeDescriptionSearchDepth_idl__
 
-#ifndef __com_sun_star_lang_XComponent_idl__
-#include <com/sun/star/lang/XComponent.idl>
-#endif
-
-#ifndef __com_sun_star_reflection_XTypeDescriptionEnumerationAccess_idl__
-#include <com/sun/star/reflection/XTypeDescriptionEnumerationAccess.idl>
-#endif
 
 //=============================================================================
 
@@ -79,75 +69,23 @@
 
 //=============================================================================
 
-/** This service provides type descriptions, i.e. concrete
-    service implementations read from source like the persistent registry
-    database format.<br>
-
-    @see com::sun::star::reflection::TypeDescriptionManager
-    @see com::sun::star::reflection::XTypeDescription
-*/
-service TypeDescriptionProvider
+/** Defines depths for searching through type description collections.
+  */
+enum TypeDescriptionSearchDepth
 {
-    /** Interface to retrieve type descriptions:
-        <ul>
-        <li>names are given in dotted notation, e.g. "com.sun.star.uno.XInterface"</li>
-        <li>sequences are accessable via "[]element_name"</li>
-        <li>interface members are accessable via "interface_name::member_name"</li>
-        </ul>
-        The returned values are of interface type <type>XTypeDescription</type>.
-    */
-    interface com::sun::star::container::XHierarchicalNameAccess;
+    /** Infinite search depth. Search through all children including direct
+        children, grand children, grand children's children, ...
+      */
+    INFINITE = -1,
 
-    /** Interface to signal shutdown to the provider.<br>
-        This has to be done manually, because usually each provider references
-        its manager (which may implement type caching) for late resolution of
-        partial types (e.g. parameter types).
-    */
-    interface com::sun::star::lang::XComponent;
-
-    /** Interface for creating enumerations for type descriptions supported
-        by this <type>TypeDescriptionProvider</type>
-    */
-    interface XTypeDescriptionEnumerationAccess;
+    /** Search only through direct children.
+      */
+    ONE = 1
 };
+
 
 //=============================================================================
 
 }; }; }; };
 
-/*=============================================================================
-
-    $Log: not supported by cvs2svn $
-    Revision 1.8  2002/11/06 10:26:47  dbo
-    #104560# docu
-
-    Revision 1.7  2002/10/29 14:32:33  dbo
-    #104560# docu
-
-    Revision 1.6  2002/03/08 17:19:13  dbo
-    #96711# reviewed reflection API documentation
-
-    Revision 1.5  2001/11/16 15:02:57  mi
-    proofing by Richard Holt
-
-    Revision 1.4  2000/11/08 12:28:46  mi
-    moved from api
-
-    Revision 1.1.1.1  2000/09/18 23:35:31  hjs
-    initial import
-
-    Revision 1.5  2000/09/11 11:52:36  mi
-    documentation merged from XML
-
-    Revision 1.3  1999/11/18 11:49:58  mi
-    XComponent now in module lang
-
-    Revision 1.2  1999/11/15 16:05:40  dbo
-    doc added
-
-    Revision 1.1.1.1  1999/11/11 09:48:44  jsc
-    new
-
-
-=============================================================================*/
 #endif

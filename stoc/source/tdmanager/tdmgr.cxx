@@ -2,9 +2,9 @@
  *
  *  $RCSfile: tdmgr.cxx,v $
  *
- *  $Revision: 1.12 $
+ *  $Revision: 1.13 $
  *
- *  last change: $Author: dbo $ $Date: 2001-10-11 14:53:51 $
+ *  last change: $Author: kso $ $Date: 2002-11-11 08:33:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -69,8 +69,8 @@
 #ifndef _CPPUHELPER_FACTORY_HXX_
 #include <cppuhelper/factory.hxx>
 #endif
-#ifndef _CPPUHELPER_IMPLBASE4_HXX_
-#include <cppuhelper/compbase4.hxx>
+#ifndef _CPPUHELPER_IMPLBASE5_HXX_
+#include <cppuhelper/compbase5.hxx>
 #endif
 #ifndef _CPPUHELPER_IMPLBASE1_HXX_
 #include <cppuhelper/implbase1.hxx>
@@ -79,6 +79,12 @@
 #include <cppuhelper/implementationentry.hxx>
 #endif
 
+#ifndef _STOC_TDMGR_COMMON_HXX
+#include "tdmgr_common.hxx"
+#endif
+#ifndef _STOC_TDMGR_TDENUMERATION_HXX
+#include "tdmgr_tdenumeration.hxx"
+#endif
 #include "lrucache.hxx"
 
 #include <com/sun/star/lang/XServiceInfo.hpp>
@@ -94,6 +100,7 @@
 #include <com/sun/star/reflection/XArrayTypeDescription.hpp>
 #include <com/sun/star/reflection/XIndirectTypeDescription.hpp>
 #include <com/sun/star/reflection/XInterfaceTypeDescription.hpp>
+#include <com/sun/star/reflection/XTypeDescriptionEnumerationAccess.hpp>
 #include <com/sun/star/registry/XRegistryKey.hpp>
 
 #include <algorithm>
@@ -114,12 +121,13 @@ namespace stoc_tdmgr
 {
 
 static const sal_Int32 CACHE_SIZE = 512;
- 
+
 #define SERVICENAME "com.sun.star.reflection.TypeDescriptionManager"
 #define IMPLNAME	"com.sun.star.comp.stoc.TypeDescriptionManager"
 
 //--------------------------------------------------------------------------------------------------
-static rtl_StandardModuleCount g_moduleCount = MODULE_COUNT_INIT;
+// exported via tdmgr_common.hxx
+rtl_StandardModuleCount g_moduleCount = MODULE_COUNT_INIT;
 
 static Sequence< OUString > tdmgr_getSupportedServiceNames()
 {
@@ -161,7 +169,7 @@ class ManagerImpl;
 class EventListenerImpl : public ImplHelper1< XEventListener >
 {
     ManagerImpl *		_pMgr;
-    
+
 public:
     EventListenerImpl( ManagerImpl * pMgr )
         : _pMgr( pMgr )
@@ -169,11 +177,11 @@ public:
             g_moduleCount.modCnt.acquire( &g_moduleCount.modCnt );
         }
     virtual ~EventListenerImpl();
-    
+
     // lifetime delegated to manager
     virtual void SAL_CALL acquire() throw();
     virtual void SAL_CALL release() throw();
-    
+
     // XEventListener
     virtual void SAL_CALL disposing( const EventObject & rEvt ) throw(::com::sun::star::uno::RuntimeException);
 };
@@ -182,38 +190,40 @@ EventListenerImpl::~EventListenerImpl()
 {
     g_moduleCount.modCnt.release( &g_moduleCount.modCnt );
 }
-    
+
 //==================================================================================================
 class ManagerImpl
-    : public WeakComponentImplHelper4< XServiceInfo, XSet, XHierarchicalNameAccess, XInitialization >
+    : public WeakComponentImplHelper5< XServiceInfo,
+                                       XSet,
+                                       XHierarchicalNameAccess,
+                                       XTypeDescriptionEnumerationAccess,
+                                       XInitialization >
 {
     friend EnumerationImpl;
     friend EventListenerImpl;
-    
+
     Mutex								_aComponentMutex;
     Reference< XComponentContext >      _xContext;
     EventListenerImpl					_aEventListener;
-    
+
     // elements
     sal_Bool							_bCaching;
     LRU_CacheAnyByOUString				_aElements;
     // provider chain
     ProviderVector						_aProviders;
-    sal_Bool							_bProviderInit;
 
-    inline void initProviders();
     inline Any getSimpleType( const OUString & rName );
-    
+
 protected:
     virtual void SAL_CALL disposing();
-    
+
 public:
     ManagerImpl( Reference< XComponentContext > const & xContext, sal_Int32 nCacheSize );
     virtual ~ManagerImpl();
-    
+
     // XInitialization
     virtual void SAL_CALL initialize( const Sequence< Any > & args ) throw (Exception, RuntimeException);
-    
+
     // XServiceInfo
     virtual OUString SAL_CALL getImplementationName() throw(::com::sun::star::uno::RuntimeException);
     virtual sal_Bool SAL_CALL supportsService( const OUString & rServiceName ) throw(::com::sun::star::uno::RuntimeException);
@@ -222,10 +232,10 @@ public:
     // XElementAccess
     virtual Type SAL_CALL getElementType() throw(::com::sun::star::uno::RuntimeException);
     virtual sal_Bool SAL_CALL hasElements() throw(::com::sun::star::uno::RuntimeException);
-    
+
     // XEnumerationAccess
     virtual Reference< XEnumeration > SAL_CALL createEnumeration() throw(::com::sun::star::uno::RuntimeException);
-    
+
     // XSet
     virtual sal_Bool SAL_CALL has( const Any & rElement ) throw(::com::sun::star::uno::RuntimeException);
     virtual void SAL_CALL insert( const Any & rElement ) throw(::com::sun::star::lang::IllegalArgumentException, ::com::sun::star::container::ElementExistException, ::com::sun::star::uno::RuntimeException);
@@ -234,6 +244,18 @@ public:
     // XHierarchicalNameAccess
     virtual Any SAL_CALL getByHierarchicalName( const OUString & rName ) throw(::com::sun::star::container::NoSuchElementException, ::com::sun::star::uno::RuntimeException);
     virtual sal_Bool SAL_CALL hasByHierarchicalName( const OUString & rName ) throw(::com::sun::star::uno::RuntimeException);
+
+    // XTypeDescriptionEnumerationAccess
+    virtual ::com::sun::star::uno::Reference<
+        ::com::sun::star::reflection::XTypeDescriptionEnumeration > SAL_CALL
+    createTypeDescriptionEnumeration(
+        const ::rtl::OUString& moduleName,
+        const ::com::sun::star::uno::Sequence<
+            ::com::sun::star::uno::TypeClass >& types,
+        ::com::sun::star::reflection::TypeDescriptionSearchDepth depth )
+            throw ( ::com::sun::star::reflection::NoSuchTypeNameException,
+                    ::com::sun::star::reflection::InvalidTypeNameException,
+                    ::com::sun::star::uno::RuntimeException );
 };
 
 //==================================================================================================
@@ -242,11 +264,11 @@ class EnumerationImpl
 {
     ManagerImpl *		_pMgr;
     size_t				_nPos;
-    
+
 public:
     EnumerationImpl( ManagerImpl * pManager );
     virtual ~EnumerationImpl();
-    
+
     // XEnumeration
     virtual sal_Bool SAL_CALL hasMoreElements() throw(::com::sun::star::uno::RuntimeException);
     virtual Any SAL_CALL nextElement() throw(::com::sun::star::container::NoSuchElementException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
@@ -316,13 +338,13 @@ Any EnumerationImpl::nextElement()
 //__________________________________________________________________________________________________
 ManagerImpl::ManagerImpl(
     Reference< XComponentContext > const & xContext, sal_Int32 nCacheSize )
-    : WeakComponentImplHelper4<
-        XServiceInfo, XSet, XHierarchicalNameAccess, XInitialization >( _aComponentMutex )
+    : WeakComponentImplHelper5<
+        XServiceInfo, XSet, XHierarchicalNameAccess,
+        XTypeDescriptionEnumerationAccess, XInitialization >( _aComponentMutex )
     , _xContext( xContext )
     , _aEventListener( this )
     , _bCaching( sal_True )
     , _aElements( nCacheSize )
-    , _bProviderInit( sal_False )
 {
     g_moduleCount.modCnt.acquire( &g_moduleCount.modCnt );
 }
@@ -342,38 +364,6 @@ void ManagerImpl::disposing()
     _xContext.clear();
     _aProviders.clear();
 }
-//__________________________________________________________________________________________________
-inline void ManagerImpl::initProviders()
-{
-    // looking up context for additional providers
-    Sequence< OUString > add_providers;
-    if (_xContext->getValueByName( OUString(
-        RTL_CONSTASCII_USTRINGPARAM("/services/" SERVICENAME "/providers") ) ) >>= add_providers)
-    {
-        Reference< XMultiComponentFactory > xMgr( _xContext->getServiceManager() );
-        OUString const * pNames = add_providers.getConstArray();
-        for ( sal_Int32 nPos = add_providers.getLength(); nPos--; )
-        {
-            Reference< XHierarchicalNameAccess > xHA(
-                xMgr->createInstanceWithContext( pNames[ nPos ], _xContext ), UNO_QUERY );
-            OSL_ENSURE( xHA.is(), "### no td provider!" );
-            
-            if (xHA.is())
-            {
-                try
-                {
-                    insert( makeAny( xHA ) );
-                }
-                catch (IllegalArgumentException &)
-                {
-                }
-                catch (ElementExistException &)
-                {
-                }
-            }
-        }
-    }
-}
 
 // XInitialization
 //__________________________________________________________________________________________________
@@ -387,7 +377,7 @@ void ManagerImpl::initialize(
     {
         Reference< XHierarchicalNameAccess > xHA( pProviders[ nPos ], UNO_QUERY );
         OSL_ENSURE( xHA.is(), "### no td provider!" );
-        
+
         if (xHA.is())
         {
             try
@@ -478,7 +468,7 @@ void SAL_CALL ManagerImpl::insert( const Any & rElement )
             OUString( RTL_CONSTASCII_USTRINGPARAM("no type description provider given!") ),
             (XWeak *)(OWeakObject *)this, 0 );
     }
-    
+
     MutexGuard aGuard( _aComponentMutex );
     if (find( _aProviders.begin(), _aProviders.end(), xElem ) != _aProviders.end())
     {
@@ -504,7 +494,7 @@ void SAL_CALL ManagerImpl::remove( const Any & rElement )
                 OUString( RTL_CONSTASCII_USTRINGPARAM("no type description provider given!") ),
                 (XWeak *)(OWeakObject *)this, 0 );
         }
-        
+
         MutexGuard aGuard( _aComponentMutex );
         ProviderVector::iterator iFind( find( _aProviders.begin(), _aProviders.end(), xElem ) );
         if (iFind == _aProviders.end())
@@ -521,6 +511,42 @@ void SAL_CALL ManagerImpl::remove( const Any & rElement )
         xComp->removeEventListener( &_aEventListener );
 }
 
+// XTypeDescriptionEnumerationAccess
+//__________________________________________________________________________________________________
+// virtual
+Reference< XTypeDescriptionEnumeration > SAL_CALL
+ManagerImpl::createTypeDescriptionEnumeration(
+        const OUString & moduleName,
+        const Sequence< TypeClass > & types,
+        TypeDescriptionSearchDepth depth )
+    throw ( NoSuchTypeNameException,
+            InvalidTypeNameException,
+            RuntimeException )
+{
+    MutexGuard aGuard( _aComponentMutex );
+
+    TDEnumerationAccessStack aStack;
+    ProviderVector::const_iterator it = _aProviders.begin();
+    const ProviderVector::const_iterator end = _aProviders.end();
+    while ( it != end )
+    {
+        Reference< XTypeDescriptionEnumerationAccess >xEnumAccess(
+            (*it), UNO_QUERY );
+        OSL_ENSURE( xEnumAccess.is(),
+                    "### no XTypeDescriptionEnumerationAccess!" );
+        if ( xEnumAccess.is() )
+            aStack.push( xEnumAccess );
+
+        it++;
+    }
+
+    return Reference< XTypeDescriptionEnumeration >(
+        new TypeDescriptionEnumerationImpl( moduleName,
+                                            types,
+                                            depth,
+                                            aStack ) );
+}
+
 
 //##################################################################################################
 //##################################################################################################
@@ -533,13 +559,13 @@ class SimpleTypeDescriptionImpl
 {
     TypeClass _eTC;
     OUString  _aName;
-    
+
 public:
     SimpleTypeDescriptionImpl( TypeClass eTC, const OUString & rName )
         : _eTC( eTC )
         , _aName( rName )
         {}
-    
+
     // XTypeDescription
     virtual TypeClass SAL_CALL getTypeClass() throw(::com::sun::star::uno::RuntimeException);
     virtual OUString SAL_CALL getName() throw(::com::sun::star::uno::RuntimeException);
@@ -564,16 +590,16 @@ class SequenceTypeDescriptionImpl
     : public WeakImplHelper1< XIndirectTypeDescription >
 {
     Reference< XTypeDescription > _xElementTD;
-    
+
 public:
     SequenceTypeDescriptionImpl( const Reference< XTypeDescription > & xElementTD )
         : _xElementTD( xElementTD )
         {}
-    
+
     // XTypeDescription
     virtual TypeClass SAL_CALL getTypeClass() throw(::com::sun::star::uno::RuntimeException);
     virtual OUString SAL_CALL getName() throw(::com::sun::star::uno::RuntimeException);
-    
+
     // XIndirectTypeDescription
     virtual Reference< XTypeDescription > SAL_CALL getReferencedType() throw(::com::sun::star::uno::RuntimeException);
 };
@@ -607,7 +633,7 @@ class ArrayTypeDescriptionImpl
     Reference< XTypeDescription > _xElementTD;
     Mutex	 					  _aDimensionMutex;
     sal_Int32					  _nDimensions;
-    Sequence< sal_Int32 >		  _seqDimensions;	
+    Sequence< sal_Int32 >		  _seqDimensions;
     OUString					  _sDimensions;
 
     void initDimensions(const OUString& rSDimensions);
@@ -622,11 +648,11 @@ public:
             initDimensions( rSDimensions );
         }
     virtual ~ArrayTypeDescriptionImpl() {}
-    
+
     // XTypeDescription
     virtual TypeClass SAL_CALL getTypeClass() throw(::com::sun::star::uno::RuntimeException);
     virtual OUString SAL_CALL getName() throw(::com::sun::star::uno::RuntimeException);
-    
+
     // XArrayTypeDescription
     virtual Reference< XTypeDescription > SAL_CALL getType() throw(::com::sun::star::uno::RuntimeException);
     virtual sal_Int32 SAL_CALL getNumberOfDimensions() throw(::com::sun::star::uno::RuntimeException);
@@ -661,7 +687,7 @@ static sal_Int32 unicodeToInteger( sal_Int8 base, const sal_Unicode *s )
     }
        if (negative) r *= -1;
     return r;
-} 
+}
 //__________________________________________________________________________________________________
 void ArrayTypeDescriptionImpl::initDimensions(const OUString& rSDimensions)
 {
@@ -687,7 +713,7 @@ void ArrayTypeDescriptionImpl::initDimensions(const OUString& rSDimensions)
         } else
             len--;
     }
-}	
+}
 
 // XTypeDescription
 //__________________________________________________________________________________________________
@@ -716,14 +742,14 @@ sal_Int32 ArrayTypeDescriptionImpl::getNumberOfDimensions()
     throw(::com::sun::star::uno::RuntimeException)
 {
     return _nDimensions;
-}	
+}
 
 //__________________________________________________________________________________________________
 Sequence< sal_Int32 > ArrayTypeDescriptionImpl::getDimensions()
     throw(::com::sun::star::uno::RuntimeException)
 {
     return _seqDimensions;
-}	
+}
 
 //##################################################################################################
 //##################################################################################################
@@ -734,7 +760,7 @@ Sequence< sal_Int32 > ArrayTypeDescriptionImpl::getDimensions()
 inline Any ManagerImpl::getSimpleType( const OUString & rName )
 {
     Any aRet;
-    
+
     if (rName.equalsAsciiL( RTL_CONSTASCII_STRINGPARAM("string") ))
         aRet <<= Reference< XTypeDescription >( new SimpleTypeDescriptionImpl( TypeClass_STRING, rName ) );
     else if (rName.equalsAsciiL( RTL_CONSTASCII_STRINGPARAM("long") ))
@@ -765,7 +791,7 @@ inline Any ManagerImpl::getSimpleType( const OUString & rName )
         aRet <<= Reference< XTypeDescription >( new SimpleTypeDescriptionImpl( TypeClass_VOID, rName ) );
     else if (rName.equalsAsciiL( RTL_CONSTASCII_STRINGPARAM("type") ))
         aRet <<= Reference< XTypeDescription >( new SimpleTypeDescriptionImpl( TypeClass_TYPE, rName ) );
-    
+
     return aRet;
 }
 
@@ -809,7 +835,7 @@ Any ManagerImpl::getByHierarchicalName( const OUString & rName )
                     xIfaceTD->getMembers();
                 const Reference< XInterfaceMemberTypeDescription > * pMembers =
                     rMembers.getConstArray();
-                
+
                 for ( sal_Int32 nPos = rMembers.getLength(); nPos--; )
                 {
                     if (rName == pMembers[nPos]->getName())
@@ -826,16 +852,10 @@ Any ManagerImpl::getByHierarchicalName( const OUString & rName )
         {
             aRet = getSimpleType( rName );
         }
-        
+
         if (! aRet.hasValue())
         {
             // last, try callback chain
-            MutexGuard aGuard( _aComponentMutex );
-            if (! _bProviderInit)
-            {
-                initProviders();
-                _bProviderInit = sal_True;
-            }
             for ( ProviderVector::const_iterator iPos( _aProviders.begin() );
                   iPos != _aProviders.end(); ++iPos )
             {
@@ -849,12 +869,12 @@ Any ManagerImpl::getByHierarchicalName( const OUString & rName )
                 }
             }
         }
-        
+
         // update cache
         if (_bCaching && aRet.hasValue())
             _aElements.setValue( rName, aRet );
     }
-    
+
     if (! aRet.hasValue())
     {
         NoSuchElementException aExc;
@@ -888,7 +908,7 @@ static Reference< XInterface > SAL_CALL ManagerImpl_create(
     {
         nCacheSize = CACHE_SIZE;
     }
-    
+
     return Reference< XInterface >( *new ManagerImpl( xContext, nCacheSize ) );
 }
 
