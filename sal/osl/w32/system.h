@@ -2,9 +2,9 @@
  *
  *  $RCSfile: system.h,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: tra $ $Date: 2002-07-12 10:43:32 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:45:36 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,11 +59,11 @@
  *
  ************************************************************************/
 
-#ifdef NDEBUG
+#if OSL_DEBUG_LEVEL == 0
 #    define NO_DEBUG_CRT
 #endif
 
-#ifndef _WIN32_WINNT 
+#ifndef _WIN32_WINNT
 #	define _WIN32_WINNT 0x0400
 #	define _CTYPE_DISABLE_MACROS /* wg. dynamischer C-Runtime MH */
 #endif
@@ -83,7 +83,7 @@
 #include <share.h>
 #include <direct.h>
 
-/* Must define this else build breaks because Winsock2.h 
+/* Must define this else build breaks because Winsock2.h
     includes Windows.h and without WIN32_LEAN_AND_MEAN
     also includes mswsock.h which needs a forward typedef
     of SOCKET ...
@@ -94,12 +94,12 @@
     // windows.h includes winsock2.h
     // if _WIN32_WINNT > 0x0400
     // so someone cannot include winsock.h
-    // at the same time without patching 
+    // at the same time without patching
     // windows.h
-    #include <windows.h>    
+    #include <windows.h>
 #else
-    // winsock2.h includes windows.h 
-    #include <winsock2.h> 
+    // winsock2.h includes windows.h
+    #include <winsock2.h>
     #include <wsipx.h>
 #endif
 
@@ -116,14 +116,14 @@
     #	ifndef SA_FAMILY_DECL
     #		define SA_FAMILY_DECL short sa_family
     #	endif
-    
+
     typedef struct sockaddr_ipx {
         SA_FAMILY_DECL;
         char sa_netnum[4];
         char sa_nodenum[6];
         unsigned short sa_socket;
     } SOCKADDR_IPX;
-    
+
     #	define NSPROTO_IPX		1000
     #	define NSPROTO_SPX		1256
     #	define NSPROTO_SPXII	1257
