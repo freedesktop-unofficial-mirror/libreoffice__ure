@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlFixedTextModel.idl,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: obo $ $Date: 2004-09-09 15:45:41 $
+ *  last change: $Author: vg $ $Date: 2005-02-17 10:46:13 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,65 +58,68 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_awt_UnoControlFixedTextModel_idl__ 
-#define __com_sun_star_awt_UnoControlFixedTextModel_idl__ 
- 
-#ifndef __com_sun_star_awt_UnoControlModel_idl__ 
-#include <com/sun/star/awt/UnoControlModel.idl> 
-#endif 
- 
+#ifndef __com_sun_star_awt_UnoControlFixedTextModel_idl__
+#define __com_sun_star_awt_UnoControlFixedTextModel_idl__
+
+#ifndef __com_sun_star_awt_UnoControlModel_idl__
+#include <com/sun/star/awt/UnoControlModel.idl>
+#endif
+
 #ifndef __com_sun_star_util_Color_idl__
 #include <com/sun/star/util/Color.idl>
 #endif
 
-#ifndef __com_sun_star_awt_FontDescriptor_idl__ 
-#include <com/sun/star/awt/FontDescriptor.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module awt {  
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_awt_FontDescriptor_idl__
+#include <com/sun/star/awt/FontDescriptor.idl>
+#endif
+
+#ifndef __com_sun_star_style_VerticalAlignment_idl__
+#include <com/sun/star/style/VerticalAlignment.idl>
+#endif
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module awt {
+
+//=============================================================================
+
 /** specifies the standard model of an <type>UnoControlFixedText</type>.
  */
 published service UnoControlFixedTextModel
-{ 
-    service com::sun::star::awt::UnoControlModel; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the alignment of the text in the control. 
-                
+{
+    service com::sun::star::awt::UnoControlModel;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the alignment of the text in the control.
+
         <pre>
         0: left
         1: center
         2: right
         </pre>
      */
-    [property] short Align; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] short Align;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the background color (RGB) of the control.
      */
-    [property] com::sun::star::util::Color BackgroundColor; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the border style of the control. 
-                
+    [property] com::sun::star::util::Color BackgroundColor;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the border style of the control.
+
         <pre>
         0: No border
         1: 3D border
         2: simple border
         </pre>
      */
-    [property] short Border; 
- 
-    //------------------------------------------------------------------------- 
+    [property] short Border;
+
+    //-------------------------------------------------------------------------
 
     /** specifies the color of the border, if present
 
@@ -126,79 +129,84 @@ published service UnoControlFixedTextModel
         @since OOo 2.0.0
      */
     [optional, property] long BorderColor;
- 
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** determines whether the control is enabled or disabled.
      */
-    [property] boolean Enabled; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean Enabled;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the font attributes of the text in the control.
      */
-    [property] com::sun::star::awt::FontDescriptor FontDescriptor; 
- 
-    //------------------------------------------------------------------------- 
+    [property] com::sun::star::awt::FontDescriptor FontDescriptor;
+
+    //-------------------------------------------------------------------------
 
     /** specifies the <type scope="com::sun::star::text">FontEmphasis</type>
         value of the text in the control.
      */
     [property] short FontEmphasisMark;
- 
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the <type scope="com::sun::star::text">FontRelief</type>
         value of the text in the control.
      */
     [property] short FontRelief;
-    
-    //------------------------------------------------------------------------- 
+
+    //-------------------------------------------------------------------------
 
     /** specifies the help text of the control.
      */
     [property] string HelpText;
- 
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** specifies the help URL of the control.
      */
     [property] string HelpURL;
-    
-    //-------------------------------------------------------------------------
-    
-    /** specifies the label of the control.
-     */
-    [property] string Label; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies that the text may be displayed on more than one line.
-     */
-    [property] boolean MultiLine; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies that the control will be printed with the document.
-     */
-    [property] boolean Printable; 
- 
-    //-------------------------------------------------------------------------
-    
-    /** specifies the text color (RGB) of the control.
-     */
-    [property] com::sun::star::util::Color TextColor; 
 
     //-------------------------------------------------------------------------
-    
+
+    /** specifies the label of the control.
+     */
+    [property] string Label;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies that the text may be displayed on more than one line.
+     */
+    [property] boolean MultiLine;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies that the control will be printed with the document.
+     */
+    [property] boolean Printable;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the text color (RGB) of the control.
+     */
+    [property] com::sun::star::util::Color TextColor;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the text line color (RGB) of the control.
      */
     [property] com::sun::star::util::Color TextLineColor;
-    
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-#endif 
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the vertical alignment of the text in the control
+    */
+    [optional, property] com::sun::star::style::VerticalAlignment VerticalAlign;
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
