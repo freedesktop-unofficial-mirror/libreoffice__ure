@@ -2,9 +2,9 @@
  *
  *  $RCSfile: implbase_ex.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-15 12:36:30 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:34:54 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -113,7 +113,7 @@ static inline void checkInterface( Type const & rType )
         buf.append( rType.getTypeName() );
         buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("\": no interface type!") );
         OUString msg( buf.makeStringAndClear() );
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OString str( OUStringToOString( msg, RTL_TEXTENCODING_ASCII_US ) );
         OSL_ENSURE( 0, str.getStr() );
 #endif
@@ -162,7 +162,7 @@ static inline type_entry * __getTypeEntries( class_data * cd )
                     buf.append( rType.getTypeName() );
                     buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("\" is no interface type!") );
                     OUString msg( buf.makeStringAndClear() );
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
                     OString str( OUStringToOString( msg, RTL_TEXTENCODING_ASCII_US ) );
                     OSL_ENSURE( 0, str.getStr() );
 #endif
@@ -194,7 +194,7 @@ static inline void * __queryDeepNoXInterface(
     type_entry * pEntries = __getTypeEntries( cd );
     sal_Int32 nTypes = cd->m_nTypes;
     sal_Int32 n;
-    
+
     // try top interfaces without getting td
     for ( n = 0; n < nTypes; ++n )
     {
@@ -232,7 +232,7 @@ static inline void * __queryDeepNoXInterface(
             buf.append( pEntries[ n ].m_type.typeRef->pTypeName );
             buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("\"!") );
             OUString msg( buf.makeStringAndClear() );
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
             OString str( OUStringToOString( msg, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( 0, str.getStr() );
 #endif
@@ -275,7 +275,7 @@ Any SAL_CALL ImplHelper_queryNoXInterface(
 {
     checkInterface( rType );
     typelib_TypeDescriptionReference * pTDR = rType.getTypeLibType();
-    
+
     void * p = __queryDeepNoXInterface( pTDR, cd, that );
     if (p)
     {
@@ -294,7 +294,7 @@ Sequence< sal_Int8 > SAL_CALL ImplHelper_getImplementationId( class_data * cd )
     {
         sal_uInt8 * id = (sal_uInt8 *)alloca( 16 );
         ::rtl_createUuid( (sal_uInt8 *)id, 0, sal_True );
-        
+
         MutexGuard guard( getImplHelperInitMutex() );
         if (! cd->m_createdId)
         {
@@ -302,7 +302,7 @@ Sequence< sal_Int8 > SAL_CALL ImplHelper_getImplementationId( class_data * cd )
             cd->m_createdId = sal_True;
         }
     }
-    
+
     sal_Sequence * seq = 0;
     ::rtl_byte_sequence_constructFromArray( &seq, cd->m_id, 16 );
     return Sequence< sal_Int8 >( seq, SAL_NO_ACQUIRE );
@@ -344,7 +344,7 @@ Any SAL_CALL WeakImplHelper_query(
 {
     checkInterface( rType );
     typelib_TypeDescriptionReference * pTDR = rType.getTypeLibType();
-    
+
     // shortcut XInterface to OWeakObject
     if (! isXInterface( pTDR->pTypeName ))
     {
@@ -377,7 +377,7 @@ Any SAL_CALL WeakAggImplHelper_queryAgg(
 {
     checkInterface( rType );
     typelib_TypeDescriptionReference * pTDR = rType.getTypeLibType();
-    
+
     // shortcut XInterface to OWeakAggObject
     if (! isXInterface( pTDR->pTypeName ))
     {
@@ -411,7 +411,7 @@ Any SAL_CALL WeakComponentImplHelper_query(
 {
     checkInterface( rType );
     typelib_TypeDescriptionReference * pTDR = rType.getTypeLibType();
-    
+
     // shortcut XInterface to WeakComponentImplHelperBase
     if (! isXInterface( pTDR->pTypeName ))
     {
@@ -445,7 +445,7 @@ Any SAL_CALL WeakAggComponentImplHelper_queryAgg(
 {
     checkInterface( rType );
     typelib_TypeDescriptionReference * pTDR = rType.getTypeLibType();
-    
+
     // shortcut XInterface to WeakAggComponentImplHelperBase
     if (! isXInterface( pTDR->pTypeName ))
     {
