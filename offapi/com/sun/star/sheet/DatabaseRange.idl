@@ -2,9 +2,9 @@
  *
  *  $RCSfile: DatabaseRange.idl,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: mi $ $Date: 2003-01-21 13:42:39 $
+ *  last change: $Author: hr $ $Date: 2003-03-26 13:56:07 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,31 +58,35 @@
  *
  *
  ************************************************************************/
+#ifndef __com_sun_star_sheet_DatabaseRange_idl__ 
+#define __com_sun_star_sheet_DatabaseRange_idl__ 
+ 
+#ifndef __com_sun_star_sheet_XDatabaseRange_idl__ 
+#include <com/sun/star/sheet/XDatabaseRange.idl> 
+#endif 
+ 
+#ifndef __com_sun_star_sheet_XCellRangeReferrer_idl__ 
+#include <com/sun/star/sheet/XCellRangeReferrer.idl> 
+#endif 
+ 
+#ifndef __com_sun_star_beans_XPropertySet_idl__ 
+#include <com/sun/star/beans/XPropertySet.idl> 
+#endif 
+ 
+#ifndef __com_sun_star_container_XNamed_idl__ 
+#include <com/sun/star/container/XNamed.idl> 
+#endif 
+ 
+#ifndef __com_sun_star_table_CellRangeAddress_idl__ 
+#include <com/sun/star/table/CellRangeAddress.idl> 
+#endif 
 
-#ifndef __com_sun_star_sheet_DatabaseRange_idl__
-#define __com_sun_star_sheet_DatabaseRange_idl__
-
-#ifndef __com_sun_star_sheet_XDatabaseRange_idl__
-#include <com/sun/star/sheet/XDatabaseRange.idl>
-#endif
-
-#ifndef __com_sun_star_sheet_XCellRangeReferrer_idl__
-#include <com/sun/star/sheet/XCellRangeReferrer.idl>
-#endif
-
-#ifndef __com_sun_star_beans_XPropertySet_idl__
-#include <com/sun/star/beans/XPropertySet.idl>
-#endif
-
-#ifndef __com_sun_star_container_XNamed_idl__
-#include <com/sun/star/container/XNamed.idl>
-#endif
-
-//=============================================================================
-
-module com {  module sun {  module star {  module sheet {
-
-//=============================================================================
+ 
+//============================================================================= 
+ 
+ module com {  module sun {  module star {  module sheet {  
+ 
+//============================================================================= 
 
 /** represents a database range in a spreadsheet document.
 
@@ -92,58 +96,69 @@ module com {  module sun {  module star {  module sheet {
     @see com::sun::star::sheet::DatabaseRanges
  */
 service DatabaseRange
-{
-    //-------------------------------------------------------------------------
-
-    /** provides access to the settings of the database range.
+{ 
+    // DocMerge: empty anyway
+    interface com::sun::star::sheet::XDatabaseRange; 
+    
+    // DocMerge: empty anyway
+    interface com::sun::star::sheet::XCellRangeReferrer; 
+    
+    // DocMerge: empty anyway
+    interface com::sun::star::beans::XPropertySet; 
+    
+    // DocMerge: empty anyway
+    interface com::sun::star::container::XNamed; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    // DocMerge from xml: property com::sun::star::sheet::DatabaseRange::MoveCells
+    /** if this property is set, columns or rows are inserted or deleted
+        when the size of the range is changed by an update operation.
      */
-    interface com::sun::star::sheet::XDatabaseRange;
-
-    //-------------------------------------------------------------------------
-
-    /** provides access to the cell range object referred by this named range.
+    [property] boolean MoveCells; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    // DocMerge from xml: property com::sun::star::sheet::DatabaseRange::KeepFormats
+    /** if this property is set, cell formats are extended
+        when the size of the range is changed by an update operation.
      */
-    interface com::sun::star::sheet::XCellRangeReferrer;
-
-    //-------------------------------------------------------------------------
-
-//! service PropertySet
-    /** provides access to the properties.
+    [property] boolean KeepFormats; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    // DocMerge from xml: property com::sun::star::sheet::DatabaseRange::StripData
+    /** if this property is set, the cell contents within the database
+        range are left out when the document is saved.
      */
-    interface com::sun::star::beans::XPropertySet;
-
-    //-------------------------------------------------------------------------
-
-    /** provides access to the name of the database range.
-      */
-    interface com::sun::star::container::XNamed;
-
-    //=========================================================================
-
-    /** specifies whether columns or rows are inserted or deleted when the
-        size of the range is changed by an update operation.
+    [property] boolean StripData; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** specifies whether the AutoFilter is enabled or not.
      */
-    [property] boolean MoveCells;
+    [optional, property] boolean AutoFilter; 
 
-    //-------------------------------------------------------------------------
-
-    /** specifies whether cell formats are extended when the size of the
-        range is changed by an update operation.
+    //------------------------------------------------------------------------- 
+     
+    /** specifies whether the filter criteria should be taken from a CellRange
      */
-    [property] boolean KeepFormats;
+    [optional, property] boolean UseFilterCriteriaSource; 
 
-    //-------------------------------------------------------------------------
-
-    /** specifies whether cell contents within the database range are left
-        out when the document is saved.
+    //------------------------------------------------------------------------- 
+     
+    /** specifies the range where the filter can find the filter criterias.
+        <p>This is only used if <member>SheetFilterDescriptor::UseFilterCriteriaSource</member> is <TRUE/>.</p>
      */
-    [property] boolean StripData;
+    [optional, property] com::sun::star::table::CellRangeAddress FilterCriteriaSource; 
 
-};
-
-//=============================================================================
-
-}; }; }; };
-
-#endif
-
+}; 
+ 
+//============================================================================= 
+ 
+}; }; }; };  
+ 
+/*============================================================================= 
+ 
+=============================================================================*/ 
+#endif 
