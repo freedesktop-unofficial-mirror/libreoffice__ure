@@ -2,9 +2,9 @@
  *
  *  $RCSfile: module.c,v $
  *
- *  $Revision: 1.17 $
+ *  $Revision: 1.18 $
  *
- *  last change: $Author: rt $ $Date: 2004-07-12 12:58:02 $
+ *  last change: $Author: rt $ $Date: 2004-10-22 07:59:28 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -112,8 +112,7 @@ oslModule SAL_CALL osl_loadModule(rtl_uString *strModuleName, sal_Int32 nRtldMod
 /* osl_unloadModule */
 /*****************************************************************************/
 void SAL_CALL osl_unloadModule(oslModule Module)
-{
-    OSL_ASSERT(Module);
+{	
     FreeLibrary((HINSTANCE)Module);
 }
 
