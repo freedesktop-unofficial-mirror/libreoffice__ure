@@ -2,9 +2,9 @@
  *
  *  $RCSfile: global.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: hr $ $Date: 2002-02-21 12:13:13 $
+ *  last change: $Author: hr $ $Date: 2003-03-26 14:28:43 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -77,12 +77,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <string.h>
 #if defined(SAL_W32) || defined(SAL_OS2)
 #include <io.h>
 #include <direct.h>
 #include <errno.h>
-#endif 
+#endif
 
 #ifdef UNX
 #include <sys/stat.h>
@@ -109,7 +108,7 @@ OString makeTempName(sal_Char* prefix)
     static OUString uTEMP( RTL_CONSTASCII_USTRINGPARAM("TEMP") );
     OUString 		uPrefix( RTL_CONSTASCII_USTRINGPARAM("cmk_") );
     OUString		uPattern;
-    
+
     sal_Char*	pPrefix = "cmk_";
     sal_Char  	tmpPattern[512];
     sal_Char 	*pTmpName = NULL;
@@ -119,56 +118,70 @@ OString makeTempName(sal_Char* prefix)
 
     if ( osl_getEnvironment(uTMP.pData, &uPattern.pData) != osl_Process_E_None )
     {
-        if ( osl_getEnvironment(uTEMP.pData, &uPattern.pData) != osl_Process_E_None )				
+        if ( osl_getEnvironment(uTEMP.pData, &uPattern.pData) != osl_Process_E_None )
         {
 #if defined(SAL_W32) || defined(SAL_OS2)
-            strcpy(tmpPattern, ".");	
+            OSL_ASSERT( sizeof(tmpPattern) > RTL_CONSTASCII_LENGTH( "." ) );
+            strncpy(tmpPattern, ".", sizeof(tmpPattern)-1);
 #else
-            strcpy(tmpPattern, "/tmp");	
-#endif		
+            OSL_ASSERT( sizeof(tmpPattern) > RTL_CONSTASCII_LENGTH( "/tmp" ) );
+            strncpy(tmpPattern, "/tmp", sizeof(tmpPattern)-1);
+#endif
         }
     }
 
     if (uPattern.getLength())
     {
-        strcpy(tmpPattern, OUStringToOString(uPattern, RTL_TEXTENCODING_UTF8).getStr());
+        OString aOStr( OUStringToOString(uPattern, RTL_TEXTENCODING_UTF8) );
+        OSL_ASSERT( sizeof(tmpPattern) > aOStr.getLength() );
+        strncpy(tmpPattern, aOStr.getStr(), sizeof(tmpPattern)-1);
     }
 
-#ifdef SAL_W32	
-    strcat(tmpPattern, "\\");
-    strcat(tmpPattern, pPrefix);
-    strcat(tmpPattern, "XXXXXX");
+#ifdef SAL_W32
+    OSL_ASSERT( sizeof(tmpPattern) > ( strlen(tmpPattern)
+                                       + RTL_CONSTASCII_LENGTH("\\")
+                                       + strlen(pPrefix)
+                                       + RTL_CONSTASCII_LENGTH("XXXXXX") ) );
+    strncat(tmpPattern, "\\", sizeof(tmpPattern)-1-strlen(tmpPattern));
+    strncat(tmpPattern, pPrefix, sizeof(tmpPattern)-1-strlen(tmpPattern));
+    strncat(tmpPattern, "XXXXXX", sizeof(tmpPattern)-1-strlen(tmpPattern));
     pTmpName = mktemp(tmpPattern);
 #endif
 
 #ifdef SAL_OS2
-    strcpy(tmpPattern, tempnam(NULL, prefix);
+    char* tmpname = tempnam(NULL, prefix);
+    OSL_ASSERT( sizeof(tmpPattern) > strlen(tmpname) );
+    strncpy(tmpPattern, tmpname, sizeof(tmpPattern)-1);
     pTmpName = tmpPattern;
 #endif
 
 #ifdef SAL_UNX
-    strcat(tmpPattern, "\\");
-    strcat(tmpPattern, pPrefix);
-    strcat(tmpPattern, "XXXXXX");
+    OSL_ASSERT( sizeof(tmpPattern) > ( strlen(tmpPattern)
+                                       + RTL_CONSTASCII_LENGTH("/")
+                                       + strlen(pPrefix)
+                                       + RTL_CONSTASCII_LENGTH("XXXXXX") ) );
+    strncat(tmpPattern, "/", sizeof(tmpPattern)-1-strlen(tmpPattern));
+    strncat(tmpPattern, pPrefix, sizeof(tmpPattern)-1-strlen(tmpPattern));
+    strncat(tmpPattern, "XXXXXX", sizeof(tmpPattern)-1-strlen(tmpPattern));
     pTmpName = mktemp(tmpPattern);
 #endif
 
     return OString(pTmpName);
 }
 
-OString createFileNameFromType( const OString& destination, 
-                                const OString typeName, 
-                                const OString postfix, 
+OString createFileNameFromType( const OString& destination,
+                                const OString typeName,
+                                const OString postfix,
                                 sal_Bool bLowerCase,
                                 const OString prefix )
 {
     OString type(typeName);
-    
+
     if (bLowerCase)
     {
         type = typeName.toAsciiLowerCase();
     }
-    
+
     sal_uInt32 length = destination.getLength();
 
     sal_Bool withPoint = sal_False;
@@ -177,26 +190,26 @@ OString createFileNameFromType( const OString& destination,
         length++;
         withPoint = sal_True;
     }
-            
+
     length += prefix.getLength() + type.getLength() + postfix.getLength();
 
     sal_Bool withSeperator = sal_False;
     if (destination.getStr()[destination.getLength()] != '\\' &&
         destination.getStr()[destination.getLength()] != '/' &&
-        type.getStr()[0] != '\\' && 
+        type.getStr()[0] != '\\' &&
         type.getStr()[0] != '/')
-    {	
+    {
         length++;
         withSeperator = sal_True;
     }
-    
+
     OStringBuffer nameBuffer(length);
 
     if (withPoint)
         nameBuffer.append('.');
     else
         nameBuffer.append(destination.getStr(), destination.getLength());
-    
+
     if (withSeperator)
         nameBuffer.append("/", 1);
 
@@ -219,9 +232,9 @@ OString createFileNameFromType( const OString& destination,
     fileName = fileName.replace('/', '\\');
     token = '\\';
 #endif
-    
+
     nameBuffer = OStringBuffer(length);
-    
+
     sal_Int32 nIndex = 0;
     do
     {
@@ -242,13 +255,13 @@ OString createFileNameFromType( const OString& destination,
             if ( errno == ENOENT )
                 return OString();
         }
-        
+
         nameBuffer.append(token);
     }
-    while ( nIndex >= 0 );	
+    while ( nIndex >= 0 );
 
     return fileName;
-}	
+}
 
 sal_Bool fileExists(const OString& fileName)
 {
@@ -261,14 +274,14 @@ sal_Bool fileExists(const OString& fileName)
     }
 
     return sal_False;
-}	
+}
 
 sal_Bool checkFileContent(const OString& targetFileName, const OString& tmpFileName)
 {
     FILE  *target = fopen(targetFileName.getStr(), "r");
     FILE  *tmp = fopen(tmpFileName.getStr(), "r");
     sal_Bool ret = sal_False;
-    
+
     if (target != NULL && tmp != NULL)
     {
         sal_Bool 	bFindChanges = sal_False;
@@ -283,9 +296,9 @@ sal_Bool checkFileContent(const OString& targetFileName, const OString& tmpFileN
             n2 = fread(buffer2, sizeof(sal_Char), 1024, tmp);
 
             if ( n1 != n2 )
-            {	
+            {
                 bFindChanges = sal_True;
-            } 
+            }
             else
             {
                 if ( rtl_compareMemory(buffer1, buffer2, n2) != 0 )
@@ -301,7 +314,7 @@ sal_Bool checkFileContent(const OString& targetFileName, const OString& tmpFileN
             if ( !unlink(targetFileName.getStr()) )
                 if ( !rename(tmpFileName.getStr(), targetFileName.getStr()) )
                     ret = sal_True;
-        }	
+        }
         else
         {
             if ( !unlink(tmpFileName.getStr()) )
@@ -310,7 +323,7 @@ sal_Bool checkFileContent(const OString& targetFileName, const OString& tmpFileN
     }
 
     return ret;
-}	
+}
 
 const OString inGlobalSet(const OUString & rValue)
 {
@@ -356,7 +369,7 @@ OUString convertToFileUrl(const OString& fileName)
 //*************************************************************************
 FileStream::FileStream()
 {
-}	
+}
 
 FileStream::FileStream(const OString& name, FileAccessMode mode)
     : m_pFile(NULL)
@@ -366,7 +379,7 @@ FileStream::FileStream(const OString& name, FileAccessMode mode)
         m_name = name;
         m_pFile = fopen(m_name, checkAccessMode(mode));
     }
-}	
+}
 
 FileStream::~FileStream()
 {
@@ -375,13 +388,13 @@ FileStream::~FileStream()
         fflush(m_pFile);
         fclose(m_pFile);
     }
-}	
-    
+}
+
 sal_Bool FileStream::isValid()
 {
     if ( m_pFile )
         return sal_True;
-    
+
     return sal_False;
 }
 
@@ -392,7 +405,7 @@ void FileStream::open(const OString& name, FileAccessMode mode)
         m_name = name;
         m_pFile = fopen(m_name, checkAccessMode(mode));
     }
-}	
+}
 
 void FileStream::close()
 {
@@ -403,7 +416,7 @@ void FileStream::close()
         m_pFile = NULL;
         m_name = OString();
     }
-}	
+}
 
 sal_Int32 FileStream::getSize()
 {
@@ -418,7 +431,7 @@ sal_Int32 FileStream::getSize()
         fseek(m_pFile, pos, SEEK_SET);
     }
     return size;
-}	
+}
 
 const sal_Char* FileStream::checkAccessMode(FileAccessMode mode)
 {
