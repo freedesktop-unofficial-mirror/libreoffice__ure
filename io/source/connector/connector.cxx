@@ -2,9 +2,9 @@
  *
  *  $RCSfile: connector.cxx,v $
  *
- *  $Revision: 1.12 $
+ *  $Revision: 1.13 $
  *
- *  last change: $Author: sb $ $Date: 2002-10-04 09:39:51 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:58:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -124,14 +124,14 @@ namespace stoc_connector
     {
         g_moduleCount.modCnt.release( &g_moduleCount.modCnt );
     }
-    
+
     Reference< XConnection > SAL_CALL OConnector::connect( const OUString& sConnectionDescription )
         throw( NoConnectException, ConnectionSetupException, RuntimeException)
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OString tmp = OUStringToOString(sConnectionDescription, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("connector %s\n", tmp.getStr());
-#endif 
+#endif
 
         // split string into tokens
         try
@@ -211,10 +211,10 @@ namespace stoc_connector
                 OUString delegatee = OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.connection.Connector."));
                 delegatee += aDesc.getName();
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
                 OString tmp = OUStringToOString(delegatee, RTL_TEXTENCODING_ASCII_US);
                 OSL_TRACE("connector: trying to get service %s\n", tmp.getStr());
-#endif 
+#endif
                 Reference<XConnector> xConnector(
                     _xSMgr->createInstanceWithContext(delegatee, _xCtx), UNO_QUERY );
 
@@ -238,7 +238,7 @@ namespace stoc_connector
                                            Reference< XInterface > ());
         }
     }
-    
+
     Sequence< OUString > connector_getSupportedServiceNames()
     {
         static Sequence < OUString > *pNames = 0;
@@ -254,12 +254,12 @@ namespace stoc_connector
         }
         return *pNames;
     }
-    
+
     OUString connector_getImplementationName()
     {
         return OUString( RTL_CONSTASCII_USTRINGPARAM( IMPLEMENTATION_NAME ) );
     }
-    
+
         OUString OConnector::getImplementationName() throw()
     {
         return connector_getImplementationName();
@@ -269,11 +269,11 @@ namespace stoc_connector
     {
         Sequence< OUString > aSNL = getSupportedServiceNames();
         const OUString * pArray = aSNL.getConstArray();
-        
+
         for( sal_Int32 i = 0; i < aSNL.getLength(); i++ )
             if( pArray[i] == ServiceName )
                 return sal_True;
-        
+
         return sal_False;
     }
 
@@ -281,7 +281,7 @@ namespace stoc_connector
     {
         return connector_getSupportedServiceNames();
     }
-    
+
     Reference< XInterface > SAL_CALL connector_CreateInstance( const Reference< XComponentContext > & xCtx)
     {
         return Reference < XInterface >( ( OWeakObject * ) new OConnector(xCtx) );
@@ -308,7 +308,7 @@ sal_Bool SAL_CALL component_canUnload( TimeValue *pTime )
 {
     return g_moduleCount.canUnload( &g_moduleCount , pTime );
 }
-    
+
 //==================================================================================================
 void SAL_CALL component_getImplementationEnvironment(
     const sal_Char ** ppEnvTypeName, uno_Environment ** ppEnv )
