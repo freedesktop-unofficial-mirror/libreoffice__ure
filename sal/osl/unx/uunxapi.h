@@ -2,9 +2,9 @@
  *
  *  $RCSfile: uunxapi.h,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 16:46:06 $
+ *  last change: $Author: hr $ $Date: 2004-02-03 13:25:17 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -87,18 +87,11 @@
  extern "C"
  {
  #endif
- 
- /***********************************
-  access_u 
-  
-  @see access
-  **********************************/
-  
+    
+ /* @see access */   
  int access_u(const rtl_uString* pustrPath, int mode);
  
- /***********************************
-  realpath_u
-  
+ /***********************************  
   @descr
   The return value differs from the
   realpath function
@@ -107,20 +100,16 @@
   sal_False
   
   @see realpath
-  **********************************/
-  
+  **********************************/  
  sal_Bool realpath_u(
      const rtl_uString* pustrFileName, 
     rtl_uString** ppustrResolvedName);
- 
- /***********************************
-  lstat_u 
-  
-  @see lstat
-  **********************************/
-  
+   
+ /* @see lstat */
  int lstat_u(const rtl_uString* pustrPath, struct stat* buf);
  
+ /* @see mkdir */
+ int mkdir_u(const rtl_uString* path, mode_t mode);
  
  #ifdef __cplusplus
  }
