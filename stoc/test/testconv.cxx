@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testconv.cxx,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-19 14:02:43 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:14:02 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -93,7 +93,7 @@ static void printValue( const Any & rVal )
     // print value
     OString aStr( OUStringToOString( rVal.getValueType().getTypeName(), RTL_TEXTENCODING_ISO_8859_1 ) );
     printf( "(%s)", aStr.getStr() );
-    
+
     switch (rVal.getValueTypeClass())
     {
     case TypeClass_VOID:
@@ -151,7 +151,7 @@ static void printValue( const Any & rVal )
     {
         typelib_EnumTypeDescription * pEnumTD = 0;
         TYPELIB_DANGER_GET( (typelib_TypeDescription **)&pEnumTD, rVal.getValueTypeRef() );
-        
+
         for ( sal_Int32 nPos = pEnumTD->nEnumValues; nPos--; )
         {
             if (pEnumTD->pEnumValues[nPos] == *(int *)rVal.getValue())
@@ -172,7 +172,7 @@ static void printValue( const Any & rVal )
         TYPELIB_DANGER_GET( &pSeqTD, rVal.getValueTypeRef() );
         typelib_TypeDescription * pElemTD = 0;
         TYPELIB_DANGER_GET( &pElemTD, ((typelib_IndirectTypeDescription *)pSeqTD)->pType );
-        
+
         sal_Int32 nLen = pSeq->nElements;
         if (nLen)
         {
@@ -190,7 +190,7 @@ static void printValue( const Any & rVal )
         TYPELIB_DANGER_RELEASE( pSeqTD );
         break;
     }
-    
+
     default:
         printf( ">not printable<" );
         break;
@@ -204,9 +204,9 @@ static sal_Bool convertTo( const Type & rDestType, const Any & rVal, sal_Bool bE
 {
     sal_Bool bCanConvert = sal_False;
     Any aRet;
-    
+
     OString aExcMsg;
-    
+
     try
     {
         aRet = s_xConverter->convertTo( rVal, rDestType );
@@ -216,7 +216,7 @@ static sal_Bool convertTo( const Type & rDestType, const Any & rVal, sal_Bool bE
     {
         aExcMsg = OUStringToOString( rExc.Message, RTL_TEXTENCODING_ASCII_US );
     }
-    
+
     if (bExpectSuccess && !bCanConvert)
     {
         printf( "# conversion of " );
@@ -227,7 +227,7 @@ static sal_Bool convertTo( const Type & rDestType, const Any & rVal, sal_Bool bE
         printf( aExcMsg.getStr() );
         printf( "]\n" );
         aRet = s_xConverter->convertTo( rVal, rDestType );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         // for debugging, to trace again
         try
         {
@@ -246,13 +246,13 @@ static sal_Bool convertTo( const Type & rDestType, const Any & rVal, sal_Bool bE
         printf( " to " );
         printValue( aRet );
         printf( " was successful, but was not expected to be!\n" );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         // for debugging, to trace again
         aRet = s_xConverter->convertTo( rVal, rDestType );
 #endif
         return sal_False;
     }
-    
+
 #ifdef __RECONVERSION_OUTPUT__
 //= re-conversion output =
     if (bCanConvert)
@@ -270,7 +270,7 @@ static sal_Bool convertTo( const Type & rDestType, const Any & rVal, sal_Bool bE
         {
             aExcMsg = OUStringToOString( rExc.Message, RTL_TEXTENCODING_ISO_8859_1 );
         }
-        
+
         if (bReConvert)
         {
             if (rVal != aRet2)
@@ -296,7 +296,7 @@ static sal_Bool convertTo( const Type & rDestType, const Any & rVal, sal_Bool bE
         }
     }
 #endif
-    
+
     return sal_True;
 }
 
@@ -308,12 +308,12 @@ typedef struct _ConvBlock
     sal_Bool	_toString, _toDouble, _toFloat;
     sal_Bool	_toUINT32, _toINT32, _toUINT16, _toINT16, _toBYTE, _toBOOL, _toChar;
     sal_Bool	_toTypeClass, _toSeqINT16, _toSeqAny;
-    
+
     _ConvBlock()
     {
     }
     _ConvBlock( const Any & rValue_,
-                sal_Bool toString_, sal_Bool toDouble_, sal_Bool toFloat_, 
+                sal_Bool toString_, sal_Bool toDouble_, sal_Bool toFloat_,
                 sal_Bool toUINT32_, sal_Bool toINT32_, sal_Bool toUINT16_, sal_Bool toINT16_,
                 sal_Bool toBYTE_, sal_Bool toBOOL_, sal_Bool toChar_,
                 sal_Bool toTypeClass_, sal_Bool toSeqINT16_, sal_Bool toSeqAny_ )
@@ -333,7 +333,7 @@ static sal_Int32 initBlocks( ConvBlock * pTestBlocks )
     Any aVal;
 
     sal_uInt32 nElems = 0;
-    
+
     // ==BYTE==
     aVal <<= OUString::createFromAscii( "0xff" );
     pTestBlocks[nElems++] = ConvBlock( aVal, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 );
@@ -656,10 +656,10 @@ static void test_Conversion( const Reference< XMultiServiceFactory > & xMgr )
 
     Reference< XTypeConverter > xConverter( xMgr->createInstance(
         OUString::createFromAscii( "com.sun.star.script.Converter" ) ), UNO_QUERY );
-    
+
     ConvBlock * pTestBlocks = new ConvBlock[256];
     sal_Int32 nPos = initBlocks( pTestBlocks );
-    
+
     s_xConverter = xConverter;
     while (nPos--)
     {
@@ -679,13 +679,13 @@ static void test_Conversion( const Reference< XMultiServiceFactory > & xMgr )
         convertTo( ::getCppuType( (const TypeClass *)0 ), rVal, rBlock._toTypeClass );
         convertTo( ::getCppuType( (const Sequence< sal_Int16 > *)0 ), rVal, rBlock._toSeqINT16 );
         convertTo( ::getCppuType( (const Sequence< Any > *)0 ), rVal, rBlock._toSeqAny );
-        
+
         convertTo( ::getVoidCppuType(), rVal, sal_True ); // anything converts to void
     }
     s_xConverter.clear();
-    
+
     delete [] pTestBlocks;
-    
+
     Any aRet;
     aRet = xConverter->convertTo( Any( &xMgr, ::getCppuType( (const Reference< XMultiServiceFactory > *)0 ) ),
                                   ::getCppuType( (const Reference< XServiceInfo > *)0 ) );
@@ -703,17 +703,17 @@ static void test_Conversion( const Reference< XMultiServiceFactory > & xMgr )
     printf( "test_Conversion(): end.\n" );
 }
 
-    
+
 #ifdef UNX
-#define REG_PREFIX 		"lib"	
+#define REG_PREFIX 		"lib"
 #ifdef MACOSX
 #define DLL_POSTFIX 	".dylib"
 #else
 #define DLL_POSTFIX 	".so"
 #endif
 #else
-#define REG_PREFIX 		""		
-#define DLL_POSTFIX 	".dll"	
+#define REG_PREFIX 		""
+#define DLL_POSTFIX 	".dll"
 #endif
 
 #if (defined UNX) || (defined OS2)
@@ -723,13 +723,13 @@ int __cdecl main( int argc, char * argv[] )
 #endif
 {
     Reference< XMultiServiceFactory > xMgr( createRegistryServiceFactory( OUString::createFromAscii("stoctest.rdb") ) );
-    
+
     try
     {
         Reference< XImplementationRegistration > xImplReg(
             xMgr->createInstance( OUString::createFromAscii("com.sun.star.registry.ImplementationRegistration") ), UNO_QUERY );
         OSL_ENSURE( xImplReg.is(), "### no impl reg!" );
-        
+
         OUString aLibName( OUString::createFromAscii( REG_PREFIX ) );
         aLibName += OUString::createFromAscii("tcv");
 #ifndef OS2
@@ -738,7 +738,7 @@ int __cdecl main( int argc, char * argv[] )
         xImplReg->registerImplementation(
             OUString::createFromAscii("com.sun.star.loader.SharedLibrary"),
             aLibName, Reference< XSimpleRegistry >() );
-        
+
         test_Conversion( xMgr );
     }
     catch (Exception & rExc)
@@ -749,7 +749,7 @@ int __cdecl main( int argc, char * argv[] )
         OSL_TRACE( aMsg.getStr() );
         OSL_TRACE( "\n" );
     }
-    
+
     Reference< XComponent >( xMgr, UNO_QUERY )->dispose();
     return 0;
 }
