@@ -2,9 +2,9 @@
  *
  *  $RCSfile: servicefactory.cxx,v $
  *
- *  $Revision: 1.18 $
+ *  $Revision: 1.19 $
  *
- *  last change: $Author: dbo $ $Date: 2001-06-25 14:15:02 $
+ *  last change: $Author: ok $ $Date: 2001-07-09 12:31:47 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -148,7 +148,7 @@ Reference< registry::XSimpleRegistry > SAL_CALL createSimpleRegistry(
     catch (Exception &)
     {
     }
-    
+
     OSL_ENSURE( 0, "### cannot instanciate simple registry!" );
     return Reference< registry::XSimpleRegistry >();
 }
@@ -168,7 +168,7 @@ Reference< registry::XSimpleRegistry > SAL_CALL createNestedRegistry(
     catch (Exception &)
     {
     }
-    
+
     OSL_ENSURE( 0, "### cannot instanciate simple registry!" );
     return Reference< registry::XSimpleRegistry >();
 }
@@ -188,10 +188,10 @@ static Reference< lang::XMultiComponentFactory > bootstrapInitialSF(
         OUString( RTL_CONSTASCII_USTRINGPARAM("smgr") ), rBootstrapPath,
         OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.comp.stoc.ORegistryServiceManager") ),
         Reference< lang::XMultiServiceFactory >(), Reference< registry::XRegistryKey >() ) ), UNO_QUERY );
-    
+
     // write initial shared lib loader, simple registry, default registry, impl reg
     Reference< container::XSet > xSet( xSF, UNO_QUERY );
-    
+
     // loader
     {
     Any aFac( makeAny( loadSharedLibComponentFactory(
@@ -237,7 +237,7 @@ static Reference< lang::XMultiComponentFactory > bootstrapInitialSF(
     xSet->insert( aFac );
     OSL_ENSURE( xSet->has( aFac ), "### failed registering impl reg!" );
     }
-    
+
     return Reference< lang::XMultiComponentFactory >( xSF, UNO_QUERY );
 }
 //--------------------------------------------------------------------------------------------------
@@ -255,7 +255,7 @@ static Reference< XComponentContext > initializeSF(
             OUString( RTL_CONSTASCII_USTRINGPARAM("servicemanager does not support XInitialization!") ),
             Reference< XInterface >() );
     }
-    
+
     // default initial context
     ContextEntry_Init context_values[ 4 ];
     // smgr
@@ -271,7 +271,7 @@ static Reference< XComponentContext > initializeSF(
     context_values[ 2 ].name = OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.comp.stoc.TypeDescriptionManager.CacheSize") );
     context_values[ 2 ].value <<= (sal_Int32)512;
     sal_Int32 nEntries = 3;
-    
+
     if (types_xRegistry.is())
     {
         // add registry td provider
@@ -282,44 +282,44 @@ static Reference< XComponentContext > initializeSF(
             Reference< lang::XMultiServiceFactory >( xSF, UNO_QUERY ), Reference< registry::XRegistryKey >() ) ) );
         xSet->insert( aFac );
         OSL_ENSURE( xSet->has( aFac ), "### failed registering registry td provider!" );
-        
+
         // rdbtdp: registries to be used
         context_values[ 3 ].bLateInitService = false;
         context_values[ 3 ].name = OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.comp.stoc.RegistryTypeDescriptionProvider.Registries") );
         context_values[ 3 ].value = makeAny( Sequence< Reference< registry::XSimpleRegistry > >( &types_xRegistry, 1 ) );
         nEntries = 4;
     }
-    
+
     Reference< XComponentContext > xContext( createInitialComponentContext(
         context_values, nEntries, services_xRegistry ) );
-    
+
     Sequence< Any > aSFInit( 2 );
     aSFInit[ 0 ] <<= services_xRegistry;
     aSFInit[ 1 ] <<= xContext; // default context
     xSFInit->initialize( aSFInit );
-    
+
     Reference< container::XHierarchicalNameAccess > xTDMgr;
     if (xContext->getValueByName( OUString( RTL_CONSTASCII_USTRINGPARAM(
         "com.sun.star.reflection.theTypeDescriptionManager") ) ) >>= xTDMgr)
     {
         installTypeDescriptionManager( xTDMgr );
     }
-    
+
     return xContext;
 }
 
 //==================================================================================================
 static Reference< lang::XMultiComponentFactory > createImplServiceFactory(
-    const OUString & rWriteRegistry, 
+    const OUString & rWriteRegistry,
     const OUString & rReadRegistry,
     sal_Bool bReadOnly,
     const OUString & rBootstrapPath )
     SAL_THROW( (Exception) )
 {
     Reference< lang::XMultiComponentFactory > xSF( bootstrapInitialSF( rBootstrapPath ) );
-    
+
     Reference< registry::XSimpleRegistry > xRegistry;
-    
+
     // open a registry
     sal_Bool bRegistryShouldBeValid = sal_False;
     if (rWriteRegistry.getLength() && !rReadRegistry.getLength())
@@ -342,7 +342,7 @@ static Reference< lang::XMultiComponentFactory > createImplServiceFactory(
     {
         bRegistryShouldBeValid = sal_True;
         xRegistry.set( createNestedRegistry( rBootstrapPath ) );
-        
+
         Reference< registry::XSimpleRegistry > xWriteReg( createSimpleRegistry( rBootstrapPath ) );
         if (xWriteReg.is())
         {
@@ -355,7 +355,7 @@ static Reference< lang::XMultiComponentFactory > createImplServiceFactory(
                 catch (registry::InvalidRegistryException &)
                 {
                 }
-                
+
                 if (! xWriteReg->isValid())
                 {
                     throw Exception(
@@ -368,35 +368,35 @@ static Reference< lang::XMultiComponentFactory > createImplServiceFactory(
                 xWriteReg->open( rWriteRegistry, sal_False, sal_True );
             }
         }
-        
+
         Reference< registry::XSimpleRegistry > xReadReg( createSimpleRegistry( rBootstrapPath ) );
         if (xReadReg.is())
         {
             xReadReg->open( rReadRegistry, sal_True, sal_False );
         }
-        
+
         Reference< lang::XInitialization > xInit( xRegistry, UNO_QUERY );
         Sequence< Any > aInitSeq( 2 );
         aInitSeq[ 0 ] <<= xWriteReg;
         aInitSeq[ 1 ] <<= xReadReg;
         xInit->initialize( aInitSeq );
     }
-    
+
     if (bRegistryShouldBeValid && (!xRegistry.is() || !xRegistry->isValid()))
     {
         throw Exception(
             OUString( RTL_CONSTASCII_USTRINGPARAM("specified registry could not be initialized") ),
             Reference< XInterface >() );
     }
-    
+
     initializeSF( xSF, xRegistry, xRegistry, rBootstrapPath );
-    
+
     return xSF;
 }
 
 //==================================================================================================
 Reference< lang::XMultiServiceFactory > SAL_CALL createRegistryServiceFactory(
-    const OUString & rWriteRegistry, 
+    const OUString & rWriteRegistry,
     const OUString & rReadRegistry,
     sal_Bool bReadOnly,
     const OUString & rBootstrapPath )
@@ -423,7 +423,7 @@ Reference< XComponentContext > SAL_CALL bootstrap_InitialComponentContext(
 
 static OUString findBoostrapArgument(const OUString & arg_name, sal_Bool * pFallenBack) SAL_THROW(()) {
     OUString result;
-    
+
     OUString prefixed_arg_name = OUString(RTL_CONSTASCII_USTRINGPARAM("UNO_"));
     prefixed_arg_name += arg_name.toAsciiUpperCase();
 
@@ -437,7 +437,7 @@ static OUString findBoostrapArgument(const OUString & arg_name, sal_Bool * pFall
 
         OUString fileName_url;
         osl_getExecutableFile(&fileName_url.pData);
-        
+
         OUString fileName;
         osl::FileBase::getSystemPathFromFileURL(fileName_url, fileName);
 
@@ -445,31 +445,37 @@ static OUString findBoostrapArgument(const OUString & arg_name, sal_Bool * pFall
         OUString progExt = OUString::createFromAscii(SAL_PRGEXTENSION);
         if(fileName.lastIndexOf(progExt) == (fileName.getLength() - progExt.getLength()))
            fileName = fileName.copy(0, fileName.lastIndexOf(progExt));
-        
+
+#ifdef WNT
+        progExt = progExt.toAsciiUpperCase();
+           if(fileName.lastIndexOf(progExt) == (fileName.getLength() - progExt.getLength()))
+           fileName = fileName.copy(0, fileName.lastIndexOf(progExt));
+#endif
+
         result = fileName;
         result += OUString(RTL_CONSTASCII_USTRINGPARAM("_"));
         result += arg_name.toAsciiLowerCase();
         result += OUString(RTL_CONSTASCII_USTRINGPARAM(".rdb"));
-        
+
 #ifdef DEBUG
         OString result_dbg = OUStringToOString(result, RTL_TEXTENCODING_ASCII_US);
         OString arg_name_dbg = OUStringToOString(arg_name, RTL_TEXTENCODING_ASCII_US);
-        OSL_TRACE("cppuhelper::createServiceFactoy - setting %s relative to executable: %s\n", 
-                  arg_name_dbg.getStr(), 
+        OSL_TRACE("cppuhelper::createServiceFactoy - setting %s relative to executable: %s\n",
+                  arg_name_dbg.getStr(),
                   result_dbg.getStr());
 #endif
     }
-    else 
+    else
     {
         if(*result == (sal_Unicode)'/') // the path is already absolut, so do nothing
             ;
-    
+
         else // it is real-relative, so extend it
         {
             OUString fileName;
             osl_getExecutableFile(&fileName.pData);
             osl::FileBase::getSystemPathFromFileURL(fileName, fileName);
-            
+
             fileName = fileName.copy(0, fileName.lastIndexOf('/') + 1);
             fileName += result;
 
@@ -479,21 +485,21 @@ static OUString findBoostrapArgument(const OUString & arg_name, sal_Bool * pFall
 #ifdef DEBUG
         OString prefixed_arg_name_dbg = OUStringToOString(prefixed_arg_name, RTL_TEXTENCODING_ASCII_US);
         OString result_dbg = OUStringToOString(result, RTL_TEXTENCODING_ASCII_US);
-        OSL_TRACE("cppuhelper::createServiceFactoy - found %s in env: %s", 
-                  prefixed_arg_name_dbg.getStr(), 
+        OSL_TRACE("cppuhelper::createServiceFactoy - found %s in env: %s",
+                  prefixed_arg_name_dbg.getStr(),
                   result_dbg.getStr());
 #endif
     }
-    
+
     return result;
 }
- 
 
-static Reference<XSimpleRegistry> nestRegistries(const Reference<XSingleServiceFactory> & xSimRegFac, 
-                                                 const Reference<XSingleServiceFactory> & xNesRegFac, 
+
+static Reference<XSimpleRegistry> nestRegistries(const Reference<XSingleServiceFactory> & xSimRegFac,
+                                                 const Reference<XSingleServiceFactory> & xNesRegFac,
                                                  OUString csl_rdbs,
                                                  const OUString & write_rdb,
-                                                 sal_Bool forceWrite_rdb)  
+                                                 sal_Bool forceWrite_rdb)
     SAL_THROW((Exception))
 {
     sal_Int32 index;
@@ -527,10 +533,10 @@ static Reference<XSimpleRegistry> nestRegistries(const Reference<XSingleServiceF
         csl_rdbs = (index == -1) ? OUString() : csl_rdbs.copy(index + 1);
 
         Reference<XSimpleRegistry> simpleRegistry = Reference<XSimpleRegistry>::query(xSimRegFac->createInstance());
-        try 
+        try
         {
             OUString rdb_name_url;
-            
+
             osl::FileBase::getFileURLFromSystemPath(rdb_name, rdb_name_url);
             simpleRegistry->open(rdb_name_url, sal_True, sal_False);
 
@@ -538,19 +544,19 @@ static Reference<XSimpleRegistry> nestRegistries(const Reference<XSingleServiceF
             {
                 Reference<XSimpleRegistry> nestedRegistry = Reference<XSimpleRegistry>::query(xNesRegFac->createInstance());
                 Reference<XInitialization> nestedRegistry_xInit(nestedRegistry, UNO_QUERY);
-            
+
                 Sequence<Any> aArgs(2);
                 aArgs[0] = makeAny(lastRegistry);
                 aArgs[1] = makeAny(simpleRegistry);
-            
+
                 nestedRegistry_xInit->initialize(aArgs);
-            
+
                 lastRegistry = nestedRegistry;
             }
             else
                 lastRegistry = simpleRegistry;
         }
-        catch(InvalidRegistryException & invalidRegistryException) 
+        catch(InvalidRegistryException & invalidRegistryException)
         {
 #ifdef DEBUG
             OString rdb_name_tmp = OUStringToOString(rdb_name, RTL_TEXTENCODING_ASCII_US);
@@ -584,28 +590,28 @@ Reference<XComponentContext> SAL_CALL defaultBootstrap_InitialComponentContext()
     Reference<XMultiServiceFactory> smgr_XMultiServiceFactory(smgr_XMultiComponentFactory, UNO_QUERY);
 
     Reference<XRegistryKey> xEmptyKey;
-    
+
     Reference<XSingleServiceFactory> xSimRegFac(
         loadSharedLibComponentFactory(
             OUString(RTL_CONSTASCII_USTRINGPARAM("simreg")),
-            bootstrapPath, 
+            bootstrapPath,
             OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.comp.stoc.SimpleRegistry")),
-            smgr_XMultiServiceFactory, 
+            smgr_XMultiServiceFactory,
             xEmptyKey),
         UNO_QUERY);
 
     Reference<XSingleServiceFactory> xNesRegFac(
         loadSharedLibComponentFactory(
             OUString( RTL_CONSTASCII_USTRINGPARAM("defreg")),
-            bootstrapPath, 
+            bootstrapPath,
             OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.comp.stoc.NestedRegistry")),
-            smgr_XMultiServiceFactory, 
-            xEmptyKey), 
+            smgr_XMultiServiceFactory,
+            xEmptyKey),
         UNO_QUERY);
 
     Reference<XSimpleRegistry> types_xRegistry = nestRegistries(xSimRegFac, xNesRegFac, cls_uno_types, OUString(), sal_False);
     Reference<XSimpleRegistry> services_xRegistry = nestRegistries(xSimRegFac, xNesRegFac, cls_uno_services, write_rdb, !fallenBack);
-    
+
     return initializeSF(smgr_XMultiComponentFactory, types_xRegistry, services_xRegistry, bootstrapPath);
 }
 
