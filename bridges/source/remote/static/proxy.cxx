@@ -2,9 +2,9 @@
  *
  *  $RCSfile: proxy.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:07 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:28:29 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,6 +58,9 @@
  *
  *
  ************************************************************************/
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 #ifdef SOLARIS
 #include <alloca.h>
@@ -81,7 +84,7 @@
 
 #include "remote_types.hxx"
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 #include <bridges/remote/counter.hxx>
 static MyCounter thisCounter( "DEBUG : Remote2UnoProxy");
 #endif
@@ -126,7 +129,7 @@ void SAL_CALL remote_release( void *pRemoteI )
 }
 
 void Remote2UnoProxy::thisDispatch(
-    uno_Interface * pUnoI, 
+    uno_Interface * pUnoI,
     typelib_TypeDescription * pType,
     void * pReturn,
     void * ppArgs[],
@@ -144,10 +147,10 @@ void Remote2UnoProxy::thisDispatch(
     sal_Bool *pbIsOut = 0;
     sal_Bool *pbConversionNeeded = 0;
     sal_Bool bConversionNeededForReturn = 0;
-    
+
     //--------------------------------
     // Collect all needed types !
-    //--------------------------------	
+    //--------------------------------
     if( typelib_TypeClass_INTERFACE_ATTRIBUTE == pType->eTypeClass )
     {
         pAttributeType = ( typelib_InterfaceAttributeTypeDescription * ) pType;
@@ -163,13 +166,13 @@ void Remote2UnoProxy::thisDispatch(
             pbIsIn  = ( sal_Bool * ) alloca( sizeof( sal_Bool ) );
             pbIsOut = ( sal_Bool * ) alloca( sizeof( sal_Bool ) );
             pbConversionNeeded = ( sal_Bool *) alloca( sizeof( sal_Bool ) );
-            
+
             pbIsIn[0]  = sal_True;
             pbIsOut[0] = sal_False;
             ppArgType[0] = 0;
             TYPELIB_DANGER_GET( &( ppArgType[0] ) , pAttributeType->pAttributeTypeRef );
             pbConversionNeeded[0] = remote_relatesToInterface( ppArgType[0] );
-            
+
         }
     }
     if( typelib_TypeClass_INTERFACE_METHOD == pType->eTypeClass )
@@ -192,7 +195,7 @@ void Remote2UnoProxy::thisDispatch(
             pbConversionNeeded[i] = remote_relatesToInterface( ppArgType[i] );
         }
     }
-    
+
     void *pRemoteReturn = 0;
     if( pReturnType )
     {
@@ -205,26 +208,26 @@ void Remote2UnoProxy::thisDispatch(
             pRemoteReturn = pReturn;
         }
     }
-    
+
     void ** ppRemoteArgs = 0;
     if( nArgCount )
     {
         ppRemoteArgs = (void**) alloca( sizeof( void * ) * nArgCount );
     }
-    
+
     sal_Int32 i;
     for( i = 0 ; i < nArgCount ; i ++ )
     {
         if( pbConversionNeeded[i] )
         {
             ppRemoteArgs[i] = alloca( ppArgType[i]->nSize );
-            
+
             if( pbIsIn[i] ) {
                 uno_copyAndConvertData(
                     ppRemoteArgs[i],
                     ppArgs[i],
                     ppArgType[i],
-                    p->m_mapUno2Remote.get() );				
+                    p->m_mapUno2Remote.get() );
             }
         }
         else
@@ -253,7 +256,7 @@ void Remote2UnoProxy::thisDispatch(
                 p->m_mapRemote2Uno.get() );
             uno_destructData( pRemoteReturn , pReturnType , remote_release );
         }
-    
+
         sal_Int32 i;
         for( i = 0 ; i < nArgCount ; i ++ )
         {
@@ -270,7 +273,7 @@ void Remote2UnoProxy::thisDispatch(
                                                 p->m_mapRemote2Uno.get()  );
                     }
                 }
-                else // pure out 
+                else // pure out
                 {
                     uno_copyAndConvertData( ppArgs[i] ,
                                             ppRemoteArgs[i],
@@ -352,8 +355,8 @@ Remote2UnoProxy::Remote2UnoProxy( remote_Interface *pRemoteI,
         m_sOid.pData,
         m_pType );
     m_pRemoteI->acquire( m_pRemoteI );
-    
-#ifdef DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.acquire();
 #endif
 }
@@ -367,7 +370,7 @@ Remote2UnoProxy::~Remote2UnoProxy()
     m_pRemoteI->release( m_pRemoteI );
     m_pEnvUno->release( m_pEnvUno );
     m_pEnvRemote->release( m_pEnvRemote );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.release();
 #endif
 }
