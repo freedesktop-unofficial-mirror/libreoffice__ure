@@ -2,9 +2,9 @@
  *
  *  $RCSfile: bootstrap.cxx,v $
  *
- *  $Revision: 1.13 $
+ *  $Revision: 1.14 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 12:26:21 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:34:00 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -66,7 +66,7 @@
 #include "rtl/bootstrap.hxx"
 #include "rtl/string.hxx"
 #include "rtl/ustrbuf.hxx"
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #include "rtl/strbuf.hxx"
 #endif
 #include "osl/diagnose.h"
@@ -131,7 +131,7 @@ Bootstrap const & get_unorc() SAL_THROW( () )
     {
         OUString iniName( get_this_libpath() + OUSTR("/" SAL_CONFIGFILE("uno")) );
         rtlBootstrapHandle bstrap = rtl_bootstrap_args_open( iniName.pData );
-        
+
         ClearableMutexGuard guard( Mutex::getGlobalMutex() );
         if (s_bstrap)
         {
@@ -161,15 +161,15 @@ void addFactories(
     Reference< container::XSet > xSet( xMgr, UNO_QUERY );
     OSL_ASSERT( xSet.is() );
     Reference< lang::XMultiServiceFactory > xSF( xMgr, UNO_QUERY );
-    
+
     while (*ppNames)
     {
         OUString lib( OUString::createFromAscii( *ppNames++ ) );
         OUString implName( OUString::createFromAscii( *ppNames++ ) );
-        
+
         Any aFac( makeAny( loadSharedLibComponentFactory( lib, bootstrapPath, implName, xSF, xKey ) ) );
         xSet->insert( aFac );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         if (xSet->has( aFac ))
         {
             Reference< lang::XServiceInfo > xInfo;
@@ -192,7 +192,7 @@ void addFactories(
             }
         }
 #endif
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         if (! xSet->has( aFac ))
         {
             OStringBuffer buf( 64 );
@@ -257,7 +257,7 @@ static OUString findBoostrapArgument(
 
         OUString fileName;
         bootstrap.getIniName(fileName);
-        
+
         // cut the rc extension
         OUStringBuffer result_buf( 64 );
         result_buf.append( fileName.copy(0, fileName.getLength() - strlen(SAL_CONFIGFILE(""))) );
@@ -265,8 +265,8 @@ static OUString findBoostrapArgument(
         result_buf.append( arg_name.toAsciiLowerCase() );
         result_buf.appendAscii( RTL_CONSTASCII_STRINGPARAM(".rdb") );
         result = result_buf.makeStringAndClear();
-        
-#ifdef DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
         OString result_dbg = OUStringToOString(result, RTL_TEXTENCODING_ASCII_US);
         OString arg_name_dbg = OUStringToOString(arg_name, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("cppuhelper::findBoostrapArgument - setting %s relative to executable: %s\n",
@@ -279,7 +279,7 @@ static OUString findBoostrapArgument(
         if(pFallenBack)
             *pFallenBack = sal_False;
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OString prefixed_arg_name_dbg = OUStringToOString(
             prefixed_arg_name, RTL_TEXTENCODING_ASCII_US );
         OString result_dbg = OUStringToOString(
@@ -290,7 +290,7 @@ static OUString findBoostrapArgument(
             result_dbg.getStr() );
 #endif
     }
-    
+
     return result;
 }
 
@@ -318,7 +318,7 @@ static Reference< registry::XSimpleRegistry > nestRegistries(
         }
         catch (registry::InvalidRegistryException & invalidRegistryException)
         {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
             OString rdb_name_tmp = OUStringToOString(
                 write_rdb, RTL_TEXTENCODING_ASCII_US);
             OString message_dbg = OUStringToOString(
@@ -341,16 +341,16 @@ static Reference< registry::XSimpleRegistry > nestRegistries(
 
         if (! rdb_name.getLength())
             continue;
-        
+
         bool optional = ('?' == rdb_name[ 0 ]);
         if (optional)
             rdb_name = rdb_name.copy( 1 );
-        
+
         try
         {
             Reference<registry::XSimpleRegistry> simpleRegistry(
                 xSimRegFac->createInstance(), UNO_QUERY );
-            
+
             osl::FileBase::getAbsoluteFileURL(baseDir, rdb_name, rdb_name);
             simpleRegistry->open(rdb_name, sal_True, sal_False);
 
@@ -360,7 +360,7 @@ static Reference< registry::XSimpleRegistry > nestRegistries(
                     xNesRegFac->createInstance(), UNO_QUERY );
                 Reference< lang::XInitialization > nestedRegistry_xInit(
                     nestedRegistry, UNO_QUERY );
-                
+
                 Sequence<Any> aArgs(2);
                 aArgs[0] <<= lastRegistry;
                 aArgs[1] <<= simpleRegistry;
@@ -381,7 +381,7 @@ static Reference< registry::XSimpleRegistry > nestRegistries(
                     throw;
             }
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
             OString rdb_name_tmp = OUStringToOString(
                 rdb_name, RTL_TEXTENCODING_ASCII_US );
             OString message_dbg = OUStringToOString(
@@ -393,7 +393,7 @@ static Reference< registry::XSimpleRegistry > nestRegistries(
         }
     }
     while(index != -1 && csl_rdbs.getLength()); // are there more rdbs in list?
-    
+
     return lastRegistry;
 }
 
@@ -406,12 +406,12 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
     OUString iniDir;
 
     osl_getProcessWorkingDir(&iniDir.pData);
-    
+
     Reference<lang::XMultiComponentFactory> smgr_XMultiComponentFactory(
         bootstrapInitialSF(bootstrapPath) );
     Reference<lang::XMultiServiceFactory> smgr_XMultiServiceFactory(
         smgr_XMultiComponentFactory, UNO_QUERY );
-    
+
     Reference<registry::XRegistryKey> xEmptyKey;
     Reference<lang::XSingleServiceFactory> xSimRegFac(
         loadSharedLibComponentFactory(
@@ -420,7 +420,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
             smgr_XMultiServiceFactory,
             xEmptyKey),
         UNO_QUERY);
-    
+
     Reference<lang::XSingleServiceFactory> xNesRegFac(
         loadSharedLibComponentFactory(
             OUSTR(CORE_COMPONENT_LIB("defreg")), bootstrapPath,
@@ -428,10 +428,10 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
             smgr_XMultiServiceFactory,
             xEmptyKey),
         UNO_QUERY);
-    
+
     sal_Bool bFallenback_types;
     OUString cls_uno_types = findBoostrapArgument( bootstrap, OUSTR("TYPES"), &bFallenback_types );
-    
+
     Reference<registry::XSimpleRegistry> types_xRegistry = nestRegistries(
         iniDir, xSimRegFac, xNesRegFac, cls_uno_types, OUString(), sal_False, bFallenback_types );
 
@@ -442,7 +442,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
     if (bootstrap.getFrom( OUSTR("UNO_CFG_URL"), cfg_url ))
     {
         // ==== bootstrap from configuration ====
-        
+
         // servertype;sourcepath[;updatepath]
         sal_Int32 semi = cfg_url.indexOf( ';', 0 );
         OSL_ENSURE( semi >= 0, "# invalid UNO_CFG_URL!" );
@@ -450,7 +450,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
         {
             throw Exception( OUSTR( "invalid UNO_CFG_URL" ), Reference< XInterface >() );
         }
-        
+
         // xxx todo lib names work with src libs: sax, cfgmgr2!!!
         // add additional factories for config provider
         static char const * ar[] = {
@@ -470,11 +470,11 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
             0
         };
         addFactories( ar, bootstrapPath, smgr_XMultiComponentFactory, xEmptyKey );
-        
+
         ContextEntry_Init entry;
         ::std::vector< ContextEntry_Init > context_values;
         context_values.reserve( 2 );
-        
+
         // singleton entry
         entry.bLateInitService = true;
         entry.name = OUSTR("/singletons/com.sun.star.bootstrap.theConfigurationProvider");
@@ -488,7 +488,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
                 OUSTR("com.sun.star.comp.configuration.ConfigurationProvider"),
                 smgr_XMultiServiceFactory, Reference< registry::XRegistryKey >() );
             context_values.push_back( entry );
-            
+
             Sequence< Any > cfg_args( 3 );
             cfg_args[ 0 ] <<= createPropertyValue(
                 OUSTR("servertype"), cfg_url.copy( 0, semi ) );
@@ -507,7 +507,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
                 OUSTR("com.sun.star.comp.configuration.AdministrationProvider"),
                 smgr_XMultiServiceFactory, Reference< registry::XRegistryKey >() );
             context_values.push_back( entry );
-            
+
             Sequence< Any > cfg_args( 2 );
             cfg_args[ 0 ] <<= createPropertyValue(
                 OUSTR("servertype"), cfg_url.copy( 0, semi ) );
@@ -518,7 +518,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
         entry.bLateInitService = false;
         entry.name = OUSTR("/singletons/com.sun.star.bootstrap.theConfigurationProvider/initial-arguments");
         context_values.push_back( entry );
-        
+
         // layer into two contexts
         Reference< XComponentContext > xContext( bootstrapInitialContext(
             smgr_XMultiComponentFactory, types_xRegistry,
@@ -526,7 +526,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
             bootstrapPath, bootstrap, pEntries, nEntries ) );
         xContext = createInitialCfgComponentContext(
             &context_values[ 0 ], context_values.size(), xContext );
-        
+
         // initialize sf
         Reference< lang::XInitialization > xInit( smgr_XMultiComponentFactory, UNO_QUERY );
         OSL_ASSERT( xInit.is() );
@@ -535,7 +535,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
         // for now the registry service manager works upon the wrapped config,
         // we will proceed implementing a config service manager when everything works fine...
         xInit->initialize( aSFInit );
-        
+
         return xContext;
     }
     else
@@ -546,7 +546,7 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
         sal_Bool bFallenback_services;
         OUString cls_uno_services = findBoostrapArgument(
             bootstrap, OUSTR("SERVICES"), &bFallenback_services );
-        
+
         sal_Bool fallenBackWriteRegistry;
         OUString write_rdb = findBoostrapArgument(
             bootstrap, OUSTR("WRITERDB"), &fallenBackWriteRegistry );
@@ -555,22 +555,22 @@ static Reference< XComponentContext > SAL_CALL defaultBootstrap_InitialComponent
             // no standard write rdb anymore
             write_rdb = OUString();
         }
-        
+
         Reference<registry::XSimpleRegistry> services_xRegistry = nestRegistries(
             iniDir, xSimRegFac, xNesRegFac, cls_uno_services, write_rdb,
             !fallenBackWriteRegistry, bFallenback_services );
-        
+
         Reference< XComponentContext > xContext( bootstrapInitialContext(
             smgr_XMultiComponentFactory, types_xRegistry, services_xRegistry,
             bootstrapPath, bootstrap ) );
-        
+
         // initialize sf
         Reference< lang::XInitialization > xInit( smgr_XMultiComponentFactory, UNO_QUERY );
         OSL_ASSERT( xInit.is() );
         Sequence< Any > aSFInit( 1 );
         aSFInit[ 0 ] <<= services_xRegistry;
         xInit->initialize( aSFInit );
-        
+
         return xContext;
     }
 }
