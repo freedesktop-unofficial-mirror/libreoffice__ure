@@ -2,9 +2,9 @@
  *
  *  $RCSfile: TableAutoFormatField.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: nn $ $Date: 2001-05-18 15:00:33 $
+ *  last change: $Author: dr $ $Date: 2001-11-14 15:11:20 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,162 +58,277 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_sheet_TableAutoFormatField_idl__ 
-#define __com_sun_star_sheet_TableAutoFormatField_idl__ 
- 
-#ifndef __com_sun_star_beans_XPropertySet_idl__ 
-#include <com/sun/star/beans/XPropertySet.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_Locale_idl__ 
-#include <com/sun/star/lang/Locale.idl> 
-#endif 
- 
-#ifndef __com_sun_star_awt_FontSlant_idl__ 
-#include <com/sun/star/awt/FontSlant.idl> 
-#endif 
- 
-#ifndef __com_sun_star_table_ShadowFormat_idl__ 
-#include <com/sun/star/table/ShadowFormat.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module sheet {  
- 
-//============================================================================= 
- 
-// DocMerge from xml: service com::sun::star::sheet::TableAutoFormatField
+#ifndef __com_sun_star_sheet_TableAutoFormatField_idl__
+#define __com_sun_star_sheet_TableAutoFormatField_idl__
+
+#ifndef __com_sun_star_beans_XPropertySet_idl__
+#include <com/sun/star/beans/XPropertySet.idl>
+#endif
+
+#ifndef __com_sun_star_lang_Locale_idl__
+#include <com/sun/star/lang/Locale.idl>
+#endif
+
+#ifndef __com_sun_star_awt_FontSlant_idl__
+#include <com/sun/star/awt/FontSlant.idl>
+#endif
+
+#ifndef __com_sun_star_table_ShadowFormat_idl__
+#include <com/sun/star/table/ShadowFormat.idl>
+#endif
+
+#ifndef __com_sun_star_table_CellHoriJustify_idl__
+#include <com/sun/star/table/CellHoriJustify.idl>
+#endif
+
+#ifndef __com_sun_star_table_CellVertJustify_idl__
+#include <com/sun/star/table/CellVertJustify.idl>
+#endif
+
+#ifndef __com_sun_star_table_CellOrientation_idl__
+#include <com/sun/star/table/CellOrientation.idl>
+#endif
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module sheet {
+
+//=============================================================================
+
 /** a single field in a TableAutoFormat.
  */
 service TableAutoFormatField
-{ 
-    // DocMerge: empty anyway
-    interface com::sun::star::beans::XPropertySet; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharFontName
-    /** specifies the name of the font style.
+{
+    interface com::sun::star::beans::XPropertySet;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the name of the western font.
      */
-    [property] string CharFontName; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharHeight
-    /** contains the height of the characters in point.
+    [property] string CharFontName;
+
+    /** specifies the name of the asian font.
      */
-    [property] float CharHeight; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharWeight
-    /** contains the value of the font weight.
+    [optional, property] string CharFontNameAsian;
+
+    /** specifies the name of the complex font.
      */
-    [property] float CharWeight; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharPosture
-    /** contains the value of the posture of the document.
+    [optional, property] string CharFontNameComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the name of the western font style.
      */
-    [property] com::sun::star::awt::FontSlant CharPosture; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharUnderline
+    [property] string CharFontStyleName;
+
+    /** specifies the name of the asian font style.
+     */
+    [optional, property] string CharFontStyleNameAsian;
+
+    /** specifies the name of the complex font style.
+     */
+    [optional, property] string CharFontStyleNameComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the value of the character set of the western font.
+     */
+    [property] string CharFontCharSet;
+
+    /** contains the value of the character set of the asian font.
+     */
+    [optional, property] string CharFontCharSetAsian;
+
+    /** contains the value of the character set of the complex font.
+     */
+    [optional, property] string CharFontCharSetComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the value of the western font family.
+     */
+    [property] string CharFontFamily;
+
+    /** contains the value of the asian font family.
+     */
+    [optional, property] string CharFontFamilyAsian;
+
+    /** contains the value of the complex font family.
+     */
+    [optional, property] string CharFontFamilyComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the value of the pitch of the western font.
+     */
+    [property] string CharFontPitch;
+
+    /** contains the value of the pitch of the asian font.
+     */
+    [optional, property] string CharFontPitchAsian;
+
+    /** contains the value of the pitch of the complex font.
+     */
+    [optional, property] string CharFontPitchComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the height of characters of the western font in point.
+     */
+    [property] float CharHeight;
+
+    /** contains the height of characters of the asian font in point.
+     */
+    [optional, property] float CharHeightAsian;
+
+    /** contains the height of characters of the complex font in point.
+     */
+    [optional, property] float CharHeightComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the value for the weight of characters of the western font.
+     */
+    [property] float CharWeight;
+
+    /** contains the value for the weight of characters of the asian font.
+     */
+    [optional, property] float CharWeightAsian;
+
+    /** contains the value for the weight of characters of the complex font.
+     */
+    [optional, property] float CharWeightComplex;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the value of the posture of characters of the western font.
+     */
+    [property] com::sun::star::awt::FontSlant CharPosture;
+
+    /** contains the value of the posture of characters of the asian font.
+     */
+    [optional, property] com::sun::star::awt::FontSlant CharPostureAsian;
+
+    /** contains the value of the posture of characters of the comlex font.
+     */
+    [optional, property] com::sun::star::awt::FontSlant CharPostureComplex;
+
+    //-------------------------------------------------------------------------
+
     /** contains the value for the character underline.
      */
-    [property] short CharUnderline; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharCrossedOut
+    [property] short CharUnderline;
+
+    //-------------------------------------------------------------------------
+
     /** is <TRUE/> if the characters are crossed out.
      */
-    [property] boolean CharCrossedOut; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharContoured
+    [property] boolean CharCrossedOut;
+
+    //-------------------------------------------------------------------------
+
     /** is <TRUE/> if the characters are contoured.
      */
-    [property] boolean CharContoured; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharShadowed
+    [property] boolean CharContoured;
+
+    //-------------------------------------------------------------------------
+
     /** is <TRUE/> if the characters are shadowed.
      */
-    [property] boolean CharShadowed; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharColor
+    [property] boolean CharShadowed;
+
+    //-------------------------------------------------------------------------
+
     /** contains the value of the text color.
      */
-    [property] long CharColor; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CharLocale
-    /** contains the value of the locale.
-     */
-    [optional, property] com::sun::star::lang::Locale CharLocale; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::CellBackColor
+    [property] long CharColor;
+
+    //-------------------------------------------------------------------------
+
     /** contains the cell background color.
      */
-    [property] long CellBackColor; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::IsCellBackgroundTransparent
+    [property] long CellBackColor;
+
+    //-------------------------------------------------------------------------
+
     /** is <TRUE/> if the cell background is transparent
         and the <member>TableAutoFormatField::CellBackColor</member> value is not used.
      */
-    [property] boolean IsCellBackgroundTransparent; 
- 
-    //------------------------------------------------------------------------- 
-     
-    // DocMerge from xml: property com::sun::star::sheet::TableAutoFormatField::ShadowFormat
+    [property] boolean IsCellBackgroundTransparent;
+
+    //-------------------------------------------------------------------------
+
     /** contains a description of the shadow.
      */
-    [optional, property] com::sun::star::table::ShadowFormat ShadowFormat; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-    $Log: not supported by cvs2svn $
-    Revision 1.4  2000/12/14 12:53:40  mi
-    <true></true> -> <TRUE/> and same with FALSE
-    
-    Revision 1.3  2000/11/08 12:43:46  mi
-    moved from api
-    
-    Revision 1.1.1.1  2000/09/18 23:35:48  hjs
-    initial import
-    
-    Revision 1.5  2000/09/11 11:52:50  mi
-    documentation merged from XML
-     
-    Revision 1.3  2000/02/21 16:18:08  mi 
-    string documentation from stardiv...*.idl-files 
-     
-    Revision 1.2  2000/01/28 16:20:47  mi 
-    #72210# Locale instead of Language in NumberFormatter 
-     
-    Revision 1.1.1.1  1999/11/11 09:48:45  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+    [optional, property] com::sun::star::table::ShadowFormat ShadowFormat;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the horizontal alignment of the cell contents.
+     */
+    [optional, property] com::sun::star::table::CellHoriJustify HoriJustify;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the vertical alignment of the cell contents.
+     */
+    [optional, property] com::sun::star::table::CellVertJustify VertJustify;
+
+    //-------------------------------------------------------------------------
+
+    /** is <TRUE/> if text breaks automatically at cell borders.
+     */
+    [optional, property] boolean IsTextWrapped;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the orientation of the cell contents (i.e. top-to-bottom or stacked).
+     */
+    [optional, property] com::sun::star::table::CellOrientation Orientation;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the rotation angle of the cell contents.
+     */
+    [optional, property] long RotateAngle;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the reference egde of the cell rotation.
+     */
+    [optional, property] com::sun::star::table::CellVertJustify RotateReference;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the margin between cell contents and top border in 1/100 mm.
+     */
+    [optional, property] long ParaTopMargin;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the margin between cell contents and bottom border in 1/100 mm.
+     */
+    [optional, property] long ParaBottomMargin;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the margin between cell contents and left border in 1/100 mm.
+     */
+    [optional, property] long ParaLeftMargin;
+
+    //-------------------------------------------------------------------------
+
+    /** contains the margin between cell contents and right border in 1/100 mm.
+     */
+    [optional, property] long ParaRightMargin;
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+//=============================================================================
+
+#endif
