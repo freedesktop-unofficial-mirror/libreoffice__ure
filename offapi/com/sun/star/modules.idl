@@ -2,9 +2,9 @@
  *
  *  $RCSfile: modules.idl,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: vg $ $Date: 2003-10-09 10:18:52 $
+ *  last change: $Author: rt $ $Date: 2004-02-11 09:32:25 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,16 +58,16 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_modules_idl__ 
-#define __com_sun_star_modules_idl__ 
+#ifndef __com_sun_star_modules_idl__
+#define __com_sun_star_modules_idl__
 
-module com { module sun { module star { 
+module com { module sun { module star {
 
 /// security and authenticates interfaces
 module auth {};
 
 /// Java AWT-like user interface toolkit interface specifications for UNO.
-module awt {}; 
+module awt {};
 
 /** UNO Accessibility API
 
@@ -98,10 +98,16 @@ module awt {};
     UAA.  If you need such a back-link you have to provide one on your
     own.</p>
 */
-module accessibility {}; 
+module accessibility {};
 
 /// Charting diagram interfaces.
 module chart {};
+
+/** New implementation of Charting diagram interfaces.  This module
+    contains only a rather small public API.  In addition there is a
+    private API in the chart2 project.
+ */
+module chart2 {};
 
 /// Non-JDBC conform database interfaces <b>(deprecated)</d>
 module data {};
