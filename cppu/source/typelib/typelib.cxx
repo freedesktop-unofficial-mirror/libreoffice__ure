@@ -2,9 +2,9 @@
  *
  *  $RCSfile: typelib.cxx,v $
  *
- *  $Revision: 1.16 $
+ *  $Revision: 1.17 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 12:28:15 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:37:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -119,7 +119,7 @@ using namespace osl;
 
 /**
  * The double member determin the alignment.
- * Under Os2 and MS-Windows the Alignment is min( 8, sizeof( type ) ). 
+ * Under Os2 and MS-Windows the Alignment is min( 8, sizeof( type ) ).
  * The aligment of a strukture is min( 8, sizeof( max basic type ) ), the greatest basic type
  * determine the aligment.
  */
@@ -135,7 +135,7 @@ struct AlignSize_Impl
 #pragma pack()
 #endif
 
-// the value of the maximal alignment 
+// the value of the maximal alignment
 static sal_Int32 nMaxAlignment = (sal_Int32)&((AlignSize_Impl *) 16)->dDouble - 16;
 
 static inline sal_Int32 adjustAlignment( sal_Int32 nRequestedAlignment )
@@ -167,7 +167,7 @@ static inline sal_Int32 getDescriptionSize( typelib_TypeClass eTypeClass )
     SAL_THROW( () )
 {
     OSL_ASSERT( typelib_TypeClass_TYPEDEF != eTypeClass );
-    
+
     sal_Int32 nSize;
     // The reference is the description
     // if the description is empty, than it must be filled with
@@ -181,11 +181,11 @@ static inline sal_Int32 getDescriptionSize( typelib_TypeClass eTypeClass )
         case typelib_TypeClass_SEQUENCE:
             nSize = (sal_Int32)sizeof( typelib_IndirectTypeDescription );
         break;
-        
+
         case typelib_TypeClass_UNION:
             nSize = (sal_Int32)sizeof( typelib_UnionTypeDescription );
         break;
-            
+
         case typelib_TypeClass_STRUCT:
         case typelib_TypeClass_EXCEPTION:
             nSize = (sal_Int32)sizeof( typelib_CompoundTypeDescription );
@@ -194,11 +194,11 @@ static inline sal_Int32 getDescriptionSize( typelib_TypeClass eTypeClass )
         case typelib_TypeClass_ENUM:
             nSize = (sal_Int32)sizeof( typelib_EnumTypeDescription );
         break;
-    
+
         case typelib_TypeClass_INTERFACE:
             nSize = (sal_Int32)sizeof( typelib_InterfaceTypeDescription );
         break;
-    
+
         case typelib_TypeClass_INTERFACE_METHOD:
             nSize = (sal_Int32)sizeof( typelib_InterfaceMethodTypeDescription );
         break;
@@ -248,7 +248,7 @@ static sal_Int32 nCacheSize = 256;
 
 //-----------------------------------------------------------------------------
 /**
- * All members must set initial to 0 and no constructor is needed. So it 
+ * All members must set initial to 0 and no constructor is needed. So it
  * doesn't care, when this class is static initialized.<BR>
  */
 struct TypeDescriptor_Init_Impl
@@ -262,12 +262,12 @@ struct TypeDescriptor_Init_Impl
     TypeDescriptionList_Impl *	pCache;
     // The mutex to guard all type library accesses
     Mutex *						pMutex;
-    
+
     inline Mutex & getMutex() SAL_THROW( () );
-    
+
     inline void callChain( typelib_TypeDescription ** ppRet, rtl_uString * pName ) SAL_THROW( () );
-    
-#if defined DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
     // only for debugging
     sal_Int32			nTypeDescriptionCount;
     sal_Int32			nCompoundTypeDescriptionCount;
@@ -352,14 +352,14 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
             typelib_typedescriptionreference_acquire( ppTDR[i++] = (*aIt).second );
             ++aIt;
         }
-        
+
         for( i = 0; i < nSize; i++ )
         {
             typelib_TypeDescriptionReference * pTDR = ppTDR[i];
             sal_Int32 nStaticCounts = pTDR->nStaticRefCount;
             OSL_ASSERT( pTDR->nRefCount > pTDR->nStaticRefCount );
             pTDR->nRefCount -= pTDR->nStaticRefCount;
-            
+
             if( pTDR->pType && !pTDR->pType->bOnDemand )
             {
                 pTDR->pType->bOnDemand = sal_True;
@@ -367,10 +367,10 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
             }
             typelib_typedescriptionreference_release( pTDR );
         }
-        
+
         delete [] ppTDR;
-        
-#if defined DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
         aIt = pWeakMap->begin();
         while( aIt != pWeakMap->end() )
         {
@@ -388,11 +388,11 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
             ++aIt;
         }
 #endif
-        
+
         delete pWeakMap;
         pWeakMap = 0;
     }
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
     OSL_ASSERT(	nTypeDescriptionCount == 0 );
     OSL_ASSERT(	nCompoundTypeDescriptionCount == 0 );
     OSL_ASSERT(	nUnionTypeDescriptionCount == 0 );
@@ -403,7 +403,7 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
     OSL_ASSERT(	nInterfaceAttributeTypeDescriptionCount == 0 );
     OSL_ASSERT(	nInterfaceTypeDescriptionCount == 0 );
     OSL_ASSERT( nTypeDescriptionReferenceCount == 0 );
-    
+
     OSL_ASSERT( !pCallbacks || pCallbacks->empty() );
 #endif
     delete pCallbacks;
@@ -477,7 +477,7 @@ static inline void typelib_typedescription_initTables(
     SAL_THROW( () )
 {
     typelib_InterfaceTypeDescription * pITD = (typelib_InterfaceTypeDescription *)pTD;
-    
+
     sal_Bool * pReadWriteAttributes = (sal_Bool *)alloca( pITD->nAllMembers );
     for ( sal_Int32 i = pITD->nAllMembers; i--; )
     {
@@ -492,7 +492,7 @@ static inline void typelib_typedescription_initTables(
                 pReadWriteAttributes[i] = !((typelib_InterfaceAttributeTypeDescription *)pM)->bReadOnly;
                 TYPELIB_DANGER_RELEASE( pM );
             }
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             else
             {
                 OString aStr( OUStringToOString( pITD->ppAllMembers[i]->pTypeName, RTL_TEXTENCODING_ASCII_US ) );
@@ -501,7 +501,7 @@ static inline void typelib_typedescription_initTables(
 #endif
         }
     }
-    
+
     MutexGuard aGuard( aInit.getMutex() );
     if( !pTD->bComplete )
     {
@@ -520,7 +520,7 @@ static inline void typelib_typedescription_initTables(
                 nAdditionalOffset++;
             }
         }
-        
+
         // create the index table from function to member table
         pITD->pMapFunctionIndexToMemberIndex = new sal_Int32[ pITD->nAllMembers + nAdditionalOffset ];
         nAdditionalOffset = 0; // +1 for read/write attributes
@@ -554,7 +554,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
     }
 
     OSL_ASSERT( typelib_TypeClass_TYPEDEF != eTypeClass );
-    
+
     typelib_TypeDescription * pRet;
     switch( eTypeClass )
     {
@@ -563,7 +563,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
             typelib_ArrayTypeDescription * pTmp = new typelib_ArrayTypeDescription();
             typelib_IndirectTypeDescription * pIndirect = (typelib_IndirectTypeDescription *)pTmp;
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nArrayTypeDescriptionCount );
 #endif
             pIndirect->pType = 0;
@@ -577,7 +577,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
         {
             typelib_IndirectTypeDescription * pTmp = new typelib_IndirectTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nIndirectTypeDescriptionCount );
 #endif
             pTmp->pType = 0;
@@ -589,7 +589,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
             typelib_UnionTypeDescription * pTmp;
             pTmp = new typelib_UnionTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nUnionTypeDescriptionCount );
 #endif
             pTmp->nMembers = 0;
@@ -600,7 +600,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
             pTmp->pDefaultTypeRef = 0;
         }
         break;
-        
+
         case typelib_TypeClass_EXCEPTION:
         case typelib_TypeClass_STRUCT:
         {
@@ -608,7 +608,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
             typelib_CompoundTypeDescription * pTmp;
             pTmp = new typelib_CompoundTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nCompoundTypeDescriptionCount );
 #endif
             pTmp->pBaseTypeDescription = 0;
@@ -622,21 +622,21 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
         {
             typelib_EnumTypeDescription * pTmp = new typelib_EnumTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nEnumTypeDescriptionCount );
-#endif			
+#endif
             pTmp->nDefaultEnumValue = 0;
             pTmp->nEnumValues		= 0;
             pTmp->ppEnumNames		= 0;
             pTmp->pEnumValues		= 0;
         }
         break;
-    
+
         case typelib_TypeClass_INTERFACE:
         {
             typelib_InterfaceTypeDescription * pTmp = new typelib_InterfaceTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nInterfaceTypeDescriptionCount );
 #endif
             pTmp->pBaseTypeDescription = 0;
@@ -649,12 +649,12 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
             pTmp->pMapMemberIndexToFunctionIndex= 0;
         }
         break;
-    
+
         case typelib_TypeClass_INTERFACE_METHOD:
         {
             typelib_InterfaceMethodTypeDescription * pTmp = new typelib_InterfaceMethodTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nInterfaceMethodTypeDescriptionCount );
 #endif
             pTmp->aBase.pMemberName = 0;
@@ -670,7 +670,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
         {
             typelib_InterfaceAttributeTypeDescription * pTmp = new typelib_InterfaceAttributeTypeDescription();
             pRet = (typelib_TypeDescription *)pTmp;
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nInterfaceAttributeTypeDescriptionCount );
 #endif
             pTmp->aBase.pMemberName = 0;
@@ -681,7 +681,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEmpty(
         default:
         {
             pRet = new typelib_TypeDescription();
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_incrementInterlockedCount( &aInit.nTypeDescriptionCount );
 #endif
         }
@@ -719,7 +719,7 @@ extern "C" void SAL_CALL typelib_typedescription_new(
         typelib_typedescriptionreference_getDescription( ppRet, pType );
         return;
     }
-    
+
     typelib_typedescription_newEmpty( ppRet, eTypeClass, pTypeName );
 
     switch( eTypeClass )
@@ -737,7 +737,7 @@ extern "C" void SAL_CALL typelib_typedescription_new(
         {
             // FEATURE_EMPTYCLASS
             typelib_CompoundTypeDescription * pTmp = (typelib_CompoundTypeDescription*)*ppRet;
-            
+
             sal_Int32 nOffset = 0;
             if( pType )
             {
@@ -799,7 +799,7 @@ extern "C" void SAL_CALL typelib_typedescription_newUnion(
     typelib_typedescriptionreference_acquire( pTmp->pDiscriminantTypeRef = pDiscriminantTypeRef );
 
     sal_Int32 nPos;
-    
+
     pTmp->nMembers = nMembers;
     // default discriminant
     if (nMembers)
@@ -812,7 +812,7 @@ extern "C" void SAL_CALL typelib_typedescription_newUnion(
     }
     // default default discriminant
     pTmp->nDefaultDiscriminant = nDefaultDiscriminant;
-    
+
     // union member types
     pTmp->ppTypeRefs = new typelib_TypeDescriptionReference *[ nMembers ];
     for ( nPos = nMembers; nPos--; )
@@ -825,10 +825,10 @@ extern "C" void SAL_CALL typelib_typedescription_newUnion(
     {
         rtl_uString_acquire( pTmp->ppMemberNames[nPos] = pMembers[nPos].pMemberName );
     }
-    
+
     // default union type
     typelib_typedescriptionreference_acquire( pTmp->pDefaultTypeRef = pDefaultTypeRef );
-    
+
     if (! reallyWeak( typelib_TypeClass_UNION ))
         (*ppRet)->pWeakRef = (typelib_TypeDescriptionReference *)*ppRet;
     (*ppRet)->nSize = typelib_typedescription_getAlignedUnoSize( (*ppRet), 0, (*ppRet)->nAlignment );
@@ -847,7 +847,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEnum(
 {
     typelib_typedescription_newEmpty( ppRet, typelib_TypeClass_ENUM, pTypeName );
     typelib_EnumTypeDescription * pEnum = (typelib_EnumTypeDescription *)*ppRet;
-    
+
     pEnum->nDefaultEnumValue = nDefaultValue;
     pEnum->nEnumValues		 = nEnumValues;
     pEnum->ppEnumNames		 = new rtl_uString * [ nEnumValues ];
@@ -857,7 +857,7 @@ extern "C" void SAL_CALL typelib_typedescription_newEnum(
     }
     pEnum->pEnumValues		= new sal_Int32[ nEnumValues ];
     ::memcpy( pEnum->pEnumValues, pEnumValues, nEnumValues * sizeof(sal_Int32) );
-    
+
     (*ppRet)->pWeakRef = (typelib_TypeDescriptionReference *)*ppRet;
     // sizeof( void ) not allowed
     (*ppRet)->nSize = typelib_typedescription_getAlignedUnoSize( (*ppRet), 0, (*ppRet)->nAlignment );
@@ -883,11 +883,11 @@ extern "C" void SAL_CALL typelib_typedescription_newArray(
         nElements *= pDimensions[i];
     }
     OUString aTypeName( aBuf.makeStringAndClear() );
-    
+
 
     typelib_typedescription_newEmpty( ppRet, typelib_TypeClass_ARRAY, aTypeName.pData );
     typelib_ArrayTypeDescription * pArray = (typelib_ArrayTypeDescription *)*ppRet;
-    
+
     pArray->nDimensions = nDimensions;
     pArray->nTotalElements = nElements;
     pArray->pDimensions = new sal_Int32[ nDimensions ];
@@ -895,7 +895,7 @@ extern "C" void SAL_CALL typelib_typedescription_newArray(
 
     typelib_typedescriptionreference_acquire(pElementTypeRef);
     ((typelib_IndirectTypeDescription*)pArray)->pType = pElementTypeRef;
-    
+
     (*ppRet)->pWeakRef = (typelib_TypeDescriptionReference *)*ppRet;
     // sizeof( void ) not allowed
     (*ppRet)->nSize = typelib_typedescription_getAlignedUnoSize( *ppRet, 0, (*ppRet)->nAlignment );
@@ -915,7 +915,7 @@ extern "C" void SAL_CALL typelib_typedescription_newInterface(
     typelib_InterfaceTypeDescription * pITD = 0;
     typelib_typedescription_newEmpty(
         (typelib_TypeDescription **)&pITD, typelib_TypeClass_INTERFACE, pTypeName );
-    
+
     if( pBaseInterface )
     {
         // set the base interface, may be 0
@@ -923,7 +923,7 @@ extern "C" void SAL_CALL typelib_typedescription_newInterface(
             (typelib_TypeDescription **)&pITD->pBaseTypeDescription, pBaseInterface );
         OSL_ASSERT( pITD->pBaseTypeDescription );
     }
-    // set the 
+    // set the
     pITD->aUik.m_Data1 = nUik1;
     pITD->aUik.m_Data2 = nUik2;
     pITD->aUik.m_Data3 = nUik3;
@@ -933,7 +933,7 @@ extern "C" void SAL_CALL typelib_typedescription_newInterface(
     sal_Int32 nSuperMembers = pITD->pBaseTypeDescription ? pITD->pBaseTypeDescription->nAllMembers : 0;
     pITD->nAllMembers = nMembers + nSuperMembers;
     pITD->nMembers = nMembers;
-    
+
     if( pITD->nAllMembers )
     {
         // at minimum one member exist, allocate the memory
@@ -941,32 +941,32 @@ extern "C" void SAL_CALL typelib_typedescription_newInterface(
         // the superclass references must not acquired
         if( nSuperMembers )
         {
-            rtl_moveMemory( pITD->ppAllMembers, pITD->pBaseTypeDescription->ppAllMembers, 
+            rtl_moveMemory( pITD->ppAllMembers, pITD->pBaseTypeDescription->ppAllMembers,
                             nSuperMembers * sizeof( void * ) );
         }
-        
+
         if( nMembers )
         {
             pITD->ppMembers = pITD->ppAllMembers + nSuperMembers;
         }
-        
+
         sal_Int32 n = 0;
         // add own members
-        for( sal_Int32 i = nSuperMembers; i < pITD->nAllMembers; i++ ) 
+        for( sal_Int32 i = nSuperMembers; i < pITD->nAllMembers; i++ )
         {
             typelib_typedescriptionreference_acquire( ppMembers[n] );
             pITD->ppAllMembers[i] = ppMembers[n];
             ++n;
         }
     }
-    
+
     typelib_TypeDescription * pTmp = (typelib_TypeDescription *)pITD;
     if( !reallyWeak( typelib_TypeClass_INTERFACE ) )
         pTmp->pWeakRef = (typelib_TypeDescriptionReference *)pTmp;
     pTmp->nSize = typelib_typedescription_getAlignedUnoSize( pTmp, 0, pTmp->nAlignment );
     pTmp->nAlignment = adjustAlignment( pTmp->nAlignment );
     pTmp->bComplete = sal_False;
-    
+
     if (*ppRet)
         ::typelib_typedescription_release( (typelib_TypeDescription *)*ppRet );
     *ppRet = pITD;
@@ -985,14 +985,14 @@ extern "C" void SAL_CALL typelib_typedescription_newInterfaceMethod(
     sal_Int32 nExceptions,
     rtl_uString ** ppExceptionNames )
     SAL_THROW_EXTERN_C()
-{								
+{
     typelib_typedescription_newEmpty(
         (typelib_TypeDescription **)ppRet, typelib_TypeClass_INTERFACE_METHOD, pTypeName );
     typelib_TypeDescription * pTmp = (typelib_TypeDescription *)*ppRet;
-    
+
     sal_Int32 nOffset = rtl_ustr_lastIndexOfChar_WithLength(
         pTypeName->buffer, pTypeName->length, ':' );
-    
+
     if( nOffset == -1 )
     {
         // not found
@@ -1004,7 +1004,7 @@ extern "C" void SAL_CALL typelib_typedescription_newInterfaceMethod(
                                            pTypeName->buffer + nOffset +1,
                                            pTypeName->length - nOffset -1 );
     }
-    
+
     (*ppRet)->aBase.nPosition = nAbsolutePosition;
     (*ppRet)->bOneWay = bOneWay;
     typelib_typedescriptionreference_new( &(*ppRet)->pReturnTypeRef, eReturnTypeClass, pReturnTypeName );
@@ -1056,10 +1056,10 @@ extern "C" void SAL_CALL typelib_typedescription_newInterfaceAttribute(
     typelib_typedescription_newEmpty(
         (typelib_TypeDescription **)ppRet, typelib_TypeClass_INTERFACE_ATTRIBUTE, pTypeName );
     typelib_TypeDescription * pTmp = (typelib_TypeDescription *)*ppRet;
-    
+
     sal_Int32 nOffset = rtl_ustr_lastIndexOfChar_WithLength(
         pTypeName->buffer, pTypeName->length, ':' );
-    
+
     if( nOffset == -1 )
     {
         // not found
@@ -1071,11 +1071,11 @@ extern "C" void SAL_CALL typelib_typedescription_newInterfaceAttribute(
                                            pTypeName->buffer + nOffset +1,
                                            pTypeName->length - nOffset -1 );
     }
-    
+
     (*ppRet)->aBase.nPosition = nAbsolutePosition;
     typelib_typedescriptionreference_new( &(*ppRet)->pAttributeTypeRef, eAttributeTypeClass, pAttributeTypeName );
     (*ppRet)->bReadOnly = bReadOnly;
-    
+
     if( !reallyWeak( typelib_TypeClass_INTERFACE_ATTRIBUTE ) )
         pTmp->pWeakRef = (typelib_TypeDescriptionReference *)pTmp;
 }
@@ -1095,7 +1095,7 @@ static inline void typelib_typedescription_destructExtendedMembers(
     SAL_THROW( () )
 {
     OSL_ASSERT( typelib_TypeClass_TYPEDEF != pTD->eTypeClass );
-    
+
     switch( pTD->eTypeClass )
     {
     case typelib_TypeClass_ARRAY:
@@ -1103,7 +1103,7 @@ static inline void typelib_typedescription_destructExtendedMembers(
             typelib_typedescriptionreference_release( ((typelib_IndirectTypeDescription*)pTD)->pType );
         delete [] ((typelib_ArrayTypeDescription *)pTD)->pDimensions;
         break;
-    case typelib_TypeClass_SEQUENCE: 
+    case typelib_TypeClass_SEQUENCE:
         if( ((typelib_IndirectTypeDescription*)pTD)->pType )
             typelib_typedescriptionreference_release( ((typelib_IndirectTypeDescription*)pTD)->pType );
         break;
@@ -1112,14 +1112,14 @@ static inline void typelib_typedescription_destructExtendedMembers(
         typelib_UnionTypeDescription * pUnionTD = (typelib_UnionTypeDescription *)pTD;
         typelib_typedescriptionreference_release( pUnionTD->pDiscriminantTypeRef );
         typelib_typedescriptionreference_release( pUnionTD->pDefaultTypeRef );
-        
+
         sal_Int32 nPos;
         typelib_TypeDescriptionReference ** ppTypeRefs = pUnionTD->ppTypeRefs;
         for ( nPos = pUnionTD->nMembers; nPos--; )
         {
             typelib_typedescriptionreference_release( ppTypeRefs[nPos] );
         }
-        
+
         rtl_uString ** ppMemberNames = pUnionTD->ppMemberNames;
         for ( nPos = pUnionTD->nMembers; nPos--; )
         {
@@ -1248,17 +1248,17 @@ extern "C" void SAL_CALL typelib_typedescription_release(
                 }
             }
         }
-        
+
         typelib_typedescription_destructExtendedMembers( pTD );
         rtl_uString_release( pTD->pTypeName );
-        
-#if defined DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
         switch( pTD->eTypeClass )
         {
         case typelib_TypeClass_ARRAY:
             osl_decrementInterlockedCount( &aInit.nArrayTypeDescriptionCount );
             break;
-        case typelib_TypeClass_SEQUENCE: 
+        case typelib_TypeClass_SEQUENCE:
             osl_decrementInterlockedCount( &aInit.nIndirectTypeDescriptionCount );
             break;
         case typelib_TypeClass_UNION:
@@ -1284,7 +1284,7 @@ extern "C" void SAL_CALL typelib_typedescription_release(
             osl_decrementInterlockedCount( &aInit.nTypeDescriptionCount );
         }
 #endif
-        
+
         delete pTD;
     }
 }
@@ -1299,7 +1299,7 @@ extern "C" void SAL_CALL typelib_typedescription_register(
 
     typelib_TypeDescriptionReference * pTDR = 0;
     typelib_typedescriptionreference_getByName( &pTDR, (*ppNewDescription)->pTypeName );
-    
+
     OSL_ASSERT( (*ppNewDescription)->pWeakRef || reallyWeak( (*ppNewDescription)->eTypeClass ) );
     if( pTDR )
     {
@@ -1334,40 +1334,40 @@ extern "C" void SAL_CALL typelib_typedescription_register(
                 return;
             }
             // !reallyWeak
-            
+
             if (((void *)pTDR != (void *)*ppNewDescription) && // if different
                 (!pTDR->pType->pWeakRef || // uninit: ref data only set
                  // new one is complete:
                  (!pTDR->pType->bComplete && (*ppNewDescription)->bComplete) ||
                  // new one may be partly initialized interface (except of tables):
                  (typelib_TypeClass_INTERFACE == pTDR->pType->eTypeClass &&
-                  !((typelib_InterfaceTypeDescription *)pTDR->pType)->ppAllMembers && 
+                  !((typelib_InterfaceTypeDescription *)pTDR->pType)->ppAllMembers &&
                   (*(typelib_InterfaceTypeDescription **)ppNewDescription)->ppAllMembers)))
             {
                 // uninitialized or incomplete
-                
+
                 if (pTDR->pType->pWeakRef) // if init
                 {
                     typelib_typedescription_destructExtendedMembers( pTDR->pType );
                 }
-                
+
                 // pTDR->pType->pWeakRef == 0 means that the description is empty
                 // description is not weak and the not the same
                 sal_Int32 nSize = getDescriptionSize( (*ppNewDescription)->eTypeClass );
-                
+
                 // copy all specific data for the descriptions
                 ::rtl_copyMemory(
                     pTDR->pType +1,
                     *ppNewDescription +1,
                     nSize - sizeof(typelib_TypeDescription) );
-                
+
                 pTDR->pType->bComplete = (*ppNewDescription)->bComplete;
                 pTDR->pType->nSize = (*ppNewDescription)->nSize;
                 pTDR->pType->nAlignment = (*ppNewDescription)->nAlignment;
-                
+
                 ::rtl_zeroMemory(
                     *ppNewDescription +1, nSize - sizeof( typelib_TypeDescription ) );
-                
+
                 if( pTDR->pType->bOnDemand && !(*ppNewDescription)->bOnDemand )
                 {
                     // switch from OnDemand to !OnDemand, so the description must be acquired
@@ -1378,12 +1378,12 @@ extern "C" void SAL_CALL typelib_typedescription_register(
                     // switch from !OnDemand to OnDemand, so the description must be relesed
                     typelib_typedescription_release( pTDR->pType );
                 }
-                
+
                 pTDR->pType->bOnDemand = (*ppNewDescription)->bOnDemand;
                 // initialized
                 pTDR->pType->pWeakRef = pTDR;
             }
-            
+
             typelib_typedescription_release( *ppNewDescription );
             // pTDR was acquired by getByName(), so it must not be acquired again
             *ppNewDescription = pTDR->pType;
@@ -1400,7 +1400,7 @@ extern "C" void SAL_CALL typelib_typedescription_register(
         pTDR = (typelib_TypeDescriptionReference *)*ppNewDescription;
         if( !aInit.pWeakMap )
             aInit.pWeakMap = new WeakMap_Impl;
-        
+
         // description is the weak itself, so register it
         (*aInit.pWeakMap)[pTDR->pTypeName->buffer] = pTDR;
         OSL_ASSERT( (void *)*ppNewDescription == (void *)pTDR );
@@ -1430,7 +1430,7 @@ static inline sal_Bool type_equals(
              p1->pTypeName->length == p2->pTypeName->length &&
              rtl_ustr_compare( p1->pTypeName->buffer, p2->pTypeName->buffer ) == 0));
 }
-extern "C" sal_Bool SAL_CALL typelib_typedescription_equals( 
+extern "C" sal_Bool SAL_CALL typelib_typedescription_equals(
     const typelib_TypeDescription * p1, const typelib_TypeDescription * p2 )
     SAL_THROW_EXTERN_C()
 {
@@ -1447,7 +1447,7 @@ extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
     sal_Int32 nSize;
     if( pTypeDescription->nSize )
     {
-        // size and alignment are set 
+        // size and alignment are set
         rMaxIntegralTypeSize = pTypeDescription->nAlignment;
         nSize = pTypeDescription->nSize;
     }
@@ -1455,9 +1455,9 @@ extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
     {
         nSize = 0;
         rMaxIntegralTypeSize = 1;
-        
+
         OSL_ASSERT( typelib_TypeClass_TYPEDEF != pTypeDescription->eTypeClass );
-        
+
         switch( pTypeDescription->eTypeClass )
         {
             case typelib_TypeClass_INTERFACE:
@@ -1501,7 +1501,7 @@ extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
                 {
                     typelib_TypeDescription * pMemberType = 0;
                     typelib_TypeDescriptionReference * pMemberRef = pTmp->ppTypeRefs[i];
-                    
+
                     sal_Int32 nMaxIntegral;
                     if (pMemberRef->eTypeClass == typelib_TypeClass_INTERFACE ||
                         pMemberRef->eTypeClass == typelib_TypeClass_SEQUENCE)
@@ -1512,7 +1512,7 @@ extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
                     else
                     {
                         TYPELIB_DANGER_GET( &pMemberType, pMemberRef );
-                        nStructSize = typelib_typedescription_getAlignedUnoSize( 
+                        nStructSize = typelib_typedescription_getAlignedUnoSize(
                             pMemberType, nStructSize, nMaxIntegral );
                         TYPELIB_DANGER_RELEASE( pMemberType );
                     }
@@ -1522,7 +1522,7 @@ extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
                 // Example: A { double; int; } structure has a size of 16 instead of 10. The
                 // compiler must follow this rule if it is possible to access members in arrays through:
                 // (Element *)((char *)pArray + sizeof( Element ) * ElementPos)
-                nStructSize = (nStructSize + rMaxIntegralTypeSize -1) 
+                nStructSize = (nStructSize + rMaxIntegralTypeSize -1)
                                 / rMaxIntegralTypeSize * rMaxIntegralTypeSize;
                 nSize += nStructSize;
                 }
@@ -1599,7 +1599,7 @@ extern "C" void SAL_CALL typelib_typedescription_getByName(
         typelib_typedescription_release( (*ppRet) );
         *ppRet = 0;
     }
-    
+
     static sal_Bool bInited = sal_False;
 
     if( !bInited )
@@ -1679,7 +1679,7 @@ extern "C" void SAL_CALL typelib_typedescription_getByName(
         }
         typelib_typedescriptionreference_release( pTDR );
     }
-    
+
     if (0 == *ppRet)
     {
         // check for sequence
@@ -1702,7 +1702,7 @@ extern "C" void SAL_CALL typelib_typedescription_getByName(
             // on demand access
             aInit.callChain( ppRet, pName );
         }
-        
+
         if( *ppRet )
         {
             // typedescription found
@@ -1721,7 +1721,7 @@ extern "C" void SAL_CALL typelib_typedescription_getByName(
                 // The type description is hold by the reference until
                 // on demand is activated.
                 typelib_typedescription_register( ppRet );
-                
+
                 // insert into the chache
                 MutexGuard aGuard( aInit.getMutex() );
                 if( !aInit.pCache )
@@ -1782,7 +1782,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_new(
                 // The type description is hold by the reference until
                 // on demand is activated.
                 typelib_typedescription_register( &pRet );
-                
+
                 // insert into the chache
                 MutexGuard aGuard( aInit.getMutex() );
                 if( !aInit.pCache )
@@ -1794,7 +1794,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_new(
                 }
                 aInit.pCache->push_back( pRet );
                 // pRet kept acquired for cache
-                
+
                 typelib_typedescriptionreference_acquire( pRet->pWeakRef );
                 if (*ppTDR)
                     typelib_typedescriptionreference_release( *ppTDR );
@@ -1803,7 +1803,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_new(
         }
         else if (*ppTDR)
         {
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             OString aStr( OUStringToOString( pTypeName, RTL_TEXTENCODING_ASCII_US ) );
             OSL_ENSURE( !"### typedef not found: ", aStr.getStr() );
 #endif
@@ -1812,7 +1812,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_new(
         }
         return;
     }
-    
+
     MutexGuard aGuard( aInit.getMutex() );
     typelib_typedescriptionreference_getByName( ppTDR, pTypeName );
     if( *ppTDR )
@@ -1821,7 +1821,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_new(
     if( reallyWeak( eTypeClass ) )
     {
         typelib_TypeDescriptionReference * pTDR = new typelib_TypeDescriptionReference();
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
         osl_incrementInterlockedCount( &aInit.nTypeDescriptionReferenceCount );
 #endif
         pTDR->nRefCount = 1;
@@ -1840,7 +1840,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_new(
         (*(typelib_TypeDescription ** )ppTDR)->bOnDemand = sal_True;
         (*(typelib_TypeDescription ** )ppTDR)->bComplete = sal_False;
     }
-    
+
     if( !aInit.pWeakMap )
         aInit.pWeakMap = new WeakMap_Impl;
     // Heavy hack, the const sal_Unicode * is hold by the typedescription reference
@@ -1879,7 +1879,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_release(
 
             rtl_uString_release( pRef->pTypeName );
             OSL_ASSERT( pRef->pType == 0 );
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             osl_decrementInterlockedCount( &aInit.nTypeDescriptionReferenceCount );
 #endif
             delete pRef;
@@ -1974,7 +1974,7 @@ extern "C" void SAL_CALL typelib_typedescriptionreference_getByName(
 }
 
 //------------------------------------------------------------------------
-extern "C" sal_Bool SAL_CALL typelib_typedescriptionreference_equals( 
+extern "C" sal_Bool SAL_CALL typelib_typedescriptionreference_equals(
     const typelib_TypeDescriptionReference * p1,
     const typelib_TypeDescriptionReference * p2 )
     SAL_THROW_EXTERN_C()
@@ -2046,7 +2046,7 @@ extern "C" sal_Bool SAL_CALL typelib_typedescriptionreference_isAssignableFrom(
     {
         typelib_TypeClass eAssignable = pAssignable->eTypeClass;
         typelib_TypeClass eFrom		  = pFrom->eTypeClass;
-        
+
         if (eAssignable == typelib_TypeClass_ANY) // anything can be assigned to an any .)
             return sal_True;
         if (eAssignable == eFrom)
@@ -2123,7 +2123,7 @@ extern "C" sal_Bool SAL_CALL typelib_typedescription_complete(
                      typelib_TypeClass_ENUM == (*ppTypeDescr)->eTypeClass ||
                      typelib_TypeClass_INTERFACE == (*ppTypeDescr)->eTypeClass) &&
                     !reallyWeak( (*ppTypeDescr)->eTypeClass ) );
-        
+
         if (typelib_TypeClass_INTERFACE == (*ppTypeDescr)->eTypeClass &&
             ((typelib_InterfaceTypeDescription *)*ppTypeDescr)->ppAllMembers)
         {
@@ -2148,7 +2148,7 @@ extern "C" sal_Bool SAL_CALL typelib_typedescription_complete(
 //  				::typelib_typedescriptionreference_release( pRef );
 //  			}
 //  		}
-        
+
         typelib_TypeDescription * pTD = 0;
         // on demand access of complete td
         aInit.callChain( &pTD, (*ppTypeDescr)->pTypeName );
@@ -2162,12 +2162,12 @@ extern "C" sal_Bool SAL_CALL typelib_typedescription_complete(
                 if (! pTD)
                     return sal_False;
             }
-            
+
             OSL_ASSERT( typelib_TypeClass_TYPEDEF != pTD->eTypeClass );
             // typedescription found
             // set to on demand
             pTD->bOnDemand = sal_True;
-            
+
             if (typelib_TypeClass_INTERFACE == pTD->eTypeClass && !pTD->bComplete)
             {
                 // mandatory info from callback chain
@@ -2176,12 +2176,12 @@ extern "C" sal_Bool SAL_CALL typelib_typedescription_complete(
                 typelib_typedescription_initTables( pTD );
                 pTD->bComplete = sal_True;
             }
-            
+
             // The type description is hold by the reference until
             // on demand is activated.
             ::typelib_typedescription_register( &pTD ); // replaces incomplete one
             OSL_ASSERT( pTD == *ppTypeDescr ); // has to merge into existing one
-            
+
             // insert into the chache
             MutexGuard aGuard( aInit.getMutex() );
             if( !aInit.pCache )
@@ -2194,15 +2194,15 @@ extern "C" sal_Bool SAL_CALL typelib_typedescription_complete(
             // descriptions in the cache must be acquired!
             typelib_typedescription_acquire( pTD );
             aInit.pCache->push_back( pTD );
-            
+
             OSL_ASSERT( pTD->bComplete );
-            
+
             ::typelib_typedescription_release( *ppTypeDescr );
             *ppTypeDescr = pTD;
         }
         else
         {
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
             OString aStr(
                 OUStringToOString( (*ppTypeDescr)->pTypeName, RTL_TEXTENCODING_ASCII_US ) );
             OSL_TRACE( "\n### type cannot be completed: %s", aStr.getStr() );
