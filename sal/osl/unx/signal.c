@@ -2,9 +2,9 @@
  *
  *  $RCSfile: signal.c,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: kr $ $Date: 2000-11-21 10:07:50 $
+ *  last change: $Author: mfe $ $Date: 2001-03-02 09:52:26 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -79,7 +79,7 @@ typedef struct _oslSignalHandlerImpl
 {
     oslSignalHandlerFunction      Handler;
     void*			        	  pData;
-    struct _oslSignalHandlerImpl* pNext;	
+    struct _oslSignalHandlerImpl* pNext;
 } oslSignalHandlerImpl;
 
 static struct SignalAction
@@ -89,7 +89,7 @@ static struct SignalAction
     void (*Handler)(int);
 } Signals[] =
 {
-    { SIGHUP,    ACT_IGNORE,   NULL },    /* hangup */
+    { SIGHUP,    ACT_IGNORE, NULL },    /* hangup */
     { SIGINT,    ACT_EXIT,   NULL },    /* interrupt (rubout) */
     { SIGQUIT,   ACT_ABORT,  NULL },    /* quit (ASCII FS) */
     { SIGILL,    ACT_ABORT,  NULL },    /* illegal instruction (not reset when caught) */
@@ -98,16 +98,16 @@ static struct SignalAction
     { SIGIOT,    ACT_ABORT,  NULL },    /* IOT instruction */
 #endif 
     { SIGABRT,   ACT_ABORT,  NULL },    /* used by abort, replace SIGIOT in the future */
-#ifdef SIGEMT	
+#ifdef SIGEMT
     { SIGEMT,    ACT_ABORT,  NULL },    /* EMT instruction */
-#endif	
+#endif
     { SIGFPE,    ACT_ABORT,  NULL },    /* floating point exception */
     { SIGKILL,   ACT_SYSTEM, NULL },    /* kill (cannot be caught or ignored) */
     { SIGBUS,    ACT_ABORT,  NULL },    /* bus error */
     { SIGSEGV,   ACT_ABORT,  NULL },    /* segmentation violation */
-#ifdef SIGSYS	
+#ifdef SIGSYS
     { SIGSYS,    ACT_ABORT,  NULL },    /* bad argument to system call */
-#endif	
+#endif
     { SIGPIPE,   ACT_HIDE,   NULL },    /* write on a pipe with no one to read it */
     { SIGALRM,   ACT_EXIT,   NULL },    /* alarm clock */
     { SIGTERM,   ACT_EXIT,   NULL },    /* software termination signal from kill */
@@ -234,7 +234,7 @@ static sal_Bool DeInitSignal()
         if (Signals[i].Action != ACT_SYSTEM)
         {
             act.sa_handler = Signals[i].Handler;
-        
+
             sigaction(Signals[i].Signal, &act, NULL);
         }
 
@@ -248,24 +248,6 @@ static oslSignalAction CallSignalHandler(oslSignalInfo *pInfo)
     oslSignalHandlerImpl* pHandler = SignalList;
     oslSignalAction Action = osl_Signal_ActCallNextHdl;
 
-    /* PORTAL EA SOFFICE TERMINATION HACK BEGIN */
-    struct sigaction act;
-    struct sigaction oldact;
-    int nRet=0;
-    
-    act.sa_flags   = 0;
-    sigemptyset(&(act.sa_mask));
-    
-    act.sa_handler=SIG_DFL;
-    nRet = sigaction(SIGALRM,&act,&oldact);
-    if ( nRet < 0 )
-    {
-        OSL_TRACE("sigaction failed : '%s'\n",strerror(errno));
-    }
-    
-    alarm(30);
-    /* PORTAL EA SOFFICE TERMINATION HACK END */
-
     while (pHandler != NULL)
     {
         if ((Action = pHandler->Handler(pHandler->pData, pInfo)) 
@@ -274,11 +256,6 @@ static oslSignalAction CallSignalHandler(oslSignalInfo *pInfo)
 
         pHandler = pHandler->pNext;
     }
-
-    /* PORTAL EA SOFFICE TERMINATION HACK BEGIN */
-    alarm(0);    
-    /* PORTAL EA SOFFICE TERMINATION HACK END */
-    
     
     return Action;
 }
@@ -304,7 +281,8 @@ static void CallSystemHandler(int Signal)
             switch (Signals[i].Action)
             {
                 case ACT_EXIT:		/* terminate */
-                    exit(255);
+                    /* prevent dumping core on exit() */
+                    _exit(255);
                     break;
 
                 case ACT_ABORT:		/* terminate witch core dump */
@@ -314,7 +292,7 @@ static void CallSystemHandler(int Signal)
                     sigaction(SIGABRT, &act, NULL);
                     abort();
                     break;
-                        
+
                 case ACT_IGNORE:	/* ignore */
                     break;
 
@@ -338,7 +316,7 @@ static void SignalHandlerFunction(int Signal)
     Info.UserSignal = Signal;
     Info.UserData   = NULL;
 
-    switch (Signal)	
+    switch (Signal)
     {
         case SIGBUS:
         case SIGILL:
@@ -387,7 +365,8 @@ static void SignalHandlerFunction(int Signal)
         break;
 
     case osl_Signal_ActKillApp:
-        exit(255);
+        /* prevent dumping core on exit() */
+        _exit(255);
         break;
     default:
         break;
@@ -406,14 +385,14 @@ oslSignalHandler SAL_CALL osl_addSignalHandler(oslSignalHandlerFunction Handler,
     {
         return 0;
     }
-    
+
     if (! bInitSignal)
         bInitSignal = InitSignal();
 
     pHandler = (oslSignalHandlerImpl*) calloc(1, sizeof(oslSignalHandlerImpl));
 
     if (pHandler != NULL)
-    {	
+    {
         pHandler->Handler = Handler;
         pHandler->pData   = pData;
 
@@ -426,7 +405,7 @@ oslSignalHandler SAL_CALL osl_addSignalHandler(oslSignalHandlerFunction Handler,
 
         return (pHandler);
     }
-            
+    
     return (NULL);
 }
 
@@ -468,7 +447,7 @@ sal_Bool SAL_CALL osl_removeSignalHandler(oslSignalHandler Handler)
         pPrevious = pHandler;
         pHandler  = pHandler->pNext;
     }
-            
+
     osl_releaseMutex(SignalListMutex);
 
     return (sal_False);
@@ -492,7 +471,7 @@ oslSignalAction SAL_CALL osl_raiseSignal(sal_Int32 UserSignal, void* UserData)
     Info.UserData   = UserData;
 
     Action = CallSignalHandler(&Info);
-            
+
     osl_releaseMutex(SignalListMutex);
 
     return (Action);
