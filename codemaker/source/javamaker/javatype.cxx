@@ -2,9 +2,9 @@
  *
  *  $RCSfile: javatype.cxx,v $
  *
- *  $Revision: 1.16 $
+ *  $Revision: 1.17 $
  *
- *  last change: $Author: dbo $ $Date: 2002-07-31 12:46:45 $
+ *  last change: $Author: hr $ $Date: 2003-03-19 15:53:45 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -83,7 +83,7 @@ using namespace rtl;
 //*************************************************************************
 JavaType::JavaType(TypeReader& typeReader,
                    const OString& typeName,
-                   const TypeManager& typeMgr, 
+                   const TypeManager& typeMgr,
                    const TypeDependency& typeDependencies)
     : m_indentLength(0)
     , m_typeName(typeName)
@@ -97,22 +97,22 @@ JavaType::JavaType(TypeReader& typeReader,
 
 JavaType::~JavaType()
 {
-    
-}	
+
+}
 
 sal_Bool JavaType::dump(JavaOptions* pOptions)
     throw( CannotDumpException )
 {
     sal_Bool ret = sal_False;
-    
+
     OString outPath;
     if (pOptions->isValid("-O"))
         outPath = pOptions->getOption("-O");
-    
+
     OString fileName = createFileNameFromType(outPath, m_typeName, ".java");
 
     FileStream javaFile(fileName);
-    
+
     if(!javaFile.isValid())
     {
         OString message("cannot open ");
@@ -127,7 +127,7 @@ sal_Bool JavaType::dumpDependedTypes(JavaOptions* pOptions)
     throw( CannotDumpException )
 {
     sal_Bool ret = sal_True;
-    
+
     TypeUsingSet usingSet(m_dependencies.getDependencies(m_typeName));
 
     TypeUsingSet::const_iterator iter = usingSet.begin();
@@ -138,7 +138,7 @@ sal_Bool JavaType::dumpDependedTypes(JavaOptions* pOptions)
         typeName = (*iter).m_type;
         if ((index = typeName.lastIndexOf(']')) > 0)
             typeName = typeName.copy(index + 1);
-        
+
         if (getBaseType(typeName).getLength() == 0)
         {
             if (!produceType(typeName,
@@ -146,16 +146,16 @@ sal_Bool JavaType::dumpDependedTypes(JavaOptions* pOptions)
                              m_dependencies,
                              pOptions))
             {
-                fprintf(stderr, "%s ERROR: %s\n", 
-                        pOptions->getProgramName().getStr(), 
+                fprintf(stderr, "%s ERROR: %s\n",
+                        pOptions->getProgramName().getStr(),
                         OString("cannot dump Type '" + typeName + "'").getStr());
                 exit(99);
             }
         }
         ++iter;
-    }		
+    }
 
-    return ret; 
+    return ret;
 }
 
 void JavaType::dumpPackage(FileStream& o, sal_Bool bFullScope)
@@ -171,12 +171,12 @@ void JavaType::dumpPackage(FileStream& o, sal_Bool bFullScope)
         if (m_typeName.lastIndexOf('/') > 0)
             o << "package " << m_typeName.copy(0, m_typeName.lastIndexOf('/')).replace('/', '.') << ";\n\n";
     }
-}	
+}
 
 void JavaType::dumpDepImports(FileStream& o, const OString& typeName)
 {
     TypeUsingSet usingSet(m_dependencies.getDependencies(typeName));
-    
+
     TypeUsingSet::const_iterator iter = usingSet.begin();
 
     sal_Int32 	index = 0;
@@ -197,31 +197,31 @@ void JavaType::dumpDepImports(FileStream& o, const OString& typeName)
             /// dump import;
         }
         ++iter;
-    }		
-}	
+    }
+}
 
 sal_uInt32 JavaType::getMemberCount()
 {
     sal_uInt32 count = m_reader.getMethodCount();
-    
+
     sal_uInt32 fieldCount = m_reader.getFieldCount();
     RTFieldAccess access = RT_ACCESS_INVALID;
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access != RT_ACCESS_CONST && access != RT_ACCESS_INVALID)
             count++;
-    }		
+    }
     return count;
-}	
+}
 
 void JavaType::dumpType(FileStream& o, const OString& type)
     throw( CannotDumpException )
 {
     sal_Int32 index = type.lastIndexOf(']');
     sal_Int32 seqNum = (index > 0 ? ((index+1) / 2) : 0);
-    
+
     OString relType = (index > 0 ? ((OString)type).copy(index+1) : type);
 
     RTTypeClass typeClass = m_typeMgr.getTypeClass(relType);
@@ -231,7 +231,7 @@ void JavaType::dumpType(FileStream& o, const OString& type)
         case RT_TYPE_INVALID:
             {
                 OString tmp(getBaseType(relType));
-                if (tmp.getLength() > 0) 
+                if (tmp.getLength() > 0)
                     o << getBaseType(relType);
                 else
                     throw CannotDumpException("Unknown type '" + relType + "', incomplete type library.");
@@ -263,7 +263,7 @@ void JavaType::dumpType(FileStream& o, const OString& type)
     {
         o << "[]";
     }
-}	
+}
 
 OString	JavaType::getBaseType(const OString& type)
 {
@@ -301,53 +301,53 @@ OString	JavaType::getBaseType(const OString& type)
         return "long";
 
     return OString();
-}	
+}
 
 sal_Bool JavaType::isUnsigned(const OString& typeName)
 {
     OString type(checkSpecialJavaType(typeName));
 
     sal_Int32 index = type.lastIndexOf(']');
-    
+
     OString relType = (index > 0 ? ((OString)type).copy(index+1) : type);
 
-    if ( relType.equals("unsigned long") || 
-         relType.equals("unsigned short") || 
+    if ( relType.equals("unsigned long") ||
+         relType.equals("unsigned short") ||
          relType.equals("unsigned hyper") )
         return sal_True;
-    
+
     return sal_False;
-}	
+}
 
 sal_Bool JavaType::isAny(const OString& typeName)
 {
     OString type(checkSpecialJavaType(typeName));
 
     sal_Int32 index = type.lastIndexOf(']');
-    
+
     OString relType = (index > 0 ? ((OString)type).copy(index+1) : type);
 
     if ( relType.equals("any") )
         return sal_True;
-    
+
     return sal_False;
-}	
+}
 
 sal_Bool JavaType::isInterface(const OString& typeName)
 {
     OString type(checkSpecialJavaType(typeName));
 
     sal_Int32 index = type.lastIndexOf(']');
-    
+
     OString relType = (index > 0 ? ((OString)type).copy(index+1) : type);
 
     RTTypeClass typeClass = m_typeMgr.getTypeClass(relType);
 
     if ( typeClass == RT_TYPE_INTERFACE)
         return sal_True;
-    
+
     return sal_False;
-}	
+}
 
 void JavaType::dumpTypeInit(FileStream& o, const OString& name, const OString& typeName)
 {
@@ -365,7 +365,7 @@ void JavaType::dumpTypeInit(FileStream& o, const OString& name, const OString& t
     }
 
     BASETYPE baseType = isBaseType(relType);
-    
+
     switch (baseType)
     {
         case BT_STRING:
@@ -373,13 +373,13 @@ void JavaType::dumpTypeInit(FileStream& o, const OString& name, const OString& t
             o << indent() << name << " = \"\";\n";
             return;
         case BT_TYPE:
-            o << indent() << name << " = new com.sun.star.uno.Type();\n";
+            o << indent() << name << " = com.sun.star.uno.Type.VOID;\n";
             return;
         case BT_ANY:
-//			o << "new java.lang.Object()";
-//			return;
+            o << indent() << name << " = com.sun.star.uno.Any.VOID;\n";
+            return;
         case BT_BOOLEAN:
-        case BT_CHAR:	
+        case BT_CHAR:
         case BT_FLOAT:
         case BT_DOUBLE:
         case BT_BYTE:
@@ -391,7 +391,7 @@ void JavaType::dumpTypeInit(FileStream& o, const OString& name, const OString& t
         case BT_UNSIGNED_HYPER:
 //			o << "0";
             return;
-    }	
+    }
 
     RTTypeClass typeClass = m_typeMgr.getTypeClass(type);
 
@@ -408,7 +408,7 @@ void JavaType::dumpTypeInit(FileStream& o, const OString& name, const OString& t
     }
 
     o << indent() << name << " = new " << type.replace('/', '.') << "();\n";
-}	
+}
 
 BASETYPE JavaType::isBaseType(const OString& type)
 {
@@ -442,9 +442,9 @@ BASETYPE JavaType::isBaseType(const OString& type)
         return BT_UNSIGNED_SHORT;
     if (type.equals("unsigned hyper"))
         return BT_UNSIGNED_HYPER;
-    
+
     return BT_INVALID;
-}	
+}
 
 OString	JavaType::checkSpecialJavaType(const OString& type)
 {
@@ -462,18 +462,18 @@ OString	JavaType::checkSpecialJavaType(const OString& type)
     while (isTypeDef)
     {
         key = m_typeMgr.getTypeKey(baseType);
-    
+
         if (key.isValid())
         {
             if (!key.getValueInfo(OUString(), &valueType, &valueSize))
             {
-                pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);	
+                pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);
                 if (!key.getValue(OUString(), pBuffer))
                 {
                     TypeReader reader(rReaderLoader, pBuffer, valueSize, sal_False);
 
                     typeClass = reader.getTypeClass();
-                    
+
                     if (typeClass == RT_TYPE_TYPEDEF)
                         baseType = reader.getSuperTypeName();
                     else
@@ -487,9 +487,9 @@ OString	JavaType::checkSpecialJavaType(const OString& type)
             break;
         }
     }
-    
+
     return baseType;
-}	
+}
 
 OString	JavaType::checkRealBaseType(const OString& type)
 {
@@ -508,18 +508,18 @@ OString	JavaType::checkRealBaseType(const OString& type)
     while (mustBeChecked)
     {
         key = m_typeMgr.getTypeKey(baseType);
-    
+
         if (key.isValid())
         {
             if (!key.getValueInfo(OUString(), &valueType, &valueSize))
             {
-                pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);	
+                pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);
                 if (!key.getValue(OUString(), pBuffer))
                 {
                     TypeReader reader(rReaderLoader, pBuffer, valueSize, sal_False);
 
                     typeClass = reader.getTypeClass();
-                    
+
                     if (typeClass == RT_TYPE_TYPEDEF)
                     {
                         baseType = reader.getSuperTypeName();
@@ -540,9 +540,9 @@ OString	JavaType::checkRealBaseType(const OString& type)
             break;
         }
     }
-    
+
     return baseType;
-}	
+}
 
 void JavaType::dumpConstantValue(FileStream& o, sal_uInt16 index)
 {
@@ -599,8 +599,8 @@ void JavaType::dumpConstantValue(FileStream& o, sal_uInt16 index)
                 o << "L\"" << aStr.getStr() << "\"";
             }
             break;
-    }			
-}	
+    }
+}
 
 sal_Bool JavaType::dumpMemberConstructor(FileStream& o)
 {
@@ -615,23 +615,23 @@ sal_Bool JavaType::dumpMemberConstructor(FileStream& o)
     sal_uInt16 		fieldCount = (sal_uInt16)m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
-    OString 		fieldType;	
+    OString 		fieldType;
     sal_Bool		first = withIndent;
 
     sal_uInt16 i;
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
-        
+
         if (withIndent)
         {
-            if (first) 
-            { 
+            if (first)
+            {
                 first = sal_False;
                 o << ",\n";
             }
@@ -644,7 +644,7 @@ sal_Bool JavaType::dumpMemberConstructor(FileStream& o)
 
         if (i+1 < fieldCount)
             o << ",\n";
-    }		
+    }
 
     o << " )\n";
     dec(9 + m_name.getLength());
@@ -655,7 +655,7 @@ sal_Bool JavaType::dumpMemberConstructor(FileStream& o)
     {
         o << indent() << "super( _Message );\n";
         o << indent() << "Context" << " = _Context;\n";
-    } else 
+    } else
     {
         if (superType.getLength() > 0)
         {
@@ -668,19 +668,19 @@ sal_Bool JavaType::dumpMemberConstructor(FileStream& o)
         {
             if (m_typeName.equals("com/sun/star/uno/Exception"))
                 o << indent() << "super( _Message );\n";
-        }	
+        }
     }
-        
+
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
         fieldType = m_reader.getFieldType(i);
-    
+
         if (m_typeName.equals("com/sun/star/uno/Exception") && fieldName.equals("Message"))
             continue;
 
@@ -691,7 +691,7 @@ sal_Bool JavaType::dumpMemberConstructor(FileStream& o)
     o << indent() << "}\n";
 
     return sal_True;
-}	
+}
 
 sal_Bool JavaType::dumpInheritedMembers(FileStream& o, const OString& type, sal_Bool first, sal_Bool withType)
 {
@@ -700,12 +700,12 @@ sal_Bool JavaType::dumpInheritedMembers(FileStream& o, const OString& type, sal_
     sal_uInt32		valueSize;
     sal_uInt8*		pBuffer=NULL;
     sal_Bool		withIndent = sal_False;
-    
+
     if (key.isValid())
     {
         if (!key.getValueInfo(OUString(), &valueType, &valueSize))
         {
-            pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);	
+            pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);
             if (!key.getValue(OUString(), pBuffer))
             {
                 RegistryTypeReaderLoader & rReaderLoader = getRegistryTypeReaderLoader();
@@ -717,46 +717,46 @@ sal_Bool JavaType::dumpInheritedMembers(FileStream& o, const OString& type, sal_
                     withIndent = dumpInheritedMembers(o, superType, first, withType);
 
                 first = withIndent;
-                
+
                 sal_uInt16 		fieldCount = (sal_uInt16)reader.getFieldCount();
                 RTFieldAccess 	access = RT_ACCESS_INVALID;
                 for (sal_uInt16 i=0; i < fieldCount; i++)
                 {
                     access = reader.getFieldAccess(i);
-                    
+
                     if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
                         continue;
 
                     if (withIndent)
                     {
-                        if (first) 
-                        { 
+                        if (first)
+                        {
                             first = sal_False;
                             o << ",\n";
                         }
                         o << indent();
                     }else
-                        withIndent = sal_True;	
+                        withIndent = sal_True;
 
                     if (withType)
                     {
                         dumpType(o, reader.getFieldType(i));
                         o << " ";
                     }
-                        
+
                     o << "_" << reader.getFieldName(i);
-                    
+
                     if (i+1 < fieldCount)
                         o << ",\n";
-                }		
+                }
             }
             rtl_freeMemory(pBuffer);
         }
         key.closeKey();
     }
-    
+
     return withIndent;
-}	
+}
 
 void JavaType::dumpSeqStaticMember(FileStream& o, const ::rtl::OString& typeName,
                                    const ::rtl::OString& name)
@@ -790,16 +790,16 @@ void JavaType::dumpSeqStaticMember(FileStream& o, const ::rtl::OString& typeName
 
 void JavaType::inc(sal_uInt32 num)
 {
-    m_indentLength += num;		
-}	
+    m_indentLength += num;
+}
 
 void JavaType::dec(sal_uInt32 num)
 {
     if (m_indentLength - num < 0)
         m_indentLength = 0;
     else
-        m_indentLength -= num;		
-}	
+        m_indentLength -= num;
+}
 
 OString JavaType::indent()
 {
@@ -810,7 +810,7 @@ OString JavaType::indent()
         tmp.append(' ');
     }
     return tmp.makeStringAndClear();
-}	
+}
 
 OString	JavaType::indent(sal_uInt32 num)
 {
@@ -821,14 +821,14 @@ OString	JavaType::indent(sal_uInt32 num)
         tmp.append(' ');
     }
     return tmp.makeStringAndClear();
-}	
+}
 
 //*************************************************************************
 // InterfaceType
 //*************************************************************************
 InterfaceType::InterfaceType(TypeReader& typeReader,
                               const OString& typeName,
-                             const TypeManager& typeMgr, 
+                             const TypeManager& typeMgr,
                              const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -836,8 +836,8 @@ InterfaceType::InterfaceType(TypeReader& typeReader,
 
 InterfaceType::~InterfaceType()
 {
-    
-}	
+
+}
 
 sal_Bool InterfaceType::dumpFile(FileStream& o)
     throw( CannotDumpException )
@@ -854,7 +854,7 @@ sal_Bool InterfaceType::dumpFile(FileStream& o)
     inc();
 
     UnoInfoList aUnoTypeInfos;
-    
+
     dumpAttributes(o, &aUnoTypeInfos);
     dumpMethods(o, &aUnoTypeInfos);
 
@@ -863,9 +863,9 @@ sal_Bool InterfaceType::dumpFile(FileStream& o)
     o << indent() << "public static com.sun.star.uno.Uik UIK = new com.sun.star.uno.Uik( ";
 
     RTUik uik;
-    m_reader.getUik(uik);	
+    m_reader.getUik(uik);
     sal_Char buffer[67];
-    sprintf(buffer, "0x%.8x, (short)0x%.4x, (short)0x%.4x, 0x%.8x, 0x%.8x",
+    snprintf(buffer, sizeof(buffer), "0x%.8x, (short)0x%.4x, (short)0x%.4x, 0x%.8x, 0x%.8x",
             uik.m_Data1, uik.m_Data2, uik.m_Data3, uik.m_Data4, uik.m_Data5);
     o << buffer << " );\n\n";
 */
@@ -881,14 +881,14 @@ sal_Bool InterfaceType::dumpFile(FileStream& o)
         while (iter != aUnoTypeInfos.end())
         {
             o << indent();
-            
-            dumpUnoInfo(o, *iter, &index);			
+
+            dumpUnoInfo(o, *iter, &index);
             if (++iter != aUnoTypeInfos.end())
-                o << ",";				
+                o << ",";
 
             o << "\n";
         }
-        
+
         dec();
         o << indent() << " };\n";
     }
@@ -907,41 +907,41 @@ void InterfaceType::dumpAttributes(FileStream& o, UnoInfoList* pUnoInfos)
 {
     sal_uInt32 fieldCount = m_reader.getFieldCount();
     sal_Bool first=sal_True;
-        
+
     RTFieldAccess access = RT_ACCESS_INVALID;
     OString fieldName;
-    OString fieldType;	
+    OString fieldType;
     sal_Int32 flags;
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         flags = 0;
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
         fieldType = m_reader.getFieldType(i);
-    
+
         if (first)
         {
             first = sal_False;
             o << indent() << "// Attributes\n";
-        }	
+        }
 
         o << indent() << "public ";
         dumpType(o, fieldType);
-//		o << " get" << fieldName << "() throws com.sun.star.uno.RuntimeException;\n"; 
-        o << " get" << fieldName << "();\n"; 
+//		o << " get" << fieldName << "() throws com.sun.star.uno.RuntimeException;\n";
+        o << " get" << fieldName << "();\n";
 
         if (access != RT_ACCESS_READONLY)
         {
             o << indent() << "public void set" << fieldName << "( ";
             dumpType(o, fieldType);
-//			o << " _" << fieldName.toLowerCase() << " ) throws com.sun.star.uno.RuntimeException;\n"; 
-            o << " _" << fieldName.toAsciiLowerCase() << " );\n"; 
+//			o << " _" << fieldName.toLowerCase() << " ) throws com.sun.star.uno.RuntimeException;\n";
+            o << " _" << fieldName.toAsciiLowerCase() << " );\n";
         }
-        
+
         if (access == RT_ACCESS_READONLY)
             flags = flags | UIT_READONLY;
         if (isUnsigned(fieldType))
@@ -950,20 +950,20 @@ void InterfaceType::dumpAttributes(FileStream& o, UnoInfoList* pUnoInfos)
             flags = flags | UIT_ANY;
         if (isInterface(fieldType))
             flags = flags | UIT_INTERFACE;
-            
-          pUnoInfos->push_back(UnoInfo(fieldName, "", UNOTYPEINFO_ATTIRBUTE, i, flags));			
+
+          pUnoInfos->push_back(UnoInfo(fieldName, "", UNOTYPEINFO_ATTIRBUTE, i, flags));
     }
-    
+
     if (!first)
         o << "\n";
-}	
+}
 
 void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
 {
     sal_uInt32 methodCount = m_reader.getMethodCount();
     sal_Bool first=sal_True;
 
-    OString methodName, returnType, paramType, paramName;	
+    OString methodName, returnType, paramType, paramName;
     sal_uInt16 paramCount = 0;
     sal_uInt32 excCount = 0;
     RTMethodMode methodMode = RT_MODE_INVALID;
@@ -973,7 +973,7 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
     for (sal_uInt16 i=0; i < methodCount; i++)
     {
         flags = 0;
-        
+
         methodName = m_reader.getMethodName(i);
         returnType = m_reader.getMethodReturnType(i);
         paramCount = (sal_uInt16)m_reader.getMethodParamCount(i);
@@ -985,7 +985,7 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
                methodName.equals("acquire") ||
                methodName.equals("release") ) )
         {
-            continue;			
+            continue;
         }
 
         if (isUnsigned(returnType))
@@ -1000,14 +1000,14 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
             flags = flags | UIT_CONST;
 
         if (sal_True || flags) // while unsorted, add always method type info
-            pUnoInfos->push_back(UnoInfo(methodName, "", UNOTYPEINFO_METHOD, i, flags));			
-            
+            pUnoInfos->push_back(UnoInfo(methodName, "", UNOTYPEINFO_METHOD, i, flags));
+
         if (first)
         {
             first = sal_False;
             o << indent() << "// Methods\n";
-        }	
-        
+        }
+
         o << indent() << "public ";
         dumpType(o, returnType);
         o << " " << methodName << "( ";
@@ -1019,7 +1019,7 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
             paramName =	m_reader.getMethodParamName(i, j);
             paramType =	m_reader.getMethodParamType(i, j);
             paramMode = m_reader.getMethodParamMode(i, j);
-            
+
             switch (paramMode)
             {
                 case RT_PARAM_IN:
@@ -1034,7 +1034,7 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
                     flags = flags | UIT_IN | UIT_OUT;
                     o << "/*INOUT*/";
                     break;
-            }				
+            }
             if (isUnsigned(paramType))
                 flags = flags | UIT_UNSIGNED;
             if (isAny(paramType))
@@ -1042,14 +1042,14 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
             if (isInterface(paramType))
                 flags = flags | UIT_INTERFACE;
             if (flags && flags != 1)
-                pUnoInfos->push_back(UnoInfo(paramName, methodName, UNOTYPEINFO_PARAMETER, j, flags));			
+                pUnoInfos->push_back(UnoInfo(paramName, methodName, UNOTYPEINFO_PARAMETER, j, flags));
 
-            dumpType(o, paramType); 
+            dumpType(o, paramType);
             if (paramMode != RT_PARAM_IN)
                 o << "[]";
 
             o << " " << paramName;
-                
+
             if (j+1 < paramCount) o << ", ";
         }
         o << " )";
@@ -1071,13 +1071,13 @@ void InterfaceType::dumpMethods(FileStream& o, UnoInfoList* pUnoInfos)
                 o << scopedName(m_typeName, excpName);
             }
         }
-//		o << "com.sun.star.uno.RuntimeException;\n"; 
-        o << ";\n"; 
-    }		
+//		o << "com.sun.star.uno.RuntimeException;\n";
+        o << ";\n";
+    }
 
     if (!first)
         o << "\n";
-}	
+}
 
 void InterfaceType::dumpUnoInfo(FileStream& o, const UnoInfo& unoInfo, sal_Int32 * index)
 {
@@ -1183,9 +1183,9 @@ void InterfaceType::dumpUnoInfo(FileStream& o, const UnoInfo& unoInfo, sal_Int32
         case UNOTYPEINFO_PARAMETER:
             {
                 sal_Bool hasFlags = sal_False;
-                o << "new com.sun.star.lib.uno.typeinfo.ParameterTypeInfo( \"" << unoInfo.m_name 
+                o << "new com.sun.star.lib.uno.typeinfo.ParameterTypeInfo( \"" << unoInfo.m_name
                   << "\", \"" << unoInfo.m_methodName << "\", " << unoInfo.m_index
-                  << ", "; 
+                  << ", ";
                 if (unoInfo.m_flags & UIT_OUT)
                 {
                     if (unoInfo.m_flags & UIT_IN)
@@ -1193,7 +1193,7 @@ void InterfaceType::dumpUnoInfo(FileStream& o, const UnoInfo& unoInfo, sal_Int32
                         hasFlags = sal_True;
                           o << "com.sun.star.lib.uno.typeinfo.TypeInfo.IN";
                     }
-    
+
                     if (hasFlags)
                         o << "|";
                     else
@@ -1231,15 +1231,15 @@ void InterfaceType::dumpUnoInfo(FileStream& o, const UnoInfo& unoInfo, sal_Int32
                 o << " )";
             }
             break;
-    }	
-}	
+    }
+}
 
 //*************************************************************************
 // ModuleType
 //*************************************************************************
 ModuleType::ModuleType(TypeReader& typeReader,
                         const OString& typeName,
-                       const TypeManager& typeMgr, 
+                       const TypeManager& typeMgr,
                        const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -1247,8 +1247,8 @@ ModuleType::ModuleType(TypeReader& typeReader,
 
 ModuleType::~ModuleType()
 {
-    
-}	
+
+}
 
 sal_Bool ModuleType::dump(JavaOptions* pOptions)
     throw( CannotDumpException )
@@ -1256,7 +1256,7 @@ sal_Bool ModuleType::dump(JavaOptions* pOptions)
     OString outPath;
     if (pOptions->isValid("-O"))
         outPath = pOptions->getOption("-O");
-    
+
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
@@ -1266,7 +1266,7 @@ sal_Bool ModuleType::dump(JavaOptions* pOptions)
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST)
         {
             fieldName = m_reader.getFieldName(i);
@@ -1274,7 +1274,7 @@ sal_Bool ModuleType::dump(JavaOptions* pOptions)
 
             fileName = createFileNameFromType(outPath, m_typeName + "/" + fieldName, ".java");
             FileStream o(fileName);
-            
+
             if(!o.isValid())
             {
                 OString message("cannot open ");
@@ -1286,21 +1286,21 @@ sal_Bool ModuleType::dump(JavaOptions* pOptions)
             o << indent() << "public interface " << fieldName << "\n{\n";
             inc();
             o << indent() << "public static final ";
-            dumpType(o, fieldType);	
+            dumpType(o, fieldType);
             o << " value = ";
             dumpConstantValue(o, i);
             o << ";\n\n";
-            
+
             if (isUnsigned(fieldType))
             {
                 o << indent() << "public static final com.sun.star.lib.uno.typeinfo.TypeInfo UNOTYPEINFO[] = { new com.sun.star.lib.uno.typeinfo.ConstantTypeInfo( \""
-                  << fieldName << "\", com.sun.star.lib.uno.typeinfo.TypeInfo.UNSIGNED ) };\n"; 
+                  << fieldName << "\", com.sun.star.lib.uno.typeinfo.TypeInfo.UNSIGNED ) };\n";
             }
-            
+
             dec();
             o << "}\n";
         }
-    }		
+    }
 
     return sal_True;
 }
@@ -1313,20 +1313,20 @@ sal_Bool ModuleType::hasConstants()
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST)
             return sal_True;
     }
-    
+
     return sal_False;
-}	
+}
 
 //*************************************************************************
 // ConstantsType
 //*************************************************************************
 ConstantsType::ConstantsType(TypeReader& typeReader,
                               const OString& typeName,
-                             const TypeManager& typeMgr, 
+                             const TypeManager& typeMgr,
                              const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -1334,8 +1334,8 @@ ConstantsType::ConstantsType(TypeReader& typeReader,
 
 ConstantsType::~ConstantsType()
 {
-    
-}	
+
+}
 
 sal_Bool ConstantsType::dumpFile(FileStream& o)
     throw( CannotDumpException )
@@ -1344,17 +1344,17 @@ sal_Bool ConstantsType::dumpFile(FileStream& o)
 
     o << "public interface " << m_name << "\n{\n";
     inc();
-    
+
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
-    OString 		fieldType;	
+    OString 		fieldType;
     StringSet 		aTypeInfos;
 
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST)
         {
             fieldName = m_reader.getFieldName(i);
@@ -1362,14 +1362,14 @@ sal_Bool ConstantsType::dumpFile(FileStream& o)
 
             if (isUnsigned(fieldType))
                 aTypeInfos.insert(fieldName);
-                
+
             o << indent() << "public static final ";
-            dumpType(o, fieldType);	
+            dumpType(o, fieldType);
             o << " " << fieldName << " = ";
             dumpConstantValue(o, i);
             o << ";\n";
         }
-    }		
+    }
 
     if (!aTypeInfos.empty())
     {
@@ -1381,13 +1381,13 @@ sal_Bool ConstantsType::dumpFile(FileStream& o)
         {
             if (iter != aTypeInfos.begin())
                 o << indent();
-            
+
             o << "new com.sun.star.lib.uno.typeinfo.ConstantTypeInfo( \"" << *iter << "\", com.sun.star.lib.uno.typeinfo.TypeInfo.UNSIGNED )";
-            
+
             if (++iter != aTypeInfos.end())
-                o << ",\n";				
+                o << ",\n";
         }
-        
+
         dec(63);
         o << " };\n";
     }
@@ -1404,7 +1404,7 @@ sal_Bool ConstantsType::dumpFile(FileStream& o)
 //*************************************************************************
 StructureType::StructureType(TypeReader& typeReader,
                               const OString& typeName,
-                             const TypeManager& typeMgr, 
+                             const TypeManager& typeMgr,
                              const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -1412,8 +1412,8 @@ StructureType::StructureType(TypeReader& typeReader,
 
 StructureType::~StructureType()
 {
-    
-}	
+
+}
 
 sal_Bool StructureType::dumpFile(FileStream& o)
     throw( CannotDumpException )
@@ -1425,7 +1425,7 @@ sal_Bool StructureType::dumpFile(FileStream& o)
     OString superType(m_reader.getSuperTypeName());
     if (superType.getLength() > 0)
         o << " extends " << scopedName(m_typeName, superType);
-    
+
     o << "\n{\n";
     inc();
     o << indent() << "//instance variables\n";
@@ -1433,7 +1433,7 @@ sal_Bool StructureType::dumpFile(FileStream& o)
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
-    OString 		fieldType;	
+    OString 		fieldType;
 //	StringSet		aTypeInfos;
     UnoInfoList 	aUnoTypeInfos;
     sal_Int32 		flags = 0;
@@ -1442,7 +1442,7 @@ sal_Bool StructureType::dumpFile(FileStream& o)
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
@@ -1460,25 +1460,25 @@ sal_Bool StructureType::dumpFile(FileStream& o)
 
         dumpSeqStaticMember(o, fieldType, fieldName);
         o << indent() << "public ";
-        dumpType(o, fieldType);	
+        dumpType(o, fieldType);
         o << " " << fieldName << ";\n";
-    }		
+    }
 
-    o << "\n" << indent() << "//constructors\n";
+    o << "\n" << indent() << "// constructors\n";
     o << indent() << "public " << m_name << "()\n" << indent() << "{\n";
     inc();
     OString relType;
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
         fieldType = m_reader.getFieldType(i);
 
-        dumpTypeInit(o, fieldName, fieldType);	
+        dumpTypeInit(o, fieldName, fieldType);
     }
     dec();
     o << indent() << "}\n\n";
@@ -1495,7 +1495,7 @@ sal_Bool StructureType::dumpFile(FileStream& o)
         {
             if (iter != aUnoTypeInfos.begin())
                 o << indent();
-            
+
             o << "new com.sun.star.lib.uno.typeinfo.MemberTypeInfo( \"" << (*iter).m_name << "\", ";
             o << (*iter).m_index << ", ";
 
@@ -1523,7 +1523,7 @@ sal_Bool StructureType::dumpFile(FileStream& o)
         dec(63);
         o << " };\n";
     }
-        
+
 //  	o << "\n" << indent() << "public static Object UNORUNTIMEDATA = null;\n";
 
     dec();
@@ -1538,7 +1538,7 @@ sal_Bool StructureType::dumpFile(FileStream& o)
 //*************************************************************************
 ExceptionType::ExceptionType(TypeReader& typeReader,
                               const OString& typeName,
-                             const TypeManager& typeMgr, 
+                             const TypeManager& typeMgr,
                              const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -1546,8 +1546,8 @@ ExceptionType::ExceptionType(TypeReader& typeReader,
 
 ExceptionType::~ExceptionType()
 {
-    
-}	
+
+}
 
 sal_Bool ExceptionType::dumpFile(FileStream& o)
     throw( CannotDumpException )
@@ -1567,7 +1567,7 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
         else
             o << " extends java.lang.Exception\n";
     }
-                
+
     o << "\n{\n";
     inc();
     o << indent() << "//instance variables\n";
@@ -1575,7 +1575,7 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
-    OString 		fieldType;	
+    OString 		fieldType;
 //	StringSet		aTypeInfos;
     UnoInfoList 	aUnoTypeInfos;
     sal_Int32 		flags = 0;
@@ -1590,7 +1590,7 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
@@ -1612,12 +1612,12 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
         if (isInterface(fieldType))
             flags = flags | UIT_INTERFACE;
         aUnoTypeInfos.push_back(UnoInfo(fieldName, "", UNOTYPEINFO_MEMBER, i-nOffset, flags));
-    
+
         dumpSeqStaticMember(o, fieldType, fieldName);
         o << indent() << "public ";
-        dumpType(o, fieldType);	
+        dumpType(o, fieldType);
         o << " " << fieldName << ";\n";
-    }		
+    }
 
     o << "\n" << indent() << "//constructors\n";
     o << indent() << "public " << m_name << "()\n" << indent() << "{\n";
@@ -1631,7 +1631,7 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
@@ -1640,8 +1640,8 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
 
         if (m_typeName.equals("com/sun/star/uno/Exception") && fieldName.equals("Message"))
             continue;
-    
-           dumpTypeInit(o, fieldName, fieldType);	
+
+           dumpTypeInit(o, fieldName, fieldType);
     }
     dec();
 
@@ -1665,10 +1665,10 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
         {
             if (iter != aUnoTypeInfos.begin())
                 o << indent();
-            
+
             o << "new com.sun.star.lib.uno.typeinfo.MemberTypeInfo( \"" << (*iter).m_name << "\", ";
             o << (*iter).m_index << ", ";
-            
+
             if ((*iter).m_flags & UIT_UNSIGNED)
             {
                 o << "com.sun.star.lib.uno.typeinfo.TypeInfo.UNSIGNED )";
@@ -1687,13 +1687,13 @@ sal_Bool ExceptionType::dumpFile(FileStream& o)
             }
 
             if (++iter != aUnoTypeInfos.end())
-                o << ",\n";				
+                o << ",\n";
         }
-        
+
         dec(63);
         o << " };\n";
     }
-        
+
 //  	o << "\n" << indent() << "public static Object UNORUNTIMEDATA = null;\n";
 
     dec();
@@ -1710,7 +1710,7 @@ sal_Bool ExceptionType::dumpSimpleMemberConstructor(FileStream& o)
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
-    OString 		fieldType;	
+    OString 		fieldType;
 
     o << indent() << "{\n";
     inc();
@@ -1721,39 +1721,39 @@ sal_Bool ExceptionType::dumpSimpleMemberConstructor(FileStream& o)
     {
         o << indent() << "super( _Message );\n";
         o << indent() << "Context" << " = null;\n";
-    } else 
+    } else
     {
         o << indent() << "super( _Message );\n";
     }
-*/		
+*/
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
         fieldType = m_reader.getFieldType(i);
-    
+
         if (m_typeName.equals("com/sun/star/uno/Exception") && fieldName.equals("Message"))
             continue;
 
-        dumpTypeInit(o, fieldName, fieldType);	
+        dumpTypeInit(o, fieldName, fieldType);
     }
 
     dec();
     o << indent() << "}\n\n";
 
     return sal_True;
-}	
+}
 
 //*************************************************************************
 // EnumType
 //*************************************************************************
 EnumType::EnumType(TypeReader& typeReader,
                     const OString& typeName,
-                   const TypeManager& typeMgr, 
+                   const TypeManager& typeMgr,
                    const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -1761,8 +1761,8 @@ EnumType::EnumType(TypeReader& typeReader,
 
 EnumType::~EnumType()
 {
-    
-}	
+
+}
 
 sal_Bool EnumType::dumpFile(FileStream& o)
     throw( CannotDumpException )
@@ -1777,13 +1777,13 @@ sal_Bool EnumType::dumpFile(FileStream& o)
     o << indent() << "super(value);\n";
     dec();
     o << indent() << "}\n\n";
-    
+
     o << indent() << "public static " << m_name << " getDefault()\n" << indent() << "{\n";
     inc();
     o << indent() << "return " << m_reader.getFieldName(0) << ";\n";
     dec();
     o << indent() << "}\n\n";
-    
+
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     RTConstValue	constValue;
@@ -1794,7 +1794,7 @@ sal_Bool EnumType::dumpFile(FileStream& o)
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access != RT_ACCESS_CONST)
             continue;
 
@@ -1805,11 +1805,11 @@ sal_Bool EnumType::dumpFile(FileStream& o)
             value = constValue.m_value.aLong;
         else
             value++;
-                
-        o << indent() << "public static final " << m_name << " " << fieldName << " = " 
+
+        o << indent() << "public static final " << m_name << " " << fieldName << " = "
           << "new " << m_name << "(" << value << ");\n";
         o << indent() << "public static final int " << fieldName << "_value = " << value << ";\n";
-    }		
+    }
 
     o << "\n" << indent() << "public static " << m_name << " fromInt(int value)\n" << indent() << "{\n";
     inc();
@@ -1820,7 +1820,7 @@ sal_Bool EnumType::dumpFile(FileStream& o)
     for (i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access != RT_ACCESS_CONST)
             continue;
 
@@ -1831,17 +1831,17 @@ sal_Bool EnumType::dumpFile(FileStream& o)
             value = constValue.m_value.aLong;
         else
             value++;
-                
+
         o << indent() << "case " << value << ":\n";
         inc();
         o << indent() << "return " << fieldName << ";\n";
         dec();
-    }		
+    }
     o << indent() << "default:\n";
     inc();
     o << indent() << "return null;\n";
     dec();
-        
+
     dec();
     o << indent() << "}\n";
     dec();
@@ -1860,7 +1860,7 @@ sal_Bool EnumType::dumpFile(FileStream& o)
 //*************************************************************************
 TypeDefType::TypeDefType(TypeReader& typeReader,
                              const OString& typeName,
-                            const TypeManager& typeMgr, 
+                            const TypeManager& typeMgr,
                             const TypeDependency& typeDependencies)
     : JavaType(typeReader, typeName, typeMgr, typeDependencies)
 {
@@ -1868,17 +1868,17 @@ TypeDefType::TypeDefType(TypeReader& typeReader,
 
 TypeDefType::~TypeDefType()
 {
-    
-}	
 
-sal_Bool TypeDefType::dump(JavaOptions* pOptions) 
+}
+
+sal_Bool TypeDefType::dump(JavaOptions* pOptions)
     throw( CannotDumpException )
 {
     OString relBaseType(checkRealBaseType(m_typeName));
 
     if ( pOptions->isValid("-nD") )
         return sal_True;
-    
+
     return produceType(relBaseType, m_typeMgr, m_dependencies, pOptions);
 }
 
@@ -1887,7 +1887,7 @@ sal_Bool TypeDefType::dump(JavaOptions* pOptions)
 // produceType
 //*************************************************************************
 sal_Bool produceType(const OString& typeName,
-                     TypeManager& typeMgr, 
+                     TypeManager& typeMgr,
                      TypeDependency& typeDependencies,
                      JavaOptions* pOptions)
     throw( CannotDumpException )
@@ -1913,8 +1913,8 @@ sal_Bool produceType(const OString& typeName,
 
     if( !checkTypeDependencies(typeMgr, typeDependencies, typeName))
         return sal_False;
-    
-/*    
+
+/*
     sal_Bool bIsExtraType = sal_False;
     RegistryKey		typeKey = typeMgr.getTypeKey(typeName, &bIsExtraType);
     if (bIsExtraType)
@@ -1922,16 +1922,16 @@ sal_Bool produceType(const OString& typeName,
         typeDependencies.setGenerated(typeName);
         return sal_True;
     }
-    
+
     if (!typeKey.isValid())
-        return sal_False;	
-        
+        return sal_False;
+
     if( !checkTypeDependencies(typeMgr, typeDependencies, typeName))
         return sal_False;
 
     RegValueType 	valueType;
     sal_uInt32		valueSize;
-    
+
     if (typeKey.getValueInfo(OUString(), &valueType, &valueSize))
     {
         if (typeName.equals("/"))
@@ -1940,7 +1940,7 @@ sal_Bool produceType(const OString& typeName,
             return sal_False;
     }
     sal_uInt8* pBuffer = (sal_uInt8*)rtl_allocateMemory(valueSize);
-    
+
     if (typeKey.getValue(OUString(), pBuffer))
     {
         rtl_freeMemory(pBuffer);
@@ -2026,7 +2026,7 @@ sal_Bool produceType(const OString& typeName,
             ret = sal_True;
             break;
     }
-    
+
     return ret;
 }
 
@@ -2047,13 +2047,13 @@ OString scopedName(const OString& scope, const OString& type,
     {
         OString tmpScp(scope.copy(0, scope.lastIndexOf('/')));
         OString tmpScp2(type.copy(0, type.lastIndexOf('/')));
-        
+
         if (tmpScp == tmpScp2)
             return type.copy( type.lastIndexOf( '/' )+1 );
     }
-            
+
     return type.replace('/', '.');
-}	
+}
 
 
 

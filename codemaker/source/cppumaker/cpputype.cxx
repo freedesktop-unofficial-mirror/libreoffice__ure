@@ -2,9 +2,9 @@
  *
  *  $RCSfile: cpputype.cxx,v $
  *
- *  $Revision: 1.20 $
+ *  $Revision: 1.21 $
  *
- *  last change: $Author: dbo $ $Date: 2002-07-31 12:46:38 $
+ *  last change: $Author: hr $ $Date: 2003-03-19 15:53:41 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -83,7 +83,7 @@ using namespace rtl;
 //*************************************************************************
 CppuType::CppuType(TypeReader& typeReader,
                    const OString& typeName,
-                   const TypeManager& typeMgr, 
+                   const TypeManager& typeMgr,
                    const TypeDependency& typeDependencies)
     : m_inheritedMemberCount(0)
     , m_cppuTypeLeak(sal_False)
@@ -96,7 +96,7 @@ CppuType::CppuType(TypeReader& typeReader,
     , m_dependencies(typeDependencies)
     , m_bIsNestedType(sal_False)
 {
-    // check if this type is nested 
+    // check if this type is nested
     sal_Int32 i = typeName.lastIndexOf('/');
     m_name = typeName.copy( i != -1 ? i+1 : 0 );
 
@@ -114,8 +114,8 @@ CppuType::CppuType(TypeReader& typeReader,
 
 CppuType::~CppuType()
 {
-    
-}	
+
+}
 
 sal_Bool CppuType::isNestedTypeByName(const ::rtl::OString& type)
 {
@@ -164,11 +164,11 @@ sal_Bool CppuType::dump(CppuOptions* pOptions)
         m_cppuTypeDynamic = sal_False;
         m_cppuTypeStatic = sal_True;
     }
-    
+
     OString outPath;
     if (pOptions->isValid("-O"))
         outPath = pOptions->getOption("-O");
-    
+
     OString tmpFileName;
     OString hFileName = createFileNameFromType(outPath, m_typeName, ".hdl");
 
@@ -190,12 +190,12 @@ sal_Bool CppuType::dump(CppuOptions* pOptions)
     if ( !bFileExists || bFileCheck )
     {
         FileStream hFile;
-        
+
         if ( bFileCheck )
             hFile.open(tmpFileName);
         else
             hFile.open(hFileName);
-        
+
         if(!hFile.isValid())
         {
             OString message("cannot open ");
@@ -231,12 +231,12 @@ sal_Bool CppuType::dump(CppuOptions* pOptions)
     if ( !bFileExists || bFileCheck )
     {
         FileStream hxxFile;
-        
+
         if ( bFileCheck )
             hxxFile.open(tmpFileName);
         else
             hxxFile.open(hxxFileName);
-        
+
         if(!hxxFile.isValid())
         {
             OString message("cannot open ");
@@ -253,13 +253,13 @@ sal_Bool CppuType::dump(CppuOptions* pOptions)
         }
     }
 
-    return ret; 
+    return ret;
 }
 sal_Bool CppuType::dumpDependedTypes(CppuOptions* pOptions)
     throw( CannotDumpException )
 {
     sal_Bool ret = sal_True;
-    
+
     TypeUsingSet usingSet(m_dependencies.getDependencies(m_typeName));
 
     TypeUsingSet::const_iterator iter = usingSet.begin();
@@ -270,7 +270,7 @@ sal_Bool CppuType::dumpDependedTypes(CppuOptions* pOptions)
         typeName = (*iter).m_type;
         if ((index = typeName.lastIndexOf(']')) > 0)
             typeName = typeName.copy(index + 1);
-        
+
         if (getBaseType(typeName).getLength() == 0)
         {
             if (!produceType(typeName,
@@ -278,16 +278,16 @@ sal_Bool CppuType::dumpDependedTypes(CppuOptions* pOptions)
                              m_dependencies,
                              pOptions))
             {
-                fprintf(stderr, "%s ERROR: %s\n", 
-                        pOptions->getProgramName().getStr(), 
+                fprintf(stderr, "%s ERROR: %s\n",
+                        pOptions->getProgramName().getStr(),
                         OString("cannot dump Type '" + typeName + "'").getStr());
                 exit(99);
             }
         }
         ++iter;
-    }		
+    }
 
-    return ret; 
+    return ret;
 }
 
 OString CppuType::dumpHeaderDefine(FileStream& o, sal_Char* prefix, sal_Bool bExtended)
@@ -299,27 +299,27 @@ OString CppuType::dumpHeaderDefine(FileStream& o, sal_Char* prefix, sal_Bool bEx
     }
 
     sal_uInt32 length = 3 + m_typeName.getLength() + strlen(prefix);
-        
+
     if (bExtended)
         length += m_name.getLength() + 1;
-    
+
     OStringBuffer tmpBuf(length);
 
     tmpBuf.append('_');
     tmpBuf.append(m_typeName);
-    tmpBuf.append('_');	
+    tmpBuf.append('_');
     if (bExtended)
     {
         tmpBuf.append(m_name);
-        tmpBuf.append('_');	
+        tmpBuf.append('_');
     }
     tmpBuf.append(prefix);
-    tmpBuf.append('_');	
-    
+    tmpBuf.append('_');
+
     OString tmp(tmpBuf.makeStringAndClear().replace('/', '_').toAsciiUpperCase());
 
     o << "#ifndef " << tmp << "\n#define " << tmp << "\n";
-    
+
     return tmp;
 }
 
@@ -333,48 +333,48 @@ void CppuType::dumpDefaultHIncludes(FileStream& o)
     {
         o << "#ifndef _COM_SUN_STAR_UNO_REFERENCE_H_\n"
           << "#include <com/sun/star/uno/Reference.h>\n"
-          << "#endif\n";		
+          << "#endif\n";
     }
-}	
+}
 
 void CppuType::dumpDefaultHxxIncludes(FileStream& o)
 {
     o << "#ifndef _OSL_MUTEX_HXX_\n"
       << "#include <osl/mutex.hxx>\n"
-      << "#endif\n\n";		
+      << "#endif\n\n";
 
     o << "#ifndef _COM_SUN_STAR_UNO_TYPE_HXX_\n"
       << "#include <com/sun/star/uno/Type.hxx>\n"
-      << "#endif\n";		
+      << "#endif\n";
 
     if (m_typeMgr.getTypeClass(m_typeName) == RT_TYPE_INTERFACE)
     {
         o << "#ifndef _COM_SUN_STAR_UNO_REFERENCE_HXX_\n"
           << "#include <com/sun/star/uno/Reference.hxx>\n"
-          << "#endif\n";		
+          << "#endif\n";
     }
 }
 
 void CppuType::dumpInclude(FileStream& o, const OString& typeName, sal_Char* prefix, sal_Bool bExtended, sal_Bool bCaseSensitive)
 {
     sal_uInt32 length = 3+ m_typeName.getLength() + strlen(prefix);
-    
-    if (bExtended) 
+
+    if (bExtended)
         length += m_name.getLength() + 1;
 
     OStringBuffer tmpBuf(length);
 
     tmpBuf.append('_');
     tmpBuf.append(typeName);
-    tmpBuf.append('_');	
+    tmpBuf.append('_');
     if (bExtended)
     {
         tmpBuf.append(m_name);
-        tmpBuf.append('_');	
+        tmpBuf.append('_');
     }
     tmpBuf.append(prefix);
-    tmpBuf.append('_');	
-    
+    tmpBuf.append('_');
+
     OString tmp(tmpBuf.makeStringAndClear().replace('/', '_').toAsciiUpperCase());
 
     length = 1 + typeName.getLength() + strlen(prefix);
@@ -385,12 +385,12 @@ void CppuType::dumpInclude(FileStream& o, const OString& typeName, sal_Char* pre
     tmpBuf.append(typeName);
     if (bExtended)
     {
-        tmpBuf.append('/');	
+        tmpBuf.append('/');
         tmpBuf.append(m_name);
     }
-    tmpBuf.append('.');	
+    tmpBuf.append('.');
     tmpBuf.append(prefix);
-    
+
     o << "#ifndef " << tmp << "\n#include <";
     if (bCaseSensitive)
     {
@@ -400,12 +400,12 @@ void CppuType::dumpInclude(FileStream& o, const OString& typeName, sal_Char* pre
         o << tmpBuf.makeStringAndClear();
     }
     o << ">\n#endif\n";
-}	
+}
 
 void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char* prefix)
 {
     TypeUsingSet usingSet(m_dependencies.getDependencies(typeName));
-    
+
     TypeUsingSet::const_iterator iter = usingSet.begin();
 
     OString 	sPrefix(OString(prefix).toAsciiUpperCase());
@@ -427,7 +427,7 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
         if (isNestedTypeByName(relType) && hasNestedType(relType))
             bDumpThisType = sal_False;
 
-        if (bDumpThisType) 
+        if (bDumpThisType)
         {
             OString defPrefix("HXX");
             if (sPrefix.equals("HDL"))
@@ -437,8 +437,8 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
             {
                 bSequenceDumped = sal_True;
                 o << "#ifndef _COM_SUN_STAR_UNO_SEQUENCE_" << defPrefix
-                  << "_\n#include <com/sun/star/uno/Sequence." << defPrefix.toAsciiLowerCase() 
-                  << ">\n#endif\n";		
+                  << "_\n#include <com/sun/star/uno/Sequence." << defPrefix.toAsciiLowerCase()
+                  << ">\n#endif\n";
             }
 
             if (getBaseType(relType).getLength() == 0 &&
@@ -451,8 +451,8 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
                     {
                         bInterfaceDumped = sal_True;
                         o << "#ifndef _COM_SUN_STAR_UNO_REFERENCE_H_\n"
-                          << "#include <com/sun/star/uno/Reference.h>\n" 
-                          << "#endif\n";		
+                          << "#include <com/sun/star/uno/Reference.h>\n"
+                          << "#endif\n";
                     }
 
                     if (!((*iter).m_use & TYPEUSE_SUPER))
@@ -499,9 +499,9 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
                     if (isNestedTypeByName(relType))
                     {
                         sal_Int32 iLastS = relType.lastIndexOf('/');
-                        
+
                         OString outerNamespace(relType.copy(0,iLastS));
-                        
+
                         dumpInclude(o, outerNamespace, prefix);
                     }
                     else
@@ -511,24 +511,24 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
             if (relType == "any")
             {
                 o << "#ifndef _COM_SUN_STAR_UNO_ANY_" << defPrefix
-                  << "_\n#include <com/sun/star/uno/Any." << defPrefix.toAsciiLowerCase() 
-                  << ">\n#endif\n";		
+                  << "_\n#include <com/sun/star/uno/Any." << defPrefix.toAsciiLowerCase()
+                  << ">\n#endif\n";
             } else
             if (relType == "type")
             {
                 o << "#ifndef _COM_SUN_STAR_UNO_TYPE_" << defPrefix
-                  << "_\n#include <com/sun/star/uno/Type." << defPrefix.toAsciiLowerCase() 
-                  << ">\n#endif\n";		
+                  << "_\n#include <com/sun/star/uno/Type." << defPrefix.toAsciiLowerCase()
+                  << ">\n#endif\n";
             } else
             if (relType == "string" && sPrefix.equals("HDL"))
             {
                 o << "#ifndef _RTL_USTRING_HXX_\n"
                   << "#include <rtl/ustring.hxx>\n"
-                  << "#endif\n";		
-            }				
+                  << "#endif\n";
+            }
         }
         ++iter;
-    }		
+    }
     if (m_typeName.equals(typeName) && (getNestedTypeNames().getLength() > 0))
     {
         o << "// includes for nested types\n\n";
@@ -536,33 +536,33 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
         for (sal_uInt32 i = 0; i < getNestedTypeNames().getLength(); i++)
         {
             OUString s(getNestedTypeNames().getElement(i));
-            
+
             OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_UTF8);
 
             dumpDepIncludes(o, nestedName, prefix);
         }
     }
-}	
+}
 
 void CppuType::dumpNameSpace(FileStream& o, sal_Bool bOpen, sal_Bool bFull, const OString& type)
 {
     OString typeName(type);
-    sal_Bool bOneLine = sal_True; 
+    sal_Bool bOneLine = sal_True;
     if (typeName.getLength() == 0)
     {
         typeName = m_typeName;
         bOneLine = sal_False;
     }
-    
+
     if (typeName == "/")
         return;
 
     if (typeName.indexOf( '/' ) == -1 && !bFull)
-        return;		
-    
+        return;
+
     if (!bFull)
         typeName = typeName.copy( 0, typeName.lastIndexOf( '/' ) );
-    
+
     if (bOpen)
     {
         sal_Int32 nIndex = 0;
@@ -605,7 +605,7 @@ void CppuType::dumpLGetCppuType(FileStream& o)
     } else
     {
         o << "inline const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-        dumpType(o, m_typeName, sal_True, sal_False); 
+        dumpType(o, m_typeName, sal_True, sal_False);
         o << "* ) SAL_THROW( () )\n{\n";
     }
     inc();
@@ -624,7 +624,7 @@ void CppuType::dumpLGetCppuType(FileStream& o)
       << typeName <<" );\n";
     dec();
     o << indent() << "}\n";
-    
+
     return;
 }
 
@@ -649,16 +649,16 @@ void CppuType::dumpGetCppuType(FileStream& o)
           << "static typelib_TypeDescriptionReference * s_pType_" << typeName << " = 0;\n"
           << "#endif\n\n";
     }
-    
+
     o << "inline const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-    dumpType(o, m_typeName, sal_True, sal_False); 
+    dumpType(o, m_typeName, sal_True, sal_False);
     o << "* ) SAL_THROW( () )\n{\n";
     inc();
 
     if ( m_typeName.equals("com/sun/star/uno/Exception") )
     {
         o << indent() << "return * reinterpret_cast< const ::com::sun::star::uno::Type * >( ::typelib_static_type_getByTypeClass("
-          << " typelib_TypeClass_EXCEPTION ) );\n";	
+          << " typelib_TypeClass_EXCEPTION ) );\n";
     } else
     {
         o << indent() << "#if ! ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n"
@@ -690,7 +690,7 @@ void CppuType::dumpGetCppuType(FileStream& o)
 
             sal_uInt32 		fieldCount = m_reader.getFieldCount();
             RTFieldAccess 	access = RT_ACCESS_INVALID;
-            OString 		fieldType, fieldName;	
+            OString 		fieldType, fieldName;
             OString			scope = m_typeName.replace('/', '.');
             sal_Bool		bWithScope = sal_True;
             OString			modFieldType;
@@ -700,7 +700,7 @@ void CppuType::dumpGetCppuType(FileStream& o)
             for (sal_uInt16 i=0; i < fieldCount; i++)
             {
                 access = m_reader.getFieldAccess(i);
-                
+
                 if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
                     continue;
 
@@ -721,7 +721,7 @@ void CppuType::dumpGetCppuType(FileStream& o)
 
                 o << indent() << "aMemberRefs[" << i << "] = rMemberType_"
                   << modFieldType/*i*/ << ".getTypeLibType();\n";
-            }		
+            }
             o << "\n";
         }
 
@@ -741,7 +741,7 @@ void CppuType::dumpGetCppuType(FileStream& o)
         {
             o << "0, " << count << ", ";
         }
-         
+
         if (count)
         {
             o << " aMemberRefs );\n";
@@ -756,9 +756,9 @@ void CppuType::dumpGetCppuType(FileStream& o)
     }
     dec();
     o << indent() << "}\n";
-    
+
     return;
-}	
+}
 
 void CppuType::dumpCGetCppuType(FileStream& o)
 {
@@ -767,13 +767,13 @@ void CppuType::dumpCGetCppuType(FileStream& o)
     o << "#if ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n"
       << "static ::com::sun::star::uno::Type * pType_" << typeName << " = 0;\n"
       << "#endif\n\n";
-      
+
     if (m_cppuTypeStatic)
         o << "static";
     else
         o << "inline";
     o << " const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-    dumpType(o, m_typeName, sal_True, sal_False); 
+    dumpType(o, m_typeName, sal_True, sal_False);
     o << "* ) SAL_THROW( () )\n{\n";
     inc();
 
@@ -787,17 +787,17 @@ void CppuType::dumpCGetCppuType(FileStream& o)
 
     o << indent() << "if ( !pType_" << typeName << " )\n" << indent() << "{\n";
     inc();
-    o << indent() << "::rtl::OUString sTypeName( RTL_CONSTASCII_USTRINGPARAM(\"" 
+    o << indent() << "::rtl::OUString sTypeName( RTL_CONSTASCII_USTRINGPARAM(\""
       << m_typeName.replace('/', '.') << "\") );\n\n";
 
     if ( m_cppuTypeDynamic )
     {
         o << "#if ! ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n";
-        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( " 
+        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << indent() << "pType_" << typeName << " = &aType_" << typeName << ";\n";
         o << "#else\n";
-        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( " 
+        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << "#endif\n";
     } else
@@ -819,15 +819,15 @@ void CppuType::dumpCGetCppuType(FileStream& o)
         if (count)
         {
             o << "\n" << indent() << "typelib_CompoundMember_Init aMembers["
-              << count << "];\n"; 
+              << count << "];\n";
 
             sal_uInt32 		fieldCount = m_reader.getFieldCount();
             RTFieldAccess 	access = RT_ACCESS_INVALID;
-            OString 		fieldType, fieldName;	
+            OString 		fieldType, fieldName;
             OString			scope = m_typeName.replace('/', '.');
 /*
             sal_Bool		bWithScope = sal_True;
-            
+
             if ( m_reader.getTypeClass() == RT_TYPE_STRUCT ||
                  m_reader.getTypeClass() == RT_TYPE_ENUM )
             {
@@ -837,24 +837,24 @@ void CppuType::dumpCGetCppuType(FileStream& o)
             for (sal_uInt16 i=0; i < fieldCount; i++)
             {
                 access = m_reader.getFieldAccess(i);
-                
+
                 if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
                     continue;
 
                 fieldName = m_reader.getFieldName(i);
                 fieldType = checkRealBaseType(m_reader.getFieldType(i), sal_True);
-            
+
                 o << indent() << "::rtl::OUString sMemberType" << i << "( RTL_CONSTASCII_USTRINGPARAM(\""
-                  << fieldType.replace('/', '.') << "\") );\n";  
+                  << fieldType.replace('/', '.') << "\") );\n";
                 o << indent() << "::rtl::OUString sMemberName" << i << "( RTL_CONSTASCII_USTRINGPARAM(\"";
 //				if (bWithScope)
 //				  o << scope << "::";
                 o << fieldName << "\") );\n";
                 o << indent() << "aMembers[" << i << "].eTypeClass = "
                   << "(typelib_TypeClass)" << getTypeClass(fieldType) << ";\n"
-                  << indent() << "aMembers[" << i << "].pTypeName = sMemberType" << i << ".pData;\n" 
+                  << indent() << "aMembers[" << i << "].pTypeName = sMemberType" << i << ".pData;\n"
                   << indent() << "aMembers[" << i << "].pMemberName = sMemberName" << i << ".pData;\n";
-            }		
+            }
         }
 
         o << "\n" << indent() << "typelib_typedescription_new(\n";
@@ -866,7 +866,7 @@ void CppuType::dumpCGetCppuType(FileStream& o)
             o << indent() << "rSuperType.getTypeLibType(),\n";
         else
             o << indent() << "0,\n";
-        
+
         if ( count )
         {
             o << indent() << count << ",\n" << indent() << "aMembers );\n\n";
@@ -875,18 +875,18 @@ void CppuType::dumpCGetCppuType(FileStream& o)
             o << indent() << count << ",\n" << indent() << "0 );\n\n";
         }
 
-        dec();	
+        dec();
         o << indent() << "typelib_typedescription_register( (typelib_TypeDescription**)&pTD );\n\n";
 
         o << indent() << "typelib_typedescription_release( pTD );\n"
           << indent() << "// End inline typedescription generation\n\n";
 
         o << "#if ! ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n";
-        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( " 
+        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << indent() << "pType_" << typeName << " = &aType_" << typeName << ";\n";
         o << "#else\n";
-        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( " 
+        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << "#endif\n";
     }
@@ -898,7 +898,7 @@ void CppuType::dumpCGetCppuType(FileStream& o)
     o << indent() << "return *pType_" << typeName << ";\n";
     dec();
     o << "}\n";
-}	
+}
 
 void CppuType::dumpCppuGetTypeMemberDecl(FileStream& o, CppuTypeDecl eDeclFlag)
 {
@@ -909,33 +909,33 @@ void CppuType::dumpCppuGetTypeMemberDecl(FileStream& o, CppuTypeDecl eDeclFlag)
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
-        if (aFinishedTypes.count(m_reader.getFieldType(i)) == 0) 
+        if (aFinishedTypes.count(m_reader.getFieldType(i)) == 0)
         {
             aFinishedTypes.insert(m_reader.getFieldType(i));
-            dumpCppuGetType(o, m_reader.getFieldType(i), sal_True, eDeclFlag);	
+            dumpCppuGetType(o, m_reader.getFieldType(i), sal_True, eDeclFlag);
         }
-    }		
-}	
+    }
+}
 
 sal_uInt32 CppuType::getMemberCount()
 {
     sal_uInt32 count = m_reader.getMethodCount();
-    
+
     sal_uInt32 fieldCount = m_reader.getFieldCount();
     RTFieldAccess access = RT_ACCESS_INVALID;
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access != RT_ACCESS_CONST && access != RT_ACCESS_INVALID)
             count++;
-    }		
+    }
     return count;
-}	
+}
 
 sal_uInt32 CppuType::checkInheritedMemberCount(const TypeReader* pReader)
 {
@@ -953,7 +953,7 @@ sal_uInt32 CppuType::checkInheritedMemberCount(const TypeReader* pReader)
         TypeReader aSuperReader(m_typeMgr.getTypeReader(superType));
         if ( aSuperReader.isValid() )
         {
-            count = checkInheritedMemberCount(&aSuperReader);		
+            count = checkInheritedMemberCount(&aSuperReader);
         }
     }
 
@@ -965,26 +965,26 @@ sal_uInt32 CppuType::checkInheritedMemberCount(const TypeReader* pReader)
         for (sal_uInt16 i=0; i < fieldCount; i++)
         {
             access = pReader->getFieldAccess(i);
-            
+
             if (access != RT_ACCESS_CONST && access != RT_ACCESS_INVALID)
             {
                 count++;
             }
-        }				
+        }
     }
 
     return count;
-}	
+}
 
 sal_uInt32 CppuType::getInheritedMemberCount()
 {
     if (m_inheritedMemberCount == 0)
     {
-        m_inheritedMemberCount = checkInheritedMemberCount(0);	
+        m_inheritedMemberCount = checkInheritedMemberCount(0);
     }
-    
+
     return m_inheritedMemberCount;
-}	
+}
 
 OString	CppuType::getTypeClass(const OString& type, sal_Bool bCStyle)
 {
@@ -1066,18 +1066,18 @@ OString	CppuType::getTypeClass(const OString& type, sal_Bool bCStyle)
             }
             break;
     }
-    
-    return bCStyle ? "typelib_TypeClass_UNKNOWN" : "::com::sun::star::uno::TypeClass_UNKNOWN";
-}	
 
-void CppuType::dumpType(FileStream& o, const OString& type, 
+    return bCStyle ? "typelib_TypeClass_UNKNOWN" : "::com::sun::star::uno::TypeClass_UNKNOWN";
+}
+
+void CppuType::dumpType(FileStream& o, const OString& type,
                         sal_Bool bConst, sal_Bool bRef, sal_Bool bNative)
     throw( CannotDumpException )
 {
     OString sType(checkRealBaseType(type, sal_True));
     sal_uInt32 index = sType.lastIndexOf(']');
     sal_uInt32 seqNum = (index > 0 ? ((index+1) / 2) : 0);
-    
+
     OString relType = (index > 0 ? (sType).copy(index+1) : type);
 
     RTTypeClass typeClass = m_typeMgr.getTypeClass(relType);
@@ -1089,7 +1089,7 @@ void CppuType::dumpType(FileStream& o, const OString& type,
     {
         o << "::com::sun::star::uno::Sequence< ";
     }
-    
+
     switch (typeClass)
     {
         case RT_TYPE_INTERFACE:
@@ -1122,7 +1122,7 @@ void CppuType::dumpType(FileStream& o, const OString& type,
     }
 
     if (bRef) o << "&";
-}	
+}
 
 OString	CppuType::getBaseType(const OString& type)
 {
@@ -1160,7 +1160,7 @@ OString	CppuType::getBaseType(const OString& type)
         return "sal_uInt64";
 
     return OString();
-}	
+}
 
 void CppuType::dumpCppuGetType(FileStream& o, const OString& type, sal_Bool bDecl, CppuTypeDecl eDeclFlag)
 {
@@ -1183,12 +1183,12 @@ void CppuType::dumpCppuGetType(FileStream& o, const OString& type, sal_Bool bDec
     {
         if (isBaseType(type))
         {
-            return;			
+            return;
         } else
         {
             if (eDeclFlag == CPPUTYPEDECL_NOINTERFACES &&
                 m_typeMgr.getTypeClass(relType) == RT_TYPE_INTERFACE)
-                return;				
+                return;
 
 //			if (m_typeMgr.getTypeClass(type) == RT_TYPE_TYPEDEF)
 //			{
@@ -1202,15 +1202,15 @@ void CppuType::dumpCppuGetType(FileStream& o, const OString& type, sal_Bool bDec
         }
         if (bDecl)
             o << ";\n";
-    }		
-}	
+    }
+}
 
 void CppuType::dumpTypeInit(FileStream& o, const OString& typeName)
 {
     OString type(checkSpecialCppuType(typeName));
 
     BASETYPE baseType = isBaseType(type);
-    
+
     switch (baseType)
     {
         case BT_BOOLEAN:
@@ -1229,7 +1229,7 @@ void CppuType::dumpTypeInit(FileStream& o, const OString& typeName)
             dumpType(o, type);
             o << ")" << "0)";
             return;
-    }	
+    }
 
     RTTypeClass typeClass = m_typeMgr.getTypeClass(type);
 
@@ -1240,7 +1240,7 @@ void CppuType::dumpTypeInit(FileStream& o, const OString& typeName)
         if (aReaderLoader.isLoaded())
         {
             TypeReader reader(m_typeMgr.getTypeReader(type));
-            
+
             if ( reader.isValid() )
             {
                 sal_Int32 nPos = type.lastIndexOf( '/' );
@@ -1251,9 +1251,9 @@ void CppuType::dumpTypeInit(FileStream& o, const OString& typeName)
             }
         }
     }
-    
-    o << "()";	
-}	
+
+    o << "()";
+}
 
 BASETYPE CppuType::isBaseType(const OString& type)
 {
@@ -1285,28 +1285,28 @@ BASETYPE CppuType::isBaseType(const OString& type)
         return BT_UNSIGNED_SHORT;
     if (type.equals("unsigned hyper"))
         return BT_UNSIGNED_HYPER;
-    
+
     return BT_INVALID;
-}	
+}
 
 OString CppuType::typeToIdentifier(const OString& type)
 {
     sal_uInt32 index = type.lastIndexOf(']');
     sal_uInt32 seqNum = (index > 0 ? ((index+1) / 2) : 0);
-    
+
     OString relType = (index > 0 ? ((OString)type).copy(index+1) : type);
     OString sIdentifier;
-    
+
     while( seqNum > 0 )
     {
         sIdentifier += OString("seq");
 
         if ( --seqNum == 0 )
         {
-            sIdentifier += OString("_");		
+            sIdentifier += OString("_");
         }
     }
-    
+
     if ( isBaseType(relType) )
     {
         sIdentifier += relType.replace(' ', '_');
@@ -1315,9 +1315,9 @@ OString CppuType::typeToIdentifier(const OString& type)
         sIdentifier += relType.replace('/', '_');
     }
 
-    
+
     return sIdentifier;
-}	
+}
 
 OString	CppuType::checkSpecialCppuType(const OString& type)
 {
@@ -1338,7 +1338,7 @@ OString	CppuType::checkSpecialCppuType(const OString& type)
         if (reader.isValid())
         {
             typeClass = reader.getTypeClass();
-                    
+
             if (typeClass == RT_TYPE_TYPEDEF)
                 baseType = reader.getSuperTypeName();
             else
@@ -1348,9 +1348,9 @@ OString	CppuType::checkSpecialCppuType(const OString& type)
             break;
         }
     }
-    
+
     return baseType;
-}	
+}
 
 OString	CppuType::checkRealBaseType(const OString& type, sal_Bool bResolveTypeOnly)
 {
@@ -1365,15 +1365,15 @@ OString	CppuType::checkRealBaseType(const OString& type, sal_Bool bResolveTypeOn
     RTTypeClass 	typeClass;
     sal_Bool 		mustBeChecked = (m_typeMgr.getTypeClass(baseType) == RT_TYPE_TYPEDEF);
     TypeReader		reader;
-    
+
     while (mustBeChecked)
     {
         reader = m_typeMgr.getTypeReader(baseType);
-    
+
         if (reader.isValid())
         {
             typeClass = reader.getTypeClass();
-                    
+
             if (typeClass == RT_TYPE_TYPEDEF)
             {
                 baseType = reader.getSuperTypeName();
@@ -1390,12 +1390,12 @@ OString	CppuType::checkRealBaseType(const OString& type, sal_Bool bResolveTypeOn
             break;
         }
     }
-    
+
     if ( bResolveTypeOnly )
         baseType = seqPrefix + baseType;
-        
+
     return baseType;
-}	
+}
 
 void CppuType::dumpConstantValue(FileStream& o, sal_uInt16 index)
 {
@@ -1412,7 +1412,7 @@ void CppuType::dumpConstantValue(FileStream& o, sal_uInt16 index)
         case RT_TYPE_BYTE:
             {
                 char tmp[16];
-                sprintf(tmp, "0x%x", (sal_Int8)constValue.m_value.aByte);
+                snprintf(tmp, sizeof(tmp), "0x%x", (sal_Int8)constValue.m_value.aByte);
                 o << "(sal_Int8)" << tmp;
             }
             break;
@@ -1456,24 +1456,24 @@ void CppuType::dumpConstantValue(FileStream& o, sal_uInt16 index)
             {
                 ::rtl::OUString aUStr(constValue.m_value.aString);
                 ::rtl::OString aStr = ::rtl::OUStringToOString(aUStr, RTL_TEXTENCODING_ASCII_US);
-                o << "::rtl::OUString::createFromAscii(\"" << aStr.getStr() << "\")"; 
+                o << "::rtl::OUString::createFromAscii(\"" << aStr.getStr() << "\")";
             }
             break;
-    }			
-}	
+    }
+}
 
 void CppuType::inc(sal_uInt32 num)
 {
-    m_indentLength += num;		
-}	
+    m_indentLength += num;
+}
 
 void CppuType::dec(sal_uInt32 num)
 {
     if (m_indentLength - num < 0)
         m_indentLength = 0;
     else
-        m_indentLength -= num;		
-}	
+        m_indentLength -= num;
+}
 
 OString CppuType::indent()
 {
@@ -1484,7 +1484,7 @@ OString CppuType::indent()
         tmp.append(' ');
     }
     return tmp.makeStringAndClear();
-}	
+}
 
 OString	CppuType::indent(sal_uInt32 num)
 {
@@ -1495,26 +1495,26 @@ OString	CppuType::indent(sal_uInt32 num)
         tmp.append(' ');
     }
     return tmp.makeStringAndClear();
-}	
+}
 
 //*************************************************************************
 // InterfaceType
 //*************************************************************************
 InterfaceType::InterfaceType(TypeReader& typeReader,
                               const OString& typeName,
-                             const TypeManager& typeMgr, 
+                             const TypeManager& typeMgr,
                              const TypeDependency& typeDependencies)
     : CppuType(typeReader, typeName, typeMgr, typeDependencies)
 {
-    m_inheritedMemberCount = 0;	
+    m_inheritedMemberCount = 0;
     m_hasAttributes = sal_False;
     m_hasMethods = sal_False;
 }
 
 InterfaceType::~InterfaceType()
 {
-    
-}	
+
+}
 
 sal_Bool InterfaceType::dumpHFile(FileStream& o)
     throw( CannotDumpException )
@@ -1538,7 +1538,7 @@ sal_Bool InterfaceType::dumpHFile(FileStream& o)
     else
         o << "inline";
     o << " const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-    dumpType(o, m_typeName, sal_True, sal_False); 
+    dumpType(o, m_typeName, sal_True, sal_False);
     o << "* ) SAL_THROW( () );\n\n";
 
     if (getNestedTypeNames().getLength() > 0)
@@ -1547,9 +1547,9 @@ sal_Bool InterfaceType::dumpHFile(FileStream& o)
         for (sal_uInt32 i = 0; i < getNestedTypeNames().getLength(); i++)
         {
             OUString s(getNestedTypeNames().getElement(i));
-            
+
             OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_UTF8);
-            
+
             nestedName = checkRealBaseType(nestedName.copy(5));
 
             if (nestedName.lastIndexOf(']') < 0)
@@ -1558,9 +1558,9 @@ sal_Bool InterfaceType::dumpHFile(FileStream& o)
                     o << "static";
                 else
                     o << "inline";
-                    
+
                 o << " const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-                dumpType(o, nestedName, sal_True, sal_False); 
+                dumpType(o, nestedName, sal_True, sal_False);
                 o << "* ) SAL_THROW( () );\n\n";
             }
         }
@@ -1574,7 +1574,7 @@ sal_Bool InterfaceType::dumpDeclaration(FileStream& o)
     throw( CannotDumpException )
 {
     o << "\nclass SAL_NO_VTABLE " << m_name;
-        
+
     OString superType(m_reader.getSuperTypeName());
     if (superType.getLength() > 0)
         o << " : public " << scopedName(m_typeName, superType);
@@ -1588,7 +1588,7 @@ sal_Bool InterfaceType::dumpDeclaration(FileStream& o)
         for (sal_uInt32 i = 0; i < getNestedTypeNames().getLength(); i++)
         {
             OUString s(getNestedTypeNames().getElement(i));
-            
+
             OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_UTF8);
 
             nestedName = nestedName.copy(5);
@@ -1640,7 +1640,7 @@ sal_Bool InterfaceType::dumpDeclaration(FileStream& o)
     }
 
     inc();
-        
+
     dumpAttributes(o);
     dumpMethods(o);
 
@@ -1655,7 +1655,7 @@ sal_Bool InterfaceType::dumpHxxFile(FileStream& o)
 {
     OString headerDefine(dumpHeaderDefine(o, "HPP"));
     o << "\n";
-    
+
     dumpInclude(o, m_typeName, "hdl");
     o << "\n";
 
@@ -1673,9 +1673,9 @@ sal_Bool InterfaceType::dumpHxxFile(FileStream& o)
         for (sal_uInt32 i = 0; i < getNestedTypeNames().getLength(); i++)
         {
             OUString s(getNestedTypeNames().getElement(i));
-            
+
             OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_UTF8);
-            
+
             nestedName = nestedName.copy(5);
 
             o << indent() << "// " << nestedName.getStr() << "\n";
@@ -1731,36 +1731,36 @@ void InterfaceType::dumpAttributes(FileStream& o)
 {
     sal_uInt32 fieldCount = m_reader.getFieldCount();
     sal_Bool first=sal_True;
-        
+
     RTFieldAccess access = RT_ACCESS_INVALID;
     OString fieldName;
-    OString fieldType;	
+    OString fieldType;
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
         fieldType = m_reader.getFieldType(i);
-    
+
         if (first)
         {
             first = sal_False;
             o << "\n" << indent() << "// Attributes\n";
-        }	
+        }
 
         o << indent() << "virtual ";
         dumpType(o, fieldType);
-        o << " SAL_CALL get" << fieldName << "() throw (::com::sun::star::uno::RuntimeException) = 0;\n"; 
+        o << " SAL_CALL get" << fieldName << "() throw (::com::sun::star::uno::RuntimeException) = 0;\n";
 
         if (access != RT_ACCESS_READONLY)
         {
             OString relType = checkSpecialCppuType(fieldType);
             sal_Bool bRef = sal_False;
             sal_Bool bConst = sal_False;
-            
+
             if (m_typeMgr.getTypeClass(relType) == RT_TYPE_ENUM ||
                 (isBaseType(relType) && !relType.equals("string") && !relType.equals("any")))
             {
@@ -1774,17 +1774,17 @@ void InterfaceType::dumpAttributes(FileStream& o)
 
             o << indent() << "virtual void SAL_CALL set" << fieldName << "( ";
             dumpType(o, fieldType, bConst, bRef);
-            o << " _" << fieldName.toAsciiLowerCase() << " ) throw (::com::sun::star::uno::RuntimeException) = 0;\n"; 
+            o << " _" << fieldName.toAsciiLowerCase() << " ) throw (::com::sun::star::uno::RuntimeException) = 0;\n";
         }
-    }		
-}	
+    }
+}
 
 void InterfaceType::dumpMethods(FileStream& o)
 {
     sal_uInt32 methodCount = m_reader.getMethodCount();
     sal_Bool first=sal_True;
 
-    OString methodName, returnType, paramType, paramName;	
+    OString methodName, returnType, paramType, paramName;
     sal_uInt32 paramCount = 0;
     sal_uInt32 excCount = 0;
     RTMethodMode methodMode = RT_MODE_INVALID;
@@ -1806,13 +1806,13 @@ void InterfaceType::dumpMethods(FileStream& o)
         {
             bWithRunTimeExcp = sal_False;
         }
-            
+
         if (first)
         {
             first = sal_False;
             o << "\n" << indent() << "// Methods\n";
-        }	
-        
+        }
+
         o << indent() << "virtual ";
         dumpType(o, returnType);
         o << " SAL_CALL " << methodName << "( ";
@@ -1822,7 +1822,7 @@ void InterfaceType::dumpMethods(FileStream& o)
             paramName =	m_reader.getMethodParamName(i, j);
             paramType =	m_reader.getMethodParamType(i, j);
             paramMode = m_reader.getMethodParamMode(i, j);
-            
+
             switch (paramMode)
             {
                 case RT_PARAM_IN:
@@ -1845,11 +1845,11 @@ void InterfaceType::dumpMethods(FileStream& o)
                     bConst = sal_False;
                     bRef = sal_True;
                     break;
-            }				
+            }
 
-            dumpType(o, paramType, bConst, bRef); 
+            dumpType(o, paramType, bConst, bRef);
             o << " " << paramName;
-            
+
             if (j+1 < (sal_uInt16)paramCount) o << ", ";
         }
         o << " )";
@@ -1867,12 +1867,12 @@ void InterfaceType::dumpMethods(FileStream& o)
 
         if ( bWithRunTimeExcp )
         {
-            o << "::com::sun::star::uno::RuntimeException"; 
+            o << "::com::sun::star::uno::RuntimeException";
         }
 
         o << ") = 0;\n";
     }
-}	
+}
 
 void InterfaceType::dumpGetCppuType(FileStream& o)
 {
@@ -1895,16 +1895,16 @@ void InterfaceType::dumpGetCppuType(FileStream& o)
           << "static typelib_TypeDescriptionReference * s_pType_" << typeName << " = 0;\n"
           << "#endif\n\n";
     }
-    
+
     o << "inline const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-    dumpType(o, m_typeName, sal_True, sal_False); 
+    dumpType(o, m_typeName, sal_True, sal_False);
     o << "* ) SAL_THROW( () )\n{\n";
     inc();
 
     if ( m_typeName.equals("com/sun/star/uno/XInterface") )
     {
         o << indent() << "return * reinterpret_cast< const ::com::sun::star::uno::Type * >( ::typelib_static_type_getByTypeClass("
-          << " typelib_TypeClass_INTERFACE ) );\n";	
+          << " typelib_TypeClass_INTERFACE ) );\n";
     } else
     {
         o << indent() << "#if ! ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n"
@@ -1941,7 +1941,7 @@ void InterfaceType::dumpGetCppuType(FileStream& o)
     }
     dec();
     o << indent() << "}\n";
-    
+
     return;
 }
 
@@ -1958,7 +1958,7 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
     else
         o << "inline";
     o << " const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
-    dumpType(o, m_typeName, sal_True, sal_False); 
+    dumpType(o, m_typeName, sal_True, sal_False);
     o << "* ) SAL_THROW( () )\n{\n";
     inc();
 
@@ -1972,17 +1972,17 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
 
     o << indent() << "if ( !pType_" << typeName << " )\n" << indent() << "{\n";
     inc();
-    o << indent() << "::rtl::OUString sTypeName( RTL_CONSTASCII_USTRINGPARAM(\"" 
+    o << indent() << "::rtl::OUString sTypeName( RTL_CONSTASCII_USTRINGPARAM(\""
       << m_typeName.replace('/', '.') << "\") );\n\n";
-    
+
     if ( m_cppuTypeDynamic )
     {
         o << "#if ! ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n";
-        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( " 
+        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << indent() << "pType_" << typeName << " = &aType_" << typeName << ";\n";
         o << "#else\n";
-        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( " 
+        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << "#endif\n";
     } else
@@ -2001,7 +2001,7 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
         sal_uInt32 count = getMemberCount();
         if (count)
         {
-            o << indent() << "typelib_TypeDescriptionReference * pMembers[" << count << "] = { ";	
+            o << indent() << "typelib_TypeDescriptionReference * pMembers[" << count << "] = { ";
             for (sal_uInt32 i = 0; i < count; i++)
             {
                 o << "0";
@@ -2010,11 +2010,11 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
                 else
                     o << " };\n";
             }
-            
+
             sal_uInt32 index = 0;
             dumpCppuAttributeRefs(o, index);
             dumpCppuMethodRefs(o, index);
-        }	
+        }
 
         o << "\n" << indent() << "typelib_typedescription_newInterface(\n";
         inc();
@@ -2022,9 +2022,9 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
           << indent() << "sTypeName.pData, ";
 
         RTUik uik;
-        m_reader.getUik(uik);	
+        m_reader.getUik(uik);
         sal_Char buffer[53];
-        sprintf(buffer, "0x%.8x, 0x%.4x, 0x%.4x, 0x%.8x, 0x%.8x,\n",
+        snprintf(buffer, sizeof(buffer), "0x%.8x, 0x%.4x, 0x%.4x, 0x%.8x, 0x%.8x,\n",
                 uik.m_Data1, uik.m_Data2, uik.m_Data3, uik.m_Data4, uik.m_Data5);
         o << buffer;
 
@@ -2041,15 +2041,15 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
             o << indent() << count << ",\n" << indent() << "0 );\n\n";
         }
         dec();
-        
+
         o << indent() << "typelib_typedescription_register( (typelib_TypeDescription**)&pTD );\n";
         if ( count )
         {
             for (sal_uInt16 i=0; i < count; i++)
             {
-                o << indent() << "typelib_typedescriptionreference_release( pMembers[" 
+                o << indent() << "typelib_typedescriptionreference_release( pMembers["
                   << i << "] );\n";
-            }		
+            }
         }
         o << indent() << "typelib_typedescription_release( (typelib_TypeDescription*)pTD );\n\n";
 
@@ -2059,11 +2059,11 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
 //			o << "\n";
 
         o << "#if ! ((defined(__SUNPRO_CC) && (__SUNPRO_CC == 0x500)) || (defined(__GNUC__) && defined(__APPLE__)))\n";
-        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( " 
+        o << indent() << "static ::com::sun::star::uno::Type aType_" << typeName << "( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << indent() << "pType_" << typeName << " = &aType_" << typeName << ";\n";
         o << "#else\n";
-        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( " 
+        o << indent() << "pType_" << typeName << " = new ::com::sun::star::uno::Type( "
           << getTypeClass(m_typeName) << ", sTypeName );\n";
         o << "#endif\n";
 
@@ -2071,7 +2071,7 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
         // type for RuntimeException is always needed
         OString 	sRunTimeExceptionType("com/sun/star/uno/RuntimeException");
         aTypes.insert(sRunTimeExceptionType);
-        dumpCppuGetType(o, sRunTimeExceptionType, sal_True, CPPUTYPEDECL_ALLTYPES);	
+        dumpCppuGetType(o, sRunTimeExceptionType, sal_True, CPPUTYPEDECL_ALLTYPES);
 
         dumpAttributesCppuDecl(o, &aTypes, CPPUTYPEDECL_ALLTYPES);
         dumpMethodsCppuDecl(o, &aTypes, CPPUTYPEDECL_ALLTYPES);
@@ -2081,7 +2081,7 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
             sal_uInt32 index = getInheritedMemberCount();
             dumpCppuAttributes(o, index);
             dumpCppuMethods(o, index);
-        }	
+        }
 
         o << indent() << "// End inline typedescription generation\n";
     }
@@ -2099,7 +2099,7 @@ void InterfaceType::dumpCGetCppuType(FileStream& o)
 void InterfaceType::dumpCppuAttributeRefs(FileStream& o, sal_uInt32& index)
 {
     sal_uInt32 fieldCount = m_reader.getFieldCount();
-        
+
     RTFieldAccess access = RT_ACCESS_INVALID;
     OString fieldName;
     OString	scope = m_typeName.replace('/', '.');
@@ -2107,13 +2107,13 @@ void InterfaceType::dumpCppuAttributeRefs(FileStream& o, sal_uInt32& index)
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
             continue;
 
         fieldName = m_reader.getFieldName(i);
-        
-        o << indent() << "::rtl::OUString sAttributeName" << i << "( RTL_CONSTASCII_USTRINGPARAM(\"" 
+
+        o << indent() << "::rtl::OUString sAttributeName" << i << "( RTL_CONSTASCII_USTRINGPARAM(\""
           << scope.replace('/', '.') << "::" << fieldName << "\") );\n";
         o << indent() << "typelib_typedescriptionreference_new( &pMembers["
           << index << "],\n";
@@ -2122,8 +2122,8 @@ void InterfaceType::dumpCppuAttributeRefs(FileStream& o, sal_uInt32& index)
           << indent() << "sAttributeName" << i << ".pData );\n";
         dec(38);
         index++;
-    }		
-}	
+    }
+}
 
 void InterfaceType::dumpCppuMethodRefs(FileStream& o, sal_uInt32& index)
 {
@@ -2135,7 +2135,7 @@ void InterfaceType::dumpCppuMethodRefs(FileStream& o, sal_uInt32& index)
     {
         methodName = m_reader.getMethodName(i);
 
-        o << indent() << "::rtl::OUString sMethodName" << i << "( RTL_CONSTASCII_USTRINGPARAM(\"" 
+        o << indent() << "::rtl::OUString sMethodName" << i << "( RTL_CONSTASCII_USTRINGPARAM(\""
           << scope.replace('/', '.') << "::" << methodName << "\") );\n";
         o << indent() << "typelib_typedescriptionreference_new( &pMembers["
           << index << "],\n";
@@ -2144,30 +2144,30 @@ void InterfaceType::dumpCppuMethodRefs(FileStream& o, sal_uInt32& index)
           << indent() << "sMethodName" << i << ".pData );\n";
         dec(38);
         index++;
-    }		
-}	
+    }
+}
 
 sal_uInt32 InterfaceType::getMemberCount()
 {
     sal_uInt32 count = m_reader.getMethodCount();
 
     if (count)
-        m_hasMethods = sal_True;		
-    
+        m_hasMethods = sal_True;
+
     sal_uInt32 fieldCount = m_reader.getFieldCount();
     RTFieldAccess access = RT_ACCESS_INVALID;
     for (sal_uInt16 i=0; i < fieldCount; i++)
     {
         access = m_reader.getFieldAccess(i);
-        
+
         if (access != RT_ACCESS_CONST && access != RT_ACCESS_INVALID)
         {
             m_hasAttributes = sal_True;
             count++;
         }
-    }		
+    }
     return count;
-}	
+}
 
 sal_uInt32 InterfaceType::checkInheritedMemberCount(const TypeReader* pReader)
 {
@@ -2186,7 +2186,7 @@ sal_uInt32 InterfaceType::checkInheritedMemberCount(const TypeReader* pReader)
         TypeReader aSuperReader(m_typeMgr.getTypeReader(superType));
         if (aSuperReader.isValid())
         {
-            count = checkInheritedMemberCount(&aSuperReader);		
+            count = checkInheritedMemberCount(&aSuperReader);
         }
     }
 
@@ -2198,7 +2198,7 @@ sal_uInt32 InterfaceType::checkInheritedMemberCount(const TypeReader* pReader)
         for (sal_uInt16 i=0; i < fieldCount; i++)
         {
             access = pReader->getFieldAccess(i);
-            
+
             if (access != RT_ACCESS_CONST && access != RT_ACCESS_INVALID)
             {
                 count++;
