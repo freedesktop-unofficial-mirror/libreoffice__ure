@@ -2,9 +2,9 @@
  *
  *  $RCSfile: CopyFileAction.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:43:44 $
+ *  last change: $Author: ok $ $Date: 2001-09-07 07:03:01 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,40 +58,41 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_setup_CopyFileAction_idl__ 
-#define __com_sun_star_setup_CopyFileAction_idl__ 
- 
-#ifndef __com_sun_star_setup_BaseAction_idl__ 
-#include <com/sun/star/setup/BaseAction.idl> 
-#endif 
- 
-#ifndef __com_sun_star_util_DateTime_idl__ 
-#include <com/sun/star/util/DateTime.idl> 
-#endif 
- 
- module com {  module sun {  module star {  module setup { 
-     
+#ifndef __com_sun_star_setup_CopyFileAction_idl__
+#define __com_sun_star_setup_CopyFileAction_idl__
+
+#ifndef __com_sun_star_setup_BaseAction_idl__
+#include <com/sun/star/setup/BaseAction.idl>
+#endif
+
+#ifndef __com_sun_star_util_DateTime_idl__
+#include <com/sun/star/util/DateTime.idl>
+#endif
+
+ module com {  module sun {  module star {  module setup {
+
 // DocMerge: empty anyway
 struct CopyFileAction: BaseAction
-{ 
+{
     // DocMerge: empty anyway
-    string				strSourceFilename; 
-        
+    string				strSourceFilename;
+
     // DocMerge: empty anyway
-    string				strDestinationFilename; 
- 
+    string				strDestinationFilename;
+
     // DocMerge: empty anyway
-    boolean				bUnoComponent; 
- 
+    boolean				bUnoComponent;
+    boolean				bActiveX;
+
     // DocMerge: empty anyway
-    boolean				bOverwrite; 
- 
+    boolean				bOverwrite;
+
     // DocMerge: empty anyway
-    com::sun::star::util::DateTime aDateTime; 
-        
+    com::sun::star::util::DateTime aDateTime;
+
     // DocMerge: empty anyway
-    long				nRights; 
-    }; 
-}; }; }; }; 
- 
-#endif 
+    long				nRights;
+    };
+}; }; }; };
+
+#endif
