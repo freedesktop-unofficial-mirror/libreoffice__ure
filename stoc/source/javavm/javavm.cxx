@@ -2,9 +2,9 @@
  *
  *  $RCSfile: javavm.cxx,v $
  *
- *  $Revision: 1.46 $
+ *  $Revision: 1.47 $
  *
- *  last change: $Author: jl $ $Date: 2002-11-13 16:04:20 $
+ *  last change: $Author: jl $ $Date: 2002-11-14 15:52:06 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -1098,6 +1098,8 @@ static void getJavaPropsFromConfig(JVM * pjvm,
         while(1)
         {
             ByteSequence seq;
+            sal_Bool bEOF;
+            OUString usProp;
             if(pIniFile->readLine(seq) == File::E_None)
             {
                 //check if another Section starts
@@ -1113,21 +1115,28 @@ static void getJavaPropsFromConfig(JVM * pjvm,
                     //no jvm option, check for property, e.g RuntimeLib=XXX
                     sal_Int32 len= line.getLength();
                     const sal_Char *pEnd= pIndex + len;
-                    //the line must not contain spaces or tabs
+                    // the line must not start with characters for commenting ';' ' ', etc.
+                    if( *pIndex == ';'
+                        || *pIndex == '/'
+                        || *pIndex == '\''
+                        || *pIndex == '#')
+                        goto nextLine;
+
+                        
+                    //the line must not contain spaces or tabs                    
                     while( pIndex != pEnd
                            && *pIndex != ' '
                            && *pIndex != '\t'
                            && *pIndex != '=')
                         pIndex ++;
                     if(pIndex == pEnd || *pIndex != '=')
-                        continue;   // no '=' found
+                        goto nextLine;   // no '=' found
                 }
                 // Ok, store the line
                 line.trim();
-                OUString usProp= OStringToOUString(line, osl_getThreadTextEncoding());
+                usProp= OStringToOUString(line, osl_getThreadTextEncoding());
                 pjvm->pushProp(usProp);
-
-                sal_Bool bEOF;
+            nextLine:
                 pIniFile->isEndOfFile(&bEOF);
                 if(bEOF)
                     break;
@@ -1413,6 +1422,17 @@ static void initVMConfiguration(JVM * pjvm,
     jvm.addSystemClasspath( retrieveComponentClassPath( "UNO_SHARE_PACKAGES_CACHE" ) );
     jvm.addUserClasspath( retrieveComponentClassPath( "UNO_USER_PACKAGES_CACHE" ) );
 
+//For a non product office we use the flags -ea and -Xcheck:jni
+#ifdef _DEBUG
+        if(!getenv( "DISABLE_SAL_DBGBOX" ) )
+        {
+            OUString s=OUString(OUSTR("-ea"));
+            jvm.pushProp(s);
+            jvm.pushProp(OUString(OUSTR("-Xcheck:jni")));
+        }
+#endif
+
+
     *pjvm= jvm;
     setTimeZone(pjvm);
 
@@ -1504,7 +1524,7 @@ JavaVM * JavaVirtualMachine_Impl::createJavaVM(const JVM & jvm) throw(RuntimeExc
         OString osJavaHome = OUStringToOString(javaHome, osl_getThreadTextEncoding());
         putenv(strdup(osJavaHome.getStr()));
 #endif
-        
+
         JNI_InitArgs_Type * initArgs = (JNI_InitArgs_Type *)_javaLib.getSymbol(
             OUSTR("JNI_GetDefaultJavaVMInitArgs"));
         JNI_CreateVM_Type * pCreateJavaVM = (JNI_CreateVM_Type *)_javaLib.getSymbol(
