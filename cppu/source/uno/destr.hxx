@@ -2,9 +2,9 @@
  *
  *  $RCSfile: destr.hxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 12:29:14 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:37:32 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -101,7 +101,7 @@ inline void _destructStruct(
     {
         destructStruct( pValue, pTypeDescr->pBaseTypeDescription, release );
     }
-    
+
     typelib_TypeDescriptionReference ** ppTypeRefs = pTypeDescr->ppTypeRefs;
     sal_Int32 * pMemberOffsets = pTypeDescr->pMemberOffsets;
     sal_Int32 nDescr = pTypeDescr->nMembers;
@@ -125,10 +125,10 @@ inline void _destructArray(
     TYPELIB_DANGER_RELEASE( pElementType );
 
     sal_Int32 nTotalElements = pTypeDescr->nTotalElements;
-    for(sal_Int32 i=0; i < nTotalElements; i++) 
+    for(sal_Int32 i=0; i < nTotalElements; i++)
     {
         ::uno_type_destructData(
-            (sal_Char *)pValue + i * nElementSize, 
+            (sal_Char *)pValue + i * nElementSize,
             ((typelib_IndirectTypeDescription *)pTypeDescr)->pType, release );
     }
 
@@ -147,7 +147,7 @@ inline void _destructAny(
     SAL_THROW( () )
 {
     typelib_TypeDescriptionReference * pType = pAny->pType;
-    
+
     switch (pType->eTypeClass)
     {
     case typelib_TypeClass_HYPER:
@@ -218,10 +218,10 @@ inline void _destructAny(
         _release( pAny->pReserved, release );
         break;
     }
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
     pAny->pData = (void *)0xdeadbeef;
 #endif
-    
+
     ::typelib_typedescriptionreference_release( pType );
 }
 //--------------------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ inline sal_Int32 _destructElements(
         return sizeof(float);
     case typelib_TypeClass_DOUBLE:
         return sizeof(double);
-        
+
     case typelib_TypeClass_STRING:
     {
         rtl_uString ** pDest = (rtl_uString **)pElements;
