@@ -2,9 +2,9 @@
  *
  *  $RCSfile: except.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: dbo $ $Date: 2001-08-01 10:09:58 $
+ *  last change: $Author: hr $ $Date: 2003-03-18 19:06:57 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -133,7 +133,7 @@ static inline OUString toRTTIname( OUString const & rUNOname ) throw ()
     return aRet.makeStringAndClear();
 }
 
- 
+
 //##################################################################################################
 //#### RTTI simulation #############################################################################
 //##################################################################################################
@@ -166,8 +166,8 @@ public:
 
     inline __type_info( void * m_data, const char * m_d_name ) throw ()
         : _m_data( m_data )
-        { ::strcpy( _m_d_name, m_d_name ); }
-    
+        { ::strcpy( _m_d_name, m_d_name ); } // #100211# - checked
+
 private:
     void * _m_data;
     char _m_d_name[1];
@@ -192,12 +192,12 @@ type_info * RTTInfos::getRTTI( OUString const & rUNOname ) throw ()
         OString aRawName( OUStringToOString( toRTTIname( rUNOname ), RTL_TEXTENCODING_ASCII_US ) );
         __type_info * pRTTI = new( ::rtl_allocateMemory( sizeof(__type_info) + aRawName.getLength() ) )
             __type_info( NULL, aRawName.getStr() );
-        
+
         // put into map
         pair< t_string2PtrMap::iterator, bool > insertion(
             _allRTTI.insert( t_string2PtrMap::value_type( rUNOname, pRTTI ) ) );
         OSL_ENSURE( insertion.second, "### rtti insertion failed?!" );
-        
+
         return (type_info *)pRTTI;
     }
     else
@@ -213,7 +213,7 @@ RTTInfos::RTTInfos() throw ()
 RTTInfos::~RTTInfos() throw ()
 {
     TRACE( "> freeing generated RTTI infos... <\n" );
-    
+
     MutexGuard aGuard( _aMutex );
     for ( t_string2PtrMap::const_iterator iPos( _allRTTI.begin() ); iPos != _allRTTI.end(); ++iPos )
     {
@@ -234,7 +234,7 @@ struct ObjectFunction
 {
     char somecode[12];
     typelib_TypeDescription * _pTypeDescr; // type of object
-    
+
     ObjectFunction( typelib_TypeDescription * pTypeDescr, void * fpFunc ) throw ();
     ~ObjectFunction() throw ();
 };
@@ -243,7 +243,7 @@ ObjectFunction::ObjectFunction( typelib_TypeDescription * pTypeDescr, void * fpF
     : _pTypeDescr( pTypeDescr )
 {
     ::typelib_typedescription_acquire( _pTypeDescr );
-    
+
     unsigned char * pCode = (unsigned char *)somecode;
     // a must be!
     OSL_ENSURE( (void *)this == (void *)pCode, "### unexpected!" );
@@ -313,7 +313,7 @@ struct ExceptionType
     sal_Int32			_n1, _n2, _n3, _n4;
     ObjectFunction *	_pCopyCtor;
     sal_Int32			_n5;
-    
+
     inline ExceptionType( typelib_TypeDescription * pTypeDescr ) throw ()
         : _n0( 0 )
         , _n1( 0 )
@@ -334,7 +334,7 @@ struct RaiseInfo
     sal_Int32			_n2;
     void *				_types;
     sal_Int32			_n3, _n4;
-    
+
     RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ();
     ~RaiseInfo() throw ();
 };
@@ -350,7 +350,7 @@ RaiseInfo::RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ()
     OSL_ENSURE( sizeof(sal_Int32) == sizeof(ExceptionType *), "### pointer size differs from sal_Int32!" );
 
     typelib_CompoundTypeDescription * pCompTypeDescr;
-    
+
     // info count
     sal_Int32 nLen = 0;
     for ( pCompTypeDescr = (typelib_CompoundTypeDescription*)pTypeDescr;
@@ -358,13 +358,13 @@ RaiseInfo::RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ()
     {
         ++nLen;
     }
-    
+
     // info count accompanied by type info ptrs: type, base type, base base type, ...
     _types = ::rtl_allocateMemory( sizeof(sal_Int32) + (sizeof(ExceptionType *) * nLen) );
     *(sal_Int32 *)_types = nLen;
 
     ExceptionType ** ppTypes = (ExceptionType **)((sal_Int32 *)_types + 1);
-    
+
     sal_Int32 nPos = 0;
     for ( pCompTypeDescr = (typelib_CompoundTypeDescription*)pTypeDescr;
           pCompTypeDescr; pCompTypeDescr = pCompTypeDescr->pBaseTypeDescription )
@@ -381,7 +381,7 @@ RaiseInfo::~RaiseInfo() throw ()
         delete ppTypes[nTypes];
     }
     ::rtl_freeMemory( _types );
-    
+
     delete _pDtor;
 }
 
@@ -390,10 +390,10 @@ class ExceptionInfos
 {
     Mutex			_aMutex;
     t_string2PtrMap	_allRaiseInfos;
-    
+
 public:
     static void * getRaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ();
-    
+
     ExceptionInfos() throw ();
     ~ExceptionInfos() throw ();
 };
@@ -405,7 +405,7 @@ ExceptionInfos::ExceptionInfos() throw ()
 ExceptionInfos::~ExceptionInfos() throw ()
 {
     TRACE( "> freeing exception infos... <\n" );
-    
+
     MutexGuard aGuard( _aMutex );
     for ( t_string2PtrMap::const_iterator iPos( _allRaiseInfos.begin() );
           iPos != _allRaiseInfos.end(); ++iPos )
@@ -430,13 +430,13 @@ void * ExceptionInfos::getRaiseInfo( typelib_TypeDescription * pTypeDescr ) thro
 #endif
         }
     }
-    
+
     OSL_ASSERT( pTypeDescr &&
                 (pTypeDescr->eTypeClass == typelib_TypeClass_STRUCT ||
                  pTypeDescr->eTypeClass == typelib_TypeClass_EXCEPTION) );
-    
+
     void * pRaiseInfo;
-    
+
     OUString const & rTypeName = *reinterpret_cast< OUString * >( &pTypeDescr->pTypeName );
     MutexGuard aGuard( s_pInfos->_aMutex );
     t_string2PtrMap::const_iterator const iFind(
@@ -454,7 +454,7 @@ void * ExceptionInfos::getRaiseInfo( typelib_TypeDescription * pTypeDescr ) thro
         // reuse existing info
         pRaiseInfo = iFind->second;
     }
-    
+
     return pRaiseInfo;
 }
 
@@ -490,25 +490,25 @@ void msci_raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cpp )
     // no ctor/dtor in here: this leads to dtors called twice upon RaiseException()!
     // thus this obj file will be compiled without opt, so no inling of
     // ExceptionInfos::getRaiseInfo()
-    
+
     // construct cpp exception object
     typelib_TypeDescription * pTypeDescr = 0;
     TYPELIB_DANGER_GET( &pTypeDescr, pUnoExc->pType );
-    
+
     void * pCppExc = alloca( pTypeDescr->nSize );
     ::uno_copyAndConvertData( pCppExc, pUnoExc->pData, pTypeDescr, pUno2Cpp );
-    
+
     // a must be
     OSL_ENSURE( sizeof(sal_Int32) == sizeof(void *), "### pointer size differs from sal_Int32!" );
     DWORD arFilterArgs[3];
     arFilterArgs[0] = 0x19930520L;
     arFilterArgs[1] = (DWORD)pCppExc;
     arFilterArgs[2] = (DWORD)ExceptionInfos::getRaiseInfo( pTypeDescr );
-    
+
     // destruct uno exception
     ::uno_any_destruct( pUnoExc, 0 );
     TYPELIB_DANGER_RELEASE( pTypeDescr );
-    
+
     // last point to release anything not affected by stack unwinding
     RaiseException( MSVC_ExceptionCode, EXCEPTION_NONCONTINUABLE, 3, arFilterArgs );
 }
@@ -536,7 +536,7 @@ sal_Int32 msci_filterCppException(
                 OUString aUNOname( toUNOname( aRTTIname ) );
                 typelib_TypeDescription * pExcTypeDescr = 0;
                 ::typelib_typedescription_getByName( &pExcTypeDescr, aUNOname.pData );
-                
+
                 if (pExcTypeDescr)
                 {
                     // construct uno exception any

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testoffice.cxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: jl $ $Date: 2001-03-14 09:25:39 $
+ *  last change: $Author: hr $ $Date: 2003-03-18 19:07:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -112,7 +112,7 @@ void mygetchar()
 {
 #ifdef SAL_W32
     _getch();
-#else 
+#else
     getchar();
 #endif
 }
@@ -125,14 +125,14 @@ void testPipe( const Reference < XMultiServiceFactory > & rSmgr )
         UNO_QUERY );
 
     assert( rOut.is() );
-        
+
     {
         Sequence < sal_Int8 > seq( 10 );
         seq.getArray()[0] = 42;
         rOut->writeBytes( seq );
     }
-    
-        
+
+
     {
         Sequence < sal_Int8 > seq;
         Reference < XInputStream > rIn( rOut , UNO_QUERY );
@@ -142,7 +142,7 @@ void testPipe( const Reference < XMultiServiceFactory > & rSmgr )
             printf( "wrong bytes read\n" );
         if( ! ( 42 == seq.getArray()[0] ) )
             printf( "wrong element in sequence\n" );
-        
+
 //			assert( 0 );
     }
 }
@@ -170,7 +170,9 @@ void testWriter(  const Reference < XComponent > & rCmp )
             break;
         }
 
-        strcat( pcText , " " );
+        if ( strlen( pcText ) < sizeof(pcText)-1 )
+            strcat( pcText , " " ); // #100211# - checked
+
         rText->insertString( rRange , OUString::createFromAscii( pcText ) , sal_False );
     }
 }
@@ -196,7 +198,7 @@ void testDocument( const Reference < XMultiServiceFactory > & rSmgr )
         "a new calc document ...\n",
         "a new draw document ...\n",
         "www.heise.de\n",
-        "the remote_interfaces.sdw doc\n" 
+        "the remote_interfaces.sdw doc\n"
     };
 
     sal_Int32 i;
@@ -205,7 +207,7 @@ void testDocument( const Reference < XMultiServiceFactory > & rSmgr )
         printf( "press any key to open %s\n" , docu[i] );
         mygetchar();
 
-        Reference< XComponent > rComponent = 
+        Reference< XComponent > rComponent =
             rLoader->loadComponentFromURL(
                 OUString::createFromAscii( urls[i] ) ,
                 OUString( RTL_CONSTASCII_USTRINGPARAM("_blank")),
@@ -240,14 +242,14 @@ void doSomething( const  Reference < XInterface > &r )
 }
 
 
-void main( int argc, char *argv[] )
+int main( int argc, char *argv[] )
 {
     if( argc < 2 )
     {
         printf( "usage : testclient host:port" );
-        exit( 1 );
+        return 0;
     }
-    
+
     OUString sConnectionString;
     OUString sProtocol;
     sal_Bool bLatency = sal_False;
@@ -256,7 +258,7 @@ void main( int argc, char *argv[] )
     {
         Reference< XMultiServiceFactory > rSMgr = createRegistryServiceFactory(
             OUString( RTL_CONSTASCII_USTRINGPARAM( "client.rdb" )  ) );
-        
+
         // just ensure that it is registered
 
         Reference < XConnector > rConnector(
@@ -268,7 +270,7 @@ void main( int argc, char *argv[] )
         createComponent( OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.Bridge.iiop")),
                          OUString( RTL_CONSTASCII_USTRINGPARAM("remotebridge")),
                          rSMgr );
-        
+
         Reference < XBridgeFactory > rFactory(
             createComponent( OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.BridgeFactory")),
                              OUString( RTL_CONSTASCII_USTRINGPARAM("brdgfctr")),
@@ -279,18 +281,18 @@ void main( int argc, char *argv[] )
         {
             if( rFactory.is() && rConnector.is() )
             {
-                Reference < XConnection > rConnection = 
+                Reference < XConnection > rConnection =
                     rConnector->connect( sConnectionString );
-                
+
                 Reference < XBridge > rBridge = rFactory->createBridge(
                     OUString( RTL_CONSTASCII_USTRINGPARAM("bla blub")),
                     sProtocol,
                     rConnection,
                     Reference < XInstanceProvider > () );
-                
+
                 Reference < XInterface > rInitialObject
                     = rBridge->getInstance( OUString( RTL_CONSTASCII_USTRINGPARAM("NamingService")) );
-            
+
                 if( rInitialObject.is() )
                 {
                     printf( "got the remote object\n" );
@@ -303,9 +305,10 @@ void main( int argc, char *argv[] )
         catch (... ) {
             printf( "Exception thrown\n" );
         }
-        
+
         Reference < XComponent > rComp( rSMgr , UNO_QUERY );
         rComp->dispose();
     }
     //_getch();
+    return 0;
 }
