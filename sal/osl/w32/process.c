@@ -2,9 +2,9 @@
  *
  *  $RCSfile: process.c,v $
  *
- *  $Revision: 1.22 $
+ *  $Revision: 1.23 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 16:46:10 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:45:14 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -124,7 +124,7 @@ oslProcessError SAL_CALL osl_getProcessWorkingDir( rtl_uString **pustrWorkingDir
 {
     TCHAR	szBuffer[MAX_PATH];
     DWORD	dwLen;
-    
+
 
     osl_acquireMutex( g_CurrentDirectoryMutex );
     dwLen = GetCurrentDirectory( sizeof(szBuffer) / sizeof(TCHAR), szBuffer );
@@ -163,16 +163,16 @@ oslProcessError SAL_CALL osl_executeProcess(
     oslProcess *pProcess
 )
 {
-    return osl_executeProcess_WithRedirectedIO( 
-        ustrImageName, 
-        ustrArguments, 
-        nArguments, 
-        Options, 
-        Security, 
-        ustrWorkDir, 
-        ustrEnvironmentVars, 
-        nEnvironmentVars, 
-        pProcess, 
+    return osl_executeProcess_WithRedirectedIO(
+        ustrImageName,
+        ustrArguments,
+        nArguments,
+        Options,
+        Security,
+        ustrWorkDir,
+        ustrEnvironmentVars,
+        nEnvironmentVars,
+        pProcess,
         NULL, NULL, NULL );
 }
 
@@ -191,7 +191,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
     oslProcess *pProcess,
     oslFileHandle *pProcessInputWrite,
     oslFileHandle *pProcessOutputRead,
-    oslFileHandle *pProcessErrorRead 
+    oslFileHandle *pProcessErrorRead
 )
 {
     sal_Int32 nIndex;
@@ -274,7 +274,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
                 /* FIXME: how can I determine if this is a gui app */
 
                 /* cmd.exe does not work without a console window */
-                if( !( Options & osl_Process_WAIT ) || ( Options & osl_Process_DETACHED ) ) 
+                if( !( Options & osl_Process_WAIT ) || ( Options & osl_Process_DETACHED ) )
                     dwFlags |= CREATE_NEW_CONSOLE;
 
                 /* add to chars for quotes */
@@ -286,7 +286,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
                     rtl_uStringbuffer_insert_ascii( &ustrCommandLine, &nCapacity, ustrCommandLine->length, "\"", 1 );
 
                 rtl_uStringbuffer_insert( &ustrCommandLine, &nCapacity, ustrCommandLine->length, ustrComSpec->buffer, ustrComSpec->length );
-            
+
                 if( nIndex != -1 )
                     rtl_uStringbuffer_insert_ascii( &ustrCommandLine, &nCapacity, ustrCommandLine->length, "\"", 1 );
 
@@ -298,7 +298,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
 
     /* add image path to command line */
     rtl_uStringbuffer_ensureCapacity( &ustrCommandLine, &nCapacity, nCapacity + ustrImageName->length + 2 );
-    
+
     /* check if path contains blanks and quote it if any */
     nIndex = rtl_ustr_indexOfChar_WithLength( ustrPath->buffer, ustrPath->length, ' ' );
     if( nIndex != -1 )
@@ -306,7 +306,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
 
     rtl_uStringbuffer_insert( &ustrCommandLine, &nCapacity, ustrCommandLine->length, ustrPath->buffer, ustrPath->length );
     rtl_uString_release( ustrPath );
-            
+
     if( nIndex != -1 )
         rtl_uStringbuffer_insert_ascii( &ustrCommandLine, &nCapacity, ustrCommandLine->length, "\"", 1 );
 
@@ -398,7 +398,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
             startupInfo.wShowWindow = SW_NORMAL;
     }
 
-    /* if we have environment variables, we have to set the */ 
+    /* if we have environment variables, we have to set the */
     if( nEnvironmentVars )
     {
         sal_uInt32	nVar;
@@ -410,10 +410,10 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
 
         for( nVar=0; nVar < nEnvironmentVars; nVar++ )
         {
-            rtl_uStringbuffer_insert( &ustrEnvironment, 
-                &nEnvCapacity, ustrEnvironment->length, 
+            rtl_uStringbuffer_insert( &ustrEnvironment,
+                &nEnvCapacity, ustrEnvironment->length,
                 ustrEnvironmentVars[nVar]->buffer, ustrEnvironmentVars[nVar]->length );
-     
+
             /* to keep the trailing '\0' increase length of 1 */
             rtl_uStringbuffer_ensureCapacity( &ustrEnvironment, &nEnvCapacity, nEnvCapacity + 1 );
             ustrEnvironment->length++;
@@ -454,21 +454,21 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
     if ( hErrorWrite )
         CloseHandle( hErrorWrite );
 
-    /* release string members */ 
+    /* release string members */
     rtl_uString_release( ustrCommandLine );
     if( ustrEnvironment )
         rtl_uString_release( ustrEnvironment );
     if( ustrCurrentWorkDir )
         rtl_uString_release( ustrCurrentWorkDir );
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     dwFlags = GetLastError();
 #endif
 
     if (bRet)
     {
         oslProcessImpl* pProcImpl;
-            
+
         CloseHandle( processInfo.hThread );
 
         pProcImpl = rtl_allocateMemory( sizeof(oslProcessImpl) );
@@ -479,7 +479,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
 
         if (Options & osl_Process_WAIT)
             WaitForSingleObject(pProcImpl->m_hProcess, INFINITE);
-    
+
         /* Provide redirected IO handles to caller */
 
         if ( pProcessInputWrite )
@@ -529,7 +529,7 @@ oslProcess SAL_CALL osl_getProcess(oslProcessIdentifier Ident)
     HANDLE          hProcess;
     oslProcessImpl* pProcImpl;
 
-    if (hProcess = OpenProcess(STANDARD_RIGHTS_REQUIRED | 
+    if (hProcess = OpenProcess(STANDARD_RIGHTS_REQUIRED |
                                PROCESS_QUERY_INFORMATION | SYNCHRONIZE, FALSE, (DWORD)Ident))
     {
         pProcImpl = rtl_allocateMemory(sizeof(oslProcessImpl));
@@ -556,10 +556,10 @@ void SAL_CALL osl_freeProcessHandle(oslProcess Process)
 
 /***************************************************************************/
 
-oslProcessError SAL_CALL osl_getProcessInfo(oslProcess Process, oslProcessData Fields, 
+oslProcessError SAL_CALL osl_getProcessInfo(oslProcess Process, oslProcessData Fields,
                                    oslProcessInfo* pInfo)
 {
-    HANDLE hProcess; 
+    HANDLE hProcess;
     DWORD  IdProcess;
 
     if (Process == NULL)
@@ -576,18 +576,18 @@ oslProcessError SAL_CALL osl_getProcessInfo(oslProcess Process, oslProcessData F
     if (! pInfo || (pInfo->Size != sizeof(oslProcessInfo)))
         return osl_Process_E_Unknown;
 
-    pInfo->Fields = 0;      
+    pInfo->Fields = 0;
 
     if (Fields & osl_Process_IDENTIFIER)
     {
-        pInfo->Ident  = IdProcess;       
-        pInfo->Fields |= osl_Process_IDENTIFIER;        
+        pInfo->Ident  = IdProcess;
+        pInfo->Fields |= osl_Process_IDENTIFIER;
     }
 
     if (Fields & osl_Process_EXITCODE)
     {
         if (GetExitCodeProcess(hProcess, &(pInfo->Code)) && (pInfo->Code != STILL_ACTIVE))
-            pInfo->Fields |= osl_Process_EXITCODE;          
+            pInfo->Fields |= osl_Process_EXITCODE;
     }
 
     if (Fields & osl_Process_HEAPUSAGE)
@@ -609,7 +609,7 @@ oslProcessError SAL_CALL osl_getProcessInfo(oslProcess Process, oslProcessData F
         }
         while (lpAddress < (void *)0x80000000); // 2GB address space
 
-        pInfo->Fields |= osl_Process_HEAPUSAGE;     
+        pInfo->Fields |= osl_Process_HEAPUSAGE;
     }
 
     if (Fields & osl_Process_CPUTIMES)
@@ -629,7 +629,7 @@ oslProcessError SAL_CALL osl_getProcessInfo(oslProcess Process, oslProcessData F
             pInfo->SystemTime.Seconds = (unsigned long) (Value / 10000000L);
             pInfo->SystemTime.Nanosec = (unsigned long)((Value % 10000000L) * 100);
 
-            pInfo->Fields |= osl_Process_CPUTIMES;      
+            pInfo->Fields |= osl_Process_CPUTIMES;
         }
     }
 
@@ -637,36 +637,36 @@ oslProcessError SAL_CALL osl_getProcessInfo(oslProcess Process, oslProcessData F
 }
 
 /***************************************************************************/
-    
+
 oslProcessError SAL_CALL osl_joinProcess(oslProcess Process)
 {
-    return osl_joinProcessWithTimeout(Process, NULL);    	
+    return osl_joinProcessWithTimeout(Process, NULL);
 }
 
 /***************************************************************************/
 
 oslProcessError SAL_CALL osl_joinProcessWithTimeout(oslProcess Process, const TimeValue* pTimeout)
 {
-    DWORD           timeout   = INFINITE;    
+    DWORD           timeout   = INFINITE;
     oslProcessError osl_error = osl_Process_E_None;
     DWORD           ret;
-    
+
     OSL_PRECOND(Process, "osl_joinProcessWithTimeout: Invalid parameter");
-    
+
     if (NULL == Process)
         return osl_Process_E_Unknown;
-            
+
     if (pTimeout)
         timeout = pTimeout->Seconds * 1000 + pTimeout->Nanosec / 1000000L;
-                    
+
     ret = WaitForSingleObject(((oslProcessImpl*)Process)->m_hProcess, timeout);
-            
+
     if (WAIT_FAILED == ret)
         osl_error = osl_Process_E_Unknown;
     else if (WAIT_TIMEOUT == ret)
         osl_error = osl_Process_E_TimedOut;
-        
-    return osl_error;            
+
+    return osl_error;
 }
 
 /***************************************************************************/
