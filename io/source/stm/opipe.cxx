@@ -2,9 +2,9 @@
  *
  *  $RCSfile: opipe.cxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: jbu $ $Date: 2002-09-18 10:03:06 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:58:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,8 +73,7 @@
 #include <osl/conditn.hxx>
 #include <osl/mutex.hxx>
 
-#include <assert.h>
-#include <string.h>	
+#include <string.h>
 
 using namespace ::rtl;
 using namespace ::osl;
@@ -93,47 +92,47 @@ using namespace ::com::sun::star::lang;
 
 
 namespace io_stm{
-    
+
 class OPipeImpl :
     public WeakImplHelper4< XInputStream , XOutputStream , XConnectable , XServiceInfo >
 {
-public:    
+public:
     OPipeImpl( );
     ~OPipeImpl();
-    
+
 public: // XInputStream
-    virtual sal_Int32 SAL_CALL readBytes(Sequence< sal_Int8 >& aData, sal_Int32 nBytesToRead) 
-        throw(	NotConnectedException, 
+    virtual sal_Int32 SAL_CALL readBytes(Sequence< sal_Int8 >& aData, sal_Int32 nBytesToRead)
+        throw(	NotConnectedException,
                 BufferSizeExceededException,
                 RuntimeException );
-    virtual sal_Int32 SAL_CALL readSomeBytes(Sequence< sal_Int8 >& aData, sal_Int32 nMaxBytesToRead) 
-        throw( NotConnectedException, 
-               BufferSizeExceededException, 
+    virtual sal_Int32 SAL_CALL readSomeBytes(Sequence< sal_Int8 >& aData, sal_Int32 nMaxBytesToRead)
+        throw( NotConnectedException,
+               BufferSizeExceededException,
                RuntimeException );
     virtual void SAL_CALL skipBytes(sal_Int32 nBytesToSkip)
-        throw( NotConnectedException, 
-               BufferSizeExceededException, 
+        throw( NotConnectedException,
+               BufferSizeExceededException,
                RuntimeException );
     virtual sal_Int32 SAL_CALL available(void)
-        throw( NotConnectedException, 
+        throw( NotConnectedException,
                RuntimeException );
     virtual void SAL_CALL closeInput(void)
-        throw( NotConnectedException, 
+        throw( NotConnectedException,
                RuntimeException );
 
 public: // XOutputStream
-    
+
     virtual void SAL_CALL writeBytes(const Sequence< sal_Int8 >& aData)
-        throw( NotConnectedException, 
-               BufferSizeExceededException, 
+        throw( NotConnectedException,
+               BufferSizeExceededException,
                RuntimeException );
     virtual void SAL_CALL flush(void)
-        throw( NotConnectedException, 
-               BufferSizeExceededException, 
+        throw( NotConnectedException,
+               BufferSizeExceededException,
                RuntimeException );
     virtual void SAL_CALL closeOutput(void)
-        throw( NotConnectedException, 
-               BufferSizeExceededException, 
+        throw( NotConnectedException,
+               BufferSizeExceededException,
                RuntimeException );
 
 public: // XConnectable
@@ -149,7 +148,7 @@ public: // XServiceInfo
     OUString                    SAL_CALL getImplementationName() throw(  );
     Sequence< OUString >         SAL_CALL getSupportedServiceNames(void) throw(  );
     sal_Bool                        SAL_CALL supportsService(const OUString& ServiceName) throw(  );
-    
+
 private:
 
     // DEBUG
@@ -159,12 +158,12 @@ private:
     Reference < XConnectable > 	m_pred;
 
     sal_Int32 m_nBytesToSkip;
-    
+
     sal_Int8  *m_p;
 
     sal_Bool m_bOutputStreamClosed;
     sal_Bool m_bInputStreamClosed;
-    
+
     oslCondition m_conditionBytesAvail;
     Mutex     m_mutexAccess;
     IFIFO		*m_pFIFO;
@@ -172,14 +171,14 @@ private:
 
 
 
-OPipeImpl::OPipeImpl() 
+OPipeImpl::OPipeImpl()
 {
     g_moduleCount.modCnt.acquire( &g_moduleCount.modCnt );
     m_nBytesToSkip  = 0;
-    
+
     m_bOutputStreamClosed 	= sal_False;
     m_bInputStreamClosed 	= sal_False;
-    
+
     m_pFIFO = new MemFIFO;
     m_conditionBytesAvail = osl_createCondition();
 }
@@ -200,8 +199,8 @@ void OPipeImpl::checkInvariant()
 
 sal_Int32 OPipeImpl::readBytes(Sequence< sal_Int8 >& aData, sal_Int32 nBytesToRead)
     throw( NotConnectedException, BufferSizeExceededException,RuntimeException )
-{	
-    while( sal_True ) 
+{
+    while( sal_True )
     {
         { // start guarded section
             MutexGuard guard( m_mutexAccess );
@@ -212,12 +211,12 @@ sal_Int32 OPipeImpl::readBytes(Sequence< sal_Int8 >& aData, sal_Int32 nBytesToRe
                     *this );
             }
             sal_Int32 nOccupiedBufferLen = m_pFIFO->getSize();
-            
+
             if( m_bOutputStreamClosed && nBytesToRead > nOccupiedBufferLen )
             {
                 nBytesToRead = nOccupiedBufferLen;
             }
-            
+
             if( nOccupiedBufferLen < nBytesToRead )
             {
                 // wait outside guarded section
@@ -229,23 +228,23 @@ sal_Int32 OPipeImpl::readBytes(Sequence< sal_Int8 >& aData, sal_Int32 nBytesToRe
                 return nBytesToRead;
             }
         } // end guarded section
-        
+
         // wait for new data outside guarded section!
         osl_waitCondition( m_conditionBytesAvail , 0 );
     }
-    
+
     // this point is never reached
     return 0;
 }
 
 
-sal_Int32 OPipeImpl::readSomeBytes(Sequence< sal_Int8 >& aData, sal_Int32 nMaxBytesToRead) 
-    throw( NotConnectedException, 
-           BufferSizeExceededException, 
+sal_Int32 OPipeImpl::readSomeBytes(Sequence< sal_Int8 >& aData, sal_Int32 nMaxBytesToRead)
+    throw( NotConnectedException,
+           BufferSizeExceededException,
            RuntimeException )
 {
     while( sal_True ) {
-        { 
+        {
             MutexGuard guard( m_mutexAccess );
             if( m_bInputStreamClosed )
             {
@@ -260,14 +259,14 @@ sal_Int32 OPipeImpl::readSomeBytes(Sequence< sal_Int8 >& aData, sal_Int32 nMaxBy
                 m_pFIFO->read( aData , nSize );
                 return nSize;
             }
-            
+
             if( m_bOutputStreamClosed )
             {
                 // no bytes in buffer anymore
                 return 0;
             }
         }
-        
+
         osl_waitCondition( m_conditionBytesAvail , 0 );
     }
 
@@ -277,8 +276,8 @@ sal_Int32 OPipeImpl::readSomeBytes(Sequence< sal_Int8 >& aData, sal_Int32 nMaxBy
 
 
 void OPipeImpl::skipBytes(sal_Int32 nBytesToSkip)
-    throw( NotConnectedException, 
-           BufferSizeExceededException, 
+    throw( NotConnectedException,
+           BufferSizeExceededException,
            RuntimeException )
 {
     MutexGuard guard( m_mutexAccess );
@@ -288,7 +287,7 @@ void OPipeImpl::skipBytes(sal_Int32 nBytesToSkip)
             OUString( RTL_CONSTASCII_USTRINGPARAM( "Pipe::skipBytes NotConnectedException" ) ),
             *this );
     }
-    
+
     if( nBytesToSkip + m_nBytesToSkip > MAX_BUFFER_SIZE || 0 > nBytesToSkip + m_nBytesToSkip )
     {
         throw BufferSizeExceededException(
@@ -300,11 +299,11 @@ void OPipeImpl::skipBytes(sal_Int32 nBytesToSkip)
     nBytesToSkip = Min( m_pFIFO->getSize() , m_nBytesToSkip );
     m_pFIFO->skip( nBytesToSkip );
     m_nBytesToSkip -= nBytesToSkip;
-}							
+}
 
-                                                
+
 sal_Int32 OPipeImpl::available(void)
-    throw( NotConnectedException, 
+    throw( NotConnectedException,
            RuntimeException )
  {
     MutexGuard guard( m_mutexAccess );
@@ -316,7 +315,7 @@ sal_Int32 OPipeImpl::available(void)
     }
     checkInvariant();
     return m_pFIFO->getSize();
-}	
+}
 
 void OPipeImpl::closeInput(void)
     throw( NotConnectedException,
@@ -325,21 +324,21 @@ void OPipeImpl::closeInput(void)
     MutexGuard guard( m_mutexAccess );
 
     m_bInputStreamClosed = sal_True;
-    
+
     delete m_pFIFO;
     m_pFIFO = 0;
-    
+
     // readBytes may throw an exception
     osl_setCondition( m_conditionBytesAvail );
 
     setSuccessor( Reference< XConnectable > () );
-    return;	
-}							
-                                                    
+    return;
+}
+
 
 void OPipeImpl::writeBytes(const Sequence< sal_Int8 >& aData)
-    throw( NotConnectedException, 
-           BufferSizeExceededException, 
+    throw( NotConnectedException,
+           BufferSizeExceededException,
            RuntimeException)
 {
     MutexGuard guard( m_mutexAccess );
@@ -359,15 +358,15 @@ void OPipeImpl::writeBytes(const Sequence< sal_Int8 >& aData)
             *this );
     }
 
-    // check skipping 
-    sal_Int32 nLen = aData.getLength();	
-    if( m_nBytesToSkip  && m_nBytesToSkip >= nLen  ) {		
-        // all must be skipped - forget whole call 
+    // check skipping
+    sal_Int32 nLen = aData.getLength();
+    if( m_nBytesToSkip  && m_nBytesToSkip >= nLen  ) {
+        // all must be skipped - forget whole call
         m_nBytesToSkip -= nLen;
         return;
     }
-    
-    // adjust buffersize if necessary 
+
+    // adjust buffersize if necessary
 
     try
     {
@@ -388,42 +387,42 @@ void OPipeImpl::writeBytes(const Sequence< sal_Int8 >& aData)
         throw BufferSizeExceededException(
             OUString( RTL_CONSTASCII_USTRINGPARAM( "Pipe::writeBytes BufferSizeExceededException" )),
             *this );
-    }	
+    }
     catch ( IFIFO_OutOfMemoryException & )
     {
         throw BufferSizeExceededException(
             OUString( RTL_CONSTASCII_USTRINGPARAM( "Pipe::writeBytes BufferSizeExceededException" )),
             *this );
     }
-    
+
     // readBytes may check again if enough bytes are available
-    osl_setCondition( m_conditionBytesAvail );	
+    osl_setCondition( m_conditionBytesAvail );
 
     checkInvariant();
-}			
+}
 
-                                                                
+
 void OPipeImpl::flush(void)
-    throw( NotConnectedException, 
-           BufferSizeExceededException, 
-           RuntimeException) 
+    throw( NotConnectedException,
+           BufferSizeExceededException,
+           RuntimeException)
 {
     // nothing to do for a pipe
     return;
 }
-   
+
 void OPipeImpl::closeOutput(void)
-    throw( NotConnectedException, 
-           BufferSizeExceededException, 
+    throw( NotConnectedException,
+           BufferSizeExceededException,
            RuntimeException)
 {
     MutexGuard guard( m_mutexAccess );
-    
+
     m_bOutputStreamClosed = sal_True;
     osl_setCondition( m_conditionBytesAvail );
     setPredecessor( Reference < XConnectable > () );
     return;
-}																				
+}
 
 
 void OPipeImpl::setSuccessor( const Reference < XConnectable >  &r )
@@ -435,7 +434,7 @@ void OPipeImpl::setSuccessor( const Reference < XConnectable >  &r )
          m_succ = r;
 
          if( m_succ.is() )
-         { 
+         {
               m_succ->setPredecessor(
                   Reference< XConnectable > ( SAL_STATIC_CAST( XConnectable * , this ) ) );
          }
@@ -444,7 +443,7 @@ void OPipeImpl::setSuccessor( const Reference < XConnectable >  &r )
 
 Reference < XConnectable > OPipeImpl::getSuccessor() 	throw( RuntimeException )
 {
-    return m_succ;	
+    return m_succ;
 }
 
 
@@ -467,7 +466,7 @@ Reference < XConnectable > OPipeImpl::getPredecessor() throw( RuntimeException )
 }
 
 
-            
+
 
 // XServiceInfo
 OUString OPipeImpl::getImplementationName() throw(  )
@@ -498,7 +497,7 @@ Sequence< OUString > OPipeImpl::getSupportedServiceNames(void) throw(  )
 
 
 
-/* implementation functions 
+/* implementation functions
 *
 *
 */
@@ -506,14 +505,14 @@ Sequence< OUString > OPipeImpl::getSupportedServiceNames(void) throw(  )
 
 Reference < XInterface > SAL_CALL OPipeImpl_CreateInstance(
     const Reference < XComponentContext > & rCtx ) throw(Exception)
-{	
+{
     OPipeImpl *p = new OPipeImpl;
 
     return Reference < XInterface > ( SAL_STATIC_CAST( OWeakObject * , p ) );
 }
 
 
-OUString 	OPipeImpl_getImplementationName() 
+OUString 	OPipeImpl_getImplementationName()
 {
     return OUString( RTL_CONSTASCII_USTRINGPARAM ( IMPLEMENTATION_NAME ) );
 }
