@@ -2,9 +2,9 @@
  *
  *  $RCSfile: threadpool.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: jbu $ $Date: 2001-05-28 15:56:16 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:37:01 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -92,12 +92,12 @@ namespace cppu_threadpool
 
     DisposedCallerAdmin::~DisposedCallerAdmin()
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         if( !m_lst.empty() )
         {
             printf( "DisposedCallerList : %d left\n" , m_lst.size( ));
         }
-#endif	
+#endif
     }
 
     void DisposedCallerAdmin::dispose( sal_Int64 nDisposeId )
@@ -140,7 +140,7 @@ namespace cppu_threadpool
     //-------------------------------------------------------------------------------
     ThreadPool::~ThreadPool()
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         if( m_mapQueue.size() )
         {
             printf( "ThreadIdHashMap : %d left\n" , m_mapQueue.size() );
@@ -164,11 +164,11 @@ namespace cppu_threadpool
 
 
     void ThreadPool::dispose( sal_Int64 nDisposeId )
-    {		
+    {
         if( nDisposeId )
         {
             DisposedCallerAdmin::getInstance()->dispose( nDisposeId );
-        
+
             MutexGuard guard( m_mutex );
             for( ThreadIdHashMap::iterator ii = m_mapQueue.begin() ;
                  ii != m_mapQueue.end();
@@ -214,7 +214,7 @@ namespace cppu_threadpool
     {
         struct WaitingThread waitingThread;
         waitingThread.condition = osl_createCondition();
-        waitingThread.thread = pThread;		
+        waitingThread.thread = pThread;
         {
             MutexGuard guard( m_mutexWaitingThreadList );
             m_lstThreads.push_front( &waitingThread );
@@ -286,7 +286,7 @@ namespace cppu_threadpool
                 // another thread has put something into the queue
                 return sal_False;
             }
-            
+
             (*ii).second.second = 0;
             if( (*ii).second.first )
             {
@@ -312,7 +312,7 @@ namespace cppu_threadpool
 
         return sal_True;
     }
-    
+
 
     void ThreadPool::addJob(
         const ByteSequence &aThreadId ,
@@ -324,16 +324,16 @@ namespace cppu_threadpool
         JobQueue *pQueue = 0;
         {
             MutexGuard guard( m_mutex );
-            
+
             ThreadIdHashMap::iterator ii = m_mapQueue.find( aThreadId );
-            
+
             if( ii == m_mapQueue.end() )
             {
                 m_mapQueue[ aThreadId ] = pair < JobQueue * , JobQueue * > ( 0 , 0 );
                 ii = m_mapQueue.find( aThreadId );
                 OSL_ASSERT( ii != m_mapQueue.end() );
             }
-            
+
             if( bAsynchron )
             {
                 if( ! (*ii).second.second )
@@ -359,7 +359,7 @@ namespace cppu_threadpool
             }
             pQueue->add( pThreadSpecificData , doRequest );
         }
-        
+
         if( bCreateThread )
         {
             createThread( pQueue , aThreadId , bAsynchron);
@@ -388,9 +388,9 @@ namespace cppu_threadpool
         JobQueue *pQueue = 0;
         {
             MutexGuard guard( m_mutex );
-            
+
             ThreadIdHashMap::iterator ii = m_mapQueue.find( aThreadId );
-            
+
             OSL_ASSERT( ii != m_mapQueue.end() );
             pQueue = (*ii).second.first;
         }
@@ -423,7 +423,7 @@ struct uno_ThreadPool_Equal
 
 struct uno_ThreadPool_Hash
 {
-    sal_Int32 operator () ( const uno_ThreadPool &a  )  const 
+    sal_Int32 operator () ( const uno_ThreadPool &a  )  const
         {
             return (sal_Int32) a;
         }
