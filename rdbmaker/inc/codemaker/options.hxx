@@ -2,9 +2,9 @@
  *
  *  $RCSfile: options.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: jsc $ $Date: 2001-03-13 12:45:14 $
+ *  last change: $Author: rt $ $Date: 2004-09-08 16:43:28 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,7 +62,7 @@
 #ifndef _CODEMAKER_OPTIONS_HXX_
 #define _CODEMAKER_OPTIONS_HXX_
 
-#include 	<hash_map>
+#include	<hash_map>
 
 #ifndef _CODEMAKER_GLOBAL_HXX_
 #include	<codemaker/global.hxx>
