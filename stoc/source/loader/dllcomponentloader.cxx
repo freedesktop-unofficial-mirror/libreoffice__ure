@@ -2,9 +2,9 @@
  *
  *  $RCSfile: dllcomponentloader.cxx,v $
  *
- *  $Revision: 1.12 $
+ *  $Revision: 1.13 $
  *
- *  last change: $Author: dbo $ $Date: 2002-06-14 13:26:29 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:13:29 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,7 +59,7 @@
  *
  ************************************************************************/
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #include <stdio.h>
 #endif
 #include <stdlib.h>
@@ -86,7 +86,7 @@
 #ifndef _RTL_URI_HXX_
 #include <rtl/uri.hxx>
 #endif
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #include <rtl/ustrbuf.hxx>
 #endif
 
@@ -176,11 +176,11 @@ static OUString loader_getImplementationName()
     return *pImplName;
 }
 
-    
+
 //*************************************************************************
 // DllComponentLoader
 //*************************************************************************
-class DllComponentLoader	
+class DllComponentLoader
     : public WeakImplHelper3< XImplementationLoader,
                               XInitialization,
                               XServiceInfo >
@@ -200,7 +200,7 @@ public:
     // XImplementationLoader
     virtual Reference<XInterface> SAL_CALL activate( const OUString& implementationName, const OUString& implementationLoaderUrl, const OUString& locationUrl, const Reference<XRegistryKey>& xKey ) throw(CannotActivateFactoryException, RuntimeException);
     virtual sal_Bool SAL_CALL writeRegistryInfo( const Reference<XRegistryKey>& xKey, const OUString& implementationLoaderUrl, const OUString& locationUrl ) throw(CannotRegisterImplementationException, RuntimeException);
-    
+
 private:
     Reference< util::XMacroExpander > m_xMacroExpander;
     OUString expand_url( OUString const & url )
@@ -225,14 +225,14 @@ DllComponentLoader::~DllComponentLoader()
 }
 
 //*************************************************************************
-OUString SAL_CALL DllComponentLoader::getImplementationName(  ) 
+OUString SAL_CALL DllComponentLoader::getImplementationName(  )
     throw(::com::sun::star::uno::RuntimeException)
 {
     return loader_getImplementationName();
-}	
+}
 
 //*************************************************************************
-sal_Bool SAL_CALL DllComponentLoader::supportsService( const OUString& ServiceName ) 
+sal_Bool SAL_CALL DllComponentLoader::supportsService( const OUString& ServiceName )
     throw(::com::sun::star::uno::RuntimeException)
 {
     Sequence< OUString > aSNL = getSupportedServiceNames();
@@ -241,35 +241,35 @@ sal_Bool SAL_CALL DllComponentLoader::supportsService( const OUString& ServiceNa
         if( pArray[i] == ServiceName )
             return sal_True;
     return sal_False;
-}	
+}
 
 //*************************************************************************
-Sequence<OUString> SAL_CALL DllComponentLoader::getSupportedServiceNames(  ) 
+Sequence<OUString> SAL_CALL DllComponentLoader::getSupportedServiceNames(  )
     throw(::com::sun::star::uno::RuntimeException)
 {
     return loader_getSupportedServiceNames();
-}	
+}
 
 //*************************************************************************
-void DllComponentLoader::initialize( const ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Any >& aArgs ) 
+void DllComponentLoader::initialize( const ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Any >& aArgs )
     throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException)
 {
     OSL_ENSURE( 0, "dllcomponentloader::initialize should not be called !" );
-//  	if( aArgs.getLength() != 1 ) 
+//  	if( aArgs.getLength() != 1 )
 //  	{
-//  		throw IllegalArgumentException();	
+//  		throw IllegalArgumentException();
 //  	}
-    
+
 //  	Reference< XMultiServiceFactory > rServiceManager;
-        
-//  	if( aArgs.getConstArray()[0].getValueType().getTypeClass() == TypeClass_INTERFACE ) 
+
+//  	if( aArgs.getConstArray()[0].getValueType().getTypeClass() == TypeClass_INTERFACE )
 //  	{
 //  		aArgs.getConstArray()[0] >>= rServiceManager;
 //  	}
-    
-//  	if( !rServiceManager.is() ) 
+
+//  	if( !rServiceManager.is() )
 //  	{
-//  		throw IllegalArgumentException();	
+//  		throw IllegalArgumentException();
 //  	}
 
 //  	m_xSMgr = rServiceManager;
@@ -304,7 +304,7 @@ OUString DllComponentLoader::expand_url( OUString const & url )
         macro = Uri::decode( macro, rtl_UriDecodeWithCharset, RTL_TEXTENCODING_UTF8 );
         // expand macro string
         OUString ret( m_xMacroExpander->expandMacros( macro ) );
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OUStringBuffer buf( 128 );
         buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("DllComponentLoader::expand_url(): ") );
         buf.append( url );
@@ -329,18 +329,18 @@ OUString DllComponentLoader::expand_url( OUString const & url )
 Reference<XInterface> SAL_CALL DllComponentLoader::activate(
     const OUString & rImplName, const OUString &, const OUString & rLibName,
     const Reference< XRegistryKey > & xKey )
-    
+
     throw(CannotActivateFactoryException, RuntimeException)
 {
     return loadSharedLibComponentFactory(
         expand_url( rLibName ), OUString(), rImplName, m_xSMgr, xKey );
 }
-    
+
 
 //*************************************************************************
 sal_Bool SAL_CALL DllComponentLoader::writeRegistryInfo(
     const Reference< XRegistryKey > & xKey, const OUString &, const OUString & rLibName )
-    
+
     throw(CannotRegisterImplementationException, RuntimeException)
 {
     writeSharedLibComponentInfo(
@@ -353,13 +353,13 @@ sal_Bool SAL_CALL DllComponentLoader::writeRegistryInfo(
 Reference<XInterface> SAL_CALL DllComponentLoader_CreateInstance( const Reference<XComponentContext> & xCtx ) throw(Exception)
 {
     Reference<XInterface> xRet;
-        
+
     XImplementationLoader *pXLoader = (XImplementationLoader *)new DllComponentLoader(xCtx);
 
     if (pXLoader)
     {
         xRet = Reference<XInterface>::query(pXLoader);
-    }	
+    }
 
     return xRet;
 }
