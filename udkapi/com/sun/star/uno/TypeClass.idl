@@ -2,9 +2,9 @@
  *
  *  $RCSfile: TypeClass.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: dbo $ $Date: 2002-01-23 08:52:21 $
+ *  last change: $Author: kso $ $Date: 2002-11-13 15:51:11 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,16 +58,16 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_uno_TypeClass_idl__ 
-#define __com_sun_star_uno_TypeClass_idl__ 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module uno {  
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_uno_TypeClass_idl__
+#define __com_sun_star_uno_TypeClass_idl__
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module uno {
+
+//=============================================================================
+
 /** This enum describes all type classes of UNO.  Every specific type has a type
     class specifying the general context of the reflected type.
 
@@ -81,118 +81,130 @@ enum TypeClass
 {
     /** reflecting the void type; denotes no type
     */
-    VOID, 
+    VOID,
     /** reflecting the 16-bit unicode character type
     */
     CHAR,
     /** reflecting the boolean type; true and false
     */
-    BOOLEAN, 
+    BOOLEAN,
     /** reflecting the 8-bit ordinal type
     */
-    BYTE, 
+    BYTE,
     /** reflecting the signed 16-bit ordinal type
     */
-    SHORT, 
+    SHORT,
     /** reflecting the unsigned 16-bit ordinal type
     */
-    UNSIGNED_SHORT, 
+    UNSIGNED_SHORT,
     /** reflecting the signed 32-bit ordinal type
     */
-    LONG, 
+    LONG,
     /** reflecting the unsigned 32-bit type
     */
-    UNSIGNED_LONG, 
+    UNSIGNED_LONG,
     /** reflecting the signed 64-bit ordinal type
     */
-    HYPER, 
+    HYPER,
     /** reflecting the unsigned 64-bit ordinal type
     */
-    UNSIGNED_HYPER, 
+    UNSIGNED_HYPER,
     /** reflecting the 32-bit floating point type
     */
-    FLOAT, 
+    FLOAT,
     /** reflecting the 64-bit floating point type
     */
-    DOUBLE, 
+    DOUBLE,
     /** reflecting the string type; strings of unicode characters
     */
-    STRING, 
+    STRING,
     /** reflecting the meta type
     */
-    TYPE, 
+    TYPE,
     /** reflecting the any type; anys can carry any UNO value except of any values
     */
-    ANY, 
+    ANY,
     /** reflecting enum types
     */
-    ENUM, 
+    ENUM,
     /** reflecting typedefed types referencing other types
     */
-    TYPEDEF, 
+    TYPEDEF,
     /** reflecting compound types
     */
-    STRUCT, 
+    STRUCT,
     /** reflecting union types
     */
-    UNION, 
+    UNION,
     /** reflecting exception types
     */
-    EXCEPTION, 
+    EXCEPTION,
     /** reflecting sequence types
     */
-    SEQUENCE, 
+    SEQUENCE,
     /** reflecting array types
     */
-    ARRAY, 
+    ARRAY,
     /** reflecting interface types
     */
     INTERFACE,
-    
     /** reflecting services
     */
-    SERVICE, 
+    SERVICE,
     /** reflecting modules
     */
-    MODULE, 
- 
+    MODULE,
     /** reflecting interface methods
     */
-    INTERFACE_METHOD, 
+    INTERFACE_METHOD,
     /** reflecting interface attributes
     */
-    INTERFACE_ATTRIBUTE, 
-    
+    INTERFACE_ATTRIBUTE,
     /** reflecting the unreflectable type
     */
-    UNKNOWN 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
+    UNKNOWN,
+    /** reflecting properties
+    */
+    PROPERTY,
+    /** reflecting constants
+    */
+    CONSTANT,
+    /** reflecting constants groups
+    */
+    CONSTANTS,
+    /** reflecting singletons
+    */
+    SINGLETON
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.5  2002/01/23 08:52:21  dbo
+    #96711# IDL documentation review
+
     Revision 1.4  2000/11/08 12:29:00  mi
     moved from api
-    
+
     Revision 1.1.1.1  2000/09/18 23:36:18  hjs
     initial import
-    
+
     Revision 1.5  2000/09/11 11:53:04  mi
     documentation merged from XML
-     
-    Revision 1.3  2000/03/14 12:36:35  mi 
-    #70728# missing documentation 
-     
-    Revision 1.2  2000/02/07 11:25:05  mi 
-    zu #70728# missing documentation marked 
-     
-    Revision 1.1.1.1  1999/11/11 09:48:46  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.3  2000/03/14 12:36:35  mi
+    #70728# missing documentation
+
+    Revision 1.2  2000/02/07 11:25:05  mi
+    zu #70728# missing documentation marked
+
+    Revision 1.1.1.1  1999/11/11 09:48:46  jsc
+    new
+
+
+=============================================================================*/
+#endif
