@@ -2,9 +2,9 @@
  *
  *  $RCSfile: cpp2uno.cxx,v $
  *
- *  $Revision: 1.10 $
+ *  $Revision: 1.11 $
  *
- *  last change: $Author: dbo $ $Date: 2001-10-26 07:22:57 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:26:37 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -81,7 +81,7 @@
 
 #include "msci.hxx"
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 #define TRACE(x) OSL_TRACE(x)
 #else
 #define TRACE(x)
@@ -116,10 +116,10 @@ static inline typelib_TypeClass cpp2uno_call(
     {
         TYPELIB_DANGER_GET( &pReturnTypeDescr, pReturnTypeRef );
     }
-    
+
     void * pUnoReturn = 0;
     void * pCppReturn = 0; // complex return ptr: if != 0 && != pUnoReturn, reconversion need
-    
+
     if (pReturnTypeDescr)
     {
         if (cppu_isSimpleType( pReturnTypeDescr ))
@@ -130,7 +130,7 @@ static inline typelib_TypeClass cpp2uno_call(
         {
             pCppReturn = *(void **)pCppStack;
             pCppStack += sizeof(void *);
-            
+
             pUnoReturn = (cppu_relatesToInterface( pReturnTypeDescr )
                           ? alloca( pReturnTypeDescr->nSize )
                           : pCppReturn); // direct way
@@ -146,9 +146,9 @@ static inline typelib_TypeClass cpp2uno_call(
     sal_Int32 * pTempIndizes = (sal_Int32 *)(pUnoArgs + (2 * nParams));
     // type descriptions for reconversions
     typelib_TypeDescription ** ppTempParamTypeDescr = (typelib_TypeDescription **)(pUnoArgs + (3 * nParams));
-    
+
     sal_Int32 nTempIndizes = 0;
-    
+
     for ( sal_Int32 nPos = 0; nPos < nParams; ++nPos )
     {
         const typelib_MethodParameter & rParam = pParams[nPos];
@@ -201,14 +201,14 @@ static inline typelib_TypeClass cpp2uno_call(
         }
         pCppStack += sizeof(sal_Int32); // standard parameter length
     }
-    
+
     // ExceptionHolder
     uno_Any aUnoExc; // Any will be constructed by callee
     uno_Any * pUnoExc = &aUnoExc;
 
     // invoke uno dispatch call
     (*pThis->pUnoI->pDispatcher)( pThis->pUnoI, pMemberTypeDescr, pUnoReturn, pUnoArgs, &pUnoExc );
-    
+
     // in case an exception occured...
     if (pUnoExc)
     {
@@ -216,7 +216,7 @@ static inline typelib_TypeClass cpp2uno_call(
         while (nTempIndizes--)
         {
             sal_Int32 nIndex = pTempIndizes[nTempIndizes];
-            
+
             if (pParams[nIndex].bIn) // is in/inout => was constructed
             {
                 ::uno_destructData( pUnoArgs[nIndex], ppTempParamTypeDescr[nTempIndizes], 0 );
@@ -227,7 +227,7 @@ static inline typelib_TypeClass cpp2uno_call(
         {
             TYPELIB_DANGER_RELEASE( pReturnTypeDescr );
         }
-        
+
         msci_raiseException( &aUnoExc, &pThis->pBridge->aUno2Cpp ); // has to destruct the any
         // is here for dummy
         return typelib_TypeClass_VOID;
@@ -239,7 +239,7 @@ static inline typelib_TypeClass cpp2uno_call(
         {
             sal_Int32 nIndex = pTempIndizes[nTempIndizes];
             typelib_TypeDescription * pParamTypeDescr = ppTempParamTypeDescr[nTempIndizes];
-            
+
             if (pParams[nIndex].bOut) // inout/out
             {
                 // convert and assign
@@ -251,7 +251,7 @@ static inline typelib_TypeClass cpp2uno_call(
             }
             // destroy temp uno param
             ::uno_destructData( pUnoArgs[nIndex], pParamTypeDescr, 0 );
-            
+
             TYPELIB_DANGER_RELEASE( pParamTypeDescr );
         }
         // return
@@ -286,12 +286,12 @@ static typelib_TypeClass __cdecl cpp_mediate(
     sal_Int64 * pRegisterReturn /* space for register return */ )
 {
     OSL_ENSURE( sizeof(sal_Int32)==sizeof(void *), "### unexpected!" );
-    
+
     // pCallStack: ret adr, this, [ret *], params
     // _this_ ptr is patched cppu_XInterfaceProxy object
     cppu_cppInterfaceProxy * pThis = static_cast< cppu_cppInterfaceProxy * >(
         reinterpret_cast< XInterface * >( pCallStack[1] ) );
-    
+
     typelib_InterfaceTypeDescription * pTypeDescr = pThis->pTypeDescr;
     OSL_ENSURE( nVtableCall < pTypeDescr->nMapFunctionIndexToMemberIndex,
                  "### illegal vtable index!" );
@@ -300,7 +300,7 @@ static typelib_TypeClass __cdecl cpp_mediate(
         throw RuntimeException( OUString( RTL_CONSTASCII_USTRINGPARAM("illegal vtable index!") ),
                                 (XInterface *)pThis );
     }
-    
+
     // determine called method
     sal_Int32 nMemberPos = pTypeDescr->pMapFunctionIndexToMemberIndex[nVtableCall];
     OSL_ENSURE( nMemberPos < pTypeDescr->nAllMembers, "### illegal member index!" );
@@ -329,7 +329,7 @@ static typelib_TypeClass __cdecl cpp_mediate(
                 ((typelib_InterfaceAttributeTypeDescription *)aMemberDescr.get())->pAttributeTypeRef;
             aParam.bIn		= sal_True;
             aParam.bOut		= sal_False;
-            
+
             eRet = cpp2uno_call(
                 pThis, aMemberDescr.get(),
                 0, // indicates void return
@@ -362,7 +362,7 @@ static typelib_TypeClass __cdecl cpp_mediate(
                 (*pThis->pBridge->pCppEnv->getRegisteredInterface)(
                     pThis->pBridge->pCppEnv,
                     (void **)&pInterface, pThis->oid.pData, (typelib_InterfaceTypeDescription *)pTD );
-            
+
                 if (pInterface)
                 {
                     ::uno_any_construct(
@@ -408,7 +408,7 @@ class MediateVtables
     {
         sal_Int32	_n0, _n1, _n2;
         type_info * _pRTTI;
-        
+
         inline DefaultRTTIEntry() throw ()
             : _n0( 0 )
             , _n1( 0 )
@@ -418,18 +418,18 @@ class MediateVtables
                 OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.uno.XInterface") ) );
         }
     };
-    
+
     typedef list<void * > t_pSpacesList;
-    
+
     Mutex					_aMutex;
     t_pSpacesList			_aSpaces;
-    
+
     sal_Int32				_nCurrent;
     const void *			_pCurrent;
 
 public:
     const void *			getMediateVtable( sal_Int32 nSize );
-    
+
     MediateVtables( sal_Int32 nSize = 256 ) throw ()
         : _nCurrent( 0 )
         , _pCurrent( 0 )
@@ -440,9 +440,9 @@ public:
 MediateVtables::~MediateVtables() throw ()
 {
     TRACE( "> calling ~MediateVtables(): freeing mediate vtables... <\n" );
-    
+
     MutexGuard aGuard( _aMutex );
-    
+
     // this MUST be the absolute last one which is called!
     for ( t_pSpacesList::iterator iPos( _aSpaces.begin() ); iPos != _aSpaces.end(); ++iPos )
     {
@@ -502,22 +502,22 @@ const void * MediateVtables::getMediateVtable( sal_Int32 nSize ) throw ()
     if (_nCurrent < nSize)
     {
         TRACE( "> need larger vtable! <\n" );
-        
-        // dont ever guard each time, so ask twice when guarded 
+
+        // dont ever guard each time, so ask twice when guarded
         MutexGuard aGuard( _aMutex );
         if (_nCurrent < nSize)
         {
             nSize = (nSize +1) & 0xfffffffe;
             char * pSpace = (char *)rtl_allocateMemory( ((1+nSize)*sizeof(void *)) + (nSize*12) );
             _aSpaces.push_back( pSpace );
-            
+
             // on index -1 write default rtti entry
             static DefaultRTTIEntry s_defaultInterfaceRTTI;
             *(void **)pSpace = &s_defaultInterfaceRTTI;
-            
+
             void ** pvft	= (void **)(pSpace + sizeof(void *));
             char * pCode	= pSpace + ((1+nSize)*sizeof(void *));
-            
+
             // setup vft and code
             for ( sal_Int32 nPos = 0; nPos < nSize; ++nPos )
             {
