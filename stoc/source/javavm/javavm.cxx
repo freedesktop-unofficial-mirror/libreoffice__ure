@@ -2,9 +2,9 @@
  *
  *  $RCSfile: javavm.cxx,v $
  *
- *  $Revision: 1.56 $
+ *  $Revision: 1.57 $
  *
- *  last change: $Author: vg $ $Date: 2003-04-24 14:10:05 $
+ *  last change: $Author: rt $ $Date: 2003-04-29 08:25:53 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -497,7 +497,7 @@ void getJavaPropsFromConfig(stoc_javavm::JVM * pjvm,
         urlrcPath= usInstallDir + OUSTR("/share/config/" INI_FILE);
         std::auto_ptr<osl::File> pIni2(new osl::File(urlrcPath));
         if(pIni2->open(OpenFlag_Read) != osl::File::E_None)
-            throw NoJavaIniException(); 
+            throw NoJavaIniException();
         else
             pIniFile= pIni2;
     }
@@ -575,7 +575,7 @@ void getJavaPropsFromConfig(stoc_javavm::JVM * pjvm,
     }
     pIniFile->close();
 
-    //The office can be configured not to use Java. Then a java.ini exists but 
+    //The office can be configured not to use Java. Then a java.ini exists but
     //the entries RuntimeLib,Home, VMType, Version and SystemClasspath are missing.
     const rtl::OUString & usRt = pjvm->getRuntimeLib();
     if (usRt.getLength() == 0)
@@ -840,7 +840,7 @@ void initVMConfiguration(stoc_javavm::JVM * pjvm,
 #endif
     }
 
-    
+
     sal_Bool bPropsFail= sal_False;
     try
     {
@@ -849,13 +849,9 @@ void initVMConfiguration(stoc_javavm::JVM * pjvm,
         getJavaPropsFromConfig(&jvm, xSMgr,xCtx);
     }
     catch(NoJavaIniException& e)
-    {	
+    {
         //no java.ini. This can be the case when the setup runs and java was used for accessibility etc.
         bPropsFail= sal_True;
-    }
-    catch(css::java::JavaNotConfiguredException& e)
-    {
-        throw;
     }
     catch(css::java::JavaNotConfiguredException& e)
     {
