@@ -2,9 +2,9 @@
  *
  *  $RCSfile: DatabaseRange.idl,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: rt $ $Date: 2003-04-17 10:09:54 $
+ *  last change: $Author: obo $ $Date: 2004-03-19 16:20:28 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,35 +58,39 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_sheet_DatabaseRange_idl__ 
-#define __com_sun_star_sheet_DatabaseRange_idl__ 
- 
-#ifndef __com_sun_star_sheet_XDatabaseRange_idl__ 
-#include <com/sun/star/sheet/XDatabaseRange.idl> 
-#endif 
- 
-#ifndef __com_sun_star_sheet_XCellRangeReferrer_idl__ 
-#include <com/sun/star/sheet/XCellRangeReferrer.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_XPropertySet_idl__ 
-#include <com/sun/star/beans/XPropertySet.idl> 
-#endif 
- 
-#ifndef __com_sun_star_container_XNamed_idl__ 
-#include <com/sun/star/container/XNamed.idl> 
-#endif 
- 
-#ifndef __com_sun_star_table_CellRangeAddress_idl__ 
-#include <com/sun/star/table/CellRangeAddress.idl> 
-#endif 
+#ifndef __com_sun_star_sheet_DatabaseRange_idl__
+#define __com_sun_star_sheet_DatabaseRange_idl__
 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module sheet {  
- 
-//============================================================================= 
+#ifndef __com_sun_star_sheet_XDatabaseRange_idl__
+#include <com/sun/star/sheet/XDatabaseRange.idl>
+#endif
+
+#ifndef __com_sun_star_sheet_XCellRangeReferrer_idl__
+#include <com/sun/star/sheet/XCellRangeReferrer.idl>
+#endif
+
+#ifndef __com_sun_star_beans_XPropertySet_idl__
+#include <com/sun/star/beans/XPropertySet.idl>
+#endif
+
+#ifndef __com_sun_star_container_XNamed_idl__
+#include <com/sun/star/container/XNamed.idl>
+#endif
+
+#ifndef __com_sun_star_util_XRefreshable_idl__
+#include <com/sun/star/util/XRefreshable.idl>
+#endif
+
+#ifndef __com_sun_star_table_CellRangeAddress_idl__
+#include <com/sun/star/table/CellRangeAddress.idl>
+#endif
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module sheet {
+
+//=============================================================================
 
 /** represents a database range in a spreadsheet document.
 
@@ -96,75 +100,93 @@
     @see com::sun::star::sheet::DatabaseRanges
  */
 service DatabaseRange
-{ 
+{
     // DocMerge: empty anyway
-    interface com::sun::star::sheet::XDatabaseRange; 
-    
+    interface com::sun::star::sheet::XDatabaseRange;
+
     // DocMerge: empty anyway
-    interface com::sun::star::sheet::XCellRangeReferrer; 
-    
+    interface com::sun::star::sheet::XCellRangeReferrer;
+
     // DocMerge: empty anyway
-    interface com::sun::star::beans::XPropertySet; 
-    
+    interface com::sun::star::beans::XPropertySet;
+
     // DocMerge: empty anyway
-    interface com::sun::star::container::XNamed; 
- 
-    //------------------------------------------------------------------------- 
-     
+    interface com::sun::star::container::XNamed;
+
+    [optional] interface com::sun::star::util::XRefreshable;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::sheet::DatabaseRange::MoveCells
     /** if this property is set, columns or rows are inserted or deleted
         when the size of the range is changed by an update operation.
      */
-    [property] boolean MoveCells; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean MoveCells;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::sheet::DatabaseRange::KeepFormats
     /** if this property is set, cell formats are extended
         when the size of the range is changed by an update operation.
      */
-    [property] boolean KeepFormats; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean KeepFormats;
+
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: property com::sun::star::sheet::DatabaseRange::StripData
     /** if this property is set, the cell contents within the database
         range are left out when the document is saved.
      */
-    [property] boolean StripData; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean StripData;
+
+    //-------------------------------------------------------------------------
+
     /** specifies whether the AutoFilter is enabled or not.
 
         @since #107627#
      */
-    [optional, property] boolean AutoFilter; 
+    [optional, property] boolean AutoFilter;
 
-    //------------------------------------------------------------------------- 
-     
+    //-------------------------------------------------------------------------
+
     /** specifies whether the filter criteria should be taken from a CellRange.
 
         @since #107627#
      */
-    [optional, property] boolean UseFilterCriteriaSource; 
+    [optional, property] boolean UseFilterCriteriaSource;
 
-    //------------------------------------------------------------------------- 
-     
+    //-------------------------------------------------------------------------
+
     /** specifies the range where the filter can find the filter criterias.
         <p>This is only used if <member>SheetFilterDescriptor::UseFilterCriteriaSource</member> is <TRUE/>.</p>
 
         @since #107627#
      */
-    [optional, property] com::sun::star::table::CellRangeAddress FilterCriteriaSource; 
+    [optional, property] com::sun::star::table::CellRangeAddress FilterCriteriaSource;
 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-=============================================================================*/ 
-#endif 
+    //-------------------------------------------------------------------------
+
+    /** specifies the time between two refresh actions in seconds.
+
+        @since #76694#
+     */
+    [optional, property] long RefreshPeriod;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies whether the imported data is only a selection of the database.
+
+        @since #76694#
+
+     */
+    [optional, property] boolean FromSelection;
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
+=============================================================================*/
+#endif
