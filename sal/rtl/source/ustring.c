@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *  $RCSfile: ustring.c,v $
+ *	$RCSfile: ustring.c,v $
  *
- *  $Revision: 1.2 $
+ *	$Revision: 1.3 $
  *
- *  last change: $Author: jl $ $Date: 2000-11-21 10:09:42 $
+ *	last change: $Author: th $ $Date: 2000-11-28 13:59:57 $
  *
- *  The Contents of this file are made available subject to the terms of
- *  either of the following licenses
+ *	The Contents of this file are made available subject to the terms of
+ *	either of the following licenses
  *
- *         - GNU Lesser General Public License Version 2.1
- *         - Sun Industry Standards Source License Version 1.1
+ *		   - GNU Lesser General Public License Version 2.1
+ *		   - Sun Industry Standards Source License Version 1.1
  *
- *  Sun Microsystems Inc., October, 2000
+ *	Sun Microsystems Inc., October, 2000
  *
- *  GNU Lesser General Public License Version 2.1
- *  =============================================
- *  Copyright 2000 by Sun Microsystems, Inc.
- *  901 San Antonio Road, Palo Alto, CA 94303, USA
+ *	GNU Lesser General Public License Version 2.1
+ *	=============================================
+ *	Copyright 2000 by Sun Microsystems, Inc.
+ *	901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *  This library is free software; you can redistribute it and/or
- *  modify it under the terms of the GNU Lesser General Public
- *  License version 2.1, as published by the Free Software Foundation.
+ *	This library is free software; you can redistribute it and/or
+ *	modify it under the terms of the GNU Lesser General Public
+ *	License version 2.1, as published by the Free Software Foundation.
  *
- *  This library is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *  Lesser General Public License for more details.
+ *	This library is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *	Lesser General Public License for more details.
  *
- *  You should have received a copy of the GNU Lesser General Public
- *  License along with this library; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *  MA  02111-1307  USA
+ *	You should have received a copy of the GNU Lesser General Public
+ *	License along with this library; if not, write to the Free Software
+ *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *	MA	02111-1307	USA
  *
  *
- *  Sun Industry Standards Source License Version 1.1
- *  =================================================
- *  The contents of this file are subject to the Sun Industry Standards
- *  Source License Version 1.1 (the "License"); You may not use this file
- *  except in compliance with the License. You may obtain a copy of the
- *  License at http://www.openoffice.org/license.html.
+ *	Sun Industry Standards Source License Version 1.1
+ *	=================================================
+ *	The contents of this file are subject to the Sun Industry Standards
+ *	Source License Version 1.1 (the "License"); You may not use this file
+ *	except in compliance with the License. You may obtain a copy of the
+ *	License at http://www.openoffice.org/license.html.
  *
- *  Software provided under this License is provided on an "AS IS" basis,
- *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *  See the License for the specific provisions governing your rights and
- *  obligations concerning the Software.
+ *	Software provided under this License is provided on an "AS IS" basis,
+ *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *	See the License for the specific provisions governing your rights and
+ *	obligations concerning the Software.
  *
- *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *  Copyright: 2000 by Sun Microsystems, Inc.
+ *	Copyright: 2000 by Sun Microsystems, Inc.
  *
- *  All Rights Reserved.
+ *	All Rights Reserved.
  *
- *  Contributor(s): _______________________________________
+ *	Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -121,13 +121,13 @@ static sal_Char const RTL_STR_DIGITS[] =
  */
 static rtl_uString aEmpty_rtl_wString =
 {
-    1,      /* sal_Int32    refCount;   */
-    0,      /* sal_Int32    length;     */
-    0       /* sal_Unicode  buffer[1];  */
+    1,		/* sal_Int32	refCount;	*/
+    0,		/* sal_Int32	length; 	*/
+    0		/* sal_Unicode	buffer[1];	*/
 };
 
 /*************************************************************************
- *  rtl_ustr_getLength
+ *	rtl_ustr_getLength
  */
 sal_Int32 SAL_CALL rtl_ustr_getLength( const sal_Unicode * str )
 {
@@ -137,7 +137,7 @@ sal_Int32 SAL_CALL rtl_ustr_getLength( const sal_Unicode * str )
 }
 
 /*************************************************************************
- *  rtl_ustr_equalsIgnoreCase_WithLength
+ *	rtl_ustr_equalsIgnoreCase_WithLength
  */
 sal_Bool SAL_CALL rtl_ustr_equalsIgnoreCase_WithLength( const sal_Unicode * first,
                                                         sal_Int32 firstLen,
@@ -169,7 +169,7 @@ sal_Bool SAL_CALL rtl_ustr_equalsIgnoreCase_WithLength( const sal_Unicode * firs
 
         /* Unfortunately, conversion to uppercase does not work properly
            for the Georgian alphabet, which has strange rules about case
-           conversion.  So we need to make one last check before
+           conversion.	So we need to make one last check before
            exiting. */
         if ( rtl_char_toLowerCase(a) == rtl_char_toLowerCase(b) )
             continue;
@@ -177,11 +177,11 @@ sal_Bool SAL_CALL rtl_ustr_equalsIgnoreCase_WithLength( const sal_Unicode * firs
         return sal_False;
     }
 
-    return sal_True;      /* Strings sind gleich */
+    return sal_True;	  /* Strings sind gleich */
 }
 
 /*************************************************************************
- *  rtl_ustr_equalsIgnoreCase
+ *	rtl_ustr_equalsIgnoreCase
  */
 sal_Bool SAL_CALL rtl_ustr_equalsIgnoreCase( const sal_Unicode * first, const sal_Unicode * second )
 {
@@ -190,7 +190,7 @@ sal_Bool SAL_CALL rtl_ustr_equalsIgnoreCase( const sal_Unicode * first, const sa
 }
 
 /*************************************************************************
- *  rtl_ustr_compare_WithLength
+ *	rtl_ustr_compare_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_compare_WithLength( const sal_Unicode * first,
                                                 sal_Int32 firstLen,
@@ -209,7 +209,7 @@ sal_Int32 SAL_CALL rtl_ustr_compare_WithLength( const sal_Unicode * first,
 }
 
 /*************************************************************************
- *  rtl_ustr_compare_WithLength
+ *	rtl_ustr_compare_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_shortenedCompare_WithLength( const sal_Unicode * first,
                                                         sal_Int32 firstLen,
@@ -229,7 +229,7 @@ sal_Int32 SAL_CALL rtl_ustr_shortenedCompare_WithLength( const sal_Unicode * fir
 }
 
 /*************************************************************************
- *  rtl_ustr_compare
+ *	rtl_ustr_compare
  */
 sal_Int32 SAL_CALL rtl_ustr_compare( const sal_Unicode * first, const sal_Unicode * second )
 {
@@ -245,7 +245,7 @@ sal_Int32 SAL_CALL rtl_ustr_compare( const sal_Unicode * first, const sal_Unicod
 }
 
 /*************************************************************************
- *  rtl_ustr_ascii_compare_WithLength
+ *	rtl_ustr_ascii_compare_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_ascii_compare_WithLength( const sal_Unicode * first,
                                                       sal_Int32 firstLen,
@@ -255,7 +255,7 @@ sal_Int32 SAL_CALL rtl_ustr_ascii_compare_WithLength( const sal_Unicode * first,
 }
 
 /*************************************************************************
- *  rtl_ustr_ascii_compare
+ *	rtl_ustr_ascii_compare
  */
 sal_Int32 SAL_CALL rtl_ustr_ascii_compare( const sal_Unicode * first, const sal_Char * second )
 {
@@ -271,7 +271,7 @@ sal_Int32 SAL_CALL rtl_ustr_ascii_compare( const sal_Unicode * first, const sal_
 }
 
 /*************************************************************************
- *  rtl_ustr_ascii_shortenedCompare_WithLength
+ *	rtl_ustr_ascii_shortenedCompare_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_ascii_shortenedCompare_WithLength( const sal_Unicode * first,
                                                             sal_Int32 firstLen,
@@ -281,7 +281,7 @@ sal_Int32 SAL_CALL rtl_ustr_ascii_shortenedCompare_WithLength( const sal_Unicode
     const sal_Unicode * firstEnd = first + firstLen;
     sal_Int32 nResult = 0;
     while( shortenedLength--
-        && first < firstEnd 
+        && first < firstEnd
         && *second // necessary if 0 is allowed in Unicode
         && (0 == (nResult = (sal_Int32)*first++ - (sal_Int32)*second++ ) ) )
     {
@@ -305,9 +305,9 @@ sal_Int32 SAL_CALL rtl_ustr_ascii_shortenedCompare_WithLength( const sal_Unicode
 }
 
 /*************************************************************************
- *  rtl_ustr_asciil_reverseCompare_WithLength
+ *	rtl_ustr_asciil_reverseCompare_WithLength
  */
-sal_Int32 SAL_CALL rtl_ustr_asciil_reverseCompare_WithLength( const sal_Unicode * first, sal_Int32 firstLen, 
+sal_Int32 SAL_CALL rtl_ustr_asciil_reverseCompare_WithLength( const sal_Unicode * first, sal_Int32 firstLen,
                                                             const sal_Char * second, sal_Int32 secondLen )
 {
     const sal_Unicode * firstRun = first + firstLen;
@@ -323,7 +323,7 @@ sal_Int32 SAL_CALL rtl_ustr_asciil_reverseCompare_WithLength( const sal_Unicode 
 
 
 /*************************************************************************
- *  rtl_ustr_hashCode_WithLength
+ *	rtl_ustr_hashCode_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_hashCode_WithLength( const sal_Unicode * str, sal_Int32 len )
 {
@@ -352,7 +352,7 @@ sal_Int32 SAL_CALL rtl_ustr_hashCode_WithLength( const sal_Unicode * str, sal_In
 }
 
 /*************************************************************************
- *  rtl_ustr_hashCode
+ *	rtl_ustr_hashCode
  */
 sal_Int32 SAL_CALL rtl_ustr_hashCode( const sal_Unicode * str )
 {
@@ -360,7 +360,7 @@ sal_Int32 SAL_CALL rtl_ustr_hashCode( const sal_Unicode * str )
 }
 
 /*************************************************************************
- *  rtl_ustr_indexOfChar_WithLength
+ *	rtl_ustr_indexOfChar_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_indexOfChar_WithLength( const sal_Unicode * str,
                                                     sal_Int32 len,
@@ -387,7 +387,7 @@ sal_Int32 SAL_CALL rtl_ustr_indexOfChar_WithLength( const sal_Unicode * str,
 }
 
 /*************************************************************************
- *  rtl_ustr_indexOfChar
+ *	rtl_ustr_indexOfChar
  */
 sal_Int32 SAL_CALL rtl_ustr_indexOfChar( const sal_Unicode * str, sal_Unicode ch )
 {
@@ -395,7 +395,7 @@ sal_Int32 SAL_CALL rtl_ustr_indexOfChar( const sal_Unicode * str, sal_Unicode ch
 }
 
 /*************************************************************************
- *  rtl_ustr_lastIndexOfChar_WithLength
+ *	rtl_ustr_lastIndexOfChar_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_lastIndexOfChar_WithLength( const sal_Unicode * str,
                                                         sal_Int32 len,
@@ -418,7 +418,7 @@ sal_Int32 SAL_CALL rtl_ustr_lastIndexOfChar_WithLength( const sal_Unicode * str,
 }
 
 /*************************************************************************
- *  rtl_ustr_lastIndexOfChar
+ *	rtl_ustr_lastIndexOfChar
  */
 sal_Int32 SAL_CALL rtl_ustr_lastIndexOfChar( const sal_Unicode * str, sal_Unicode ch )
 {
@@ -426,7 +426,7 @@ sal_Int32 SAL_CALL rtl_ustr_lastIndexOfChar( const sal_Unicode * str, sal_Unicod
 }
 
 /*************************************************************************
- *  rtl_ustr_indexOfStr_WithLength
+ *	rtl_ustr_indexOfStr_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_indexOfStr_WithLength( const sal_Unicode * str,
                                                    sal_Int32 len,
@@ -470,7 +470,7 @@ sal_Int32 SAL_CALL rtl_ustr_indexOfStr_WithLength( const sal_Unicode * str,
 }
 
 /*************************************************************************
- *  rtl_ustr_indexOfStr
+ *	rtl_ustr_indexOfStr
  */
 sal_Int32 SAL_CALL rtl_ustr_indexOfStr( const sal_Unicode * str, const sal_Unicode * subStr )
 {
@@ -479,7 +479,7 @@ sal_Int32 SAL_CALL rtl_ustr_indexOfStr( const sal_Unicode * str, const sal_Unico
 }
 
 /*************************************************************************
- *  rtl_ustr_lastIndexOfStr_WithLength
+ *	rtl_ustr_lastIndexOfStr_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_lastIndexOfStr_WithLength( const sal_Unicode * pSource,
                                                        sal_Int32 len,
@@ -502,7 +502,7 @@ sal_Int32 SAL_CALL rtl_ustr_lastIndexOfStr_WithLength( const sal_Unicode * pSour
 }
 
 /*************************************************************************
- *  rtl_ustr_lastIndexOfStrPtr
+ *	rtl_ustr_lastIndexOfStrPtr
  */
 sal_Int32 SAL_CALL rtl_ustr_lastIndexOfStr( const sal_Unicode * str, const sal_Unicode * subStr )
 {
@@ -511,7 +511,7 @@ sal_Int32 SAL_CALL rtl_ustr_lastIndexOfStr( const sal_Unicode * str, const sal_U
 }
 
 /*************************************************************************
- *  rtl_ustr_replaceChar_WithLength
+ *	rtl_ustr_replaceChar_WithLength
  */
 void SAL_CALL rtl_ustr_replaceChar_WithLength( sal_Unicode * str,
                                                sal_Int32 len,
@@ -528,7 +528,7 @@ void SAL_CALL rtl_ustr_replaceChar_WithLength( sal_Unicode * str,
 }
 
 /*************************************************************************
- *  rtl_ustr_replaceChar
+ *	rtl_ustr_replaceChar
  */
 void SAL_CALL rtl_ustr_replaceChar( sal_Unicode * str, sal_Unicode oldChar, sal_Unicode newChar)
 {
@@ -542,7 +542,7 @@ void SAL_CALL rtl_ustr_replaceChar( sal_Unicode * str, sal_Unicode oldChar, sal_
 }
 
 /*************************************************************************
- *  rtl_ustr_toAsciiLowerCase_WithLength
+ *	rtl_ustr_toAsciiLowerCase_WithLength
  */
 void SAL_CALL rtl_ustr_toAsciiLowerCase_WithLength( sal_Unicode * str, sal_Int32 len )
 {
@@ -557,7 +557,7 @@ void SAL_CALL rtl_ustr_toAsciiLowerCase_WithLength( sal_Unicode * str, sal_Int32
 }
 
 /*************************************************************************
- *  rtl_ustr_toAsciiLowerCase
+ *	rtl_ustr_toAsciiLowerCase
  */
 void SAL_CALL rtl_ustr_toAsciiLowerCase( sal_Unicode * str )
 {
@@ -572,7 +572,7 @@ void SAL_CALL rtl_ustr_toAsciiLowerCase( sal_Unicode * str )
 }
 
 /*************************************************************************
- *  rtl_ustr_toAsciiUpperCase_WithLength
+ *	rtl_ustr_toAsciiUpperCase_WithLength
  */
 void SAL_CALL rtl_ustr_toAsciiUpperCase_WithLength(sal_Unicode * str, sal_Int32 len)
 {
@@ -587,7 +587,7 @@ void SAL_CALL rtl_ustr_toAsciiUpperCase_WithLength(sal_Unicode * str, sal_Int32 
 }
 
 /*************************************************************************
- *  rtl_ustr_toAsciiUpperCase
+ *	rtl_ustr_toAsciiUpperCase
  */
 void SAL_CALL rtl_ustr_toAsciiUpperCase(sal_Unicode * str)
 {
@@ -602,7 +602,7 @@ void SAL_CALL rtl_ustr_toAsciiUpperCase(sal_Unicode * str)
 }
 
 /*************************************************************************
- *  rtl_ustr_trim_WithLength
+ *	rtl_ustr_trim_WithLength
  */
 sal_Int32 SAL_CALL rtl_ustr_trim_WithLength( sal_Unicode * str, sal_Int32 len )
 {
@@ -639,7 +639,7 @@ sal_Int32 SAL_CALL rtl_ustr_trim_WithLength( sal_Unicode * str, sal_Int32 len )
 }
 
 /*************************************************************************
- *  rtl_ustr_trim
+ *	rtl_ustr_trim
  */
 sal_Int32 SAL_CALL rtl_ustr_trim( sal_Unicode * str )
 {
@@ -647,35 +647,42 @@ sal_Int32 SAL_CALL rtl_ustr_trim( sal_Unicode * str )
 }
 
 /*************************************************************************
- *  rtl_ustr_valueOfosl_BOOL
+ *	rtl_ustr_valueOfosl_BOOL
  */
 sal_Int32 SAL_CALL rtl_ustr_valueOfBoolean( sal_Unicode * str, sal_Bool b )
 {
-    if (b)
+    if ( b )
     {
-        sal_Unicode *tmpStr = L"True";
-        rtl_copyMemory(str, tmpStr, 5 * sizeof(sal_Unicode));
-        return 4;
-    } else
+        sal_Char TrueStr[] = "True";
+        sal_Int32 len = 4;
+        sal_Int32 i;
+        for ( i = 0; i < len+1; i++ )
+            *(str+i) = TrueStr[i];
+        return len;
+    }
+    else
     {
-        sal_Unicode *tmpStr = L"False";
-        rtl_copyMemory(str, tmpStr, 6 * sizeof(sal_Unicode));
-        return 5;
+        sal_Char FalseStr[] = "False";
+        sal_Int32 len = 5;
+        sal_Int32 i;
+        for ( i = 0; i < len+1; i++ )
+            *(str+i) = FalseStr[i];
+        return len;
     }
 }
 
 /*************************************************************************
- *  rtl_ustr_valueOfChar
+ *	rtl_ustr_valueOfChar
  */
 sal_Int32 SAL_CALL rtl_ustr_valueOfChar( sal_Unicode * str, sal_Unicode ch )
 {
     str[0] = ch;
-    str[1] = L'\0';
+    str[1] = 0;
     return 1;
 }
 
 /*************************************************************************
- *  rtl_ustr_valueOfosl_INT32
+ *	rtl_ustr_valueOfosl_INT32
  */
 sal_Int32 SAL_CALL rtl_ustr_valueOfInt32(sal_Unicode * str, sal_Int32 i, sal_Int16 radix )
 {
@@ -706,7 +713,7 @@ sal_Int32 SAL_CALL rtl_ustr_valueOfInt32(sal_Unicode * str, sal_Int32 i, sal_Int
 }
 
 /*************************************************************************
- *  rtl_ustr_valueOfosl_INT64
+ *	rtl_ustr_valueOfosl_INT64
  */
 sal_Int32 SAL_CALL rtl_ustr_valueOfInt64(sal_Unicode * str, sal_Int64 l, sal_Int16 radix )
 {
@@ -741,13 +748,13 @@ sal_Int32 SAL_CALL rtl_ustr_valueOfInt64(sal_Unicode * str, sal_Int64 l, sal_Int
 }
 
 /*************************************************************************
- *  numberToStringImpl
+ *	numberToStringImpl
  */
 
-#define FLOAT_MAX_POS       ( 3.402823e+38)
-#define FLOAT_MAX_NEG       (-3.402823e+38)
-#define FLOAT_MIN_POS       ( 1.175494351e-38)
-#define FLOAT_MIN_NEG       (-1.175494351e-38)
+#define FLOAT_MAX_POS		( 3.402823e+38)
+#define FLOAT_MAX_NEG		(-3.402823e+38)
+#define FLOAT_MIN_POS		( 1.175494351e-38)
+#define FLOAT_MIN_NEG		(-1.175494351e-38)
 
 
 sal_Int32 SAL_CALL numberToStringImpl(sal_Unicode * str, double d, sal_Int16 significantDigits )
@@ -756,7 +763,7 @@ sal_Int32 SAL_CALL numberToStringImpl(sal_Unicode * str, double d, sal_Int16 sig
      * (similar to Double.toString() in Java) */
     sal_Unicode buf[ RTL_USTR_MAX_VALUEOFDOUBLE ];
     sal_Unicode* charPos = buf;
-    sal_Int16 i, len, dig, dotPos, tmpDot;
+    sal_Int16 i, len, dig, dotPos;
     sal_Int16 lastNonZeroPos;
     sal_Int16 nExpDigits;
     sal_Bool bExp, bDotSet;
@@ -881,12 +888,12 @@ sal_Int32 SAL_CALL getNaNStr(sal_Unicode * This)
 }
 
 /*************************************************************************
- *  rtl_ustr_valueOfFloat
+ *	rtl_ustr_valueOfFloat
  */
-#define singleSignMask  ((sal_uInt32)0x80000000)
-#define singleExpMask   ((sal_uInt32)0x7f800000)
+#define singleSignMask	((sal_uInt32)0x80000000)
+#define singleExpMask	((sal_uInt32)0x7f800000)
 #define singleFractMask (~(singleSignMask|singleExpMask))
-#define singleExpShift  ((sal_uInt32)23)
+#define singleExpShift	((sal_uInt32)23)
 
 sal_Int32 SAL_CALL rtl_ustr_valueOfFloat(sal_Unicode * This, float f)
 {
@@ -906,18 +913,18 @@ sal_Int32 SAL_CALL rtl_ustr_valueOfFloat(sal_Unicode * This, float f)
 }
 
 /*************************************************************************
- *  rtl_ustr_valueOfDouble
+ *	rtl_ustr_valueOfDouble
  */
 #ifndef WNT
-#define signMask    ((sal_uInt64)0x8000000000000000LL)
-#define expMask     ((sal_uInt64)0x7ff0000000000000LL)
+#define signMask	((sal_uInt64)0x8000000000000000LL)
+#define expMask 	((sal_uInt64)0x7ff0000000000000LL)
 #else
-#define signMask    ((sal_uInt64)0x8000000000000000L)
-#define expMask     ((sal_uInt64)0x7ff0000000000000L)
+#define signMask	((sal_uInt64)0x8000000000000000L)
+#define expMask 	((sal_uInt64)0x7ff0000000000000L)
 #endif
 
-#define fractMask   (~(signMask|expMask))
-#define expShift    ((sal_uInt32)52)
+#define fractMask	(~(signMask|expMask))
+#define expShift	((sal_uInt32)52)
 
 sal_Int32 SAL_CALL rtl_ustr_valueOfDouble(sal_Unicode * This, double d)
 {
@@ -939,7 +946,7 @@ sal_Int32 SAL_CALL rtl_ustr_valueOfDouble(sal_Unicode * This, double d)
 }
 
 /*************************************************************************
- *  rtl_ustr_toInt32
+ *	rtl_ustr_toInt32
  */
 sal_Int32 SAL_CALL rtl_ustr_toInt32( sal_Unicode * str, sal_Int16 radix )
 {
@@ -965,7 +972,7 @@ sal_Int32 SAL_CALL rtl_ustr_toInt32( sal_Unicode * str, sal_Int16 radix )
 }
 
 /*************************************************************************
- *  Help function for rtl_ustr_toInt64
+ *	Help function for rtl_ustr_toInt64
  */
 sal_Int16 getDigit( sal_Unicode ch, sal_Int16 radix )
 {
@@ -988,7 +995,7 @@ sal_Int16 getDigit( sal_Unicode ch, sal_Int16 radix )
 #endif
 
 /*************************************************************************
- *  rtl_ustr_toInt64 (like in Java)
+ *	rtl_ustr_toInt64 (like in Java)
  */
 sal_Int64 SAL_CALL rtl_ustr_toInt64( sal_Unicode * str, sal_Int16 radix )
 {
@@ -1054,7 +1061,7 @@ sal_Int64 SAL_CALL rtl_ustr_toInt64( sal_Unicode * str, sal_Int16 radix )
 }
 
 /*************************************************************************
- *  rtl_ustr_toFloat
+ *	rtl_ustr_toFloat
  */
 float SAL_CALL rtl_ustr_toFloat( sal_Unicode * str )
 {
@@ -1090,7 +1097,7 @@ float SAL_CALL rtl_ustr_toFloat( sal_Unicode * str )
 }
 
 /*************************************************************************
- *  rtl_ustr_toDouble
+ *	rtl_ustr_toDouble
  */
 double SAL_CALL rtl_ustr_toDouble( sal_Unicode * str )
 {
@@ -1119,12 +1126,12 @@ double SAL_CALL rtl_ustr_toDouble( sal_Unicode * str )
 
 /*************************************************************************
  *
- *  rtl_uString_XXX Functions
+ *	rtl_uString_XXX Functions
  *
 /*************************************************************************
 
 /*************************************************************************
- *  rtl_uString_acquire
+ *	rtl_uString_acquire
  */
 void SAL_CALL rtl_uString_acquire( rtl_uString * value )
 {
@@ -1132,7 +1139,7 @@ void SAL_CALL rtl_uString_acquire( rtl_uString * value )
 }
 
 /*************************************************************************
- *  rtl_uString_release
+ *	rtl_uString_release
  */
 void SAL_CALL rtl_uString_release( rtl_uString * value )
 {
@@ -1144,7 +1151,7 @@ void SAL_CALL rtl_uString_release( rtl_uString * value )
 }
 
 /*************************************************************************
- *  rtl_uString_new
+ *	rtl_uString_new
  */
 void SAL_CALL rtl_uString_new( rtl_uString ** newStr )
 {
@@ -1156,7 +1163,7 @@ void SAL_CALL rtl_uString_new( rtl_uString ** newStr )
 }
 
 /*************************************************************************
- *  rtl_uString_new_WithLength
+ *	rtl_uString_new_WithLength
  */
 void SAL_CALL rtl_uString_new_WithLength( rtl_uString ** newStr, sal_Int32 nLen )
 {
@@ -1175,7 +1182,7 @@ void SAL_CALL rtl_uString_new_WithLength( rtl_uString ** newStr, sal_Int32 nLen 
 }
 
 /*************************************************************************
- *  rtl_uString_newFromString
+ *	rtl_uString_newFromString
  */
 void SAL_CALL rtl_uString_newFromString( rtl_uString ** newStr, rtl_uString * value )
 {
@@ -1202,7 +1209,7 @@ void SAL_CALL rtl_uString_newFromString( rtl_uString ** newStr, rtl_uString * va
 }
 
 /*************************************************************************
- *  rtl_uString_newFromStr
+ *	rtl_uString_newFromStr
  */
 void SAL_CALL rtl_uString_newFromStr( rtl_uString ** newStr, const sal_Unicode * value )
 {
@@ -1232,7 +1239,7 @@ void SAL_CALL rtl_uString_newFromStr( rtl_uString ** newStr, const sal_Unicode *
 }
 
 /*************************************************************************
- *  rtl_uString_newFromStr_WithLength
+ *	rtl_uString_newFromStr_WithLength
  */
 void SAL_CALL rtl_uString_newFromStr_WithLength( rtl_uString ** newStr,
                                                  const sal_Unicode * value,
@@ -1240,7 +1247,7 @@ void SAL_CALL rtl_uString_newFromStr_WithLength( rtl_uString ** newStr,
 {
     rtl_uString * pOrg;
 
-    if  (!value || len < 0 )
+    if	(!value || len < 0 )
     {
         rtl_uString_new(newStr);
         return;
@@ -1262,7 +1269,7 @@ void SAL_CALL rtl_uString_newFromStr_WithLength( rtl_uString ** newStr,
 }
 
 /*************************************************************************
- *  rtl_wstr_getLength
+ *	rtl_wstr_getLength
  */
 static sal_Int32 SAL_CALL rtl_wstr_getLength( const wchar_t* str )
 {
@@ -1272,7 +1279,7 @@ static sal_Int32 SAL_CALL rtl_wstr_getLength( const wchar_t* str )
 }
 
 /*************************************************************************
- *  rtl_uString_newFromWStr
+ *	rtl_uString_newFromWStr
  */
 void SAL_CALL rtl_uString_newFromWStr( rtl_uString ** newStr, const wchar_t * value )
 {
@@ -1309,7 +1316,7 @@ void SAL_CALL rtl_uString_newFromWStr( rtl_uString ** newStr, const wchar_t * va
 }
 
 /*************************************************************************
- *  rtl_uString_newFromWStr_WithLength
+ *	rtl_uString_newFromWStr_WithLength
  */
 void SAL_CALL rtl_uString_newFromWStr_WithLength( rtl_uString ** newStr,
                                                   const wchar_t * value,
@@ -1345,7 +1352,7 @@ void SAL_CALL rtl_uString_newFromWStr_WithLength( rtl_uString ** newStr,
 }
 
 /*************************************************************************
- *  rtl_uString_newFromASCII
+ *	rtl_uString_newFromASCII
  */
 void SAL_CALL rtl_uString_newFromAscii( rtl_uString ** newStr, const sal_Char * value )
 {
@@ -1385,7 +1392,7 @@ void SAL_CALL rtl_uString_newFromAscii( rtl_uString ** newStr, const sal_Char * 
 }
 
 /*************************************************************************
- *  rtl_uString_assign
+ *	rtl_uString_assign
  */
 void SAL_CALL rtl_uString_assign( /*inout*/rtl_uString ** str, rtl_uString * rightValue )
 {
@@ -1398,7 +1405,7 @@ void SAL_CALL rtl_uString_assign( /*inout*/rtl_uString ** str, rtl_uString * rig
 }
 
 /*************************************************************************
- *  rtl_uString_getLength
+ *	rtl_uString_getLength
  */
 sal_Int32 SAL_CALL rtl_uString_getLength( rtl_uString * str )
 {
@@ -1406,7 +1413,7 @@ sal_Int32 SAL_CALL rtl_uString_getLength( rtl_uString * str )
 }
 
 /*************************************************************************
- *  rtl_uString_getStr
+ *	rtl_uString_getStr
  */
 sal_Unicode * SAL_CALL rtl_uString_getStr( rtl_uString * str )
 {
@@ -1414,7 +1421,7 @@ sal_Unicode * SAL_CALL rtl_uString_getStr( rtl_uString * str )
 }
 
 /*************************************************************************
- *  rtl_uString_newConcat
+ *	rtl_uString_newConcat
  */
 void SAL_CALL rtl_uString_newConcat( rtl_uString ** newStr, rtl_uString * left, rtl_uString * right )
 {
@@ -1447,7 +1454,7 @@ void SAL_CALL rtl_uString_newConcat( rtl_uString ** newStr, rtl_uString * left, 
 }
 
 /*************************************************************************
- *  rtl_uString_newReplace
+ *	rtl_uString_newReplace
  */
 void SAL_CALL rtl_uString_newReplace( rtl_uString ** newStr,
                                       rtl_uString * str,
@@ -1462,7 +1469,7 @@ void SAL_CALL rtl_uString_newReplace( rtl_uString ** newStr,
 }
 
 /*************************************************************************
- *  rtl_uString_newReplaceStrAt
+ *	rtl_uString_newReplaceStrAt
  */
 void SAL_CALL rtl_uString_newReplaceStrAt( rtl_uString ** newStr,
                                            rtl_uString * str,
@@ -1519,7 +1526,7 @@ void SAL_CALL rtl_uString_newReplaceStrAt( rtl_uString ** newStr,
 }
 
 /*************************************************************************
- *  rtl_uString_newToLowerCase
+ *	rtl_uString_newToLowerCase
  */
 void SAL_CALL rtl_uString_newToLowerCase( rtl_uString ** newStr,
                                           rtl_uString * str,
@@ -1547,7 +1554,7 @@ void SAL_CALL rtl_uString_newToLowerCase( rtl_uString ** newStr,
                 (*newStr)->buffer[i] = (sal_Unicode)0x0131; /* dotless small i */
                 continue;
             }
-            if ((sal_uInt16)ch == 0x0130)               /* dotted I */
+            if ((sal_uInt16)ch == 0x0130)				/* dotted I */
             {
                 (*newStr)->buffer[i] = L'i';    /* dotted i */
                 continue;
@@ -1565,7 +1572,7 @@ void SAL_CALL rtl_uString_newToLowerCase( rtl_uString ** newStr,
 }
 
 /*************************************************************************
- *  rtl_uString_newToUpperCase
+ *	rtl_uString_newToUpperCase
  */
 void SAL_CALL rtl_uString_newToUpperCase( rtl_uString ** newStr,
                                           rtl_uString * str,
@@ -1584,17 +1591,17 @@ void SAL_CALL rtl_uString_newToUpperCase( rtl_uString ** newStr,
         for (i = 0; i < len; i++)
         {
             sal_Unicode ch = str->buffer[i];
-            if ((sal_uInt16)ch == 0x0131)            /* dotless i */
+            if ((sal_uInt16)ch == 0x0131)			 /* dotless i */
             {
                 result[i+resultOffset] = L'I';          /* cap I */
                 continue;
             }
             if (ch == L'i')
             {
-                result[i+resultOffset] = (sal_Unicode)0x0130;       /* dotted cap i */
+                result[i+resultOffset] = (sal_Unicode)0x0130;		/* dotted cap i */
                 continue;
             }
-            if ((sal_uInt16)ch == 0x00DF)               /* sharp s */
+            if ((sal_uInt16)ch == 0x00DF)				/* sharp s */
             {
                 /* Grow result. */
                 sal_Unicode *result2 = (sal_Unicode*)rtl_allocateMemory((len + 1 + resultOffset + 1) * sizeof(sal_Unicode));
@@ -1614,7 +1621,7 @@ void SAL_CALL rtl_uString_newToUpperCase( rtl_uString ** newStr,
         {
             sal_Unicode ch = str->buffer[i];
 
-            if ((sal_uInt16)ch == 0x00DF)               /* sharp s */
+            if ((sal_uInt16)ch == 0x00DF)				/* sharp s */
             {
                 /* Grow result. */
                 sal_Unicode *result2 = (sal_Unicode*)rtl_allocateMemory((len + 1 + resultOffset + 1) * sizeof(sal_Unicode));
@@ -1637,7 +1644,7 @@ void SAL_CALL rtl_uString_newToUpperCase( rtl_uString ** newStr,
 }
 
 /*************************************************************************
- *  rtl_uString_newTrim
+ *	rtl_uString_newTrim
  */
 void SAL_CALL rtl_uString_newTrim( rtl_uString ** newStr, rtl_uString * str )
 {
@@ -1649,7 +1656,7 @@ void SAL_CALL rtl_uString_newTrim( rtl_uString ** newStr, rtl_uString * str )
 }
 
 /*************************************************************************
- *  rtl_uString_getTokenCount
+ *	rtl_uString_getTokenCount
  */
 sal_Int32 SAL_CALL rtl_uString_getTokenCount( rtl_uString * str , sal_Unicode cTok)
 {
@@ -1673,7 +1680,7 @@ sal_Int32 SAL_CALL rtl_uString_getTokenCount( rtl_uString * str , sal_Unicode cT
 }
 
 /*************************************************************************
- *  rtl_uString_getToken
+ *	rtl_uString_getToken
  */
 void SAL_CALL rtl_uString_getToken( rtl_uString ** newStr , rtl_uString * str, sal_Int32 nToken, sal_Unicode cTok)
 {
@@ -1710,13 +1717,13 @@ void SAL_CALL rtl_string2UString( rtl_uString** newStr, const sal_Char* pStr, sa
 {
     if (nLen)
     {
-        sal_Unicode*                pData;
-        rtl_TextEncodingInfo        aTextEncInfo;
-        rtl_TextToUnicodeConverter  hConverter = rtl_createTextToUnicodeConverter( encoding );
-        sal_uInt32                  nInfo;
-        sal_Size                    nSrcBytes;
-        sal_Size                    nDestChars;
-        sal_Size                    nNewLen;
+        sal_Unicode*				pData;
+        rtl_TextEncodingInfo		aTextEncInfo;
+        rtl_TextToUnicodeConverter	hConverter = rtl_createTextToUnicodeConverter( encoding );
+        sal_uInt32					nInfo;
+        sal_Size					nSrcBytes;
+        sal_Size					nDestChars;
+        sal_Size					nNewLen;
 
         /* get TextEncodingInfo */
         aTextEncInfo.StructSize = sizeof( aTextEncInfo );
@@ -1752,13 +1759,13 @@ void SAL_CALL rtl_uString2String( rtl_String** newStr, const sal_Unicode * pWStr
 {
     if (nWLen)
     {
-        sal_Char*                   pData;
-        rtl_TextEncodingInfo        aTextEncInfo;
-        rtl_UnicodeToTextConverter  hConverter = rtl_createUnicodeToTextConverter( encoding );
-        sal_Size                    nSrcChars;
-        sal_Size                    nDestBytes;
-        sal_Size                    nNewLen;
-        sal_uInt32                  nInfo;
+        sal_Char*					pData;
+        rtl_TextEncodingInfo		aTextEncInfo;
+        rtl_UnicodeToTextConverter	hConverter = rtl_createUnicodeToTextConverter( encoding );
+        sal_Size					nSrcChars;
+        sal_Size					nDestBytes;
+        sal_Size					nNewLen;
+        sal_uInt32					nInfo;
 
         /* get TextEncodingInfo */
         aTextEncInfo.StructSize = sizeof( aTextEncInfo );
