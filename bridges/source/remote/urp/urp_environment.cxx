@@ -2,9 +2,9 @@
  *
  *  $RCSfile: urp_environment.cxx,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: jbu $ $Date: 2001-07-04 14:29:29 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:28:57 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,7 +59,6 @@
  *
  ************************************************************************/
 
-#include <assert.h>
 #include <stdio.h>
 
 #include <osl/interlck.h>
@@ -125,7 +124,7 @@ class PropertySetterThread : public ::osl::Thread
     urp_BridgeImpl *m_pImpl;
     ::rtl::OUString m_sProps;
     uno_Environment *m_pEnvRemote;
-public:	
+public:
     PropertySetterThread( uno_Environment *pEnvRemote,
                           urp_BridgeImpl *pImpl,
                           const ::rtl::OUString  & props )
@@ -141,7 +140,7 @@ public:
         {
             m_pEnvRemote->release( m_pEnvRemote );
         }
-    
+
     virtual void SAL_CALL run()
         {
             struct Properties props;
@@ -169,8 +168,8 @@ public:
             delete this;
         }
 };
-//------------------------------------	
-    
+//------------------------------------
+
 
 void test_cache()
 {
@@ -212,13 +211,13 @@ struct StaticSingleton
 };
 StaticSingleton singleton;
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 static MyCounter thisCounter( "Remote Environment" );
 #endif
 
 struct RemoteEnvironment
 {
-    
+
     static void SAL_CALL thisDisposing( uno_Environment *pEnvRemote );
     static void SAL_CALL thisComputeObjectIdentifier( uno_ExtEnvironment *pEnvRemote,
                                                       rtl_uString **ppOid,
@@ -255,7 +254,7 @@ void SAL_CALL allThreadsAreGone( uno_Environment * pEnvRemote )
 
         pImpl->m_cndWaitForThreads.set();
     }
-        
+
 }
 
 void SAL_CALL releaseStubs( uno_Environment *pEnvRemote )
@@ -312,7 +311,7 @@ void RemoteEnvironment::thisDispose( uno_Environment *pEnvRemote )
 
         // close the connection
         urp_sendCloseConnection( pEnvRemote );
-        
+
         if( osl_getThreadIdentifier(0) ==
             (oslThreadIdentifier) pImpl->m_pReader->getIdentifier() )
         {
@@ -332,10 +331,10 @@ void RemoteEnvironment::thisDispose( uno_Environment *pEnvRemote )
         uno_threadpool_dispose( pImpl->m_hThreadPool );
 
           pContext->m_pConnection->close( pContext->m_pConnection );
-        
+
         // wait for the writer thread
         pImpl->m_pWriter->join();
-        
+
         // now let the context go !
         pContext->dispose( pContext );
 
@@ -358,14 +357,14 @@ void RemoteEnvironment::thisDispose( uno_Environment *pEnvRemote )
             pImpl->m_pLogFile = 0;
         }
 #endif
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         pImpl->dumpErrors( stderr );
 #endif
-            
+
         // destroy the threads
         delete pImpl->m_pWriter;
         pImpl->m_pWriter = 0;
-        
+
         if( osl_getThreadIdentifier(0) !=
             (oslThreadIdentifier) pImpl->m_pReader->getIdentifier() )
         {
@@ -373,8 +372,8 @@ void RemoteEnvironment::thisDispose( uno_Environment *pEnvRemote )
             delete pImpl->m_pReader;
         }
         pImpl->m_pReader = 0;
-        
-        // delete the stubs 
+
+        // delete the stubs
         releaseStubs( pEnvRemote );
 
     }
@@ -401,7 +400,7 @@ void RemoteEnvironment::thisDisposing( uno_Environment *pEnvRemote )
     delete pImpl;
     pContext->aBase.release( (uno_Context * ) pContext );
     g_moduleCount.modCnt.release( &g_moduleCount.modCnt );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
       thisCounter.release();
 #endif
 }
@@ -449,10 +448,10 @@ extern "C" SAL_DLLEXPORT void SAL_CALL uno_initEnvironment(
 
     // Initialize threadpool
     pImpl->m_hThreadPool = uno_threadpool_create();
-    
+
     // take the bridgepointer as id
     pImpl->m_properties.seqBridgeID = ByteSequence( (sal_Int8*)&pEnvRemote , sizeof( pEnvRemote ) );
-    
+
     pImpl->m_cndWaitForThreads.reset();
     pImpl->m_allThreadsAreGone = allThreadsAreGone;
     pImpl->m_sendRequest = urp_sendRequest;
@@ -521,7 +520,7 @@ extern "C" SAL_DLLEXPORT void SAL_CALL uno_initEnvironment(
                                                          pEnvRemote,
                                                          pImpl->m_pWriter );
     pImpl->m_pReader->create();
-    
+
     // create the properties object
     // start the property-set-thread, if necessary
     if( sProtocolProperties.getLength() )
@@ -530,9 +529,9 @@ extern "C" SAL_DLLEXPORT void SAL_CALL uno_initEnvironment(
             new PropertySetterThread( pEnvRemote, pImpl , sProtocolProperties );
         pPropsSetterThread->create();
     }
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.acquire();
-#endif	
+#endif
 }
 
 
@@ -569,7 +568,7 @@ extern "C" SAL_DLLEXPORT void SAL_CALL uno_ext_getMapping(
                                            bridges_remote::RemoteMapping::unoToRemote,
                                            OUString() );
         }
-        
+
         *ppMapping = (uno_Mapping * )pMapping;
         OUString dummy;
         uno_registerMapping( ppMapping ,
