@@ -2,9 +2,9 @@
  *
  *  $RCSfile: urp_writer.cxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: jbu $ $Date: 2001-04-18 08:20:21 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:29:18 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,7 +58,6 @@
  *
  *
  ************************************************************************/
-#include <assert.h>
 #include <stdio.h>
 
 #ifndef _OSL_TIME_H_
@@ -82,7 +81,7 @@
 #include "urp_marshal.hxx"
 #include "urp_dispatch.hxx"
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 static MyCounter thisCounter( "DEBUG : WriterThread" );
 #endif
 
@@ -98,24 +97,24 @@ OWriterThread::OWriterThread( remote_Connection *pConnection, urp_BridgeImpl *pB
     m_pEnvRemote( pEnvRemote ),
     m_bInBlockingWait( sal_False ),
     m_bEnterBlockingWait( sal_False )
-    
+
 {
     m_oslCondition = osl_createCondition();
     osl_resetCondition( m_oslCondition );
     m_pConnection->acquire( m_pConnection );
-    
-#ifdef DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.acquire();
-#endif	
+#endif
 }
 
 OWriterThread::~OWriterThread()
 {
     osl_destroyCondition( m_oslCondition );
     m_pConnection->release( m_pConnection );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.release();
-#endif	
+#endif
 }
 
 
@@ -136,7 +135,7 @@ void OWriterThread::touch( sal_Bool bImmediately )
         }
         else
         {
-            // ensure, that the writing thread does not enter blocking mode 
+            // ensure, that the writing thread does not enter blocking mode
               m_bEnterBlockingWait = sal_False;
         }
     }
@@ -146,7 +145,7 @@ void OWriterThread::touch( sal_Bool bImmediately )
 void OWriterThread::abort()
 {
     MutexGuard guard( m_pBridgeImpl->m_marshalingMutex );
-    
+
     m_bAbort = sal_True;
     m_bEnterBlockingWait = sal_False;
     if( m_bInBlockingWait )
@@ -164,7 +163,7 @@ void OWriterThread::write()
      {
         m_pBridgeImpl->m_blockMarshaler.finish( m_pBridgeImpl->m_nMarshaledMessages);
         m_pBridgeImpl->m_nMarshaledMessages = 0;
-        
+
         sal_Int32 nLength = m_pBridgeImpl->m_blockMarshaler.getSize();
         sal_Int8 *pBuf = m_pBridgeImpl->m_blockMarshaler.getBuffer();
 
@@ -193,7 +192,7 @@ void OWriterThread::insertReleaseRemoteCall(
 {
     {
         ::osl::MutexGuard guard( m_releaseCallMutex );
-        
+
         struct RemoteReleaseCall call;
         call.sOid = pOid;
         call.typeInterface = pTypeRef;
@@ -208,13 +207,13 @@ void OWriterThread::insertReleaseRemoteCall(
         }
         else
         {
-            // ensure, that the writing thread does not enter blocking mode 
+            // ensure, that the writing thread does not enter blocking mode
               m_bEnterBlockingWait = sal_False;
         }
     }
 }
 
-/* The release calls for doubled interfaces 
+/* The release calls for doubled interfaces
  *
  *
  ***/
@@ -235,24 +234,24 @@ void OWriterThread::executeReleaseRemoteCalls()
 
         typelib_TypeDescription *pInterfaceTypeDesc = 0;
         typelib_TypeDescription *pReleaseMethod = 0;
-        
+
         call.typeInterface.getDescription( &pInterfaceTypeDesc );
         if( ! pInterfaceTypeDesc->bComplete )
         {
             typelib_typedescription_complete( &pInterfaceTypeDesc );
         }
-        
+
         uno_Any any;
         uno_Any *pAny = &any;
-        
+
         typelib_typedescriptionreference_getDescription(
             &pReleaseMethod ,
             ((typelib_InterfaceTypeDescription*)pInterfaceTypeDesc)->ppAllMembers[REMOTE_RELEASE_METHOD_INDEX] );
-        
+
         urp_sendRequest( m_pEnvRemote , pReleaseMethod, call.sOid.pData,
                          (typelib_InterfaceTypeDescription*) pInterfaceTypeDesc,
                          0, 0 , &pAny );
-        
+
         typelib_typedescription_release( pReleaseMethod );
         typelib_typedescription_release( pInterfaceTypeDesc );
     }
@@ -279,15 +278,15 @@ void OWriterThread::run()
         if( bWait )
             osl_waitCondition( m_oslCondition , 0 );
         // (m_bInBlockingWait = sal_False was set by the activating thread)
-        
+
           if( m_bAbort )
               break;
-        
+
         // Wait for the timeout
         TimeValue value = { 0 , 1000 * m_pBridgeImpl->m_properties.nOnewayTimeoutMUSEC };
         osl_resetCondition( m_oslCondition );
         osl_waitCondition( m_oslCondition , &value );
-        
+
         // check if there are some release calls to be sent ....
         executeReleaseRemoteCalls();
 
