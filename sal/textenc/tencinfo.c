@@ -1,60 +1,60 @@
 /*************************************************************************
  *
- *	$RCSfile: tencinfo.c,v $
+ *  $RCSfile: tencinfo.c,v $
  *
- *	$Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *	last change: $Author: th $ $Date: 2001-03-27 11:35:48 $
+ *  last change: $Author: th $ $Date: 2001-05-09 12:56:53 $
  *
- *	The Contents of this file are made available subject to the terms of
- *	either of the following licenses
+ *  The Contents of this file are made available subject to the terms of
+ *  either of the following licenses
  *
- *		   - GNU Lesser General Public License Version 2.1
- *		   - Sun Industry Standards Source License Version 1.1
+ *         - GNU Lesser General Public License Version 2.1
+ *         - Sun Industry Standards Source License Version 1.1
  *
- *	Sun Microsystems Inc., October, 2000
+ *  Sun Microsystems Inc., October, 2000
  *
- *	GNU Lesser General Public License Version 2.1
- *	=============================================
- *	Copyright 2000 by Sun Microsystems, Inc.
- *	901 San Antonio Road, Palo Alto, CA 94303, USA
+ *  GNU Lesser General Public License Version 2.1
+ *  =============================================
+ *  Copyright 2000 by Sun Microsystems, Inc.
+ *  901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *	This library is free software; you can redistribute it and/or
- *	modify it under the terms of the GNU Lesser General Public
- *	License version 2.1, as published by the Free Software Foundation.
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License version 2.1, as published by the Free Software Foundation.
  *
- *	This library is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *	Lesser General Public License for more details.
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
  *
- *	You should have received a copy of the GNU Lesser General Public
- *	License along with this library; if not, write to the Free Software
- *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *	MA	02111-1307	USA
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *  MA  02111-1307  USA
  *
  *
- *	Sun Industry Standards Source License Version 1.1
- *	=================================================
- *	The contents of this file are subject to the Sun Industry Standards
- *	Source License Version 1.1 (the "License"); You may not use this file
- *	except in compliance with the License. You may obtain a copy of the
- *	License at http://www.openoffice.org/license.html.
+ *  Sun Industry Standards Source License Version 1.1
+ *  =================================================
+ *  The contents of this file are subject to the Sun Industry Standards
+ *  Source License Version 1.1 (the "License"); You may not use this file
+ *  except in compliance with the License. You may obtain a copy of the
+ *  License at http://www.openoffice.org/license.html.
  *
- *	Software provided under this License is provided on an "AS IS" basis,
- *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *	See the License for the specific provisions governing your rights and
- *	obligations concerning the Software.
+ *  Software provided under this License is provided on an "AS IS" basis,
+ *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *  See the License for the specific provisions governing your rights and
+ *  obligations concerning the Software.
  *
- *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *	Copyright: 2000 by Sun Microsystems, Inc.
+ *  Copyright: 2000 by Sun Microsystems, Inc.
  *
- *	All Rights Reserved.
+ *  All Rights Reserved.
  *
- *	Contributor(s): _______________________________________
+ *  Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
@@ -81,7 +81,7 @@ static void Impl_toAsciiLower( const sal_Char* pName, sal_Char* pBuf )
     {
         /* A-Z */
         if ( (*pName >= 0x41) && (*pName <= 0x5A) )
-            *pBuf = (*pName)+0x20;	/* toAsciiLower */
+            *pBuf = (*pName)+0x20;  /* toAsciiLower */
         else
             *pBuf = *pName;
 
@@ -101,7 +101,7 @@ static void Impl_toAsciiLowerAndRemoveNonAlphanumeric( const sal_Char* pName, sa
         /* A-Z */
         if ( (*pName >= 0x41) && (*pName <= 0x5A) )
         {
-            *pBuf = (*pName)+0x20;	/* toAsciiLower */
+            *pBuf = (*pName)+0x20;  /* toAsciiLower */
             pBuf++;
         }
         /* a-z, 0-9 */
@@ -141,14 +141,14 @@ static sal_Bool Impl_matchString( const sal_Char* pCompStr, const sal_Char* pMat
 
 typedef struct _ImplStrCharsetDef
 {
-    const sal_Char* 			mpCharsetStr;
-    rtl_TextEncoding			meTextEncoding;
+    const sal_Char*             mpCharsetStr;
+    rtl_TextEncoding            meTextEncoding;
 } ImplStrCharsetDef;
 
 typedef struct _ImplStrFirstPartCharsetDef
 {
-    const sal_Char* 			mpCharsetStr;
-    const ImplStrCharsetDef*	mpSecondPartTab;
+    const sal_Char*             mpCharsetStr;
+    const ImplStrCharsetDef*    mpSecondPartTab;
 } ImplStrFirstPartCharsetDef;
 
 /* ======================================================================= */
@@ -178,9 +178,6 @@ sal_Bool SAL_CALL rtl_getTextEncodingInfo( rtl_TextEncoding eTextEncoding, rtl_T
             return sal_True;
         pEncInfo->Flags = 0;
 
-        if ( pEncInfo->StructSize < 14 )
-            return sal_True;
-        pEncInfo->Script = SCRIPT_DONTKNOW;
         return sal_False;
     }
 
@@ -200,10 +197,6 @@ sal_Bool SAL_CALL rtl_getTextEncodingInfo( rtl_TextEncoding eTextEncoding, rtl_T
         return sal_True;
     pEncInfo->Flags = pData->mnInfoFlags;
 
-    if ( pEncInfo->StructSize < 14 )
-        return sal_True;
-    pEncInfo->Script = pData->mnScript;
-
     return sal_True;
 }
 
@@ -215,31 +208,33 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromWindowsCharset( sal_uInt8 nWinC
 
     switch ( nWinCharset )
     {
-        case 0: 	eTextEncoding = RTL_TEXTENCODING_MS_1252; break;	/* ANSI_CHARSET */
-        case 2: 	eTextEncoding = RTL_TEXTENCODING_SYMBOL; break; 	/* SYMBOL_CHARSET */
-        case 77:	eTextEncoding = RTL_TEXTENCODING_APPLE_ROMAN; break;/* MAC_CHARSET */
-        case 128:	eTextEncoding = RTL_TEXTENCODING_MS_932; break; 	/* SHIFTJIS_CHARSET */
-        case 129:	eTextEncoding = RTL_TEXTENCODING_MS_949; break; 	/* HANGEUL_CHARSET */
-        case 130:	eTextEncoding = RTL_TEXTENCODING_MS_1361; break;	/* JOHAB_CHARSET */
-        case 134:	eTextEncoding = RTL_TEXTENCODING_MS_936; break; 	/* GB2312_CHARSET */
-        case 136:	eTextEncoding = RTL_TEXTENCODING_MS_950; break; 	/* CHINESEBIG5_CHARSET */
-        case 161:	eTextEncoding = RTL_TEXTENCODING_MS_1253; break;	/* GREEK_CHARSET */
-        case 162:	eTextEncoding = RTL_TEXTENCODING_MS_1254; break;	/* TURKISH_CHARSET */
-        case 163:	eTextEncoding = RTL_TEXTENCODING_MS_1258; break;	/* VIETNAMESE_CHARSET !!! */
-        case 177:	eTextEncoding = RTL_TEXTENCODING_MS_1255; break;	/* HEBREW_CHARSET */
-        case 178:	eTextEncoding = RTL_TEXTENCODING_MS_1256; break;	/* ARABIC_CHARSET */
-        case 186:	eTextEncoding = RTL_TEXTENCODING_MS_1257; break;	/* BALTIC_CHARSET */
-        case 204:	eTextEncoding = RTL_TEXTENCODING_MS_1251; break;	/* RUSSIAN_CHARSET */
-        case 222:	eTextEncoding = RTL_TEXTENCODING_MS_874; break; 	/* THAI_CHARSET */
-        case 238:	eTextEncoding = RTL_TEXTENCODING_MS_1250; break;	/* EASTEUROPE_CHARSET */
-        case 255:	eTextEncoding = RTL_TEXTENCODING_IBM_850; break;	/* OEM_CHARSET */
-        default:	eTextEncoding = RTL_TEXTENCODING_DONTKNOW; break;
+        case 0:     eTextEncoding = RTL_TEXTENCODING_MS_1252; break;    /* ANSI_CHARSET */
+        case 2:     eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;     /* SYMBOL_CHARSET */
+        case 77:    eTextEncoding = RTL_TEXTENCODING_APPLE_ROMAN; break;/* MAC_CHARSET */
+        case 128:   eTextEncoding = RTL_TEXTENCODING_MS_932; break;     /* SHIFTJIS_CHARSET */
+        case 129:   eTextEncoding = RTL_TEXTENCODING_MS_949; break;     /* HANGEUL_CHARSET */
+        case 130:   eTextEncoding = RTL_TEXTENCODING_MS_1361; break;    /* JOHAB_CHARSET */
+        case 134:   eTextEncoding = RTL_TEXTENCODING_MS_936; break;     /* GB2312_CHARSET */
+        case 136:   eTextEncoding = RTL_TEXTENCODING_MS_950; break;     /* CHINESEBIG5_CHARSET */
+        case 161:   eTextEncoding = RTL_TEXTENCODING_MS_1253; break;    /* GREEK_CHARSET */
+        case 162:   eTextEncoding = RTL_TEXTENCODING_MS_1254; break;    /* TURKISH_CHARSET */
+        case 163:   eTextEncoding = RTL_TEXTENCODING_MS_1258; break;    /* VIETNAMESE_CHARSET !!! */
+        case 177:   eTextEncoding = RTL_TEXTENCODING_MS_1255; break;    /* HEBREW_CHARSET */
+        case 178:   eTextEncoding = RTL_TEXTENCODING_MS_1256; break;    /* ARABIC_CHARSET */
+        case 186:   eTextEncoding = RTL_TEXTENCODING_MS_1257; break;    /* BALTIC_CHARSET */
+        case 204:   eTextEncoding = RTL_TEXTENCODING_MS_1251; break;    /* RUSSIAN_CHARSET */
+        case 222:   eTextEncoding = RTL_TEXTENCODING_MS_874; break;     /* THAI_CHARSET */
+        case 238:   eTextEncoding = RTL_TEXTENCODING_MS_1250; break;    /* EASTEUROPE_CHARSET */
+        case 255:   eTextEncoding = RTL_TEXTENCODING_IBM_850; break;    /* OEM_CHARSET */
+        default:    eTextEncoding = RTL_TEXTENCODING_DONTKNOW; break;
     };
 
     return eTextEncoding;
 }
 
 /* ----------------------------------------------------------------------- */
+
+#if 0
 
 rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromPCCodePage( sal_uInt32 nCodePage )
 {
@@ -247,34 +242,38 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromPCCodePage( sal_uInt32 nCodePag
 
     switch ( nCodePage )
     {
-        case 437:	eTextEncoding = RTL_TEXTENCODING_IBM_437; break;
-        case 850:	eTextEncoding = RTL_TEXTENCODING_IBM_850; break;
-        case 860:	eTextEncoding = RTL_TEXTENCODING_IBM_860; break;
-        case 861:	eTextEncoding = RTL_TEXTENCODING_IBM_861; break;
-        case 863:	eTextEncoding = RTL_TEXTENCODING_IBM_863; break;
-        case 865:	eTextEncoding = RTL_TEXTENCODING_IBM_865; break;
-        case 737:	eTextEncoding = RTL_TEXTENCODING_IBM_737; break;
-        case 775:	eTextEncoding = RTL_TEXTENCODING_IBM_775; break;
-        case 852:	eTextEncoding = RTL_TEXTENCODING_IBM_852; break;
-        case 855:	eTextEncoding = RTL_TEXTENCODING_IBM_855; break;
-        case 857:	eTextEncoding = RTL_TEXTENCODING_IBM_857; break;
-        case 862:	eTextEncoding = RTL_TEXTENCODING_IBM_862; break;
-        case 864:	eTextEncoding = RTL_TEXTENCODING_IBM_864; break;
-        case 866:	eTextEncoding = RTL_TEXTENCODING_IBM_866; break;
-        case 869:	eTextEncoding = RTL_TEXTENCODING_IBM_869; break;
-        case 874:	eTextEncoding = RTL_TEXTENCODING_MS_874; break;
-        case 932:	eTextEncoding = RTL_TEXTENCODING_MS_932; break;
-        case 949:	eTextEncoding = RTL_TEXTENCODING_MS_949; break;
-        case 950:	eTextEncoding = RTL_TEXTENCODING_MS_950; break;
-        case 1004:	eTextEncoding = RTL_TEXTENCODING_MS_1252; break;
+        case 437:   eTextEncoding = RTL_TEXTENCODING_IBM_437; break;
+        case 850:   eTextEncoding = RTL_TEXTENCODING_IBM_850; break;
+        case 860:   eTextEncoding = RTL_TEXTENCODING_IBM_860; break;
+        case 861:   eTextEncoding = RTL_TEXTENCODING_IBM_861; break;
+        case 863:   eTextEncoding = RTL_TEXTENCODING_IBM_863; break;
+        case 865:   eTextEncoding = RTL_TEXTENCODING_IBM_865; break;
+        case 737:   eTextEncoding = RTL_TEXTENCODING_IBM_737; break;
+        case 775:   eTextEncoding = RTL_TEXTENCODING_IBM_775; break;
+        case 852:   eTextEncoding = RTL_TEXTENCODING_IBM_852; break;
+        case 855:   eTextEncoding = RTL_TEXTENCODING_IBM_855; break;
+        case 857:   eTextEncoding = RTL_TEXTENCODING_IBM_857; break;
+        case 862:   eTextEncoding = RTL_TEXTENCODING_IBM_862; break;
+        case 864:   eTextEncoding = RTL_TEXTENCODING_IBM_864; break;
+        case 866:   eTextEncoding = RTL_TEXTENCODING_IBM_866; break;
+        case 869:   eTextEncoding = RTL_TEXTENCODING_IBM_869; break;
+        case 874:   eTextEncoding = RTL_TEXTENCODING_MS_874; break;
+        case 932:   eTextEncoding = RTL_TEXTENCODING_MS_932; break;
+        case 949:   eTextEncoding = RTL_TEXTENCODING_MS_949; break;
+        case 950:   eTextEncoding = RTL_TEXTENCODING_MS_950; break;
+        case 1004:  eTextEncoding = RTL_TEXTENCODING_MS_1252; break;
         case 65400: eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;
-        default:	eTextEncoding = RTL_TEXTENCODING_DONTKNOW; break;
+        default:    eTextEncoding = RTL_TEXTENCODING_DONTKNOW; break;
     };
 
     return eTextEncoding;
 }
 
+#endif
+
 /* ----------------------------------------------------------------------- */
+
+#if 0
 
 rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMacTextEncoding )
 {
@@ -282,18 +281,18 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
 
     switch ( nMacTextEncoding )
     {
-        case 0: 	eTextEncoding = RTL_TEXTENCODING_APPLE_ROMAN; break;
-        case 1: 	eTextEncoding = RTL_TEXTENCODING_APPLE_JAPANESE; break;
-        case 2: 	eTextEncoding = RTL_TEXTENCODING_APPLE_CHINTRAD; break;
-        case 3: 	eTextEncoding = RTL_TEXTENCODING_APPLE_KOREAN; break;
-        case 4: 	eTextEncoding = RTL_TEXTENCODING_APPLE_ARABIC; break;
-        case 5: 	eTextEncoding = RTL_TEXTENCODING_APPLE_HEBREW; break;
-        case 6: 	eTextEncoding = RTL_TEXTENCODING_APPLE_GREEK; break;
-        case 7: 	eTextEncoding = RTL_TEXTENCODING_APPLE_CYRILLIC; break;
+        case 0:     eTextEncoding = RTL_TEXTENCODING_APPLE_ROMAN; break;
+        case 1:     eTextEncoding = RTL_TEXTENCODING_APPLE_JAPANESE; break;
+        case 2:     eTextEncoding = RTL_TEXTENCODING_APPLE_CHINTRAD; break;
+        case 3:     eTextEncoding = RTL_TEXTENCODING_APPLE_KOREAN; break;
+        case 4:     eTextEncoding = RTL_TEXTENCODING_APPLE_ARABIC; break;
+        case 5:     eTextEncoding = RTL_TEXTENCODING_APPLE_HEBREW; break;
+        case 6:     eTextEncoding = RTL_TEXTENCODING_APPLE_GREEK; break;
+        case 7:     eTextEncoding = RTL_TEXTENCODING_APPLE_CYRILLIC; break;
         /* RIGHT-TO-LEFT SYMBOLS = 8  ??? */
-        case 9: 	eTextEncoding = RTL_TEXTENCODING_APPLE_DEVANAGARI; break;
-        case 10:	eTextEncoding = RTL_TEXTENCODING_APPLE_GURMUKHI; break;
-        case 11:	eTextEncoding = RTL_TEXTENCODING_APPLE_GUJARATI; break;
+        case 9:     eTextEncoding = RTL_TEXTENCODING_APPLE_DEVANAGARI; break;
+        case 10:    eTextEncoding = RTL_TEXTENCODING_APPLE_GURMUKHI; break;
+        case 11:    eTextEncoding = RTL_TEXTENCODING_APPLE_GUJARATI; break;
         /* MacOriya = 12 */
         /* MacBengali = 13 */
         /* MacTamil = 14 */
@@ -303,24 +302,24 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
         /* MacSinhalese = 18 */
         /* MacBurmese = 19 */
         /* MacKhmer = 20 */
-        case 21:	eTextEncoding = RTL_TEXTENCODING_APPLE_THAI; break;
+        case 21:    eTextEncoding = RTL_TEXTENCODING_APPLE_THAI; break;
         /* MacLaotian = 22 */
         /* MacGeorgian = 23 */
         /* MacArmenian = 24 */
-        case 25:	eTextEncoding = RTL_TEXTENCODING_APPLE_CHINSIMP; break;
+        case 25:    eTextEncoding = RTL_TEXTENCODING_APPLE_CHINSIMP; break;
         /* MacTibetan = 26 */
         /* MacMongolian = 27 */
         /* MacEthiopic = 28 */
-        case 29:	eTextEncoding = RTL_TEXTENCODING_APPLE_CENTEURO; break; 	/* MacCentralEurRoman */
+        case 29:    eTextEncoding = RTL_TEXTENCODING_APPLE_CENTEURO; break;     /* MacCentralEurRoman */
         /* MacVietnamese = 30 */
         /* MacExtArabic = 31 */
-        case 32:	eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;
-        case 33:	eTextEncoding = RTL_TEXTENCODING_SYMBOL; break; 	/* MacSymbol */
-        case 34:	eTextEncoding = RTL_TEXTENCODING_SYMBOL; break; 	/* MacDingbats */
-        case 35:	eTextEncoding = RTL_TEXTENCODING_APPLE_TURKISH; break;		/* MacTurkish */
-        case 36:	eTextEncoding = RTL_TEXTENCODING_APPLE_CROATIAN; break; 	/* MacCroatian */
-        case 37:	eTextEncoding = RTL_TEXTENCODING_APPLE_ICELAND; break;		/* MacIcelandic */
-        case 38:	eTextEncoding = RTL_TEXTENCODING_APPLE_ROMANIAN; break; 	/* MacRomanian */
+        case 32:    eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;
+        case 33:    eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;     /* MacSymbol */
+        case 34:    eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;     /* MacDingbats */
+        case 35:    eTextEncoding = RTL_TEXTENCODING_APPLE_TURKISH; break;      /* MacTurkish */
+        case 36:    eTextEncoding = RTL_TEXTENCODING_APPLE_CROATIAN; break;     /* MacCroatian */
+        case 37:    eTextEncoding = RTL_TEXTENCODING_APPLE_ICELAND; break;      /* MacIcelandic */
+        case 38:    eTextEncoding = RTL_TEXTENCODING_APPLE_ROMANIAN; break;     /* MacRomanian */
         /* MacCeltic = 39 */
         /* MacGaelic = 40 */
         /* Beginning in Mac OS 8.5, the set of Mac OS script codes has been */
@@ -331,19 +330,19 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
         /* handled as a special Mac OS script code; TEC handles this value */
         /* like kTextEncodingUnicodeDefault. */
         /* The following use script code 4, smArabic */
-        case 0x08C: eTextEncoding = RTL_TEXTENCODING_APPLE_FARSI; break;		/* MacFarsi */
+        case 0x08C: eTextEncoding = RTL_TEXTENCODING_APPLE_FARSI; break;        /* MacFarsi */
         /* The following use script code 7, smCyrillic */
-        case 0x098: eTextEncoding = RTL_TEXTENCODING_APPLE_UKRAINIAN; break;	/* MacUkrainian */
+        case 0x098: eTextEncoding = RTL_TEXTENCODING_APPLE_UKRAINIAN; break;    /* MacUkrainian */
         /* The following use script code 28, smEthiopic */
         /* MacInuit = 0xEC */
         /* The following use script code 32, smUninterp */
-        case 0x0FC: eTextEncoding = RTL_TEXTENCODING_SYMBOL; break; 	  /* MacVT100 - VT100/102 font */
+        case 0x0FC: eTextEncoding = RTL_TEXTENCODING_SYMBOL; break;       /* MacVT100 - VT100/102 font */
         /* Special Mac OS encodings */
         /* MacHFS = 0xFF */ /* metavalue. */
         /* Unicode & ISO UCS encodings begin at 0x100 */
-        case 0x100: eTextEncoding = RTL_TEXTENCODING_UNICODE; break;	/* UnicodeDefault */
-        case 0x101: eTextEncoding = RTL_TEXTENCODING_UNICODE; break;	/* UnicodeV1_1 / ISO10646_1993 */
-        case 0x103: eTextEncoding = RTL_TEXTENCODING_UNICODE; break;	/* UnicodeV2_1 - new location for Korean Hangul / UnicodeV2_1 */
+        case 0x100: eTextEncoding = RTL_TEXTENCODING_UNICODE; break;    /* UnicodeDefault */
+        case 0x101: eTextEncoding = RTL_TEXTENCODING_UNICODE; break;    /* UnicodeV1_1 / ISO10646_1993 */
+        case 0x103: eTextEncoding = RTL_TEXTENCODING_UNICODE; break;    /* UnicodeV2_1 - new location for Korean Hangul / UnicodeV2_1 */
         /* ISO 8-bit and 7-bit encodings begin at 0x200 */
         case 0x201: eTextEncoding = RTL_TEXTENCODING_ISO_8859_1; break; /* ISOLatin1 - ISO 8859-1 */
         case 0x202: eTextEncoding = RTL_TEXTENCODING_ISO_8859_2; break; /* ISOLatin2 - ISO 8859-2 */
@@ -355,39 +354,39 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
         case 0x208: eTextEncoding = RTL_TEXTENCODING_ISO_8859_8; break; /* ISOLatinHebrew - ISO 8859-8 */
         case 0x209: eTextEncoding = RTL_TEXTENCODING_ISO_8859_9; break; /* ISOLatin5 - ISO 8859-9 */
         /* MS-DOS & Windows encodings begin at 0x400 */
-        case 0x400: eTextEncoding = RTL_TEXTENCODING_IBM_437; break;	/* DOSLatinUS - code page 437 */
-        case 0x405: eTextEncoding = RTL_TEXTENCODING_IBM_737; break;	/* DOSGreek - code page 737 (formerly 437G) */
-        case 0x406: eTextEncoding = RTL_TEXTENCODING_IBM_775; break;	/* DOSBalticRim - code page 775 */
-        case 0x410: eTextEncoding = RTL_TEXTENCODING_IBM_850; break;	/* DOSLatin1 - code page 850, "Multilingual" */
-/* !!!		 case 0x411: eTextEncoding = RTL_TEXTENCODING_IBM_851; break; */	/* DOSGreek1 - code page 851 */
-        case 0x412: eTextEncoding = RTL_TEXTENCODING_IBM_852; break;	/* DOSLatin2 - code page 852, Slavic */
-        case 0x413: eTextEncoding = RTL_TEXTENCODING_IBM_855; break;	/* DOSCyrillic - code page 855, IBM Cyrillic */
-        case 0x414: eTextEncoding = RTL_TEXTENCODING_IBM_857; break;	/* DOSTurkish - code page 857, IBM Turkish */
-        case 0x415: eTextEncoding = RTL_TEXTENCODING_IBM_860; break;	/* DOSPortuguese - code page 860 */
-        case 0x416: eTextEncoding = RTL_TEXTENCODING_IBM_861; break;	/* DOSIcelandic - code page 861 */
-        case 0x417: eTextEncoding = RTL_TEXTENCODING_IBM_862; break;	/* DOSHebrew - code page 862 */
-        case 0x418: eTextEncoding = RTL_TEXTENCODING_IBM_863; break;	/* DOSCanadianFrench - code page 863 */
-        case 0x419: eTextEncoding = RTL_TEXTENCODING_IBM_864; break;	/* DOSArabic - code page 864 */
-        case 0x41A: eTextEncoding = RTL_TEXTENCODING_IBM_865; break;	/* DOSNordic - code page 865 */
-        case 0x41B: eTextEncoding = RTL_TEXTENCODING_IBM_866; break;	/* DOSRussian - code page 866 */
-        case 0x41C: eTextEncoding = RTL_TEXTENCODING_IBM_869; break;	/* DOSGreek2 - code page 869, IBM Modern Greek */
-        case 0x41D: eTextEncoding = RTL_TEXTENCODING_MS_874; break; 	/* DOSThai - code page 874, also for Windows */
-        case 0x420: eTextEncoding = RTL_TEXTENCODING_MS_932; break; 	/* DOSJapanese - code page 932, also for Windows */
-        case 0x421: eTextEncoding = RTL_TEXTENCODING_MS_936; break; 	/* DOSChineseSimplif - code page 936, also for Windows */
-        case 0x422: eTextEncoding = RTL_TEXTENCODING_MS_949; break; 	/* DOSKorean - code page 949, also for Windows;Unified Hangul */
-        case 0x423: eTextEncoding = RTL_TEXTENCODING_MS_950; break; 	/* DOSChineseTrad - code page 950, also for Windows */
-        case 0x500: eTextEncoding = RTL_TEXTENCODING_MS_1252; break;	/* WindowsLatin1 / WindowsANSI - code page 1252 */
-        case 0x501: eTextEncoding = RTL_TEXTENCODING_MS_1250; break;	/* WindowsLatin2 - code page 1250, Central Europe */
-        case 0x502: eTextEncoding = RTL_TEXTENCODING_MS_1251; break;	/* WindowsCyrillic - code page 1251, Slavic Cyrillic */
-        case 0x503: eTextEncoding = RTL_TEXTENCODING_MS_1253; break;	/* WindowsGreek - code page 1253 */
-        case 0x504: eTextEncoding = RTL_TEXTENCODING_MS_1254; break;	/* WindowsLatin5 - code page 1254, Turkish */
-        case 0x505: eTextEncoding = RTL_TEXTENCODING_MS_1255; break;	/* WindowsHebrew - code page 1255 */
-        case 0x506: eTextEncoding = RTL_TEXTENCODING_MS_1256; break;	/* WindowsArabic - code page 1256 */
-        case 0x507: eTextEncoding = RTL_TEXTENCODING_MS_1257; break;	/* WindowsBalticRim - code page 1257 */
-        case 0x508: eTextEncoding = RTL_TEXTENCODING_MS_1258; break;	/* WindowsVietnamese - code page 1258 */
-        case 0x510: eTextEncoding = RTL_TEXTENCODING_MS_1361; break;	/* WindowsKoreanJohab - code page 1361, for Windows NT */
+        case 0x400: eTextEncoding = RTL_TEXTENCODING_IBM_437; break;    /* DOSLatinUS - code page 437 */
+        case 0x405: eTextEncoding = RTL_TEXTENCODING_IBM_737; break;    /* DOSGreek - code page 737 (formerly 437G) */
+        case 0x406: eTextEncoding = RTL_TEXTENCODING_IBM_775; break;    /* DOSBalticRim - code page 775 */
+        case 0x410: eTextEncoding = RTL_TEXTENCODING_IBM_850; break;    /* DOSLatin1 - code page 850, "Multilingual" */
+/* !!!       case 0x411: eTextEncoding = RTL_TEXTENCODING_IBM_851; break; */    /* DOSGreek1 - code page 851 */
+        case 0x412: eTextEncoding = RTL_TEXTENCODING_IBM_852; break;    /* DOSLatin2 - code page 852, Slavic */
+        case 0x413: eTextEncoding = RTL_TEXTENCODING_IBM_855; break;    /* DOSCyrillic - code page 855, IBM Cyrillic */
+        case 0x414: eTextEncoding = RTL_TEXTENCODING_IBM_857; break;    /* DOSTurkish - code page 857, IBM Turkish */
+        case 0x415: eTextEncoding = RTL_TEXTENCODING_IBM_860; break;    /* DOSPortuguese - code page 860 */
+        case 0x416: eTextEncoding = RTL_TEXTENCODING_IBM_861; break;    /* DOSIcelandic - code page 861 */
+        case 0x417: eTextEncoding = RTL_TEXTENCODING_IBM_862; break;    /* DOSHebrew - code page 862 */
+        case 0x418: eTextEncoding = RTL_TEXTENCODING_IBM_863; break;    /* DOSCanadianFrench - code page 863 */
+        case 0x419: eTextEncoding = RTL_TEXTENCODING_IBM_864; break;    /* DOSArabic - code page 864 */
+        case 0x41A: eTextEncoding = RTL_TEXTENCODING_IBM_865; break;    /* DOSNordic - code page 865 */
+        case 0x41B: eTextEncoding = RTL_TEXTENCODING_IBM_866; break;    /* DOSRussian - code page 866 */
+        case 0x41C: eTextEncoding = RTL_TEXTENCODING_IBM_869; break;    /* DOSGreek2 - code page 869, IBM Modern Greek */
+        case 0x41D: eTextEncoding = RTL_TEXTENCODING_MS_874; break;     /* DOSThai - code page 874, also for Windows */
+        case 0x420: eTextEncoding = RTL_TEXTENCODING_MS_932; break;     /* DOSJapanese - code page 932, also for Windows */
+        case 0x421: eTextEncoding = RTL_TEXTENCODING_MS_936; break;     /* DOSChineseSimplif - code page 936, also for Windows */
+        case 0x422: eTextEncoding = RTL_TEXTENCODING_MS_949; break;     /* DOSKorean - code page 949, also for Windows;Unified Hangul */
+        case 0x423: eTextEncoding = RTL_TEXTENCODING_MS_950; break;     /* DOSChineseTrad - code page 950, also for Windows */
+        case 0x500: eTextEncoding = RTL_TEXTENCODING_MS_1252; break;    /* WindowsLatin1 / WindowsANSI - code page 1252 */
+        case 0x501: eTextEncoding = RTL_TEXTENCODING_MS_1250; break;    /* WindowsLatin2 - code page 1250, Central Europe */
+        case 0x502: eTextEncoding = RTL_TEXTENCODING_MS_1251; break;    /* WindowsCyrillic - code page 1251, Slavic Cyrillic */
+        case 0x503: eTextEncoding = RTL_TEXTENCODING_MS_1253; break;    /* WindowsGreek - code page 1253 */
+        case 0x504: eTextEncoding = RTL_TEXTENCODING_MS_1254; break;    /* WindowsLatin5 - code page 1254, Turkish */
+        case 0x505: eTextEncoding = RTL_TEXTENCODING_MS_1255; break;    /* WindowsHebrew - code page 1255 */
+        case 0x506: eTextEncoding = RTL_TEXTENCODING_MS_1256; break;    /* WindowsArabic - code page 1256 */
+        case 0x507: eTextEncoding = RTL_TEXTENCODING_MS_1257; break;    /* WindowsBalticRim - code page 1257 */
+        case 0x508: eTextEncoding = RTL_TEXTENCODING_MS_1258; break;    /* WindowsVietnamese - code page 1258 */
+        case 0x510: eTextEncoding = RTL_TEXTENCODING_MS_1361; break;    /* WindowsKoreanJohab - code page 1361, for Windows NT */
         /* Various national standards begin at 0x600 */
-        case 0x600: eTextEncoding = RTL_TEXTENCODING_ASCII_US; break;	 /* US_ASCII */
+        case 0x600: eTextEncoding = RTL_TEXTENCODING_ASCII_US; break;    /* US_ASCII */
         case 0x620: eTextEncoding = RTL_TEXTENCODING_JIS_X_0201; break;  /* JIS_X0201_76 */
         case 0x621: eTextEncoding = RTL_TEXTENCODING_JIS_X_0208; break;  /* JIS_X0208_83 */
         case 0x622: eTextEncoding = RTL_TEXTENCODING_JIS_X_0208; break;  /* JIS_X0208_90 */
@@ -395,16 +394,16 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
         /* !!! JIS_C6226_78 = 0x624 */
         /* !!! GB_2312_80 = 0x630 */
         /* !!! GBK_95 = 0x631 */ /* annex to GB 13000-93; for Windows 95 */
-//		  case 0x640: eTextEncoding = RTL_TEXTENCODING_KSC_5601_1987; break; /* KSC_5601_87 */ /* same as KSC 5601-92 without Johab annex */
-//		  case 0x641: eTextEncoding = RTL_TEXTENCODING_KSC_5601_1992; break; /* KSC 5601-92 Johab annex */
+//        case 0x640: eTextEncoding = RTL_TEXTENCODING_KSC_5601_1987; break; /* KSC_5601_87 */ /* same as KSC 5601-92 without Johab annex */
+//        case 0x641: eTextEncoding = RTL_TEXTENCODING_KSC_5601_1992; break; /* KSC 5601-92 Johab annex */
         /* !!! CNS_11643_92_P1 = 0x651 */ /* CNS 11643-1992 plane 1 */
         /* !!! CNS_11643_92_P2 = 0x652 */ /* CNS 11643-1992 plane 2 */
         /* !!! CNS_11643_92_P3 = 0x653 */ /* CNS 11643-1992 plane 3 (11643-1986 plane 14) */
         /* ISO 2022 collections begin at 0x800 */
-        case 0x820: eTextEncoding = RTL_TEXTENCODING_ISO_2022_JP; break;	/* ISO_2022_JP */
-        case 0x821: eTextEncoding = RTL_TEXTENCODING_ISO_2022_JP; break;	/* ISO_2022_JP_2 */
-        case 0x830: eTextEncoding = RTL_TEXTENCODING_ISO_2022_CN; break;	/* ISO_2022_CN */
-        case 0x831: eTextEncoding = RTL_TEXTENCODING_ISO_2022_CN; break;	/* ISO_2022_CN_EXT */
+        case 0x820: eTextEncoding = RTL_TEXTENCODING_ISO_2022_JP; break;    /* ISO_2022_JP */
+        case 0x821: eTextEncoding = RTL_TEXTENCODING_ISO_2022_JP; break;    /* ISO_2022_JP_2 */
+        case 0x830: eTextEncoding = RTL_TEXTENCODING_ISO_2022_CN; break;    /* ISO_2022_CN */
+        case 0x831: eTextEncoding = RTL_TEXTENCODING_ISO_2022_CN; break;    /* ISO_2022_CN_EXT */
         /* !!! ISO_2022_KR = 0x840 */
         /* EUC collections begin at 0x900 */
         case 0x920: eTextEncoding = RTL_TEXTENCODING_EUC_JP; break;    /* EUC_JP - ISO 646,1-byte Katakana,JIS 208,JIS 212 */
@@ -414,7 +413,7 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
         /* Miscellaneous standards begin at 0xA00 */
         case 0xA01: eTextEncoding = RTL_TEXTENCODING_SHIFT_JIS; break; /* ShiftJIS - plain Shift-JIS */
         case 0xA02: eTextEncoding = RTL_TEXTENCODING_KOI8_R; break;    /* KOI8_R - Russian Internet standard */
-        case 0xA03: eTextEncoding = RTL_TEXTENCODING_BIG5; break;	   /* Big5 - Big-5 */
+        case 0xA03: eTextEncoding = RTL_TEXTENCODING_BIG5; break;      /* Big5 - Big-5 */
         /* !!! MacRomanLatin1 = 0xA04 */ /* Mac OS Roman permuted to align with 8859-1 */
         /* !!! HZ_GB_2312 = 0xA05 */ /* HZ (RFC 1842, for Chinese mail & news) */
         /* Other platform encodings */
@@ -424,11 +423,13 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMacTextEncoding( sal_uInt32 nMa
         /* !!! EBCDIC_CP037 = 0xC02 */ /* code page 037, extended EBCDIC-US Latin1 */
         /* Special value */
         /* MultiRun = 0xFFF */ /* Multiple encoded text, external run info */
-        default:	eTextEncoding = RTL_TEXTENCODING_DONTKNOW; break;
+        default:    eTextEncoding = RTL_TEXTENCODING_DONTKNOW; break;
     };
 
     return eTextEncoding;
 }
+
+#endif
 
 /* ----------------------------------------------------------------------- */
 
@@ -572,7 +573,7 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromUnixCharset( const sal_Char* pU
     static ImplStrCharsetDef const aUnixCharsetUNICODETab[] =
     {
 /* Currently every Unicode Encoding is for us Unicode */
-/*		  { "fontspecific", RTL_TEXTENCODING_UNICODE }, */
+/*        { "fontspecific", RTL_TEXTENCODING_UNICODE }, */
         { NULL, RTL_TEXTENCODING_UNICODE }
     };
 
@@ -599,26 +600,26 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromUnixCharset( const sal_Char* pU
         { "gbk", aUnixCharsetGBKTab },
         { "big5", aUnixCharsetBIG5Tab },
         { "iso10646", aUnixCharsetISO10646Tab },
-/*		{ "unicode", aUnixCharsetUNICODETab }, */ /* fonts contain only default chars */
+/*      { "unicode", aUnixCharsetUNICODETab }, */ /* fonts contain only default chars */
         { "sunolcursor", aUnixCharsetSymbolTab },
         { "sunolglyph", aUnixCharsetSymbolTab },
         { "iso10646", aUnixCharsetUNICODETab },
         { "ksc5601.1987", aUnixCharsetKSC56011987Tab },
         { "ksc5601.1992", aUnixCharsetKSC56011992Tab },
-/*		  { "tis620.2553",  },          */
-/*		  { "sunudcja.1997",  },        */
-/*		  { "sunudcko.1997",  },        */
-/*		  { "sunudczh.1997",  },        */
-/*		  { "sunudczhtw.1997",  },      */
+/*        { "tis620.2553",  },          */
+/*        { "sunudcja.1997",  },        */
+/*        { "sunudcko.1997",  },        */
+/*        { "sunudczh.1997",  },        */
+/*        { "sunudczhtw.1997",  },      */
         { NULL, NULL }
     };
 
-    rtl_TextEncoding	eEncoding = RTL_TEXTENCODING_DONTKNOW;
-    sal_Char*			pBuf;
-    sal_Char*			pTempBuf;
-    sal_uInt32			nBufLen = strlen( pUnixCharset )+1;
-    const sal_Char* 	pFirstPart;
-    const sal_Char* 	pSecondPart;
+    rtl_TextEncoding    eEncoding = RTL_TEXTENCODING_DONTKNOW;
+    sal_Char*           pBuf;
+    sal_Char*           pTempBuf;
+    sal_uInt32          nBufLen = strlen( pUnixCharset )+1;
+    const sal_Char*     pFirstPart;
+    const sal_Char*     pSecondPart;
 
     /* Alloc Buffer and map to lower case */
     pBuf = (char*)rtl_allocateMemory( nBufLen );
@@ -815,10 +816,10 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMimeCharset( const sal_Char* pM
         { "cp850", RTL_TEXTENCODING_IBM_850 },
         { "850", RTL_TEXTENCODING_IBM_850 },
         { "cspc850multilingual", RTL_TEXTENCODING_IBM_850 },
-/*		  { "ibm851", RTL_TEXTENCODING_IBM_851 }, */
-/*		  { "cp851", RTL_TEXTENCODING_IBM_851 }, */
-/*		  { "851", RTL_TEXTENCODING_IBM_851 }, */
-/*		  { "csibm851", RTL_TEXTENCODING_IBM_851 }, */
+/*        { "ibm851", RTL_TEXTENCODING_IBM_851 }, */
+/*        { "cp851", RTL_TEXTENCODING_IBM_851 }, */
+/*        { "851", RTL_TEXTENCODING_IBM_851 }, */
+/*        { "csibm851", RTL_TEXTENCODING_IBM_851 }, */
         { "ibm852", RTL_TEXTENCODING_IBM_852 },
         { "cp852", RTL_TEXTENCODING_IBM_852 },
         { "852", RTL_TEXTENCODING_IBM_852 },
@@ -860,10 +861,10 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMimeCharset( const sal_Char* pM
         { "cp866", RTL_TEXTENCODING_IBM_866 },
         { "866", RTL_TEXTENCODING_IBM_866 },
         { "csibm866", RTL_TEXTENCODING_IBM_866 },
-/*		  { "ibm868", RTL_TEXTENCODING_IBM_868 }, */
-/*		  { "cp868", RTL_TEXTENCODING_IBM_868 }, */
-/*		  { "cpar", RTL_TEXTENCODING_IBM_868 }, */
-/*		  { "csibm868", RTL_TEXTENCODING_IBM_868 }, */
+/*        { "ibm868", RTL_TEXTENCODING_IBM_868 }, */
+/*        { "cp868", RTL_TEXTENCODING_IBM_868 }, */
+/*        { "cpar", RTL_TEXTENCODING_IBM_868 }, */
+/*        { "csibm868", RTL_TEXTENCODING_IBM_868 }, */
         { "ibm869", RTL_TEXTENCODING_IBM_869 },
         { "cp869", RTL_TEXTENCODING_IBM_869 },
         { "869", RTL_TEXTENCODING_IBM_869 },
@@ -897,10 +898,10 @@ rtl_TextEncoding SAL_CALL rtl_getTextEncodingFromMimeCharset( const sal_Char* pM
         { NULL, RTL_TEXTENCODING_DONTKNOW }
     };
 
-    rtl_TextEncoding			eEncoding = RTL_TEXTENCODING_DONTKNOW;
-    sal_Char*					pBuf;
-    const ImplStrCharsetDef*	pData = aVIPMimeCharsetTab;
-    sal_uInt32					nBufLen = strlen( pMimeCharset )+1;
+    rtl_TextEncoding            eEncoding = RTL_TEXTENCODING_DONTKNOW;
+    sal_Char*                   pBuf;
+    const ImplStrCharsetDef*    pData = aVIPMimeCharsetTab;
+    sal_uInt32                  nBufLen = strlen( pMimeCharset )+1;
 
     /* Alloc Buffer and map to lower case and remove non alphanumeric chars */
     pBuf = (char*)rtl_allocateMemory( nBufLen );
@@ -951,7 +952,7 @@ sal_uInt8 SAL_CALL rtl_getBestWindowsCharsetFromTextEncoding( rtl_TextEncoding e
 }
 
 /* ----------------------------------------------------------------------- */
-
+/*
 sal_uInt32 SAL_CALL rtl_getBestPCCodePageFromTextEncoding( rtl_TextEncoding eTextEncoding  )
 {
     const ImplTextEncodingData* pData = Impl_getTextEncodingData( eTextEncoding );
@@ -960,9 +961,9 @@ sal_uInt32 SAL_CALL rtl_getBestPCCodePageFromTextEncoding( rtl_TextEncoding eTex
     else
         return 0;
 }
-
+*/
 /* ----------------------------------------------------------------------- */
-
+/*
 sal_uInt32 SAL_CALL rtl_getBestMacTextEncodingFromTextEncoding( rtl_TextEncoding eTextEncoding )
 {
     const ImplTextEncodingData* pData = Impl_getTextEncodingData( eTextEncoding );
@@ -971,9 +972,9 @@ sal_uInt32 SAL_CALL rtl_getBestMacTextEncodingFromTextEncoding( rtl_TextEncoding
     else
         return 0xFFFFFFFF;
 }
-
+*/
 /* ----------------------------------------------------------------------- */
-
+/*
 const sal_Char* SAL_CALL rtl_getBestUnixCharsetFromTextEncoding( rtl_TextEncoding eTextEncoding  )
 {
     const ImplTextEncodingData* pData = Impl_getTextEncodingData( eTextEncoding );
@@ -984,7 +985,7 @@ const sal_Char* SAL_CALL rtl_getBestUnixCharsetFromTextEncoding( rtl_TextEncodin
     else
         return 0;
 }
-
+*/
 /* ----------------------------------------------------------------------- */
 
 const sal_Char* SAL_CALL rtl_getBestMimeCharsetFromTextEncoding( rtl_TextEncoding eTextEncoding )
