@@ -2,9 +2,9 @@
  *
  *  $RCSfile: iafactory.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: jl $ $Date: 2002-09-10 10:18:17 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:12:57 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -152,7 +152,7 @@ public:
     Mapping m_aUno2Cpp;
     Mapping m_aCpp2Uno;
     uno_Interface * m_pConverter;
-    
+
     typelib_TypeDescription * m_pInvokMethodTD;
     typelib_TypeDescription * m_pSetValueTD;
     typelib_TypeDescription * m_pGetValueTD;
@@ -162,10 +162,10 @@ public:
 
     Mutex m_mutex;
     t_ptr_map m_receiver2adapters;
-    
+
     FactoryImpl( Reference< XComponentContext > const & xContext ) SAL_THROW( (RuntimeException) );
     virtual ~FactoryImpl() SAL_THROW( () );
-    
+
     // XServiceInfo
     virtual OUString SAL_CALL getImplementationName()
         throw (RuntimeException);
@@ -173,7 +173,7 @@ public:
         throw (RuntimeException);
     virtual Sequence< OUString > SAL_CALL getSupportedServiceNames()
         throw (RuntimeException);
-    
+
     // XInvocationAdapterFactory
     virtual Reference< XInterface > SAL_CALL createAdapter(
         const Reference< script::XInvocation > & xReceiver, const Type & rType )
@@ -197,10 +197,10 @@ struct AdapterImpl
     FactoryImpl *               m_pFactory;
     void *                      m_key; // map key
     uno_Interface *             m_pReceiver; // XInvocation receiver
-    
+
     sal_Int32                   m_nInterfaces;
     InterfaceAdapterImpl *      m_pInterfaces;
-    
+
     // XInvocation calls
     void getValue(
         const typelib_TypeDescription * pMemberType,
@@ -211,18 +211,18 @@ struct AdapterImpl
     void invoke(
         const typelib_TypeDescription * pMemberType,
         void * pReturn, void * pArgs[], uno_Any ** ppException );
-    
+
     bool coerce_assign(
         void * pDest, typelib_TypeDescriptionReference * pType, uno_Any * pSource )
         SAL_THROW( () );
     inline bool coerce_construct(
         void * pDest, typelib_TypeDescriptionReference * pType, uno_Any * pSource )
         SAL_THROW( () );
-    
+
     inline void acquire()
         SAL_THROW( () );
     inline void release()
-        SAL_THROW( () );    
+        SAL_THROW( () );
     inline ~AdapterImpl()
         SAL_THROW( () );
     inline AdapterImpl(
@@ -309,12 +309,12 @@ bool AdapterImpl::coerce_assign(
         args[ 1 ] = &pType;
         uno_Any exc;
         uno_Any * p_exc = &exc;
-        
+
         // converTo()
         (*m_pFactory->m_pConverter->pDispatcher)(
             m_pFactory->m_pConverter,
             m_pFactory->m_pConvertToTD, &ret, args, &p_exc );
-        
+
         if (p_exc) // exception occured
         {
             ::uno_any_destruct( p_exc, 0 );
@@ -363,7 +363,7 @@ static void handleInvokExc( uno_Any * pDest, uno_Any * pSource )
 {
     OUString const & name =
         *reinterpret_cast< OUString const * >( &pSource->pType->pTypeName );
-    
+
     if (name.equalsAsciiL(
         RTL_CONSTASCII_STRINGPARAM("com.sun.star.reflection.InvocationTargetException") ))
     {
@@ -396,11 +396,11 @@ void AdapterImpl::getValue(
     pInvokArgs[0] = &((typelib_InterfaceMemberTypeDescription *)pMemberType)->pMemberName;
     uno_Any aInvokExc;
     uno_Any * pInvokExc = &aInvokExc;
-    
+
     // getValue()
     (*m_pReceiver->pDispatcher)(
         m_pReceiver, m_pFactory->m_pGetValueTD, &aInvokRet, pInvokArgs, &pInvokExc );
-    
+
     if (pInvokExc) // getValue() call exception
     {
         handleInvokExc( *ppException, pInvokExc );
@@ -432,17 +432,17 @@ void AdapterImpl::setValue(
     ::uno_type_any_construct(
         &aInvokVal, pArgs[0],
         ((typelib_InterfaceAttributeTypeDescription *)pMemberType)->pAttributeTypeRef, 0 );
-    
+
     void * pInvokArgs[2];
     pInvokArgs[0] = &((typelib_InterfaceMemberTypeDescription *)pMemberType)->pMemberName;
     pInvokArgs[1] = &aInvokVal;
     uno_Any aInvokExc;
     uno_Any * pInvokExc = &aInvokExc;
-    
+
     // setValue()
     (*m_pReceiver->pDispatcher)(
         m_pReceiver, m_pFactory->m_pSetValueTD, 0, pInvokArgs, &pInvokExc );
-    
+
     if (pInvokExc) // setValue() call exception
     {
         handleInvokExc( *ppException, pInvokExc );
@@ -452,7 +452,7 @@ void AdapterImpl::setValue(
     {
         *ppException = 0; // no exceptions be thrown
     }
-    
+
     ::uno_any_destruct( &aInvokVal, 0 ); // cleanup
 }
 //__________________________________________________________________________________________________
@@ -463,7 +463,7 @@ void AdapterImpl::invoke(
     sal_Int32 nParams = ((typelib_InterfaceMethodTypeDescription *)pMemberType)->nParams;
     typelib_MethodParameter * pFormalParams =
         ((typelib_InterfaceMethodTypeDescription *)pMemberType)->pParams;
-    
+
     // in params
     uno_Sequence * pInParamsSeq = 0;
     ::uno_sequence_construct( &pInParamsSeq, m_pFactory->m_pAnySeqTD, 0, nParams, 0 );
@@ -477,7 +477,7 @@ void AdapterImpl::invoke(
         }
         // pure out is empty any
     }
-    
+
     // out params, out indices
     uno_Sequence * pOutIndices;
     uno_Sequence * pOutParams;
@@ -491,11 +491,11 @@ void AdapterImpl::invoke(
     pInvokArgs[3] = &pOutParams;
     uno_Any aInvokExc;
     uno_Any * pInvokExc = &aInvokExc;
-    
+
     // invoke() call
     (*m_pReceiver->pDispatcher)(
         m_pReceiver, m_pFactory->m_pInvokMethodTD, &aInvokRet, pInvokArgs, &pInvokExc );
-    
+
     if (pInvokExc)
     {
         handleInvokExc( *ppException, pInvokExc );
@@ -636,7 +636,7 @@ static void SAL_CALL adapter_dispatch(
         *ppException = 0; // no exc
         adapter_release( pUnoI );
         break;
-        
+
     default:
     {
         AdapterImpl * that =
@@ -692,7 +692,7 @@ AdapterImpl::AdapterImpl(
                 OUSTR("cannot retrieve all interface type infos!"), Reference< XInterface >() );
         }
     }
-    
+
     // map receiver
     m_pReceiver = (uno_Interface *)m_pFactory->m_aCpp2Uno.mapInterface(
         xReceiver.get(), ::getCppuType( &xReceiver ) );
@@ -702,7 +702,7 @@ AdapterImpl::AdapterImpl(
         throw RuntimeException(
             OUSTR("cannot map receiver!"), Reference< XInterface >() );
     }
-    
+
     m_pFactory->acquire();
 }
 
@@ -718,11 +718,11 @@ FactoryImpl::FactoryImpl( Reference< XComponentContext > const & xContext )
 {
     // C++/UNO bridge
     OUString aCppEnvTypeName = OUSTR(CPPU_CURRENT_LANGUAGE_BINDING_NAME);
-    OUString aUnoEnvTypeName = OUSTR(UNO_LB_UNO);   
+    OUString aUnoEnvTypeName = OUSTR(UNO_LB_UNO);
     m_aUno2Cpp = Mapping( aUnoEnvTypeName, aCppEnvTypeName );
     m_aCpp2Uno = Mapping( aCppEnvTypeName, aUnoEnvTypeName );
     OSL_ENSURE( m_aUno2Cpp.is() && m_aCpp2Uno.is(), "### no uno / C++ mappings!" );
-    
+
     // type converter
     Reference< script::XTypeConverter > xConverter(
         xContext->getServiceManager()->createInstanceWithContext(
@@ -731,7 +731,7 @@ FactoryImpl::FactoryImpl( Reference< XComponentContext > const & xContext )
     m_pConverter = (uno_Interface *)m_aCpp2Uno.mapInterface(
         xConverter.get(), ::getCppuType( &xConverter ) );
     OSL_ASSERT( 0 != m_pConverter );
-    
+
     // some type info:
     // sequence< any >
     Type const & rAnySeqType = ::getCppuType( (const Sequence< Any > *)0 );
@@ -757,14 +757,14 @@ FactoryImpl::FactoryImpl( Reference< XComponentContext > const & xContext )
     ::typelib_typedescriptionreference_getDescription(
         &m_pConvertToTD, pTD->ppMembers[ 0 ] ); // convertTo()
     TYPELIB_DANGER_RELEASE( (typelib_TypeDescription *)pTD );
-    
+
     if (!m_pInvokMethodTD || !m_pSetValueTD || !m_pGetValueTD ||
         !m_pConvertToTD ||
         !m_pAnySeqTD || !m_pShortSeqTD)
     {
         throw RuntimeException( OUSTR("missing type descriptions!"), Reference< XInterface >() );
     }
-    
+
     g_moduleCount.modCnt.acquire( &g_moduleCount.modCnt );
 }
 //__________________________________________________________________________________________________
@@ -776,10 +776,10 @@ FactoryImpl::~FactoryImpl() SAL_THROW( () )
     ::typelib_typedescription_release( m_pAnySeqTD );
     ::typelib_typedescription_release( m_pShortSeqTD );
     ::typelib_typedescription_release( m_pConvertToTD );
-    
+
     (*m_pConverter->release)( m_pConverter );
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     OSL_ENSURE( m_receiver2adapters.empty(), "### still adapters out there!?" );
 #endif
     g_moduleCount.modCnt.release( &g_moduleCount.modCnt );
@@ -929,7 +929,7 @@ static Reference< XInterface > SAL_CALL FactoryImpl_create(
         MutexGuard guard( Mutex::getGlobalMutex() );
         static WeakReference < XInterface > rwInstance;
         rRet = rwInstance;
-        
+
         if( ! rRet.is() )
         {
             rRet = (::cppu::OWeakObject *)new FactoryImpl( xContext );
