@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoApp.java,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: kr $ $Date: 2000-11-10 10:06:20 $
+ *  last change: $Author: kr $ $Date: 2000-11-24 13:16:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -101,7 +101,7 @@ import com.sun.star.uno.Type;
  * <p>
  */
 public class UnoApp {
-    static public final boolean DEBUG = false;
+    static public final boolean DEBUG = true;
 
     /**
      * Bootstraps a servicemanager with some base components registered.
@@ -288,24 +288,35 @@ public class UnoApp {
                     // get an acceptor
                     XAcceptor xAcceptor = (XAcceptor)UnoRuntime.queryInterface(XAcceptor.class, 
                                                                                _xMultiServiceFactory.createInstance("com.sun.star.connection.Acceptor"));
-
+                    
                     // get a bridgefactory
                     XBridgeFactory xBridgeFactory = (XBridgeFactory)UnoRuntime.queryInterface(XBridgeFactory.class, 
                                                                                               _xMultiServiceFactory.createInstance("com.sun.star.bridge.BridgeFactory"));
-
+                    
+                    int connect_count = 0;
+                    
                     do {
-                        System.err.println("waiting for connect...");
-                        XConnection xConnection = xAcceptor.accept(_conDcp);
-                        if(xConnection == null)
-                            break;
-                        
-                        // create the bridge
-                        XBridge xBridge = xBridgeFactory.createBridge(_conDcp + ";" + _protDcp, _protDcp, xConnection, new InstanceProvider(_rootOid, _object));
+                        XConnection xConnection = null;
+                        try {
+                            System.err.println("waiting for connect [" + _conDcp + "#" + connect_count + "]...");
+                            xConnection = xAcceptor.accept(_conDcp);
+                            if(xConnection == null)
+                                break;
+                            
+                            // create the bridge
+                            XBridge xBridge = xBridgeFactory.createBridge(_conDcp + ";" + _protDcp + "#" + (connect_count ++), _protDcp, xConnection, new InstanceProvider(_rootOid, _object));
+                        }
+                        catch(com.sun.star.uno.Exception exception) {
+                            System.err.println(getClass().getName() + " exeception occurred - " + exception);
+                            if(xConnection != null)
+                                xConnection.close();
+                        }
                     }
                     while(!_singleAccept);
                 }
                 catch(com.sun.star.uno.Exception exception) {
                     System.err.println(getClass().getName() + " exeception occurred - " + exception);
+                    System.err.println(getClass().getName() + " dying...");
                 }
             }
         }
