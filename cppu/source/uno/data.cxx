@@ -2,9 +2,9 @@
  *
  *  $RCSfile: data.cxx,v $
  *
- *  $Revision: 1.22 $
+ *  $Revision: 1.23 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 12:29:02 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:37:21 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -100,14 +100,14 @@ void * binuno_queryInterface( void * pUnoI, typelib_TypeDescriptionReference * p
             TYPELIB_DANGER_RELEASE( (typelib_TypeDescription *) pTXInterfaceDescr );
         }
     }
-    
+
     uno_Any aRet, aExc;
     uno_Any * pExc = &aExc;
     void * aArgs[ 1 ];
     aArgs[ 0 ] = &pDestType;
     (*((uno_Interface *) pUnoI)->pDispatcher)(
         (uno_Interface *) pUnoI, g_pQITD, &aRet, aArgs, &pExc );
-    
+
     uno_Interface * ret = 0;
     if (0 == pExc)
     {
@@ -129,7 +129,7 @@ void * binuno_queryInterface( void * pUnoI, typelib_TypeDescriptionReference * p
     }
     else
     {
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OUStringBuffer buf( 128 );
         buf.appendAscii(
             RTL_CONSTASCII_STRINGPARAM("### exception occured querying for interface ") );
@@ -266,7 +266,7 @@ void SAL_CALL uno_destructData(
 }
 //##################################################################################################
 void SAL_CALL uno_type_copyData(
-    void * pDest, void * pSource, 
+    void * pDest, void * pSource,
     typelib_TypeDescriptionReference * pType,
     uno_AcquireFunc acquire )
     SAL_THROW_EXTERN_C()
@@ -362,14 +362,14 @@ sal_Bool SAL_CALL uno_type_isAssignableFromData(
     {
         return sal_False;
     }
-    
+
     // query
     if (0 == pFrom)
         return sal_False;
     void * pInterface = *(void **)pFrom;
     if (0 == pInterface)
         return sal_False;
-    
+
     if (0 == queryInterface)
         queryInterface = binuno_queryInterface;
     void * p = (*queryInterface)( pInterface, pAssignable );
@@ -384,7 +384,7 @@ sal_Bool SAL_CALL uno_type_isAssignableFromData(
 //##################################################################################################
 
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 
 #include <stdio.h>
 
@@ -405,7 +405,7 @@ sal_Bool SAL_CALL uno_type_isAssignableFromData(
 #define BINTEST_VERIFYOFFSET( s, m, n ) \
     if (OFFSET_OF(s, m) != n) { fprintf( stderr, "### OFFSET_OF(" #s ", "  #m ") = %d instead of expected %d!!!\n", OFFSET_OF(s, m), n ); abort(); }
 
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
 #if defined(__GNUC__) && (defined(LINUX) || defined(FREEBSD)) && (defined(INTEL) || defined(POWERPC) || defined(X86_64) || defined(S390))
 #define BINTEST_VERIFYSIZE( s, n ) \
     fprintf( stderr, "> sizeof(" #s ") = %d; __alignof__ (" #s ") = %d\n", sizeof(s), __alignof__ (s) ); \
@@ -415,7 +415,7 @@ sal_Bool SAL_CALL uno_type_isAssignableFromData(
     fprintf( stderr, "> sizeof(" #s ") = %d\n", sizeof(s) ); \
     if (sizeof(s) != n) { fprintf( stderr, "### sizeof(" #s ") = %d instead of expected %d!!!\n", sizeof(s), n ); abort(); }
 #endif
-#else // ! DEBUG
+#else // ! OSL_DEBUG_LEVEL
 #define BINTEST_VERIFYSIZE( s, n ) \
     if (sizeof(s) != n) { fprintf( stderr, "### sizeof(" #s ") = %d instead of expected %d!!!\n", sizeof(s), n ); abort(); }
 #endif
@@ -464,13 +464,13 @@ struct E
 };
 
 struct M
-{ 
+{
     sal_Int32	n;
     sal_Int16	o;
 };
 
 struct N : public M
-{ 
+{
     sal_Int16	p CPPU_GCC3_ALIGN( M );
 };
 struct N2
@@ -480,16 +480,16 @@ struct N2
 };
 
 struct O : public M
-{ 
+{
     double	p;
 };
 struct O2 : public O
-{ 
+{
     double	p2;
 };
 
 struct P : public N
-{ 
+{
     double	p2;
 };
 
@@ -550,7 +550,7 @@ BinaryCompatible_Impl::BinaryCompatible_Impl()
     BINTEST_VERIFYOFFSET( AlignSize_Impl, dDouble, 8 );
     BINTEST_VERIFYSIZE( AlignSize_Impl, 16 );
 #endif
-    
+
     // sequence
     BINTEST_VERIFY( (SAL_SEQUENCE_HEADER_SIZE % 8) == 0 );
     // enum
@@ -610,12 +610,12 @@ BinaryCompatible_Impl::BinaryCompatible_Impl()
     BINTEST_VERIFYOFFSET( C6, b6, 64 );
 #endif
 
-    BINTEST_VERIFYSIZE( O2, 24 );    
+    BINTEST_VERIFYSIZE( O2, 24 );
     BINTEST_VERIFYOFFSET( O2, p2, 16 );
-    
+
     BINTEST_VERIFYSIZE( Char3, 3 );
     BINTEST_VERIFYOFFSET( Char4, c, 3 );
-    
+
 #ifdef MAX_ALIGNMENT_4
     // max alignment is 4
     BINTEST_VERIFYSIZE( P, 20 );
