@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XTextSearch.idl,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: mi $ $Date: 2001-11-15 17:18:28 $
+ *  last change: $Author: er $ $Date: 2002-01-18 16:21:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -97,7 +97,7 @@ constants SearchFlags
 
     /// Flag for "regular expression" search / interpret as extended regular expression
     const long 	REG_EXTENDED		= 0x00000100;
-    /** Flag for "regular expression" search / No replace, i.e., avoid sub regular 
+    /** Flag for "regular expression" search / No replace, i.e., avoid sub regular
          expresions, return true/false to match
 
 <!-- JRH: Check this for sense of the expression. -->
@@ -107,13 +107,13 @@ constants SearchFlags
     /// Flag for "regular expression" search / Special new  line treatment
     const long 	REG_NEWLINE		= 0x00000400;
 
-    /** A NEWLINE character in string will not be matched by  a period outside bracket 
+    /** A NEWLINE character in string will not be matched by  a period outside bracket
         expression or by any form of a non matching list.
-        A circumflex (^) in pattern when used to specify expression anchoring 
+        A circumflex (^) in pattern when used to specify expression anchoring
 <!-- JRH: anhoring to anchoring.  -->
-        will match the zero length string immediately after a newline in string, 
-        regardless of the setting of REG_NOTBOL 
-        A dollar-sign ($) in pattern when used to specify expression anchoring, 
+        will match the zero length string immediately after a newline in string,
+        regardless of the setting of REG_NOTBOL
+        A dollar-sign ($) in pattern when used to specify expression anchoring,
         will match zero-length string immediately before a new line in string,
         regardless of the setting of REG_NOTEOL
 */
@@ -144,18 +144,18 @@ struct SearchOptions  {
     /// the search text
     string			searchString;
 
-    /** the replace text 
+    /** the replace text
     (is for optional replacing - SearchOption is only the data container for it)*/
     string			replaceString;
 
     /// this is the language for case insensitive search
     ::com::sun::star::lang::Locale  Locale;
 
-    /** this many characters can be different between the found and search word 
+    /** this many characters can be different between the found and search word
     in a "Weight Levenshtein-Distance"*/
     long			changedChars;
 
-    /** this many characters can be missed in the found word 
+    /** this many characters can be missed in the found word
     in a "Weight Levenshtein-Distance"*/
     long			deletedChars;
 
@@ -172,14 +172,15 @@ struct SearchOptions  {
 
 struct SearchResult  {
     //-------------------------------------------------------------------------
-    /** Number of subexpressions, 
+    /** Number of subexpressions,
     if it is 0, then no match found; this value is 1 for ABSOLUTE and APPROXIMATE match.
     The start and endOffset are always dependent on the search direction.
     For example:
     if you search "X" in the text "-X-" the offset are:
         for forward: 	start = 1, end = 2
-        for backward: 	start = 1, end = 0
-    The startOffset is always inclusive, the endOffset allways exclusive
+        for backward:   start = 2, end = 1
+    Forward, the startOffset is inclusive, the endOffset exclusive.
+    Backward, the startOffset is exclusive, the endOffset inclusive.
 
     For regular expressions it can be greater than 1.
     If the value is 1, startoffset[0] and endoffset[0] points to the matching sub string
