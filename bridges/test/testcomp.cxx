@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testcomp.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:10 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:29:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,6 +58,9 @@
  *
  *
  ************************************************************************/
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
@@ -108,7 +111,7 @@ void parseCommandLine( char *argv[] ,
     else if( ! strcmp( argv[1] , "-latency" ) )
     {
         *pbLatency = sal_True;
-        nArgIndex = 2;		
+        nArgIndex = 2;
     }
 
     OUString sTemp = OUString::createFromAscii( argv[nArgIndex] );
@@ -127,7 +130,7 @@ void parseCommandLine( char *argv[] ,
 
 Any OInstanceProvider::queryInterface( const  Type & aType )
 {
-    Any a = ::cppu::queryInterface( aType , 
+    Any a = ::cppu::queryInterface( aType ,
             SAL_STATIC_CAST( XInstanceProvider * , this ) );
     if( a.hasValue() )
     {
@@ -136,7 +139,7 @@ Any OInstanceProvider::queryInterface( const  Type & aType )
     return OWeakObject::queryInterface( aType );
 }
 
-::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > 
+::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface >
     OInstanceProvider::getInstance( const ::rtl::OUString& sObjectName )
         throw(::com::sun::star::container::NoSuchElementException,
               ::com::sun::star::uno::RuntimeException)
@@ -161,7 +164,7 @@ class ServiceImpl
     RuntimeException _aDummyRE;
 
     sal_Int32 _nRef;
-    
+
 public:
     ServiceImpl()
         : _nRef( 0 )
@@ -169,7 +172,7 @@ public:
     ServiceImpl( const Reference< XMultiServiceFactory > & xMgr )
         : _nRef( 0 )
         {}
-    
+
     // XInterface
     virtual ::com::sun::star::uno::Any SAL_CALL queryInterface( const ::com::sun::star::uno::Type& aType ) throw(::com::sun::star::uno::RuntimeException)
     {
@@ -196,7 +199,7 @@ public:
         { osl_incrementInterlockedCount( &_nRef ); }
     virtual void SAL_CALL release() throw(::com::sun::star::uno::RuntimeException)
         { if (! osl_decrementInterlockedCount( &_nRef )) delete this; }
-    
+
     // XServiceInfo
     virtual OUString SAL_CALL getImplementationName() throw (RuntimeException);
     virtual sal_Bool SAL_CALL supportsService( const OUString & rServiceName ) throw (RuntimeException);
@@ -239,8 +242,8 @@ public:
         { return _aDummyStruct; }
     virtual void SAL_CALL setStruct_attr( const ::com::sun::star::test::performance::ComplexTypes& _attributestruct ) throw(::com::sun::star::uno::RuntimeException)
         {}
-    
-    // Methods	
+
+    // Methods
     virtual sal_Int32 SAL_CALL getLong() throw(::com::sun::star::uno::RuntimeException)
         { return 0; }
     virtual void SAL_CALL setLong( sal_Int32 _long ) throw(::com::sun::star::uno::RuntimeException)
@@ -272,12 +275,12 @@ public:
     virtual Sequence< Reference< XInterface > > SAL_CALL getSequence() throw(::com::sun::star::uno::RuntimeException)
         { return _aDummySequence; }
     virtual void SAL_CALL setSequence( const Sequence< Reference< XInterface > >& _sequence ) throw(::com::sun::star::uno::RuntimeException)
-        {}	
+        {}
     virtual ComplexTypes SAL_CALL getStruct() throw(::com::sun::star::uno::RuntimeException)
         { return _aDummyStruct; }
     virtual void SAL_CALL setStruct( const ::com::sun::star::test::performance::ComplexTypes& c ) throw(::com::sun::star::uno::RuntimeException)
         {}
-    
+
     virtual void SAL_CALL async() throw(::com::sun::star::uno::RuntimeException);
 
     virtual void SAL_CALL sync() throw(::com::sun::star::uno::RuntimeException)
@@ -334,7 +337,7 @@ Any OCallMe::queryInterface( const  Type & aType )
     {
         return a;
     }
-    
+
     return OWeakObject::queryInterface( aType );
 }
 
@@ -345,7 +348,7 @@ void OCallMe::call( const ::rtl::OUString& s, sal_Int32 nToDo )
     {
         throw TestBridgeException();
     }
-    
+
     OUString sDummy;
     if( ! nToDo ) {
         OString o = OUStringToOString( s,RTL_TEXTENCODING_ASCII_US);
@@ -376,7 +379,7 @@ void OCallMe::callOneway( const ::rtl::OUString& s, sal_Int32 nToDo )
     {
         printf( "+" );
         fflush( stdout );
-        
+
         TimeValue val = { nToDo , 0  };
         osl_waitThread( &val );
         printf( "-\n" );
@@ -482,7 +485,7 @@ Any OTestFactory::queryInterface( const Type & aType )
     {
         return a;
     }
-    
+
     return OWeakObject::queryInterface( aType );
 }
 
@@ -544,12 +547,12 @@ void SAL_CALL OConnectCallback::attemptConnect(
 //  public:
 //  	OInstanceProvider( ){}
 //  	~OInstanceProvider(){ printf( "instance provider dies\n" );}
-//  public:	
+//  public:
 //  	// XInterface
 //  	Any	        SAL_CALL queryInterface( const Type & aType);
 //  	void 		SAL_CALL acquire() 						 { OWeakObject::acquire(); }
 //  	void 		SAL_CALL release() 						 { OWeakObject::release(); }
-    
+
 //  public:
 //  	// XConnectCallback
 //      virtual ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > SAL_CALL
@@ -620,7 +623,7 @@ void testOnewayPerformanceOnTwoInterfaces(
     osl_getSystemTime( &aEndTime );
     double fStart = (double)aStartTime.Seconds + ((double)aStartTime.Nanosec / 1000000000.0);
     double fEnd = (double)aEndTime.Seconds + ((double)aEndTime.Nanosec / 1000000000.0);
-    
+
       printf( "Overhead per Call [ms] %g\n" , ((fEnd-fStart)/((double)nLoops/1000 ))/2.  );
 }
 
@@ -642,12 +645,12 @@ void testPerformance( const Reference < XCallMe > &rRemote,
       {
           printf( "Remote/Local : %g\n", dRemote/dLocal );
       }
-    
+
       printf( "Overhead per Call [ms] %g\n" , (dRemote - dLocal)/((double)nCalls/1000 ) );
       printf( "Overhead per Call after completion [ms] %g\n" , (dAfterExecution - dLocal)/((double)nCalls/1000 ) );
 
        nCalls = 2000;
-    
+
       printf( "Doing performance test ...\n" );
        dRemote = getCallsPerSec( rRemote , nCalls , nDoSomething );
       dLocal  = getCallsPerSec( rLocal  , nCalls , nDoSomething );
@@ -695,7 +698,7 @@ void testAllTypes( const Reference < XCallMe > & rRCallMe )
 
     for( sal_Int32 i = 0; i < 32 ; i ++ )
     {
-        
+
         TestTypes types;
         types.Bool = sal_True;
         types.Char = L'i';
@@ -711,9 +714,9 @@ void testAllTypes( const Reference < XCallMe > & rRCallMe )
         types.String = OUString( RTL_CONSTASCII_USTRINGPARAM("abcdefghijklmnopqrstuvwxyz"));
         types.Interface = Reference< XInterface >( rRCallMe , UNO_QUERY);
         types.Any <<= types.Double;
-        
+
         TestTypes retTypes = rRCallMe->transport( types );
-        
+
         OSL_ASSERT( ( types.Bool && retTypes.Bool  ) || ( ! types.Bool && ! retTypes.Bool ) );
         OSL_ASSERT( types.Char == retTypes.Char );
         OSL_ASSERT( types.Byte == retTypes.Byte );
@@ -729,14 +732,14 @@ void testAllTypes( const Reference < XCallMe > & rRCallMe )
         OSL_ASSERT( types.Interface == retTypes.Interface );
         OSL_ASSERT( types.Any == retTypes.Any );
     }
-    
+
 }
 
 void testRemote( const Reference< XInterface > &rRemote )
 {
     char a;
       getCppuType( (sal_Int8*)&a );
-    
+
     Reference< XTestFactory > rRFact( rRemote , UNO_QUERY );
     if( ! rRFact.is() )
     {
@@ -749,19 +752,19 @@ void testRemote( const Reference< XInterface > &rRemote )
 
       testAllTypes( rLCallMe );
       testAllTypes( rRCallMe );
-    
+
       printf( "Testing exception local ...\n" );
       testException( rLCallMe );
     printf( "Testing exception remote ...\n" );
     testException( rRCallMe );
-    
+
       //--------------------
       // Test attributes
       //----------------------
        OUString ow = OUString::createFromAscii( "dum didel dum dideldei" );
        rLCallMe->setsAttribute( ow );
        OSL_ASSERT( rLCallMe->getsAttribute() == ow );
-    
+
          rRCallMe->setsAttribute( ow );
          OSL_ASSERT( rRCallMe->getsAttribute() == ow );
 
@@ -790,11 +793,11 @@ void testRemote( const Reference< XInterface > &rRemote )
      OSL_ASSERT( rRTest->get() == rRCallMe );
      OSL_ASSERT( rRTest2->get() == rRCallMe );
      OSL_ASSERT( rRTest3->get() == rRCallMe );
-    
+
        rRTest->setIn( rLCallMe );
        rRTest2->setIn( rLCallMe );
        rRTest3->setIn( rLCallMe );
-    
+
      {
          Reference< XCallMe > rLCallMe1 = (XCallMe * ) new OCallMe();
          Reference< XCallMe > rLCallMe2 = (XCallMe * ) new OCallMe();
@@ -809,7 +812,7 @@ void testRemote( const Reference< XInterface > &rRemote )
          rRTest->setIn( rLCallMe );
          rRTest2->setIn( rLCallMe );
          rRTest3->setIn( rLCallMe );
-        
+
          OSL_ASSERT( rRTest->get() == rLCallMe );
          OSL_ASSERT( rRTest2->get() == rLCallMe );
          OSL_ASSERT( rRTest3->get() == rLCallMe );
@@ -849,7 +852,7 @@ Reference <XInterface > createComponent( const ::rtl::OUString &sService ,
             rSMgr->createInstance(
                 OUString::createFromAscii( "com.sun.star.registry.ImplementationRegistration" )),
             UNO_QUERY );
-        
+
         OSL_ASSERT( rReg.is() );
 #ifdef SAL_W32
         OUString aDllName = sDllName;
@@ -867,11 +870,11 @@ Reference <XInterface > createComponent( const ::rtl::OUString &sService ,
                 Reference< XSimpleRegistry > () );
             rInterface = rSMgr->createInstance( sService );
         }
-        catch( Exception & ) 
+        catch( Exception & )
         {
             printf( "couldn't register dll %s\n" ,
                     OUStringToOString( aDllName, RTL_TEXTENCODING_ASCII_US ).getStr()  );
-        }		
+        }
     }
     return rInterface;
 }
