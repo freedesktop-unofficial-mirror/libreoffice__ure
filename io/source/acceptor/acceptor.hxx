@@ -2,9 +2,9 @@
  *
  *  $RCSfile: acceptor.hxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: jbu $ $Date: 2001-04-11 15:43:48 $
+ *  last change: $Author: jbu $ $Date: 2001-06-22 16:32:55 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -67,15 +67,21 @@
 #include <osl/socket.hxx>
 #endif
 
+#ifndef _RTL_UNLOAD_H_
+#include <rtl/unload.h>
+#endif
+
 #include <com/sun/star/connection/XConnection.hpp>
 
 namespace io_acceptor {
+
+    extern rtl_StandardModuleCount g_moduleCount;
 
     class PipeAcceptor
     {
     public:
         PipeAcceptor( const ::rtl::OUString &sPipeName , const ::rtl::OUString &sConnectionDescription );
-
+        
         void init();
         ::com::sun::star::uno::Reference < ::com::sun::star::connection::XConnection >  accept(  );
         
@@ -94,7 +100,7 @@ namespace io_acceptor {
                         sal_uInt16 nPort,
                         sal_Bool bTcpNoDelay,
                         const ::rtl::OUString &sConnectionDescription );
-        
+
         void init();
         ::com::sun::star::uno::Reference < ::com::sun::star::connection::XConnection > accept();
 
