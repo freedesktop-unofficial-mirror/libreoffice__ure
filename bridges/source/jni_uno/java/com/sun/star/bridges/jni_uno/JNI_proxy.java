@@ -2,9 +2,9 @@
  *
  *  $RCSfile: JNI_proxy.java,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:04 $
+ *  last change: $Author: vg $ $Date: 2003-03-20 12:42:26 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -168,15 +168,15 @@ public final class JNI_proxy implements java.lang.reflect.InvocationHandler
         if (Object.class.equals( decl_class ))
         {
             if (method_name.equals( "hashCode" )) // int hashCode()
-            {                
-                return new Integer( System.identityHashCode( args[ 0 ] ) );
+            {
+                return new Integer( System.identityHashCode( proxy ) );
             }
             else if (method_name.equals( "equals" )) // boolean equals( Object obj )
-            {                
+            {
                 return (proxy == args[ 0 ] ? Boolean.TRUE : Boolean.FALSE);
             }
             else if (method_name.equals( "toString" )) // String toString()
-            {                
+            {
                 return this.toString() + " [oid=" + m_oid + ", type=" + m_type.getTypeName() + "]";
             }
         }
