@@ -2,9 +2,9 @@
  *
  *  $RCSfile: bridge.hxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 12:38:49 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:23:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -93,13 +93,13 @@ inline void SAL_CALL cppu_cppInterfaceProxy_free( uno_ExtEnvironment * pEnv, voi
         static_cast< cppu_cppInterfaceProxy * >(
             reinterpret_cast< ::com::sun::star::uno::XInterface * >( pProxy ) );
     OSL_ASSERT( pEnv == pThis->pBridge->pCppEnv );
-    
+
     (*pThis->pBridge->pUnoEnv->revokeInterface)( pThis->pBridge->pUnoEnv, pThis->pUnoI );
     (*pThis->pUnoI->release)( pThis->pUnoI );
     ::typelib_typedescription_release( (typelib_TypeDescription *)pThis->pTypeDescr );
     pThis->pBridge->release();
-    
-#ifdef DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
     *(int *)pProxy = 0xdeadbabe;
 #endif
     delete pThis;
@@ -118,16 +118,16 @@ inline void SAL_CALL cppu_Mapping_uno2cpp(
     if (pUnoI)
     {
         cppu_Bridge * pBridge = static_cast< cppu_Mapping * >( pMapping )->pBridge;
-        
+
         // get object id of uno interface to be wrapped
         rtl_uString * pOId = 0;
         (*pBridge->pUnoEnv->getObjectIdentifier)( pBridge->pUnoEnv, &pOId, pUnoI );
         OSL_ASSERT( pOId );
-        
+
         // try to get any known interface from target environment
         (*pBridge->pCppEnv->getRegisteredInterface)(
             pBridge->pCppEnv, ppCppI, pOId, pTypeDescr );
-        
+
         if (! *ppCppI) // no existing interface, register new proxy interface
         {
             // try to publish a new proxy (ref count initially 1)
@@ -135,12 +135,12 @@ inline void SAL_CALL cppu_Mapping_uno2cpp(
                 pBridge, reinterpret_cast< uno_Interface * >( pUnoI ), pTypeDescr, pOId );
             ::com::sun::star::uno::XInterface * pSurrogate = pProxy;
             cppu_cppInterfaceProxy_patchVtable( pSurrogate, pProxy->pTypeDescr );
-            
+
             // proxy may be exchanged during registration
             (*pBridge->pCppEnv->registerProxyInterface)(
                 pBridge->pCppEnv, reinterpret_cast< void ** >( &pSurrogate ),
                 (uno_freeProxyFunc)cppu_cppInterfaceProxy_free, pOId, pTypeDescr );
-            
+
             *ppCppI = pSurrogate;
         }
         ::rtl_uString_release( pOId );
@@ -203,13 +203,13 @@ inline void SAL_CALL cppu_unoInterfaceProxy_free( uno_ExtEnvironment * pEnv, voi
         static_cast< cppu_unoInterfaceProxy * >(
             reinterpret_cast< uno_Interface * >( pProxy ) );
     OSL_ASSERT( pEnv == pThis->pBridge->pUnoEnv );
-    
+
     (*pThis->pBridge->pCppEnv->revokeInterface)( pThis->pBridge->pCppEnv, pThis->pCppI );
     pThis->pCppI->release();
     ::typelib_typedescription_release( (typelib_TypeDescription *)pThis->pTypeDescr );
     pThis->pBridge->release();
-    
-#ifdef DEBUG
+
+#if OSL_DEBUG_LEVEL > 1
     *(int *)pProxy = 0xdeadbabe;
 #endif
     delete pThis;
@@ -221,7 +221,7 @@ inline void SAL_CALL cppu_unoInterfaceProxy_acquire( uno_Interface * pUnoI ) SAL
     {
         // rebirth of proxy zombie
         // register at uno env
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         void * pThis = pUnoI;
 #endif
         (*static_cast< cppu_unoInterfaceProxy * >( pUnoI )->pBridge->pUnoEnv->registerProxyInterface)(
@@ -230,7 +230,7 @@ inline void SAL_CALL cppu_unoInterfaceProxy_acquire( uno_Interface * pUnoI ) SAL
             (uno_freeProxyFunc)cppu_unoInterfaceProxy_free,
             static_cast< cppu_unoInterfaceProxy * >( pUnoI )->oid.pData,
             static_cast< cppu_unoInterfaceProxy * >( pUnoI )->pTypeDescr );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OSL_ASSERT( pThis == pUnoI );
 #endif
     }
@@ -260,28 +260,28 @@ inline void SAL_CALL cppu_Mapping_cpp2uno(
     if (pCppI)
     {
         cppu_Bridge * pBridge = static_cast< cppu_Mapping * >( pMapping )->pBridge;
-        
+
         // get object id of interface to be wrapped
         rtl_uString * pOId = 0;
         (*pBridge->pCppEnv->getObjectIdentifier)( pBridge->pCppEnv, &pOId, pCppI );
         OSL_ASSERT( pOId );
-        
+
         // try to get any known interface from target environment
         (*pBridge->pUnoEnv->getRegisteredInterface)(
             pBridge->pUnoEnv, ppUnoI, pOId, pTypeDescr );
-        
+
         if (! *ppUnoI) // no existing interface, register new proxy interface
         {
             // try to publish a new proxy (refcount initially 1)
             uno_Interface * pSurrogate = new cppu_unoInterfaceProxy(
                 pBridge, reinterpret_cast< ::com::sun::star::uno::XInterface * >( pCppI ),
                 pTypeDescr, pOId );
-            
+
             // proxy may be exchanged during registration
             (*pBridge->pUnoEnv->registerProxyInterface)(
                 pBridge->pUnoEnv, reinterpret_cast< void ** >( &pSurrogate ),
                 (uno_freeProxyFunc)cppu_unoInterfaceProxy_free, pOId, pTypeDescr );
-            
+
             *ppUnoI = pSurrogate;
         }
         ::rtl_uString_release( pOId );
@@ -305,7 +305,7 @@ inline cppu_unoInterfaceProxy::cppu_unoInterfaceProxy(
     pCppI->acquire();
     (*pBridge->pCppEnv->registerInterface)(
         pBridge->pCppEnv, reinterpret_cast< void ** >( &pCppI ), oid.pData, pTypeDescr );
-    
+
     // uno_Interface
     uno_Interface::acquire = cppu_unoInterfaceProxy_acquire;
     uno_Interface::release = cppu_unoInterfaceProxy_release;
@@ -401,7 +401,7 @@ inline void SAL_CALL cppu_ext_getMapping(
     if (ppMapping && pFrom && pTo && pFrom->pExtEnv && pTo->pExtEnv)
     {
         uno_Mapping * pMapping = 0;
-        
+
         if (0 == rtl_ustr_ascii_compare( pFrom->pTypeName->buffer, CPPU_CURRENT_LANGUAGE_BINDING_NAME ) &&
             0 == rtl_ustr_ascii_compare( pTo->pTypeName->buffer, UNO_LB_UNO ))
         {
@@ -422,7 +422,7 @@ inline void SAL_CALL cppu_ext_getMapping(
                 (uno_Environment *)pFrom->pExtEnv,
                 (uno_Environment *)pTo->pExtEnv, 0 );
         }
-        
+
         if (*ppMapping)
         {
             (*(*ppMapping)->release)( *ppMapping );
