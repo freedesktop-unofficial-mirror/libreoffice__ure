@@ -2,9 +2,9 @@
  *
  *  $RCSfile: context.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-18 15:28:49 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:27:48 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -91,7 +91,7 @@ public:
                         rtl_uString *pProtocol,
                         remote_InstanceProvider *pProvider );
     ~remote_ContextImpl();
-    
+
     static void SAL_CALL thisAcquire( uno_Context * );
     static void SAL_CALL thisRelease( uno_Context * );
     static void * SAL_CALL thisQuery( uno_Context * , rtl_uString * );
@@ -107,7 +107,7 @@ public:
 
 
 
-    
+
 struct equalOUString_Impl
 {
     sal_Bool operator()(const OUString & s1, const OUString & s2) const
@@ -129,7 +129,7 @@ typedef hash_map
 >
 ContextMap;
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 struct MyCounter
 {
     MyCounter( sal_Char *pName ) :
@@ -148,7 +148,7 @@ struct MyCounter
     void release()
         { m_nCounter --; }
 
-    
+
     sal_Int32 m_nCounter;
     sal_Char *m_pName;
 };
@@ -169,11 +169,11 @@ public:
     // listener administration
     void addContextListener( remote_contextListenerFunc listener , void *pObject );
     void removeContextListener( remote_contextListenerFunc listener , void *pObject );
-    
+
     void fire( sal_Int32 nRemoteContextMode,
                rtl_uString *sName,
                rtl_uString *sDescription );
-    
+
     // context administration
     uno_Context *createAndRegisterContext(
         remote_Connection *pConnection,
@@ -181,18 +181,18 @@ public:
         rtl_uString *pDescription,
         rtl_uString *pProtocol,
         remote_InstanceProvider *pInstanceProvider );
-    
+
     void revokeContext( uno_Context *pRemoteContext );
 
     uno_Context *get( rtl_uString *pHost );
-    
+
     rtl_uString ** getConnectionList(
         sal_Int32 *pnStringCount ,
         void * ( SAL_CALL * memAlloc ) ( sal_uInt32 nBytesToAlloc ) );
-    
+
 private:
     ::osl::Mutex          m_mutex;
-    
+
     ContextMap m_mapContext;
 
     ::std::list< ::std::pair< void *, void *> > m_lstListener;
@@ -213,14 +213,14 @@ ContextAdmin *ContextAdmin::getInstance()
 void ContextAdmin::addContextListener( remote_contextListenerFunc listener , void  *pObject )
 {
     ::osl::MutexGuard guard( m_mutex );
-    
+
     m_lstListener.push_back( ::std::pair< void * , void * > ( (void*) listener , pObject ) );
 }
 
 void ContextAdmin::removeContextListener( remote_contextListenerFunc listener , void *pObject )
 {
     ::osl::MutexGuard guard( m_mutex );
-    
+
     for( ::std::list< ::std::pair< void *, void *> >::iterator ii = m_lstListener.begin() ;
          ii != m_lstListener.end() ;
          ++ii )
@@ -238,7 +238,7 @@ void ContextAdmin::fire(
     sal_Int32 nRemoteContextMode,
     rtl_uString *pName,
     rtl_uString *sDescription )
-{	
+{
     ::osl::MutexGuard guard( m_mutex );
     ::std::list< ::std::pair< void *, void *> > lstListener = m_lstListener;
 
@@ -265,7 +265,7 @@ uno_Context *ContextAdmin::createAndRegisterContext( remote_Connection *pConnect
         pContext->release( pContext );
         return 0;
     }
-        
+
     remote_ContextImpl *p = new remote_ContextImpl( pConnection,
                                                     pIdStr,
                                                     pDescription,
@@ -273,9 +273,9 @@ uno_Context *ContextAdmin::createAndRegisterContext( remote_Connection *pConnect
                                                     pInstanceProvider );
 
     p->aBase.acquire( (uno_Context*) p );
-    
+
     m_mapContext[ OUString( pIdStr) ] = (void*) p;
-    
+
     fire( REMOTE_CONTEXT_CREATE , pIdStr , pDescription );
     return ( uno_Context * )p;
 }
@@ -290,9 +290,9 @@ void ContextAdmin::revokeContext( uno_Context *pRemoteContext )
     ContextMap::iterator ii = m_mapContext.find(  p->m_pName );
     OSL_ASSERT( ii != m_mapContext.end() );
     m_mapContext.erase( ii );
-    
+
     fire( REMOTE_CONTEXT_DESTROY , p->m_pName , p->m_pDescription );
-    
+
 }
 
 uno_Context *ContextAdmin::get( rtl_uString *pHost )
@@ -351,7 +351,7 @@ remote_ContextImpl::remote_ContextImpl( remote_Connection *pConnection ,
 {
     m_pConnection = pConnection;
     m_pConnection->acquire( m_pConnection );
-    
+
     m_pInstanceProvider = pProvider;
     if( m_pInstanceProvider )
     {
@@ -366,13 +366,13 @@ remote_ContextImpl::remote_ContextImpl( remote_Connection *pConnection ,
 
     m_pProtocol = pProtocol;
     rtl_uString_acquire( pProtocol );
-    
+
     aBase.acquire = thisAcquire;
     aBase.release = thisRelease;
     addDisposingListener = thisAddDisposingListener;
     removeDisposingListener = thisRemoveDisposingListener;
     dispose = thisDispose;
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.acquire();
 #endif
 }
@@ -380,12 +380,12 @@ remote_ContextImpl::remote_ContextImpl( remote_Connection *pConnection ,
 remote_ContextImpl::~remote_ContextImpl()
 {
     // disposed must have been called
-    OSL_ASSERT( m_bDisposed );	
+    OSL_ASSERT( m_bDisposed );
 
     rtl_uString_release( m_pName );
     rtl_uString_release( m_pDescription );
     rtl_uString_release( m_pProtocol );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.release();
 #endif
 
@@ -398,7 +398,7 @@ void remote_ContextImpl::thisAddDisposingListener( remote_Context *pRemoteC ,
     remote_ContextImpl *pImpl = (remote_ContextImpl * ) pRemoteC;
 
     ::osl::MutexGuard guard( pImpl->m_mutex );
-    
+
     pListener->acquire( pListener );
     pImpl->m_lstListener.push_back( pListener );
 }
@@ -408,7 +408,7 @@ void remote_ContextImpl::thisRemoveDisposingListener( remote_Context *pRemoteC,
 {
     remote_ContextImpl *pImpl = (remote_ContextImpl * ) pRemoteC;
     MutexGuard guard( pImpl->m_mutex );
-    
+
     for( list< remote_DisposingListener * >::iterator ii = pImpl->m_lstListener.begin() ;
          ii != pImpl->m_lstListener.end();
          ++ii )
@@ -440,10 +440,10 @@ void remote_ContextImpl::thisDispose( remote_Context *pRemoteC )
 
         pImpl->m_pConnection->release( pImpl->m_pConnection );
         pImpl->m_pConnection = 0;
-        
+
         list< remote_DisposingListener * > lst = pImpl->m_lstListener;
         pImpl->m_lstListener.clear();
-        
+
         for( list < remote_DisposingListener * >::iterator ii = lst.begin();
              ii != lst.end();
              ++ii )
@@ -451,7 +451,7 @@ void remote_ContextImpl::thisDispose( remote_Context *pRemoteC )
             (*ii)->disposing( (*ii) , pImpl->m_pName );
             (*ii)->release( (*ii) );
         }
-        
+
     }
 }
 
@@ -476,7 +476,7 @@ void remote_ContextImpl::thisRelease( uno_Context *pRemoteC )
 
         // restore the counter
         osl_decrementInterlockedCount( &(p->m_nRef) );
-        
+
         if( 0 == p->m_nRef )
         {
             delete p;
@@ -526,7 +526,7 @@ remote_createContext( remote_Connection *pConnection,
             pDescription,
             pProtocol,
             pProvider );
-    
+
     return (remote_Context * )p;
 }
 
