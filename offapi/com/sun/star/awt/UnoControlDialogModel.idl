@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlDialogModel.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 13:52:42 $
+ *  last change: $Author: vg $ $Date: 2003-06-27 08:54:41 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -63,8 +63,20 @@
  
 #ifndef __com_sun_star_awt_UnoControlModel_idl__ 
 #include <com/sun/star/awt/UnoControlModel.idl> 
-#endif 
- 
+#endif
+
+#ifndef __com_sun_star_lang_XMultiServiceFactory_idl__
+#include <com/sun/star/lang/XMultiServiceFactory.idl>
+#endif
+
+#ifndef __com_sun_star_container_XContainer_idl__ 
+#include <com/sun/star/container/XContainer.idl> 
+#endif
+
+#ifndef __com_sun_star_container_XNameContainer_idl__
+#include <com/sun/star/container/XNameContainer.idl>
+#endif
+
 #ifndef __com_sun_star_awt_FontDescriptor_idl__ 
 #include <com/sun/star/awt/FontDescriptor.idl> 
 #endif 
@@ -80,49 +92,98 @@
  */
 service UnoControlDialogModel
 { 
-    // DocMerge: empty anyway
-    service com::sun::star::awt::UnoControlModel; 
- 
+    service com::sun::star::awt::UnoControlModel;
+    
+    /** allows to create control models, which support the
+        <type>UnoControlDialogElement</type> service and can be inserted into
+        this container.
+     */
+    interface com::sun::star::lang::XMultiServiceFactory;
+    
+    interface com::sun::star::container::XContainer; 
+
+    interface com::sun::star::container::XNameContainer;
+
+    //-------------------------------------------------------------------------
+    
     /** specifies the background color (RGB) of the dialog.
      */
     [property] long BackgroundColor; 
  
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the service name of the default control for this model.
+    //-------------------------------------------------------------------------
+    
+    /** specifies if the dialog is closeable.
      */
-    [property] string DefaultControl; 
+    [property] boolean Closeable; 
  
-    //------------------------------------------------------------------------- 
-     
+    //-------------------------------------------------------------------------
+
     /** determines whether a dialog is enabled or disabled.
      */
     [property] boolean Enabled; 
  
     //------------------------------------------------------------------------- 
-     
+
     /** specifies the font attributes of the text in the caption bar of the dialog.
      */
     [property] com::sun::star::awt::FontDescriptor FontDescriptor; 
  
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the text that is displayed in the dialog caption bar.
+    //-------------------------------------------------------------------------
+    
+    /** specifies the <type scope="com::sun::star::text">FontEmphasis</type>
+        value of the text in the caption bar of the dialog.
      */
-    [property] string Title; 
+    [property] short FontEmphasisMark;
+ 
+    //-------------------------------------------------------------------------
+
+    /** specifies the <type scope="com::sun::star::text">FontRelief</type>
+        value of the text in the caption bar of the dialog.
+     */
+    [property] short FontRelief;
+ 
+    //-------------------------------------------------------------------------
+
+    /** specifies the help text of the dialog.
+     */
+    [property] string HelpText;
  
     //------------------------------------------------------------------------- 
-     
+
+    /** specifies the help URL of the dialog.
+     */
+    [property] string HelpURL;
+ 
+    //------------------------------------------------------------------------- 
+    
+    /** specifies if the dialog is moveable.
+     */
+    [property] boolean Moveable;
+
+    //------------------------------------------------------------------------- 
+
+    /** specifies if the dialog is sizeable.
+     */
+    [property] boolean Sizeable;
+
+    //------------------------------------------------------------------------- 
+
     /** specifies the text color (RGB) of the dialog.
      */
     [property] long TextColor; 
  
     //------------------------------------------------------------------------- 
-     
-    /** specifies if the dialog is sizeable.
+
+    /** specifies the text line color (RGB) of the dialog.
      */
-    [property] boolean Sizeable;
- 
+    [property] long TextLineColor;
+    
+    //-------------------------------------------------------------------------
+
+    /** specifies the text that is displayed in the caption bar of the dialog.
+     */
+    [property] string Title;
+    
 }; 
  
 //============================================================================= 
