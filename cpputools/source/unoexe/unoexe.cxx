@@ -2,9 +2,9 @@
  *
  *  $RCSfile: unoexe.cxx,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: jsc $ $Date: 2001-08-17 12:59:29 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:44:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -154,7 +154,7 @@ static OUString convertToFileUrl(const OUString& fileName)
 
     return uUrlFileName;
 }
-    
+
 //--------------------------------------------------------------------------------------------------
 static inline void out( const sal_Char * pText )
 {
@@ -186,10 +186,10 @@ static sal_Bool readOption( OUString * pValue, const sal_Char * pOpt,
         return sal_False;
 
     OUString aOpt = OUString::createFromAscii( pOpt );
-    
+
     if (aArg.getLength() < aOpt.getLength())
         return sal_False;
-    
+
     if (aOpt.equalsIgnoreAsciiCase( aArg.copy(1) ))
     {
         // take next argument
@@ -206,7 +206,7 @@ static sal_Bool readOption( OUString * pValue, const sal_Char * pOpt,
         }
         else
         {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
             out( "\n> identified option -" );
             out( pOpt );
             out( " = " );
@@ -220,7 +220,7 @@ static sal_Bool readOption( OUString * pValue, const sal_Char * pOpt,
       else if (aArg.indexOf(aOpt) == 1)
     {
         *pValue = aArg.copy(1 + aOpt.getLength());
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         out( "\n> identified option -" );
         out( pOpt );
         out( " = " );
@@ -231,7 +231,7 @@ static sal_Bool readOption( OUString * pValue, const sal_Char * pOpt,
 
         return sal_True;
     }
-    return sal_False;	
+    return sal_False;
 }
 //--------------------------------------------------------------------------------------------------
 static sal_Bool readOption( sal_Bool * pbOpt, const sal_Char * pOpt,
@@ -244,7 +244,7 @@ static sal_Bool readOption( sal_Bool * pbOpt, const sal_Char * pOpt,
     {
         ++(*pnIndex);
         *pbOpt = sal_True;
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         out( "\n> identified option --" );
         out( pOpt );
 #endif
@@ -269,7 +269,7 @@ void createInstance(
 {
     Reference< XMultiComponentFactory > xMgr( xContext->getServiceManager() );
     Reference< XInterface > x( xMgr->createInstanceWithContext( rServiceName, xContext ) );
-    
+
     if (! x.is())
     {
         static sal_Bool s_bSet = sal_False;
@@ -308,7 +308,7 @@ void createInstance(
         }
         x = xMgr->createInstanceWithContext( rServiceName, xContext );
     }
-    
+
     if (! x.is())
     {
         OUStringBuffer buf( 64 );
@@ -317,7 +317,7 @@ void createInstance(
         buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("\"!") );
         throw RuntimeException( buf.makeStringAndClear(), Reference< XInterface >() );
     }
-    
+
     rxOut = Reference< T >::query( x );
     if (! rxOut.is())
     {
@@ -344,7 +344,7 @@ static Reference< XSimpleRegistry > nestRegistries(
             OUString( RTL_CONSTASCII_USTRINGPARAM("no nested registry service!" ) ),
             Reference< XInterface >() );
     }
-    
+
     Reference< XInitialization > xInit( xReg, UNO_QUERY );
     if (! xInit.is())
         throw RuntimeException( OUString( RTL_CONSTASCII_USTRINGPARAM("nested registry does not export interface \"com.sun.star.lang.XInitialization\"!" ) ), Reference< XInterface >() );
@@ -353,7 +353,7 @@ static Reference< XSimpleRegistry > nestRegistries(
     aArgs[0] <<= xReadWrite;
     aArgs[1] <<= xReadOnly;
     xInit->initialize( aArgs );
-    
+
     return xReg;
 }
 //--------------------------------------------------------------------------------------------------
@@ -369,7 +369,7 @@ static Reference< XSimpleRegistry > openRegistry(
             OUString( RTL_CONSTASCII_USTRINGPARAM("no simple registry service!" ) ),
             Reference< XInterface >() );
     }
-    
+
     try
     {
         xNewReg->open( convertToFileUrl(rURL), bReadOnly, bCreate );
@@ -381,7 +381,7 @@ static Reference< XSimpleRegistry > openRegistry(
     catch (Exception &)
     {
     }
-    
+
     out( "\n> warning: cannot open registry \"" );
     out( rURL );
     if (bReadOnly)
@@ -526,12 +526,12 @@ inline Reference< XInterface > OInstanceProvider::createInstance()
         xRet = loadComponent( _xContext, _aImplName, _aLocation );
     else // via service manager
         unoexe::createInstance( xRet, _xContext, _aServiceName );
-    
+
     // opt XInit
     Reference< XInitialization > xInit( xRet, UNO_QUERY );
     if (xInit.is())
         xInit->initialize( _aInitParams );
-    
+
     return xRet;
 }
 //__________________________________________________________________________________________________
@@ -632,13 +632,13 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
         Sequence< OUString > aParams;
         sal_Bool bSingleAccept = sal_False;
         sal_Bool bSingleInstance = sal_False;
-        
+
         //#### read command line arguments #########################################################
-        
+
         bool bOldRegistryMimic = false;
         bool bNewRegistryMimic = false;
         OUString aReadWriteRegistry;
-        
+
         sal_Int32 nPos = 0;
         sal_Int32 nCount = (sal_Int32)rtl_getAppCommandArgCount();
         // read up to arguments
@@ -654,7 +654,7 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
                 ++nPos;
                 break;
             }
-            
+
             if (readOption( &aImplName, "c", &nPos, arg)				||
                 readOption( &aLocation, "l", &nPos, arg)				||
                 readOption( &aServiceName, "s", &nPos, arg)				||
@@ -684,7 +684,7 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
                 bOldRegistryMimic = true;
                 continue;
             }
-            
+
             // else illegal argument
             OUStringBuffer buf( 64 );
             buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("unexpected parameter \"") );
@@ -692,7 +692,7 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
             buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("\"!") );
             throw RuntimeException( buf.makeStringAndClear(), Reference< XInterface >() );
         }
-        
+
         if (bOldRegistryMimic) // last one was set to be read-write
         {
             aReadOnlyRegistries.pop_back();
@@ -703,7 +703,7 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
                     Reference< XInterface >() );
             }
         }
-        
+
         if ((aImplName.getLength() != 0) == (aServiceName.getLength() != 0))
             throw RuntimeException( OUString( RTL_CONSTASCII_USTRINGPARAM("give component exOR service name!" ) ), Reference< XInterface >() );
         if (aImplName.getLength() && !aLocation.getLength())
@@ -720,13 +720,13 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
         {
             OSL_VERIFY( rtl_getAppCommandArg( nPos, &pParams[nPos -nOffset].pData ) == osl_Process_E_None );
         }
-        
+
         //#### create registry #####################################################################
-        
+
         // ReadOnly registries
         for ( size_t nReg = 0; nReg < aReadOnlyRegistries.size(); ++nReg )
         {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
             out( "\n> trying to open ro registry: " );
             out( OUStringToOString( aReadOnlyRegistries[ nReg ], RTL_TEXTENCODING_ASCII_US ).getStr() );
 #endif
@@ -737,7 +737,7 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
         }
         if (aReadWriteRegistry.getLength())
         {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
             out( "\n> trying to open rw registry: " );
             out( OUStringToOString( aReadWriteRegistry, RTL_TEXTENCODING_ASCII_US ).getStr() );
 #endif
@@ -747,16 +747,16 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
             if (xNewReg.is())
                 xRegistry = (xRegistry.is() ? nestRegistries( xNewReg, xRegistry ) : xNewReg);
         }
-        
+
         if (! xRegistry.is())
         {
             out( "\n> warning: no registry given!" );
         }
-        
+
         Reference< XComponentContext > xContext( bootstrap_InitialComponentContext( xRegistry ) );
-        
+
         //#### accept, instanciate, etc. ###########################################################
-        
+
         if (aUnoUrl.getLength()) // accepting connections
         {
             sal_Int32 nIndex = 0, nTokens = 0;
@@ -855,7 +855,7 @@ extern "C" int SAL_CALL main( int argc, const char * argv[] )
     Reference< XComponent > xComp( xContext, UNO_QUERY );
     if (xComp.is())
         xComp->dispose();
-    
+
     out( "\n" );
     return nRet;
 }
