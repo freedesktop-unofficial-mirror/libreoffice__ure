@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testclient.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:09 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:29:29 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,6 +59,10 @@
  *
  ************************************************************************/
 #include <string.h>
+
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 
 #ifndef _OSL_TIME_H_
@@ -108,11 +112,11 @@ using namespace ::com::sun::star::test::performance;
 
 
 #ifdef UNX
-#define REG_PREFIX 		"lib"	
-#define DLL_POSTFIX 	".so"	
+#define REG_PREFIX 		"lib"
+#define DLL_POSTFIX 	".so"
 #else
-#define REG_PREFIX 		""		
-#define DLL_POSTFIX 	".dll"	
+#define REG_PREFIX 		""
+#define DLL_POSTFIX 	".dll"
 #endif
 
 void doPerformanceTest( const Reference < XPerformanceTest > & xBench )
@@ -180,12 +184,12 @@ int main( int argc, char *argv[] )
     sal_Bool bReverse = sal_False;
 
     parseCommandLine( argv , &sConnectionString , &sProtocol , &bLatency , &bReverse );
-    
+
     {
         Reference< XMultiServiceFactory > rSMgr = createRegistryServiceFactory(
             OUString( RTL_CONSTASCII_USTRINGPARAM("client.rdb")) );
 
-        
+
           Reference < XConnector > rConnector(
                 createComponent( OUString( RTL_CONSTASCII_USTRINGPARAM("com.sun.star.connection.Connector")),
                                  OUString( RTL_CONSTASCII_USTRINGPARAM("connectr")),
@@ -201,7 +205,7 @@ int main( int argc, char *argv[] )
                 printf( "%s\n" , OUStringToOString( rConnection->getDescription(),
                                                     RTL_TEXTENCODING_ASCII_US ).pData->buffer );
 
-            
+
                 if( bLatency )
                 {
                     testLatency( rConnection , sal_False );
@@ -237,7 +241,7 @@ int main( int argc, char *argv[] )
                               assert( rBridge2 == rBridge );
                         }
 
-                
+
                         Reference < XInterface > rInitialObject	= rBridge->getInstance(
                             OUString( RTL_CONSTASCII_USTRINGPARAM("bridges-testobject")) );
 
@@ -259,7 +263,7 @@ int main( int argc, char *argv[] )
                         }
 //    						Reference < XComponent > rComp( rBridge , UNO_QUERY );
 //    						rComp->dispose();
-                        
+
                         rInitialObject = Reference < XInterface > ();
                         printf( "Waiting...\n" );
                         TimeValue value={bReverse ?1000 :2,0};
@@ -270,7 +274,7 @@ int main( int argc, char *argv[] )
                     Reference < XBridge > rBridge = rFactory->getBridge( OUString( RTL_CONSTASCII_USTRINGPARAM("bla blub")) );
 //      				assert( ! rBridge.is() );
                 }
-            
+
             }
             catch( DisposedException & e )
             {
@@ -283,7 +287,7 @@ int main( int argc, char *argv[] )
                 printf( "Login failed, got an Exception !\n%s\n" , o.pData->buffer );
             }
 
-        
+
         Reference < XComponent > rComp( rSMgr , UNO_QUERY );
         rComp->dispose();
     }
