@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlComboBox.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 13:52:41 $
+ *  last change: $Author: vg $ $Date: 2003-06-27 08:53:31 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -67,8 +67,8 @@
  
 #ifndef __com_sun_star_awt_XComboBox_idl__ 
 #include <com/sun/star/awt/XComboBox.idl> 
-#endif 
- 
+#endif
+
  
 //============================================================================= 
  
@@ -82,7 +82,8 @@ service UnoControlComboBox
 { 
     service com::sun::star::awt::UnoControlEdit; 
     
-    interface com::sun::star::awt::XComboBox; 
+    interface com::sun::star::awt::XComboBox;
+    
 }; 
  
 //============================================================================= 
