@@ -2,9 +2,9 @@
  *
  *  $RCSfile: java_remote_bridge.java,v $
  *
- *  $Revision: 1.38 $
+ *  $Revision: 1.39 $
  *
- *  last change: $Author: obo $ $Date: 2004-06-03 14:33:46 $
+ *  last change: $Author: obo $ $Date: 2004-10-18 14:35:03 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -127,7 +127,7 @@ import com.sun.star.uno.Any;
  * The protocol to used is passed by name, the bridge
  * then looks for it under <code>com.sun.star.lib.uno.protocols</code>.
  * <p>
- * @version 	$Revision: 1.38 $ $ $Date: 2004-06-03 14:33:46 $
+ * @version 	$Revision: 1.39 $ $ $Date: 2004-10-18 14:35:03 $
  * @author 	    Kay Ramme
  * @since       UDK1.0
  */
@@ -141,7 +141,7 @@ public class java_remote_bridge
     static private final boolean DEBUG = false;
 
     /**
-     * E.g. to get privleges for security managers, it is 
+     * E.g. to get privleges for security managers, it is
      * possible to set a hook for the <code>MessageDispatcher</code> thread.
      */
     static public IInvokeHook __MessageDispatcher_run_hook;
@@ -183,12 +183,12 @@ public class java_remote_bridge
 
                     // Use the protocol to read a job.
                     IMessage iMessage = _iProtocol.readMessage(_inputStream);
-                    
-                    
+
+
                     if(iMessage.getThreadId().equals(_threadId)) {
                         continue;
                     }
-                    
+
                     // Take care of special methods release and acquire
                     String operation = iMessage.getOperation();
                     String oid = iMessage.getOid();
@@ -196,7 +196,7 @@ public class java_remote_bridge
                         Type interfaceType = new Type(iMessage.getInterface());
                         _java_environment.revokeInterface(oid, interfaceType );
                         remRefHolder(interfaceType, oid);
-                        
+
                         if(iMessage.mustReply())
                             sendReply(false, iMessage.getThreadId(), null);
                     }
@@ -204,31 +204,31 @@ public class java_remote_bridge
                         Type interfaceType = new Type(iMessage.getInterface());
                         String oid_o[] = new String[]{oid};
                         _java_environment.registerInterface(null, oid_o, interfaceType );
-                        
+
                         addRefHolder(null, interfaceType, oid);
                     }
                     else {
                         Object object = null;
-                        
+
                         if(operation != null) { // is it a request
                             Type interfaceType = new Type(iMessage.getInterface());
                             object = _java_environment.getRegisteredInterface(oid, interfaceType);
-                            
+
                             Object xexception = null;
-                            
+
                             if(object == null) { // this is an unknown oid, so we may have to ask the XInstanceProvider
                                 if(_xInstanceProvider == null) // we have neither an object nor an instance provider -> exception
                                     xexception = new com.sun.star.uno.RuntimeException(getClass().getName() + ".dispatch - no instance provider set and unknown object:" + oid);
-                                
+
                                 else {
                                     try {
                                         object = _xInstanceProvider.getInstance(oid);
-                                        
+
                                         if(object == null && !operation.equals("queryInterface"))
                                             xexception = new com.sun.star.uno.RuntimeException(
-                                                getClass().getName() 
-                                                + ".dispatch: instance provider returned null and operation >" 
-                                                + operation 
+                                                getClass().getName()
+                                                + ".dispatch: instance provider returned null and operation >"
+                                                + operation
                                                 + "< not supported on null");
                                     }
                                     catch(com.sun.star.container.NoSuchElementException noSuchElementException) {
@@ -239,25 +239,25 @@ public class java_remote_bridge
                                     }
                                 }
                             }
-                            
+
                             if(xexception != null) {
                                 // an exception occurred while trying to get an instance.
                                 // propagate it.
                                 sendReply(true, iMessage.getThreadId(), xexception);
                                 iMessage = null;
                             }
-                        }						
-                        
+                        }
+
                         if(iMessage != null) {
                                 // Queue the job for later execution.
                                 // Give this bridge as the disposeId, needed in case of disposing this bridge
                             Job job = new Job(object, java_remote_bridge.this, iMessage);
-                            
+
                             _iThreadPool.putJob(job);
                             job = null;
                         }
                     }
-                    
+
                     iMessage = null;
                     // this is important to get rid of the job (especially while testing lifecycles)
                 }
@@ -276,7 +276,7 @@ public class java_remote_bridge
                     exception.printStackTrace();
                     System.err.println(getClass() + " - giving up");
                 }
-                  if(DEBUG) 
+                  if(DEBUG)
                     exception.printStackTrace();
 
                 throwable = new DisposedException( exception.getMessage() );
@@ -312,7 +312,7 @@ public class java_remote_bridge
     protected Vector            _listeners;
 
     protected boolean           _negotiate;
-    protected boolean           _forceSynchronous;
+    protected boolean           _forceSynchronous = true;
 
     protected IThreadPool       _iThreadPool;
 
@@ -491,7 +491,7 @@ public class java_remote_bridge
             }
             else
                 left = word;
-                
+
             if(left.equals("negotiate")) {
                 if(right != null)
                     _negotiate = (Integer.parseInt(right) == 1);
@@ -503,13 +503,13 @@ public class java_remote_bridge
             else if(left.equals("forcesynchronous")) {
                 if(right != null)
                     _forceSynchronous = (Integer.parseInt(right) == 1);
-                else 
+                else
                     _forceSynchronous = true;
 
-                if(_forceSynchronous && !negotiateTouched) 
+                if(_forceSynchronous && !negotiateTouched)
                     _negotiate = true;
             }
-            else 
+            else
                 System.err.println(getClass().getName() + ".<init> - unknown attribute:" + left);
         }
 
@@ -579,7 +579,7 @@ public class java_remote_bridge
                 xEventListener.disposing(eventObject);
             }
             catch(com.sun.star.uno.RuntimeException runtimeException) {
-                // we are here not interested in any exceptions 
+                // we are here not interested in any exceptions
             }
         }
     }
