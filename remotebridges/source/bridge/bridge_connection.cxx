@@ -2,9 +2,9 @@
  *
  *  $RCSfile: bridge_connection.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: jbu $ $Date: 2001-06-22 16:39:16 $
+ *  last change: $Author: vg $ $Date: 2003-12-17 17:45:57 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -80,12 +80,12 @@ namespace remotebridges_bridge
         flush = thisFlush;
         close = thisClose;
     }
-    
+
     OConnectionWrapper::~OConnectionWrapper()
     {
         g_moduleCount.modCnt.release( &g_moduleCount.modCnt );
 }
-    
+
     void OConnectionWrapper::thisAcquire( remote_Connection *p)
     {
         OConnectionWrapper * m = ( OConnectionWrapper * ) p;
@@ -107,8 +107,15 @@ namespace remotebridges_bridge
         OConnectionWrapper * m = ( OConnectionWrapper * ) p;
         try
         {
-            // TODO possible optimization : give 
+            // TODO possible optimization : give
             ::rtl::ByteSequence seq( nSize , ::rtl::BYTESEQ_NODEFAULT );
+
+            // #i20906#: Handle out-of-memory condition.
+            // Clean solution will be supplied with #i22343# (ByteSequence
+            // ctor will throw ::std::bad_alloc())
+            if ( seq.getHandle() == 0 )
+                return 0;
+
             sal_Int32 nRead = m->m_r->read( *(Sequence<sal_Int8>*)&seq , nSize );
             memcpy( pDest , seq.getConstArray() , nRead );
             return nRead;
@@ -117,7 +124,7 @@ namespace remotebridges_bridge
         {
             return 0;
         }
-        
+
     }
 
     sal_Int32 OConnectionWrapper::thisWrite( remote_Connection *p ,
@@ -148,7 +155,7 @@ namespace remotebridges_bridge
         }
         catch ( Exception & )
         {
-        }		
+        }
     }
 
     void OConnectionWrapper::thisClose( remote_Connection * p)
@@ -161,7 +168,7 @@ namespace remotebridges_bridge
         }
         catch( Exception & )
         {
-            
+
         }
     }
 }
