@@ -2,9 +2,9 @@
  *
  *  $RCSfile: remote.cxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: jbu $ $Date: 2000-11-28 14:34:12 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:28:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,12 +58,15 @@
  *
  *
  ************************************************************************/
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 
 #include <bridges/remote/remote.hxx>
 #include <bridges/remote/counter.hxx>
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 static MyCounter thisCounter( "DEBUG : Remote2RemoteStub");
 #endif
 
@@ -86,7 +89,7 @@ Remote2RemoteStub::Remote2RemoteStub( rtl_uString *pOid,
     acquire = thisAcquire;
     release = thisRelease;
     pDispatcher = thisDispatch;
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.acquire();
 #endif
 }
@@ -104,7 +107,7 @@ Remote2RemoteStub::~Remote2RemoteStub()
         bNeedsRelease = sal_True;
         typelib_typedescription_complete( (typelib_TypeDescription **) &m_pType );
     }
-    
+
     uno_Any any;
     uno_Any *pAny = &any;
 
@@ -125,10 +128,10 @@ Remote2RemoteStub::~Remote2RemoteStub()
     {
         typelib_typedescription_release( (typelib_TypeDescription * ) m_pType );
     }
-    
+
     typelib_typedescription_release( (typelib_TypeDescription * ) m_pType );
     m_pEnvRemote->release( m_pEnvRemote );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.release();
 #endif
 }
@@ -164,12 +167,12 @@ void Remote2RemoteStub::thisRelease( remote_Interface *pThis )
      if (! osl_decrementInterlockedCount( &(p->m_nRef) ))
     {
         p->m_pEnvRemote->pExtEnv->revokeInterface( p->m_pEnvRemote->pExtEnv, pThis );
-        
+
     }
 }
 
 void Remote2RemoteStub::thisDispatch(
-    remote_Interface * pRemoteI, 
+    remote_Interface * pRemoteI,
     typelib_TypeDescription * pMemberType,
     void * pReturn,
     void * pArgs[],
