@@ -2,9 +2,9 @@
  *
  *  $RCSfile: threadident.cxx,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 14:44:59 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:36:50 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,7 +59,6 @@
  *
  ************************************************************************/
 #include <stdio.h>
-#include <assert.h>
 
 #include <list>
 #include <hash_map>
@@ -86,7 +85,7 @@ static inline void createLocalId( sal_Sequence **ppThreadId )
 {
     rtl_byte_sequence_constructNoDefault( ppThreadId , 4 + 16 );
     *((sal_Int32*) ((*ppThreadId)->elements)) = osl_getThreadIdentifier(0);
-    
+
     rtl_getGlobalProcessId( (sal_uInt8 * ) &( (*ppThreadId)->elements[4]) );
 }
 
@@ -162,7 +161,7 @@ extern "C"  sal_Bool SAL_CALL uno_bindIdToCurrentThread( sal_Sequence *pThreadId
         {
             return sal_False;
         }
-        
+
     }
     return sal_True;
 }
