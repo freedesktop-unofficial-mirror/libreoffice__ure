@@ -2,9 +2,9 @@
  *
  *  $RCSfile: pipetest.cxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: jbu $ $Date: 2002-09-18 12:15:51 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:59:40 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -75,8 +75,7 @@
 #include <osl/mutex.hxx>
 #include <osl/thread.hxx>
 
-#include <assert.h>
-#include <string.h>	
+#include <string.h>
 
 using namespace ::rtl;
 using namespace ::osl;
@@ -92,7 +91,7 @@ using namespace ::com::sun::star::test;
 #define SERVICE_NAME		"test.com.sun.star.io.Pipe"
 
 
-class WriteToStreamThread : 
+class WriteToStreamThread :
         public Thread
 {
 
@@ -106,7 +105,7 @@ public:
 
     virtual ~WriteToStreamThread() {}
 
-    
+
 protected:
 
     /// Working method which should be overridden.
@@ -117,19 +116,19 @@ protected:
         m_output->closeOutput();
     }
 
-    /** Called when run() is done. 
+    /** Called when run() is done.
     * You might want to override it to do some cleanup.
     */
     virtual void SAL_CALL onTerminated()
     {
-        delete this;	
+        delete this;
     }
 
 
 private:
 
     Reference < XOutputStream >  m_output;
-    int m_iMax;		
+    int m_iMax;
 };
 
 
@@ -139,26 +138,26 @@ class OPipeTest : public WeakImplHelper1 < XSimpleTest >
 public:
     OPipeTest( const Reference< XMultiServiceFactory >  & rFactory );
     ~OPipeTest();
-    
+
 public: // implementation names
     static Sequence< OUString > 	getSupportedServiceNames_Static(void) throw();
-    static OUString 				getImplementationName_Static() throw();	
+    static OUString 				getImplementationName_Static() throw();
 
-public:	
-    virtual void SAL_CALL testInvariant(const OUString& TestName, const Reference < XInterface >& TestObject) 
+public:
+    virtual void SAL_CALL testInvariant(const OUString& TestName, const Reference < XInterface >& TestObject)
         throw  ( IllegalArgumentException, RuntimeException) ;
 
-    virtual sal_Int32 SAL_CALL test(	const OUString& TestName, 
-                                        const Reference < XInterface >& TestObject, 
+    virtual sal_Int32 SAL_CALL test(	const OUString& TestName,
+                                        const Reference < XInterface >& TestObject,
                                         sal_Int32 hTestHandle)
-        throw  (	IllegalArgumentException, 
+        throw  (	IllegalArgumentException,
                     RuntimeException);
 
     virtual sal_Bool SAL_CALL testPassed(void) 								throw  (	RuntimeException) ;
     virtual Sequence< OUString > SAL_CALL getErrors(void) 				throw  (RuntimeException) ;
     virtual Sequence< Any > SAL_CALL getErrorExceptions(void) 		throw  (RuntimeException);
-    virtual Sequence< OUString > SAL_CALL getWarnings(void) 				throw  (RuntimeException);	
-    
+    virtual Sequence< OUString > SAL_CALL getWarnings(void) 				throw  (RuntimeException);
+
 private:
     void testSimple( const Reference < XInterface > & );
     void testBufferResizing( const Reference < XInterface >  & );
@@ -168,26 +167,26 @@ private:
     Sequence<Any>  m_seqExceptions;
     Sequence<OUString> m_seqErrors;
     Sequence<OUString> m_seqWarnings;
-        
+
 };
 
 
 
 OPipeTest::OPipeTest( const Reference< XMultiServiceFactory > &rFactory )
 {
-    
+
 }
 
 OPipeTest::~OPipeTest()
 {
-    
+
 }
 
 
 
-void OPipeTest::testInvariant( const OUString& TestName, const Reference < XInterface >& TestObject ) 
-    throw  (	IllegalArgumentException, 
-                RuntimeException) 
+void OPipeTest::testInvariant( const OUString& TestName, const Reference < XInterface >& TestObject )
+    throw  (	IllegalArgumentException,
+                RuntimeException)
 {
     Reference< XServiceInfo > info( TestObject, UNO_QUERY );
     ERROR_ASSERT( info.is() , "XServiceInfo not supported !" );
@@ -197,13 +196,13 @@ void OPipeTest::testInvariant( const OUString& TestName, const Reference < XInte
         ERROR_ASSERT( ! info->supportsService(
             OUString( RTL_CONSTASCII_USTRINGPARAM("bla bluzb") ) ), "XServiceInfo test failed" );
     }
-    
-}    																		
+
+}
 
 
 sal_Int32 OPipeTest::test(
-    const OUString& TestName, 
-    const Reference < XInterface >& TestObject, 
+    const OUString& TestName,
+    const Reference < XInterface >& TestObject,
     sal_Int32 hTestHandle)
     throw  (	IllegalArgumentException, RuntimeException)
 {
@@ -220,7 +219,7 @@ sal_Int32 OPipeTest::test(
                 testBufferResizing( TestObject );
             }
             else if( 3 == hTestHandle ) {
-                testMultithreading( TestObject );	
+                testMultithreading( TestObject );
             }
         }
         catch( Exception & e )
@@ -232,9 +231,9 @@ sal_Int32 OPipeTest::test(
         {
             BUILD_ERROR( 0 , "unknown exception (Exception is  not base class)" );
         }
-        
+
         hTestHandle ++;
-        
+
         if( 4 == hTestHandle )
         {
             // all tests finished.
@@ -245,23 +244,23 @@ sal_Int32 OPipeTest::test(
         throw IllegalArgumentException();
     }
     return hTestHandle;
-}													
-
-
-
-sal_Bool OPipeTest::testPassed(void) 		throw  (RuntimeException) 
-{
-    return m_seqErrors.getLength() == 0;	
 }
 
 
-Sequence< OUString > OPipeTest::getErrors(void)		throw  (RuntimeException) 
+
+sal_Bool OPipeTest::testPassed(void) 		throw  (RuntimeException)
+{
+    return m_seqErrors.getLength() == 0;
+}
+
+
+Sequence< OUString > OPipeTest::getErrors(void)		throw  (RuntimeException)
 {
     return m_seqErrors;
 }
 
 
-Sequence< Any > OPipeTest::getErrorExceptions(void) 					throw  (RuntimeException) 
+Sequence< Any > OPipeTest::getErrorExceptions(void) 					throw  (RuntimeException)
 {
     return m_seqExceptions;
 }
@@ -281,26 +280,26 @@ Sequence< OUString > OPipeTest::getWarnings(void) 						throw  (RuntimeException
 
 void OPipeTest::testSimple( const Reference < XInterface > &r )
 {
-    
+
     Reference< XInputStream > input( r , UNO_QUERY );
     Reference < XOutputStream > output( r , UNO_QUERY );
-    
+
     ERROR_ASSERT( input.is()  , "queryInterface on XInputStream failed" );
     ERROR_ASSERT( output.is() , "queryInterface onXOutputStream failed" );
-    
+
     // basic read/write
     Sequence<sal_Int8> seqWrite = createSeq( "Hallo, du Ei !" );
 
     Sequence<sal_Int8> seqRead;
     for( int i = 0 ; i < 5000 ; i ++ ) {
-        output->writeBytes( seqWrite );		                                
+        output->writeBytes( seqWrite );
         input->readBytes( seqRead , input->available() );
-            
+
         ERROR_ASSERT( ! strcmp( (char *) seqWrite.getArray() , (char * )seqRead.getArray() ) ,
                       "error during read/write/skip" );
         ERROR_ASSERT( 0 == input->available() ,
                       "error during read/write/skip" );
-        
+
         // available shouldn't return a negative value
         input->skipBytes( seqWrite.getLength() - 5 );
         ERROR_ASSERT( 0 == input->available() , "wrong available after skip" );
@@ -308,9 +307,9 @@ void OPipeTest::testSimple( const Reference < XInterface > &r )
         // 5 bytes should be available
         output->writeBytes( seqWrite );
         ERROR_ASSERT( 5 == input->available() , "wrong available after skip/write " );
-        
+
         input->readBytes( seqRead , 5 );
-        ERROR_ASSERT( 	! strcmp( 	(char*) seqRead.getArray() , 
+        ERROR_ASSERT( 	! strcmp( 	(char*) seqRead.getArray() ,
                             (char*) &( seqWrite.getArray()[seqWrite.getLength()-5] ) ),
                         "write/read mismatich" );
 
@@ -318,7 +317,7 @@ void OPipeTest::testSimple( const Reference < XInterface > &r )
 
     output->writeBytes( seqWrite );
     ERROR_ASSERT( seqWrite.getLength() == input->available(), "wrong available() after write" );
-    
+
     ERROR_ASSERT( 10 == input->readSomeBytes( seqRead , 10 ) , "maximal number of bytes ignored" );
     ERROR_ASSERT( seqWrite.getLength() -10 == input->readSomeBytes( seqRead , 100 ) ,
                                                             "something wrong with readSomeBytes" );
@@ -332,14 +331,14 @@ void OPipeTest::testSimple( const Reference < XInterface > &r )
     catch (IOException & )
     {
     }
-    
+
     ERROR_ASSERT(! input->readBytes( seqRead , 1 ), "eof not found !" );
 
     input->closeInput();
     try
     {
         input->readBytes( seqRead , 1 );
-        ERROR_ASSERT( 0 , "reading from a closed stream does not cause an exception" );		
+        ERROR_ASSERT( 0 , "reading from a closed stream does not cause an exception" );
     }
     catch( IOException & ) {
     }
@@ -366,7 +365,7 @@ void OPipeTest::testSimple( const Reference < XInterface > &r )
 
 void OPipeTest::testBufferResizing( const Reference < XInterface > &r )
 {
-    
+
     int iMax = 20000;
     Reference< XInputStream > input( r , UNO_QUERY );
     Reference < XOutputStream > output( r , UNO_QUERY );
@@ -375,24 +374,24 @@ void OPipeTest::testBufferResizing( const Reference < XInterface > &r )
     ERROR_ASSERT( output.is() , "queryInterface on XOutputStream failed" );
 
     Sequence<sal_Int8> seqRead;
-        
-    // this is just to better check the 
+
+    // this is just to better check the
     // internal buffers
     output->writeBytes( Sequence<sal_Int8>(100) );
     Sequence< sal_Int8 > dummy;
     input->readBytes( dummy , 100);
-    
+
     for( int i = 0 ; i < iMax ; i ++ ) {
         output->writeBytes( createIntSeq( i ) );
-    }	
-        
+    }
+
     for( i = 0 ; i < iMax ; i ++ ) {
         input->readBytes( seqRead, createIntSeq(i).getLength() );
-        ERROR_ASSERT( ! strcmp( 	(char*) seqRead.getArray() , 
+        ERROR_ASSERT( ! strcmp( 	(char*) seqRead.getArray() ,
                                     (char*) createIntSeq(i).getArray() ) ,
                         "written/read mismatch\n" );
     }
-        
+
     output->closeOutput();
     ERROR_ASSERT( ! input->readBytes( seqRead , 1 ) , "eof not reached !" );
     input->closeInput();
@@ -419,15 +418,15 @@ void OPipeTest::testMultithreading( const Reference < XInterface > &r )
 
     ERROR_ASSERT( p , "couldn't create thread for testing !\n" );
 
-    p->create();	
-    
+    p->create();
+
     for(int  i = 0 ; sal_True ; i ++ ) {
         if( 0 == input->readBytes( seqRead, createIntSeq(i).getLength() ) ) {
             // eof reached !
             break;
         }
-                                            
-        ERROR_ASSERT( ! strcmp( 	(char*) seqRead.getArray() , 
+
+        ERROR_ASSERT( ! strcmp( 	(char*) seqRead.getArray() ,
                                     (char*) createIntSeq(i).getArray() ) ,
                         "written/read mismatch\n" );
     }
@@ -438,13 +437,13 @@ void OPipeTest::testMultithreading( const Reference < XInterface > &r )
 
 
 
-/** 
+/**
 * for external binding
 *
 *
 **/
 Reference < XInterface > SAL_CALL OPipeTest_CreateInstance( const Reference< XMultiServiceFactory>  & rSMgr ) throw (Exception)
-{	
+{
     OPipeTest *p = new OPipeTest( rSMgr );
     Reference< XInterface > x ( SAL_STATIC_CAST( OWeakObject * , p ) );
     return x;
@@ -456,7 +455,7 @@ Sequence<OUString> OPipeTest_getSupportedServiceNames(void) throw()
 {
       Sequence<OUString> aRet(1);
     aRet.getArray()[0] = OPipeTest_getServiceName();
-    
+
       return aRet;
 }
 
