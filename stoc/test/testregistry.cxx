@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testregistry.cxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-19 14:25:58 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:14:45 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -90,7 +90,7 @@
 
 #ifndef _CPPUHELPER_SERVICEFACTORY_HXX_
 #include <cppuhelper/servicefactory.hxx>
-#endif 
+#endif
 
 #include <com/sun/star/lang/XComponent.hpp>
 
@@ -107,7 +107,7 @@ using namespace com::sun::star::beans;
 using namespace rtl;
 using namespace osl;
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #define TEST_ENSHURE(c, m)   OSL_ENSURE(c, m)
 #else
 #define TEST_ENSHURE(c, m)   OSL_VERIFY(c)
@@ -158,8 +158,8 @@ OUString getExePath()
 #else
     exe = exe.copy(0, exe.getLength() - 12);
 #endif
-    return exe;	
-}	
+    return exe;
+}
 
 void setStarUserRegistry()
 {
@@ -170,7 +170,7 @@ void setStarUserRegistry()
         delete pLoader;
         return;
     }
-    
+
     Registry *myRegistry = new Registry(*pLoader);
     delete pLoader;
 
@@ -181,14 +181,14 @@ void setStarUserRegistry()
     if(myRegistry->open(userReg, REG_READWRITE))
     {
         TEST_ENSHURE(!myRegistry->create(userReg), "setStarUserRegistry error 1");
-    }	
+    }
 
     TEST_ENSHURE(!myRegistry->close(), "setStarUserRegistry error 9");
     delete myRegistry;
 
     userRegEnv += OUStringToOString(userReg, RTL_TEXTENCODING_ASCII_US);
     putenv((char *)userRegEnv.getStr());
-}	
+}
 
 void setLinkInDefaultRegistry(const OUString& linkName, const OUString& linkTarget)
 {
