@@ -2,9 +2,9 @@
  *
  *  $RCSfile: factory.cxx,v $
  *
- *  $Revision: 1.16 $
+ *  $Revision: 1.17 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-15 12:26:49 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:34:31 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -106,7 +106,7 @@ using namespace com::sun::star::loader;
 using namespace com::sun::star::registry;
 
 namespace cppu
-{     
+{
 
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -134,7 +134,7 @@ public:
             if( pServiceNames_ )
                 aServiceNames = *pServiceNames_;
         }
-    
+
     // old function, only for backward compatibility
     OSingleFactoryHelper(
         const Reference<XMultiServiceFactory > & rServiceManager,
@@ -147,11 +147,11 @@ public:
         {}
 
     virtual ~OSingleFactoryHelper();
-    
+
     // XInterface
     Any SAL_CALL queryInterface( const Type & rType )
         throw(::com::sun::star::uno::RuntimeException);
-    
+
     // XSingleServiceFactory
     Reference<XInterface > SAL_CALL createInstance()
         throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException);
@@ -183,7 +183,7 @@ protected:
     virtual Reference<XInterface >	createInstanceEveryTime(
         Reference< XComponentContext > const & xContext )
         throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException);
-    
+
     Reference<XMultiServiceFactory > xSMgr;
     ComponentInstantiation			 pCreateFunction;
     ComponentFactoryFunc             m_fptr;
@@ -193,7 +193,7 @@ protected:
 OSingleFactoryHelper::~OSingleFactoryHelper()
 {
 }
-    
+
 
 //-----------------------------------------------------------------------------
 Any OSingleFactoryHelper::queryInterface( const Type & rType )
@@ -218,7 +218,7 @@ Reference<XInterface > OSingleFactoryHelper::createInstanceEveryTime(
     }
     else if( pCreateFunction )
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         if (xContext.is())
         {
            OSL_TRACE( "### ignoring context calling OSingleFactoryHelper::createInstanceEveryTime()!\n" );
@@ -263,7 +263,7 @@ Reference< XInterface > OSingleFactoryHelper::createInstanceWithArgumentsAndCont
     throw (Exception, RuntimeException)
 {
     Reference< XInterface > xRet( createInstanceWithContext( xContext ) );
-    
+
     if (rArguments.getLength())
     {
         Reference< lang::XInitialization > xInit( xRet, UNO_QUERY );
@@ -278,7 +278,7 @@ Reference< XInterface > OSingleFactoryHelper::createInstanceWithArgumentsAndCont
                 Reference< XInterface >(), 0 );
         }
     }
-    
+
     return xRet;
 }
 
@@ -301,14 +301,14 @@ sal_Bool OSingleFactoryHelper::supportsService(
             return sal_True;
 
     return sal_False;
-}	
+}
 
 // XServiceInfo
 Sequence< OUString > OSingleFactoryHelper::getSupportedServiceNames(void)
     throw(::com::sun::star::uno::RuntimeException)
 {
     return aServiceNames;
-}	
+}
 
 
 //----------------------------------------------------------------------
@@ -340,8 +340,8 @@ public:
         {
         }
 
-    // Used by the createXXXFactory functions. The argument pModCount is used to  prevent the unloading of the module 
-    // which contains pCreateFunction_ 
+    // Used by the createXXXFactory functions. The argument pModCount is used to  prevent the unloading of the module
+    // which contains pCreateFunction_
     OFactoryComponentHelper(
         const Reference<XMultiServiceFactory > & rServiceManager,
         const OUString & rImplementationName_,
@@ -372,7 +372,7 @@ public:
         , pModuleCount(0)
         {
         }
-    
+
     ~OFactoryComponentHelper()
     {
         if(pModuleCount)
@@ -380,7 +380,7 @@ public:
     }
 
     // XInterface
-    Any SAL_CALL queryInterface( const Type & rType ) 
+    Any SAL_CALL queryInterface( const Type & rType )
         throw(::com::sun::star::uno::RuntimeException);
     void SAL_CALL acquire() throw()
         { OComponentHelper::acquire(); }
@@ -400,11 +400,11 @@ public:
         Sequence< Any > const & rArguments,
         Reference< XComponentContext > const & xContext )
         throw (Exception, RuntimeException);
-    
+
     // XTypeProvider
     virtual Sequence< Type > SAL_CALL getTypes() throw (::com::sun::star::uno::RuntimeException);
     virtual Sequence< sal_Int8 > SAL_CALL getImplementationId() throw(::com::sun::star::uno::RuntimeException);
-    
+
     // XAggregation
     Any SAL_CALL queryAggregation( const Type & rType )
         throw(::com::sun::star::uno::RuntimeException);
@@ -415,7 +415,7 @@ public:
 
     // OComponentHelper
     void SAL_CALL dispose() throw(::com::sun::star::uno::RuntimeException);
-    
+
 private:
     Reference<XInterface >	xTheInstance;
     sal_Bool				bOneInstance;
@@ -427,9 +427,9 @@ protected:
 };
 
 
-Any SAL_CALL OFactoryComponentHelper::queryInterface( const Type & rType ) 
+Any SAL_CALL OFactoryComponentHelper::queryInterface( const Type & rType )
     throw(::com::sun::star::uno::RuntimeException)
-{ 
+{
     if( rType == ::getCppuType( (Reference<XUnloadingPreference>*)0))
     {
         Any ret;
@@ -437,7 +437,7 @@ Any SAL_CALL OFactoryComponentHelper::queryInterface( const Type & rType )
         ret<<= xpref;
         return ret;
     }
-    return OComponentHelper::queryInterface( rType ); 
+    return OComponentHelper::queryInterface( rType );
 }
 
 // XAggregation
@@ -574,9 +574,9 @@ void OFactoryComponentHelper::dispose()
 }
 
 // XUnloadingPreference
-// This class is used for single factories, component factories and 
-// one-instance factories. Depending on the usage this function has 
-// to return different values. 
+// This class is used for single factories, component factories and
+// one-instance factories. Depending on the usage this function has
+// to return different values.
 // one-instance factory: sal_False
 // single factory: sal_True
 // component factory: sal_True
@@ -630,7 +630,7 @@ public:
 private:
     Reference< XInterface > createModuleFactory()
         throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException);
-    
+
     /** The registry key of the implementation section */
     Reference<XRegistryKey >	xImplementationKey;
     /** The factory created with the loader. */
@@ -690,12 +690,12 @@ Reference<XInterface > SAL_CALL ORegistryFactoryHelper::createInstanceWithArgume
     }
     else if( xModuleFactory.is() )
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OSL_TRACE( "### no context ORegistryFactoryHelper::createInstanceWithArgumentsAndContext()!\n" );
 #endif
         return xModuleFactory->createInstanceWithArgumentsAndContext( Arguments, Reference< XComponentContext >() );
     }
-    
+
     return Reference<XInterface >();
 }
 
@@ -723,7 +723,7 @@ Reference< XInterface > ORegistryFactoryHelper::createInstanceWithArgumentsAndCo
     }
     else if( xModuleFactoryDepr.is() )
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         if (xContext.is())
         {
             OSL_TRACE( "### ignoring context calling ORegistryFactoryHelper::createInstanceWithArgumentsAndContext()!\n" );
@@ -735,7 +735,7 @@ Reference< XInterface > ORegistryFactoryHelper::createInstanceWithArgumentsAndCo
     return Reference<XInterface >();
 }
 
-    
+
 // OSingleFactoryHelper
 Reference< XInterface > ORegistryFactoryHelper::createModuleFactory()
     throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException)
@@ -776,7 +776,7 @@ Reference< XInterface > ORegistryFactoryHelper::createModuleFactory()
 
                 // search protocol delemitter
                 sal_Int32 nPos = aLocation.indexOf(
-                    OUString( RTL_CONSTASCII_USTRINGPARAM("://") ) ); 
+                    OUString( RTL_CONSTASCII_USTRINGPARAM("://") ) );
                 if( nPos != -1 )
                 {
                     aActivatorName = aLocation.copy( 0, nPos );
@@ -813,7 +813,7 @@ Reference< XInterface > ORegistryFactoryHelper::createModuleFactory()
     catch (InvalidRegistryException &)
     {
     }
-    
+
     return xFactory;
 }
 
@@ -829,7 +829,7 @@ Sequence< OUString > ORegistryFactoryHelper::getSupportedServiceNames(void)
         {
             Reference<XRegistryKey > xKey = xImplementationKey->openKey(
                 OUString( RTL_CONSTASCII_USTRINGPARAM("UNO/SERVICES") ) );
-        
+
             if (xKey.is())
             {
                 // length of prefix. +1 for the '/' at the end
@@ -840,7 +840,7 @@ Sequence< OUString > ORegistryFactoryHelper::getSupportedServiceNames(void)
                 OUString* pKeys = seqKeys.getArray();
                 for( sal_Int32 i = 0; i < seqKeys.getLength(); i++ )
                     pKeys[i] = pKeys[i].copy(nPrefixLen);
-                
+
                 aServiceNames = seqKeys;
             }
         }
@@ -849,7 +849,7 @@ Sequence< OUString > ORegistryFactoryHelper::getSupportedServiceNames(void)
         }
     }
     return aServiceNames;
-}	
+}
 
 sal_Bool SAL_CALL ORegistryFactoryHelper::releaseOnNotification() throw(::com::sun::star::uno::RuntimeException)
 {
@@ -890,7 +890,7 @@ class OFactoryProxyHelper : public WeakImplHelper3< XServiceInfo, XSingleService
                                                     XUnloadingPreference >
 {
     Reference<XSingleServiceFactory >	xFactory;
-    
+
 public:
 
     OFactoryProxyHelper(
@@ -899,13 +899,13 @@ public:
         SAL_THROW( () )
         : xFactory( rFactory )
         {}
-    
+
     // XSingleServiceFactory
     Reference<XInterface > SAL_CALL createInstance()
         throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException);
     Reference<XInterface > SAL_CALL createInstanceWithArguments(const Sequence<Any>& Arguments)
         throw(::com::sun::star::uno::Exception, ::com::sun::star::uno::RuntimeException);
-    
+
     // XServiceInfo
     OUString SAL_CALL getImplementationName()
         throw(::com::sun::star::uno::RuntimeException);
@@ -954,7 +954,7 @@ sal_Bool OFactoryProxyHelper::supportsService(const OUString& ServiceName)
     if( xInfo.is() )
         return xInfo->supportsService( ServiceName );
     return sal_False;
-}	
+}
 
 // XServiceInfo
 Sequence< OUString > OFactoryProxyHelper::getSupportedServiceNames(void)
@@ -964,7 +964,7 @@ Sequence< OUString > OFactoryProxyHelper::getSupportedServiceNames(void)
     if( xInfo.is() )
         return xInfo->getSupportedServiceNames();
     return Sequence< OUString >();
-}	
+}
 
 sal_Bool SAL_CALL OFactoryProxyHelper::releaseOnNotification() throw(::com::sun::star::uno::RuntimeException)
 {
@@ -1003,9 +1003,9 @@ Reference<XSingleServiceFactory > SAL_CALL createFactoryProxy(
 }
 
 // global function
-Reference<XSingleServiceFactory > SAL_CALL createOneInstanceFactory( 
+Reference<XSingleServiceFactory > SAL_CALL createOneInstanceFactory(
     const Reference<XMultiServiceFactory > & rServiceManager,
-    const OUString & rImplementationName, 
+    const OUString & rImplementationName,
     ComponentInstantiation pCreateFunction,
     const Sequence< OUString > & rServiceNames,
     rtl_ModuleCount *pModCount )
@@ -1029,9 +1029,9 @@ Reference<XSingleServiceFactory > SAL_CALL createSingleRegistryFactory(
 }
 
 // global function
-Reference<XSingleServiceFactory > SAL_CALL createOneInstanceRegistryFactory( 
+Reference<XSingleServiceFactory > SAL_CALL createOneInstanceRegistryFactory(
     const Reference<XMultiServiceFactory > & rServiceManager,
-    const OUString & rImplementationName, 
+    const OUString & rImplementationName,
     const Reference<XRegistryKey > & rImplementationKey )
     SAL_THROW( () )
 {
@@ -1051,6 +1051,6 @@ Reference< lang::XSingleComponentFactory > SAL_CALL createSingleComponentFactory
         Reference< XMultiServiceFactory >(), rImplementationName, 0, fptr, &rServiceNames, pModCount, sal_False );
 }
 
-}     
+}
 
 
