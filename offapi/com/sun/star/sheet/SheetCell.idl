@@ -2,9 +2,9 @@
  *
  *  $RCSfile: SheetCell.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: mi $ $Date: 2000-11-08 12:43:46 $
+ *  last change: $Author: sab $ $Date: 2001-06-12 12:46:36 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,69 +58,79 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_sheet_SheetCell_idl__ 
-#define __com_sun_star_sheet_SheetCell_idl__ 
- 
-#ifndef __com_sun_star_table_Cell_idl__ 
-#include <com/sun/star/table/Cell.idl> 
-#endif 
- 
-#ifndef __com_sun_star_sheet_XCellAddressable_idl__ 
-#include <com/sun/star/sheet/XCellAddressable.idl> 
-#endif 
- 
-#ifndef __com_sun_star_style_CharacterProperties_idl__ 
-#include <com/sun/star/style/CharacterProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_style_ParagraphProperties_idl__ 
-#include <com/sun/star/style/ParagraphProperties.idl> 
-#endif 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module sheet {  
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_sheet_SheetCell_idl__
+#define __com_sun_star_sheet_SheetCell_idl__
+
+#ifndef __com_sun_star_table_Cell_idl__
+#include <com/sun/star/table/Cell.idl>
+#endif
+
+#ifndef __com_sun_star_sheet_XCellAddressable_idl__
+#include <com/sun/star/sheet/XCellAddressable.idl>
+#endif
+
+#ifndef __com_sun_star_style_CharacterProperties_idl__
+#include <com/sun/star/style/CharacterProperties.idl>
+#endif
+
+#ifndef __com_sun_star_style_ParagraphProperties_idl__
+#include <com/sun/star/style/ParagraphProperties.idl>
+#endif
+
+#ifndef __com_sun_star_document_XActionLockable_idl__
+#include <com/sun/star/document/XActionLockable.idl>
+#endif
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module sheet {
+
+//=============================================================================
+
 // DocMerge from xml: service com::sun::star::sheet::SheetCell
 /** a cell which can be  addressed.
  */
 service SheetCell
-{ 
+{
     // DocMerge: empty anyway
-    service com::sun::star::table::Cell; 
-    
+    service com::sun::star::table::Cell;
+
     // DocMerge: empty anyway
-    service com::sun::star::style::CharacterProperties; 
-    
+    service com::sun::star::style::CharacterProperties;
+
     // DocMerge: empty anyway
-    service com::sun::star::style::ParagraphProperties; 
-    
+    service com::sun::star::style::ParagraphProperties;
+
     // DocMerge: empty anyway
-    interface com::sun::star::sheet::XCellAddressable; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
+    interface com::sun::star::sheet::XCellAddressable;
+
+    /** locks the update between XCell and XText
+    */
+    interface com::sun::star::document::XActionLockable;
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.3  2000/11/08 12:43:46  mi
+    moved from api
+
     Revision 1.1.1.1  2000/09/18 23:35:47  hjs
     initial import
-    
+
     Revision 1.4  2000/09/11 11:52:49  mi
     documentation merged from XML
-     
-    Revision 1.2  2000/08/02 10:28:00  mi 
-    CharacterProperties and ParagraphProperties (were in table/Cell... before) 
-     
-    Revision 1.1.1.1  1999/11/11 09:48:45  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.2  2000/08/02 10:28:00  mi
+    CharacterProperties and ParagraphProperties (were in table/Cell... before)
+
+    Revision 1.1.1.1  1999/11/11 09:48:45  jsc
+    new
+
+
+=============================================================================*/
+#endif
