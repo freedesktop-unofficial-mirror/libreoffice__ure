@@ -2,9 +2,9 @@
  *
  *  $RCSfile: streamhelper.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: hr $ $Date: 2001-09-26 15:55:26 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:58:58 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,15 +58,27 @@
  *
  *
  ************************************************************************/
-#define Max( a, b )		(((a)>(b)) ? (a) : (b) )
+
+// Save NDEBUG state
+#ifdef NDEBUG
+#define STREAMHELPER_HXX_HAD_NDEBUG
+#undef NDEBUG
+#endif
+
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
+#include <assert.h>
+
+#define Max( a, b )     (((a)>(b)) ? (a) : (b) )
 #define Min( a, b )		(((a)<(b)) ? (a) : (b) )
 
 namespace io_stm {
-    
-class IFIFO_OutOfBoundsException : 
+
+class IFIFO_OutOfBoundsException :
                 public Exception
 {};
-    
+
 class IFIFO_OutOfMemoryException :
                 public Exception
 {};
@@ -75,7 +87,7 @@ class IFIFO
 {
 public:
 
-    
+
     virtual void 	write( const Sequence<sal_Int8> &) throw( IFIFO_OutOfMemoryException,
                                                               IFIFO_OutOfBoundsException )=0;
 
@@ -90,10 +102,10 @@ public:
 };
 
 
-class IRingBuffer_OutOfBoundsException : 
+class IRingBuffer_OutOfBoundsException :
                 public Exception
 {};
-    
+
 class IRingBuffer_OutOfMemoryException :
                 public Exception
 {};
@@ -102,12 +114,12 @@ class IRingBuffer
 {
 public:
     /***
-    * overwrites data at given position. Size is automatically extended, when 
+    * overwrites data at given position. Size is automatically extended, when
     * data is written beyond end.
     *
     ***/
-    
-    virtual void 	writeAt( sal_Int32 nPos, const Sequence<sal_Int8> &) 
+
+    virtual void 	writeAt( sal_Int32 nPos, const Sequence<sal_Int8> &)
         throw( IRingBuffer_OutOfMemoryException,
                IRingBuffer_OutOfBoundsException )=0;
     virtual void 	readAt( sal_Int32 nPos, Sequence<sal_Int8> & , sal_Int32 nBytesToRead ) const
@@ -127,17 +139,17 @@ public:
     MemRingBuffer();
     virtual ~MemRingBuffer();
 
-    virtual void 	writeAt( sal_Int32 nPos, const Sequence<sal_Int8> &) 
+    virtual void 	writeAt( sal_Int32 nPos, const Sequence<sal_Int8> &)
                                                     throw(	IRingBuffer_OutOfMemoryException,
                                                                 IRingBuffer_OutOfBoundsException );
-    virtual void 	readAt( sal_Int32 nPos, Sequence<sal_Int8> & , sal_Int32 nBytesToRead ) const 
+    virtual void 	readAt( sal_Int32 nPos, Sequence<sal_Int8> & , sal_Int32 nBytesToRead ) const
                                                     throw( IRingBuffer_OutOfBoundsException );
     virtual sal_Int32 	getSize() const throw(  );
     virtual void 	forgetFromStart( sal_Int32 nBytesToForget ) throw(IRingBuffer_OutOfBoundsException);
-    virtual void	forgetFromEnd( sal_Int32 nBytesToForget ) throw(IRingBuffer_OutOfBoundsException);	
+    virtual void	forgetFromEnd( sal_Int32 nBytesToForget ) throw(IRingBuffer_OutOfBoundsException);
 
-    virtual void shrink() throw();	
-    
+    virtual void shrink() throw();
+
 private:
 
     void resizeBuffer( sal_Int32 nMinSize ) throw( IRingBuffer_OutOfMemoryException );
@@ -146,10 +158,10 @@ private:
         assert( m_nBufferLen >= 0 );
         assert( m_nOccupiedBuffer >= 0 );
         assert( m_nOccupiedBuffer <= m_nBufferLen );
-        assert( m_nStart >= 0 );	
+        assert( m_nStart >= 0 );
         assert( 0 == m_nStart || m_nStart < m_nBufferLen );
     }
-    
+
     sal_Int8 	*m_p;
     sal_Int32 	m_nBufferLen;
     sal_Int32 	m_nStart;
@@ -173,5 +185,12 @@ public:
                         { MemRingBuffer::shrink(); }
 
 };
+
+// Restore NDEBUG state
+#ifdef STREAMHELPER_HXX_HAD_NDEBUG
+#define NDEBUG
+#else
+#undef NDEBUG
+#endif
 
 }
