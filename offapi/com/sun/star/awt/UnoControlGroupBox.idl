@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlGroupBox.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 13:52:43 $
+ *  last change: $Author: vg $ $Date: 2003-06-27 08:56:15 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -64,7 +64,7 @@
 #ifndef __com_sun_star_awt_UnoControl_idl__ 
 #include <com/sun/star/awt/UnoControl.idl> 
 #endif 
- 
+
  
 //============================================================================= 
  
@@ -76,7 +76,8 @@
  */
 service UnoControlGroupBox
 { 
-    service com::sun::star::awt::UnoControl; 
+    service com::sun::star::awt::UnoControl;
+
 }; 
  
 //============================================================================= 
