@@ -2,9 +2,9 @@
  *
  *  $RCSfile: thread.cxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: jbu $ $Date: 2001-06-08 15:52:21 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:36:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,7 +73,7 @@ extern "C" {
 void SAL_CALL cppu_requestThreadWorker( void *pVoid )
 {
     ::cppu_threadpool::ORequestThread *pThread = ( ::cppu_threadpool::ORequestThread * ) pVoid;
-    
+
     pThread->run();
     pThread->onTerminated();
 }
@@ -85,14 +85,14 @@ namespace cppu_threadpool {
 // ----------------------------------------------------------------------------------
     ThreadAdmin::~ThreadAdmin()
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         if( m_lst.size() )
         {
             fprintf( stderr, "%d Threads left\n" , m_lst.size() );
         }
 #endif
     }
-    
+
     void ThreadAdmin::add( ORequestThread *p )
     {
         MutexGuard aGuard( m_mutex );
@@ -110,7 +110,7 @@ namespace cppu_threadpool {
     void ThreadAdmin::join()
     {
         ORequestThread *pCurrent;
-        do 
+        do
         {
             pCurrent = 0;
             {
@@ -142,7 +142,7 @@ namespace cppu_threadpool {
             }
         }
         return pThreadAdmin;
-        
+
     }
 
 // ----------------------------------------------------------------------------------
@@ -158,7 +158,7 @@ namespace cppu_threadpool {
         ThreadAdmin::getInstance()->add( this );
     }
 
-    
+
     ORequestThread::~ORequestThread()
     {
         if (m_thread != 0)
@@ -166,7 +166,7 @@ namespace cppu_threadpool {
             osl_destroyThread(m_thread);
         }
     }
-    
+
 
     void ORequestThread::setTask( JobQueue *pQueue,
                                   const ByteSequence &aThreadId,
@@ -176,11 +176,11 @@ namespace cppu_threadpool {
         m_aThreadId = aThreadId;
         m_bAsynchron = bAsynchron;
     }
-    
+
     sal_Bool ORequestThread::create()
     {
         OSL_ASSERT(m_thread == 0);	// only one running thread per instance
-        
+
         if ( m_thread = osl_createSuspendedThread( cppu_requestThreadWorker, (void*)this))
         {
             osl_resumeThread( m_thread );
@@ -193,7 +193,7 @@ namespace cppu_threadpool {
     {
         osl_joinWithThread( m_thread );
     }
-    
+
     void ORequestThread::onTerminated()
     {
         ThreadAdmin::getInstance()->remove( this );
@@ -212,14 +212,14 @@ namespace cppu_threadpool {
                 sal_Bool bReturn = uno_bindIdToCurrentThread( m_aThreadId.getHandle() );
                 OSL_ASSERT( bReturn );
             }
-            
+
             while( ! m_pQueue->isEmpty() )
             {
                 // Note : Oneways should not get a disposable disposeid,
                 //        It does not make sense to dispose a call in this state.
                 //        That's way we put it an disposeid, that can't be used otherwise.
                 m_pQueue->enter( (sal_Int64 ) this , sal_True );
-                
+
                 if( m_pQueue->isEmpty() )
                 {
                     ThreadPool::getInstance()->revokeQueue( m_aThreadId , m_bAsynchron );
@@ -227,10 +227,10 @@ namespace cppu_threadpool {
                     //        may be false (race).
                 }
             }
-        
+
             delete m_pQueue;
             m_pQueue = 0;
-            
+
             if( ! m_bAsynchron )
             {
                 uno_releaseIdFromCurrentThread();
