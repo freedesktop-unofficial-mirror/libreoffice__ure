@@ -2,9 +2,9 @@
  *
  *  $RCSfile: component_context.hxx,v $
  *
- *  $Revision: 1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: dbo $ $Date: 2001-05-08 15:54:52 $
+ *  last change: $Author: dbo $ $Date: 2001-08-27 10:00:48 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -68,10 +68,12 @@
 namespace cppu /** */ //for docpp
 {
 
+/** Context entries struct for calling createComponentContext().
+*/
 struct ContextEntry_Init
 {
     /** late init denotes a object that will be raised when first get() is calling for it
-
+        
         The context implementation expects either a com.sun.star.lang.XSingleComponentFactory
         object as value (to instanciate the object) or a string as value for raising
         a service via the used service manager
@@ -86,7 +88,7 @@ struct ContextEntry_Init
 };
 
 /** Creates a component context with the given entries.
-
+    
     @param pEntries array of entries
     @param nEntries number of entries
     @param xDelegate delegation to further context, if value was not found
