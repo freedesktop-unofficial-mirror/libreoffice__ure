@@ -2,9 +2,9 @@
  *
  *  $RCSfile: regimpl.cxx,v $
  *
- *  $Revision: 1.15 $
+ *  $Revision: 1.16 $
  *
- *  last change: $Author: jbu $ $Date: 2002-11-12 16:22:19 $
+ *  last change: $Author: hr $ $Date: 2003-03-26 15:37:46 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -63,7 +63,7 @@
 #include	<stdio.h>
 #ifdef MAC
 #include    <unistd.h>
-#define strdup(str) strcpy((sal_Char*)malloc(strlen(str)+1),str)
+#define strdup(str) strcpy((sal_Char*)malloc(strlen(str)+1),str) /* #100211# - checked */
 #endif
 #ifdef UNX
 #include    <unistd.h>
@@ -196,9 +196,9 @@ static sal_Bool dumpType(RegistryTypeReader& reader, const OString& sIndent)
         for (i = 0; i < reader.getFieldCount(); i++)
         {
             fprintf(stdout, "%sfield #%d:\n%s  name='%s'\n%s  type='%s'\n", indent,
-                    i, indent, OUStringToOString(reader.getFieldName(i), RTL_TEXTENCODING_UTF8).getStr(), 
+                    i, indent, OUStringToOString(reader.getFieldName(i), RTL_TEXTENCODING_UTF8).getStr(),
                     indent, OUStringToOString(reader.getFieldType(i), RTL_TEXTENCODING_UTF8).getStr());
-            
+
             fieldAccess = reader.getFieldAccess(i);
             if ( fieldAccess == RT_ACCESS_INVALID )
             {
@@ -313,7 +313,7 @@ static sal_Bool dumpType(RegistryTypeReader& reader, const OString& sIndent)
                         break;
                 }
             }
-      
+
             fprintf(stdout, "\n%s  Doku: \"%s\"", indent, OUStringToOString(reader.getFieldDoku(i), RTL_TEXTENCODING_UTF8).getStr());
             fprintf(stdout, "\n%s  IDL source file: \"%s\"\n", indent, OUStringToOString(reader.getFieldFileName(i), RTL_TEXTENCODING_UTF8).getStr());
         }
@@ -343,9 +343,9 @@ static sal_Bool dumpType(RegistryTypeReader& reader, const OString& sIndent)
                     fprintf(stdout, "<unknown mode> ");
                     break;
             }
-  
-            fprintf(stdout, "%s %s(", 
-                    OUStringToOString(reader.getMethodReturnType(i), RTL_TEXTENCODING_UTF8).getStr(), 
+
+            fprintf(stdout, "%s %s(",
+                    OUStringToOString(reader.getMethodReturnType(i), RTL_TEXTENCODING_UTF8).getStr(),
                     OUStringToOString(reader.getMethodName(i), RTL_TEXTENCODING_UTF8).getStr());
 
             for (j = 0; j < reader.getMethodParamCount(i); j++)
@@ -369,8 +369,8 @@ static sal_Bool dumpType(RegistryTypeReader& reader, const OString& sIndent)
                         break;
                 }
 
-                fprintf(stdout, "%s %s", 
-                        OUStringToOString(reader.getMethodParamType(i, j), RTL_TEXTENCODING_UTF8).getStr(), 
+                fprintf(stdout, "%s %s",
+                        OUStringToOString(reader.getMethodParamType(i, j), RTL_TEXTENCODING_UTF8).getStr(),
                         OUStringToOString(reader.getMethodParamName(i, j), RTL_TEXTENCODING_UTF8).getStr());
 
                 if (j != reader.getMethodParamCount(i) - 1)
@@ -384,21 +384,21 @@ static sal_Bool dumpType(RegistryTypeReader& reader, const OString& sIndent)
                 fprintf(stdout, "raises ");
                 for (j = 0; j < reader.getMethodExcCount(i); j++)
                 {
-                    fprintf(stdout, "%s", 
+                    fprintf(stdout, "%s",
                             OUStringToOString(reader.getMethodExcType(i, j), RTL_TEXTENCODING_UTF8).getStr());
                     if (j != reader.getMethodExcCount(i) - 1)
                         fprintf(stdout, ", ");
                 }
             }
 
-            fprintf(stdout, "\n%s  Doku: \"%s\"\n", indent, 
+            fprintf(stdout, "\n%s  Doku: \"%s\"\n", indent,
                     OUStringToOString(reader.getMethodDoku(i), RTL_TEXTENCODING_UTF8).getStr());
         }
 
         fprintf(stdout, "%snumber of references: %d\n", indent, reader.getReferenceCount());
         for (i = 0; i < reader.getReferenceCount(); i++)
         {
-            fprintf(stdout, "%sreference #%d:\n%s  name='%s'\n", indent, i, indent, 
+            fprintf(stdout, "%sreference #%d:\n%s  name='%s'\n", indent, i, indent,
                     OUStringToOString(reader.getReferenceName(i), RTL_TEXTENCODING_UTF8).getStr());
             switch (reader.getReferenceType(i))
             {
@@ -426,7 +426,7 @@ static sal_Bool dumpType(RegistryTypeReader& reader, const OString& sIndent)
                 fprintf(stdout, "%s  access=optional\n", indent);
             }
 
-            fprintf(stdout, "%s  Doku: \"%s\"\n", indent, 
+            fprintf(stdout, "%s  Doku: \"%s\"\n", indent,
                     OUStringToOString(reader.getReferenceDoku(i), RTL_TEXTENCODING_UTF8).getStr());
         }
     }
@@ -494,7 +494,7 @@ RegError ORegistry::initRegistry(const OUString& regName, RegAccessMode accessMo
     {
         errCode = rRegFile.create(regName, sAccessMode, REG_PAGESIZE);
     }
-    
+
     if (errCode)
     {
         switch (errCode)
@@ -595,7 +595,7 @@ RegError ORegistry::destroyRegistry(const OUString& regName)
                 OUString systemName;
                 if ( FileBase::getSystemPathFromFileURL(m_name, systemName) != FileBase::E_None )
                     systemName = m_name;
-                
+
                 OString name( OUStringToOString(systemName, osl_getThreadTextEncoding()) );
                 if (unlink(name.getStr()) != 0)
                 {
@@ -686,7 +686,7 @@ static OUString makePath( const OUString & resolvedPath, const OUString &path )
     {
         buf.appendAscii( "/" );
     }
-    
+
     if( path[0] == '/' )
     {
         buf.append( path.getStr()+1 );
@@ -732,13 +732,13 @@ RegError ORegistry::openKeyWithoutLink(
     sal_Int32 lastIndex = sFullKeyName.lastIndexOf('/');
     sRelativKey = sFullKeyName.copy(lastIndex + 1);
     sFullPath = sFullKeyName.copy(0, lastIndex + 1);
-    
+
     KeyMap::iterator ii = m_openKeyTable.find( sFullKeyName );
     if( ii == m_openKeyTable.end() )
     {
         OStoreDirectory rStoreDir;
         storeError      _err = rStoreDir.create(pKey->getStoreFile(), sFullPath, sRelativKey, accessMode);
-        
+
         if (_err == store_E_NotExists)
             return REG_KEY_NOT_EXISTS;
         else
@@ -747,7 +747,7 @@ RegError ORegistry::openKeyWithoutLink(
 
         if( _err != store_E_None )
             return REG_KEY_NOT_EXISTS;
-        
+
         pRet = new ORegKey(sFullKeyName, rStoreDir, this);
         *phOpenKey = pRet;
         m_openKeyTable[sFullKeyName] = pRet;
@@ -2047,7 +2047,7 @@ RegError ORegistry::createLink(RegKeyHandle hKey,
 
     sal_Int32	nIndex = 0;
     OUString	token;
-    
+
     do
     {
         token = sFullLinkName.getToken(0, '/', nIndex);
@@ -2152,12 +2152,12 @@ OUString ORegistry::resolveLinks(ORegKey* pKey, const OUString& path, sal_Bool f
             resolvedPath += ROOT;
 
         pLink = resolveLink(pKey, resolvedPath, token);
-        
+
         if (pLink)
         {
             OUString    tmpName;
             sal_Int32   lastIndex;
-            
+
             while(pLink)
             {
                 if (!insertRecursionLink(pLink))
@@ -2166,15 +2166,15 @@ OUString ORegistry::resolveLinks(ORegKey* pKey, const OUString& path, sal_Bool f
                     delete pLink;
                     return OUString();
                 }
-                
-                
+
+
                 lastIndex = resolvedPath.lastIndexOf('/');
                 tmpName = resolvedPath.copy(lastIndex + 1);
                 resolvedPath = resolvedPath.copy(0, lastIndex + 1);
-                
+
                 pLink = resolveLink(pKey, resolvedPath, tmpName);
             }
-            
+
             resetRecursionLinks();
         }
     } while( nIndex != -1 );
@@ -2208,7 +2208,7 @@ ORegKey* ORegistry::resolveLink(ORegKey* pKey, OUString& resolvedPath, const OUS
     } else
     {
         resolvedPath += name;
-        
+
         return NULL;
     }
 }

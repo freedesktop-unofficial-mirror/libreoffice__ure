@@ -2,9 +2,9 @@
  *
  *  $RCSfile: registry.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-15 16:26:00 $
+ *  last change: $Author: hr $ $Date: 2003-03-26 15:37:46 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -78,13 +78,13 @@
 
 #if defined(WIN32) || defined(WNT) || defined(__OS2__)
 #include <io.h>
-#endif 
+#endif
 
 #include <string.h>
 #if defined(UNX)
 #include <stdlib.h>
 #include <unistd.h>
-#endif 
+#endif
 
 using namespace salhelper;
 
@@ -107,33 +107,44 @@ OString getTempName()
 
     if ( osl_getEnvironment(TMP.pData, &uTmpPattern.pData) != osl_Process_E_None )
     {
-        if ( osl_getEnvironment(TEMP.pData, &uTmpPattern.pData) != osl_Process_E_None )				
+        if ( osl_getEnvironment(TEMP.pData, &uTmpPattern.pData) != osl_Process_E_None )
         {
 #if defined(SAL_W32) || defined(SAL_OS2)
-            strcpy(tmpPattern, ".");	
+            OSL_ASSERT( sizeof(tmpPattern) > RTL_CONSTASCII_LENGTH( "." ) );
+            strncpy(tmpPattern, ".", sizeof(tmpPattern)-1);
 #else
-            strcpy(tmpPattern, "/tmp");	
-#endif		
+            OSL_ASSERT( sizeof(tmpPattern) > RTL_CONSTASCII_LENGTH( "." ) );
+            strncpy(tmpPattern, ".", sizeof(tmpPattern)-1);
+#endif
         }
     }
 
     if ( uTmpPattern.getLength() )
     {
-        strcpy(tmpPattern, OUStringToOString(uTmpPattern, RTL_TEXTENCODING_UTF8).getStr());
-    }	
+        OString aOStr( OUStringToOString(uTmpPattern, RTL_TEXTENCODING_UTF8) );
+        OSL_ASSERT( sizeof(tmpPattern) > aOStr.getLength() );
+        strncpy(tmpPattern, aOStr.getStr(), sizeof(tmpPattern)-1);
+    }
 
-#if defined(WIN32) || defined(WNT)	
-    strcat(tmpPattern, "\\reg_XXXXXX");
+#if defined(WIN32) || defined(WNT)
+    OSL_ASSERT( sizeof(tmpPattern) > ( strlen(tmpPattern)
+                                       + RTL_CONSTASCII_LENGTH("\\reg_XXXXXX") ) );
+    strncat(tmpPattern, "\\reg_XXXXXX", sizeof(tmpPattern)-1-strlen(tmpPattern));
     pTmpName = mktemp(tmpPattern);
 #endif
 
 #ifdef __OS2__
-    strcpy(tmpPattern, tempnam(NULL, "reg_"));
+    char* tmpname = tempnam(NULL, "reg_");
+    OSL_ASSERT( sizeof(tmpPattern) > strlen(tmpname) );
+    strncpy(tmpPattern, tmpname, sizeof(tmpPattern)-1);
     pTmpName = tmpPattern;
 #endif
 
 #ifdef UNX
-    strcat(tmpPattern, "/reg_XXXXXX");
+    OSL_ASSERT( sizeof(tmpPattern) > ( strlen(tmpPattern)
+                                       + RTL_CONSTASCII_LENGTH("/reg_XXXXXX") ) );
+    strncat(tmpPattern, "/reg_XXXXXX", sizeof(tmpPattern)-1-strlen(tmpPattern));
+
 #if defined(FREEBSD) || defined(MACOSX)
     pTmpName = mkstemp(tmpPattern);
 #else
@@ -150,9 +161,9 @@ OString getTempName()
 static void REGISTRY_CALLTYPE acquire(RegHandle hReg)
 {
     ORegistry* pReg = (ORegistry*) hReg;
-        
+
     if (pReg != NULL)
-        pReg->acquire();		
+        pReg->acquire();
 }
 
 
@@ -180,7 +191,7 @@ static void REGISTRY_CALLTYPE release(RegHandle hReg)
 static RegError REGISTRY_CALLTYPE getName(RegHandle hReg, rtl_uString** pName)
 {
     ORegistry* 	pReg;
-    
+
     if (hReg)
     {
         pReg = (ORegistry*)hReg;
@@ -190,12 +201,12 @@ static RegError REGISTRY_CALLTYPE getName(RegHandle hReg, rtl_uString** pName)
             return REG_NO_ERROR;
         } else
         {
-            rtl_uString_new(pName);	
+            rtl_uString_new(pName);
             return REG_REGISTRY_NOT_OPEN;
         }
-    } 
+    }
 
-    rtl_uString_new(pName);	
+    rtl_uString_new(pName);
     return REG_INVALID_REGISTRY;
 }
 
