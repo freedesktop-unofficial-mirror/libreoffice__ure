@@ -2,9 +2,9 @@
  *
  *  $RCSfile: typemanager.hxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: obo $ $Date: 2004-06-03 15:02:40 $
+ *  last change: $Author: rt $ $Date: 2004-09-08 16:43:40 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,8 +58,7 @@
  *
  *
  ************************************************************************/
-
-#include 	<hash_map>
+#include	<hash_map>
 
 #ifndef _CODEMAKER_TYPEMANAGER_HXX_
 #define _CODEMAKER_TYPEMANAGER_HXX_
