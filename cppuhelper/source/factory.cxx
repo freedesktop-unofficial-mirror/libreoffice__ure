@@ -2,9 +2,9 @@
  *
  *  $RCSfile: factory.cxx,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: hr $ $Date: 2001-09-26 15:08:52 $
+ *  last change: $Author: dbo $ $Date: 2001-10-15 13:37:05 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -145,6 +145,8 @@ public:
         , pCreateFunction( NULL )
         , m_fptr( 0 )
         {}
+
+    virtual ~OSingleFactoryHelper();
     
     // XInterface
     Any SAL_CALL queryInterface( const Type & rType )
@@ -188,6 +190,10 @@ protected:
     Sequence< OUString >			 aServiceNames;
     OUString						 aImplementationName;
 };
+OSingleFactoryHelper::~OSingleFactoryHelper()
+{
+}
+    
 
 //-----------------------------------------------------------------------------
 Any OSingleFactoryHelper::queryInterface( const Type & rType )
