@@ -2,9 +2,9 @@
  *
  *  $RCSfile: registercomponent.cxx,v $
  *
- *  $Revision: 1.11 $
+ *  $Revision: 1.12 $
  *
- *  last change: $Author: jbu $ $Date: 2002-10-02 13:16:34 $
+ *  last change: $Author: hr $ $Date: 2003-03-19 17:31:37 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -144,9 +144,9 @@ static void usingRegisterImpl()
     fprintf(stderr, "usage: regcomp -register|revoke -r registryfile -c locationUrl [-br registryfile] [-l componentLoaderUrl] [-s] [-classpath path]\n");
     fprintf(stderr, " Parameters:\n");
     fprintf(stderr, "  -register\n"
-                    "        register a new component.\n");		
+                    "        register a new component.\n");
     fprintf(stderr, "  -revoke\n"
-                    "        revoke a component.\n");		
+                    "        revoke a component.\n");
     fprintf(stderr, "  -br registryfile\n"
                     "        the name of the registry used for bootstrapping\n"
                     "        regcomp. The option can be given twice, each\n"
@@ -156,7 +156,7 @@ static void usingRegisterImpl()
     fprintf(stderr, "  -r registryfile\n"
                     "        the name of the target registry (will be created\n"
                     "        if it does not exists). The file name may match\n"
-                    "        with one of the filenames given with the -br option.\n");		
+                    "        with one of the filenames given with the -br option.\n");
     fprintf(stderr, "  -c locationUrls\n"
                     "        the location of a component (a url to a shared\n"
                     "        library or a absolute url to a .jar file) or a\n"
@@ -187,9 +187,9 @@ public:
     IllegalArgument(const OString& rMessage)
         : m_message(rMessage)
         {}
-    
+
     OString m_message;
-};	
+};
 
 struct Options
 {
@@ -207,7 +207,7 @@ struct Options
     OUString sBootRegName2;
     OUString sRegName;
     OUString sComponentUrls;
-    OUString sLoaderName;	
+    OUString sLoaderName;
 };
 
 sal_Bool parseOptions(int ac, char* av[], Options& rOptions, sal_Bool bCmdFile)
@@ -218,11 +218,11 @@ sal_Bool parseOptions(int ac, char* av[], Options& rOptions, sal_Bool bCmdFile)
     sal_Bool bLoaderExplicitlyGiven = sal_False;
 
     rOptions.sProgramName = OUString::createFromAscii(av[i++]);
-    
+
     if (!bCmdFile)
     {
         bCmdFile = sal_True;
-        
+
         if (ac < 2)
         {
             usingRegisterImpl();
@@ -328,8 +328,8 @@ sal_Bool parseOptions(int ac, char* av[], Options& rOptions, sal_Bool bCmdFile)
                             // the pointer
                             sal_Char * p = (sal_Char *) rtl_allocateMemory( 13+ strlen( av[i] ) );
                             p[0] = 0;
-                            strcat( p, "CLASSPATH=" );
-                            strcat( p, av[i] );
+                            strcat( p, "CLASSPATH=" ); // #100211# - checked
+                            strcat( p, av[i] );        // #100211# - checked
 
                             putenv( p );
                         }
@@ -339,7 +339,7 @@ sal_Bool parseOptions(int ac, char* av[], Options& rOptions, sal_Bool bCmdFile)
                     {
                         sUrls = OStringToOUString(av[i]+2, osl_getThreadTextEncoding());
                     }
-                    
+
                     if (rOptions.sComponentUrls.getLength())
                     {
                         OUString tmp(rOptions.sComponentUrls + OUString(";", 1, osl_getThreadTextEncoding()) + sUrls);
@@ -461,20 +461,20 @@ sal_Bool parseOptions(int ac, char* av[], Options& rOptions, sal_Bool bCmdFile)
                             buf.append( "." );
                             throw IllegalArgument( buf.makeStringAndClear() );
                         }
-                        strcpy( rargv[rargc] , buffer );
+                        strcpy( rargv[rargc] , buffer ); // #100211# - checked
                         rargc++;
                     }
                     fclose(cmdFile);
-                    
+
                     parseOptions(rargc, rargv, rOptions, bCmdFile);
-                    
-                    for (long i=1; i < rargc; i++) 
+
+                    for (long i=1; i < rargc; i++)
                     {
                         rtl_freeMemory(rargv[i]);
                     }
                     rtl_freeMemory( buffer );
                     rtl_freeMemory( rargv );
-                }		
+                }
             } else
             {
                 usingRegisterImpl();
@@ -503,10 +503,10 @@ sal_Bool parseOptions(int ac, char* av[], Options& rOptions, sal_Bool bCmdFile)
     }
 
     return ret;
-}	
+}
 
 
-struct DoIt 
+struct DoIt
 {
     sal_Bool                               _bRegister;
     sal_Bool                               _bRevoke;
@@ -517,11 +517,11 @@ struct DoIt
     Reference<XSimpleRegistry> 		       _xReg;
     sal_uInt32                           * _exitCode;
 
-    DoIt(sal_Bool bRegister, 
+    DoIt(sal_Bool bRegister,
          sal_Bool bRevoke,
          sal_Bool bSilent,
-         const Reference<XSimpleRegistry> & xReg, 
-         const OString & sRegName, 
+         const Reference<XSimpleRegistry> & xReg,
+         const OString & sRegName,
          const Reference<XImplementationRegistration> & xImplRegistration,
          const OUString & sLoaderName,
          sal_uInt32 * exitCode)
@@ -530,11 +530,11 @@ struct DoIt
     void operator()(const OUString & url) throw();
 };
 
-DoIt::DoIt(sal_Bool bRegister, 
+DoIt::DoIt(sal_Bool bRegister,
            sal_Bool bRevoke,
            sal_Bool bSilent,
-           const Reference<XSimpleRegistry> & xReg, 
-           const OString & sRegName, 
+           const Reference<XSimpleRegistry> & xReg,
+           const OString & sRegName,
            const Reference<XImplementationRegistration> & xImplRegistration,
            const OUString & sLoaderName,
            sal_uInt32 * exitCode) throw()
@@ -552,11 +552,11 @@ void DoIt::operator() (const OUString & url) throw()
 {
     OString sUrl = OUStringToOString(url, osl_getThreadTextEncoding());
 
-    if (_bRegister) 
+    if (_bRegister)
     {
-        try	
+        try
         {
-            _xImplRegistration->registerImplementation(_sLoaderName, url, _xReg);		
+            _xImplRegistration->registerImplementation(_sLoaderName, url, _xReg);
 
             if ( ! _bSilent )
             {
@@ -565,7 +565,7 @@ void DoIt::operator() (const OUString & url) throw()
         }
         catch(CannotRegisterImplementationException & cannotRegisterImplementationException) {
             OString aMessage(OUStringToOString(cannotRegisterImplementationException.Message, RTL_TEXTENCODING_ASCII_US));
-            fprintf(stderr, "register component '%s' in registry '%s' failed!\n", sUrl.getStr(), _sRegName.getStr()); 
+            fprintf(stderr, "register component '%s' in registry '%s' failed!\n", sUrl.getStr(), _sRegName.getStr());
             fprintf(stderr, "error (CannotRegisterImplementationException): %s\n", aMessage.getStr());
 
             ++ (*_exitCode);
@@ -573,18 +573,18 @@ void DoIt::operator() (const OUString & url) throw()
         catch( RuntimeException & e )
         {
             OString aMessage(OUStringToOString(e.Message, RTL_TEXTENCODING_ASCII_US));
-            fprintf(stderr, "register component '%s' in registry '%s' failed!\n", sUrl.getStr(), _sRegName.getStr()); 
+            fprintf(stderr, "register component '%s' in registry '%s' failed!\n", sUrl.getStr(), _sRegName.getStr());
             fprintf(stderr, "error (RuntimeException): %s\n", aMessage.getStr());
 
             ++ (*_exitCode);
         }
     }
-    else if(_bRevoke) 
+    else if(_bRevoke)
     {
         try
         {
             sal_Bool bRet = _xImplRegistration->revokeImplementation(url, _xReg);
-            
+
             if (bRet)
             {
                 if ( ! _bSilent )
@@ -628,7 +628,7 @@ static bool hasService(
     }
     return ret;
 }
-    
+
 static void bootstrap(
     Options & opt ,
     Reference< XMultiServiceFactory > &xSMgr,
@@ -640,7 +640,7 @@ static void bootstrap(
         opt.sBootRegName = opt.sBootRegName2;
         opt.sBootRegName2 = tmp2;
     }
-    
+
     if ( opt.sRegName.equals(opt.sBootRegName) )
     {
         if( opt.sBootRegName2.getLength() )
@@ -688,7 +688,7 @@ static void bootstrap(
                 {
                     fprintf(stderr, "ERROR: open|create registry '%s' failed!\n",
                             OUStringToOString(opt.sRegName, osl_getThreadTextEncoding() ).getStr());
-                    exit(1);			
+                    exit(1);
                 }
             }
             catch( InvalidRegistryException & e)
@@ -703,7 +703,7 @@ static void bootstrap(
             }
         }
     }
-    
+
     if( ! opt.sLoaderName.compareToAscii( "com.sun.star.loader.Java2" ) &&
         ! hasService( xSMgr, "com.sun.star.loader.Java2" ) )
     {
@@ -737,15 +737,15 @@ int _cdecl main( int argc, char * argv[] )
 {
     sal_Bool 	bRet = sal_False;
     sal_uInt32 	exitCode = 0;
-    Options	 	aOptions;	
+    Options	 	aOptions;
 
-    try 
+    try
     {
         if ( !parseOptions(argc, argv, aOptions, sal_False) )
         {
-            exit(1);			
+            exit(1);
         }
-    } 
+    }
     catch ( IllegalArgument& e)
     {
         fprintf(stderr, "ERROR: %s\n", e.m_message.getStr());
@@ -777,13 +777,13 @@ int _cdecl main( int argc, char * argv[] )
             fprintf(stderr, "ERROR description: %s\n",
                     OUStringToOString(e.Message, osl_getThreadTextEncoding()).getStr());
         }
-        exit(1);		
+        exit(1);
     }
-    
+
     Reference<XImplementationRegistration> xImplRegistration(
         xSMgr->createInstance(
             OUString(RTL_CONSTASCII_USTRINGPARAM(
-                         "com.sun.star.registry.ImplementationRegistration"))), 
+                         "com.sun.star.registry.ImplementationRegistration"))),
         UNO_QUERY);
 
     if (xImplRegistration.is())
@@ -793,11 +793,11 @@ int _cdecl main( int argc, char * argv[] )
         const OUString semikolon(OUString(RTL_CONSTASCII_USTRINGPARAM(";")));
         const OUString emptyString(OUString(RTL_CONSTASCII_USTRINGPARAM("")));
         const OUString space(OUString(RTL_CONSTASCII_USTRINGPARAM(" ")));
-        
+
         sal_Int32 index = 0;
         sal_Bool  quote = sal_False;
         sal_Bool  inString = sal_False;
-        
+
         const sal_Unicode * raw_urls = aOptions.sComponentUrls.getStr();
 
         OUString tmp_url;
@@ -805,7 +805,7 @@ int _cdecl main( int argc, char * argv[] )
         vector<OUString> urls;
 
         // go over the string and parse it, chars can be quoted in strings or with back slash
-        while(index < aOptions.sComponentUrls.getLength()) 
+        while(index < aOptions.sComponentUrls.getLength())
         {
             if((raw_urls[index] == semikolon.getStr()[0] ||
                 raw_urls[index] == space.getStr()[0]) && !quote && !inString) // a semikolon or space?
@@ -848,7 +848,7 @@ int _cdecl main( int argc, char * argv[] )
             ++ exitCode;
              usingRegisterImpl();
         }
-    } 
+    }
     else
     {
         fprintf(stderr, "Component registration service could not be loaded!\n");
