@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlRadioButtonModel.idl,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: obo $ $Date: 2004-07-05 16:03:16 $
+ *  last change: $Author: vg $ $Date: 2005-02-17 10:46:27 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,135 +58,139 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_awt_UnoControlRadioButtonModel_idl__ 
-#define __com_sun_star_awt_UnoControlRadioButtonModel_idl__ 
- 
-#ifndef __com_sun_star_awt_UnoControlModel_idl__ 
-#include <com/sun/star/awt/UnoControlModel.idl> 
-#endif 
- 
+#ifndef __com_sun_star_awt_UnoControlRadioButtonModel_idl__
+#define __com_sun_star_awt_UnoControlRadioButtonModel_idl__
+
+#ifndef __com_sun_star_awt_UnoControlModel_idl__
+#include <com/sun/star/awt/UnoControlModel.idl>
+#endif
+
 #ifndef __com_sun_star_util_Color_idl__
 #include <com/sun/star/util/Color.idl>
 #endif
 
-#ifndef __com_sun_star_awt_FontDescriptor_idl__ 
-#include <com/sun/star/awt/FontDescriptor.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module awt {  
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_awt_FontDescriptor_idl__
+#include <com/sun/star/awt/FontDescriptor.idl>
+#endif
+
+#ifndef __com_sun_star_style_VerticalAlignment_idl__
+#include <com/sun/star/style/VerticalAlignment.idl>
+#endif
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module awt {
+
+//=============================================================================
+
 /** specifies the standard model of an <type>UnoControlRadioButton</type>.
  */
 published service UnoControlRadioButtonModel
-{ 
-    service com::sun::star::awt::UnoControlModel; 
- 
-    //------------------------------------------------------------------------- 
-     
+{
+    service com::sun::star::awt::UnoControlModel;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the background color (RGB) of the control.
      */
-    [optional, property] long BackgroundColor; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [optional, property] long BackgroundColor;
+
+    //-------------------------------------------------------------------------
+
     /** determines whether the control is enabled or disabled.
      */
-    [property] boolean Enabled; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean Enabled;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the font attributes of the text in the control.
      */
     [property] com::sun::star::awt::FontDescriptor FontDescriptor;
-    
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the <type scope="com::sun::star::text">FontEmphasis</type>
         value of the text in the control.
      */
     [property] short FontEmphasisMark;
- 
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the <type scope="com::sun::star::text">FontRelief</type>
         value of the text in the control.
      */
     [property] short FontRelief;
- 
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the help text of the control.
      */
     [property] string HelpText;
- 
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** specifies the help URL of the control.
      */
     [property] string HelpURL;
-    
+
     //-------------------------------------------------------------------------
-     
+
     /** specifies the position of the image, if any, relative to the text, if any
 
         <p>Valid values of this property are specified with <type>ImagePosition</type>.</p>
     */
     [optional, property] short ImagePosition;
-    
+
     //-------------------------------------------------------------------------
-     
+
     /** specifies an URL to an image to display besides the label of the control
      */
     [optional, property] string ImageURL;
- 
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** specifies the label of the control.
      */
-    [property] string Label; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] string Label;
+
+    //-------------------------------------------------------------------------
+
     /** specifies that the control will be printed with the document.
      */
-    [property] boolean Printable; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the state of the control. 
-                
+    [property] boolean Printable;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the state of the control.
+
         <pre>
         0: not checked
         1: checked
         </pre>
      */
-    [property] short State; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] short State;
+
+    //-------------------------------------------------------------------------
+
     /** specifies that the control can be reached with the TAB key.
      */
-    [property] boolean Tabstop; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [property] boolean Tabstop;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the text color (RGB) of the control.
      */
     [property] com::sun::star::util::Color TextColor;
 
     //-------------------------------------------------------------------------
-    
+
     /** specifies the text line color (RGB) of the control.
      */
     [property] com::sun::star::util::Color TextLineColor;
-    
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies a visual effect to apply to the check box control
 
         <p>Possible values for this property are <type>VisualEffect</type>::FLAT and
@@ -195,10 +199,16 @@ published service UnoControlRadioButtonModel
         @see com::sun::star::awt::VisualEffect
     */
     [optional, property] short VisualEffect;
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-#endif 
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the vertical alignment of the text in the control
+    */
+    [optional, property] com::sun::star::style::VerticalAlignment VerticalAlign;
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
