@@ -2,9 +2,9 @@
  *
  *  $RCSfile: component.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: dbo $ $Date: 2002-07-10 15:20:59 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:34:12 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -82,7 +82,7 @@ using namespace com::sun::star::uno;
 using namespace com::sun::star::lang;
 
 namespace cppu
-{     
+{
 
 //	----------------------------------------------------
 //	class OComponentHelper
@@ -137,12 +137,12 @@ void OComponentHelper::release() throw()
                 catch (::com::sun::star::uno::RuntimeException & exc)
                 {
                     // release should not throw exceptions
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
                     OString msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
                     OSL_ENSURE( 0, msg.getStr() );
 #endif
                 }
-                
+
                 // only the alive ref holds the object
                 OSL_ASSERT( m_refCount == 1 );
                 // destroy the object if xHoldAlive decrement the refcount to 0
@@ -219,8 +219,8 @@ void OComponentHelper::dispose()
         catch(::com::sun::star::uno::RuntimeException&)
         {
             // catch exception and throw again but signal that
-            // the object was disposed. Dispose should be called 
-            // only once. 
+            // the object was disposed. Dispose should be called
+            // only once.
             MutexGuard aGuard( rBHelper.rMutex );
             rBHelper.bDisposed = sal_True;
             rBHelper.bInDispose = sal_False;
@@ -244,8 +244,8 @@ void OComponentHelper::dispose()
                 OUString( RTL_CONSTASCII_USTRINGPARAM("unexpected non-UNO exception caught: ") ),
                 Reference< XInterface >() );
         }
-        
-        // the values bDispose and bInDisposing must set in this order. 
+
+        // the values bDispose and bInDisposing must set in this order.
         MutexGuard aGuard( rBHelper.rMutex );
         rBHelper.bDisposed = sal_True;
         rBHelper.bInDispose = sal_False;
@@ -284,5 +284,5 @@ void OComponentHelper::removeEventListener(
     rBHelper.removeListener( ::getCppuType( &rxListener ) , rxListener );
 }
 
-}     
+}
 
