@@ -2,9 +2,9 @@
  *
  *  $RCSfile: servicefactory.cxx,v $
  *
- *  $Revision: 1.34 $
+ *  $Revision: 1.35 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 12:26:34 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:35:15 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,7 +59,7 @@
  *
  ************************************************************************/
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #include <stdio.h>
 #endif
 #include <vector>
@@ -159,12 +159,12 @@ Reference< registry::XSimpleRegistry > SAL_CALL createSimpleRegistry(
     }
     catch (Exception & exc)
     {
-#if defined _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OString cstr_msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
         OSL_ENSURE( !"### exception occured:", cstr_msg.getStr() );
 #endif
     }
-    
+
     return Reference< registry::XSimpleRegistry >();
 }
 //==================================================================================================
@@ -186,18 +186,18 @@ Reference< registry::XSimpleRegistry > SAL_CALL createNestedRegistry(
     }
     catch (Exception & exc)
     {
-#if defined _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OString cstr_msg( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
         OSL_ENSURE( !"### exception occured:", cstr_msg.getStr() );
 #endif
     }
-    
+
     return Reference< registry::XSimpleRegistry >();
 }
 
 
 /** bootstrap variables:
-    
+
     UNO_AC=<mode> [mandatory]
       -- mode := { on, off, dynamic-only, single-user, single-default-user }
     UNO_AC_SERVICE=<service_name> [optional]
@@ -207,7 +207,7 @@ Reference< registry::XSimpleRegistry > SAL_CALL createNestedRegistry(
          set UNO_AC=single-[default-]user
     UNO_AC_USERCACHE_SIZE=<cache_size>
       -- number of user permission sets to be cached
-    
+
     UNO_AC_POLICYSERVICE=<service_name> [optional]
       -- override policy singleton service name
     UNO_AC_POLICYFILE=<file_url> [optional]
@@ -220,7 +220,7 @@ static void add_access_control_entries(
 {
     ContextEntry_Init entry;
     ::std::vector< ContextEntry_Init > & context_values = *values;
-    
+
     OUString ac_policy;
     if (bootstrap.getFrom( OUSTR("UNO_AC_POLICYSERVICE"), ac_policy )) // overridden service name
     {
@@ -245,7 +245,7 @@ static void add_access_control_entries(
             OSL_ASSERT( osl_File_E_None == frc );
             ac_policy = fileURL;
         }
-        
+
         entry.bLateInitService = false;
         entry.name = OUSTR("/implementations/com.sun.star.security.comp.stoc.FilePolicy/file-name");
         entry.value <<= ac_policy;
@@ -256,7 +256,7 @@ static void add_access_control_entries(
         entry.value <<= OUSTR("com.sun.star.security.comp.stoc.FilePolicy");
         context_values.push_back( entry );
     } // else policy singleton comes from storage
-    
+
     OUString ac_mode;
     if (! bootstrap.getFrom( OUSTR("UNO_AC"), ac_mode ))
     {
@@ -289,14 +289,14 @@ static void add_access_control_entries(
             }
         }
     }
-    
+
     OUString ac_service;
     if (! bootstrap.getFrom( OUSTR("UNO_AC_SERVICE"), ac_service )) // override service name
     {
         ac_service = OUSTR("com.sun.star.security.AccessController"); // default
 //          ac = OUSTR("com.sun.star.security.comp.stoc.AccessController");
     }
-    
+
     // - ac prop: user-cache-size
     OUString ac_cache;
     if (bootstrap.getFrom( OUSTR("UNO_AC_USERCACHE_SIZE"), ac_cache )) // ac cache size
@@ -310,7 +310,7 @@ static void add_access_control_entries(
             context_values.push_back( entry );
         }
     }
-    
+
     // - ac prop: mode { "off", "on", "dynamic-only", "single-user", "single-default-user" }
     entry.bLateInitService = false;
     entry.name = OUSTR("/services/com.sun.star.security.AccessController/mode");
@@ -330,7 +330,7 @@ Reference< lang::XMultiComponentFactory > bootstrapInitialSF(
 {
     OUString const & bootstrap_path =
         0 == rBootstrapPath.getLength() ? get_this_libpath() : rBootstrapPath;
-    
+
     Reference< lang::XMultiComponentFactory > xMgr(
         createInstance(
             loadSharedLibComponentFactory(
@@ -339,7 +339,7 @@ Reference< lang::XMultiComponentFactory > bootstrapInitialSF(
                 Reference< lang::XMultiServiceFactory >(),
                 Reference< registry::XRegistryKey >() ) ),
         UNO_QUERY );
-    
+
     // write initial shared lib loader, simple registry, default registry, impl reg
     static char const * ar[] = {
         CORE_COMPONENT_LIB("smgr"), "com.sun.star.comp.stoc.OServiceManagerWrapper",
@@ -355,7 +355,7 @@ Reference< lang::XMultiComponentFactory > bootstrapInitialSF(
     addFactories(
         ar, bootstrap_path,
         xMgr, Reference< registry::XRegistryKey >() );
-    
+
     return xMgr;
 }
 //--------------------------------------------------------------------------------------------------
@@ -374,24 +374,24 @@ Reference< XComponentContext > bootstrapInitialContext(
             OUSTR("servicemanager does not support XInitialization!"),
             Reference< XInterface >() );
     }
-    
+
     // basic context values
     ContextEntry_Init entry;
     ::std::vector< ContextEntry_Init > context_values;
     context_values.reserve( 14 );
-    
+
     // macro expander singleton for loader
     entry.bLateInitService = true;
     entry.name = OUSTR("/singletons/com.sun.star.util.theMacroExpander");
     entry.value <<= create_boostrap_macro_expander_factory();
     context_values.push_back( entry );
-    
+
     // tdmgr singleton
     entry.bLateInitService = true;
     entry.name = OUSTR("/singletons/com.sun.star.reflection.theTypeDescriptionManager");
     entry.value <<= OUSTR("com.sun.star.comp.stoc.TypeDescriptionManager");
     context_values.push_back( entry );
-    
+
     // read out singleton infos from registry
     if (services_xRegistry.is())
     {
@@ -402,7 +402,7 @@ Reference< XComponentContext > bootstrapInitialContext(
             if (xKey.is())
             {
                 entry.bLateInitService = true;
-                
+
                 Sequence< Reference< registry::XRegistryKey > > keys( xKey->openKeys() );
                 Reference< registry::XRegistryKey > const * pKeys = keys.getConstArray();
                 for ( sal_Int32 nPos = keys.getLength(); nPos--; )
@@ -420,7 +420,7 @@ Reference< XComponentContext > bootstrapInitialContext(
                     }
                     catch (Exception & rExc)
                     {
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
                         OString aStr( OUStringToOString(
                             xKey->getKeyName().copy( 11 ), RTL_TEXTENCODING_ASCII_US ) );
                         OString aStr2( OUStringToOString(
@@ -432,16 +432,16 @@ Reference< XComponentContext > bootstrapInitialContext(
             }
         }
     }
-    
+
     // ac, policy:
     add_access_control_entries( &context_values, bootstrap );
-    
+
     // smgr singleton
     entry.bLateInitService = false;
     entry.name = OUSTR("/singletons/com.sun.star.lang.theServiceManager");
     entry.value <<= xSF;
     context_values.push_back( entry );
-    
+
     Reference< XComponentContext > xContext(
         createComponentContext(
             &context_values[ 0 ], context_values.size(),
@@ -454,9 +454,9 @@ Reference< XComponentContext > bootstrapInitialContext(
         xProps->setPropertyValue(
             OUSTR("DefaultContext"), makeAny( xContext ) );
     }
-    
+
     Reference< container::XHierarchicalNameAccess > xTDMgr;
-    
+
     // get tdmgr singleton
     if (xContext->getValueByName(
             OUSTR("/singletons/com.sun.star.reflection.theTypeDescriptionManager") ) >>= xTDMgr)
@@ -472,7 +472,7 @@ Reference< XComponentContext > bootstrapInitialContext(
                 Reference< lang::XMultiServiceFactory >( xSF, UNO_QUERY ),
                 Reference< registry::XRegistryKey >() ), UNO_QUERY );
             OSL_ASSERT( xFac.is() );
-            
+
             // smgr
             Reference< container::XSet > xSet( xSF, UNO_QUERY );
             xSet->insert( makeAny( xFac ) );
@@ -493,7 +493,7 @@ Reference< XComponentContext > bootstrapInitialContext(
         // install callback
         installTypeDescriptionManager( xTDMgr );
     }
-    
+
     return xContext;
 }
 
@@ -576,18 +576,18 @@ static Reference< lang::XMultiComponentFactory > createImplServiceFactory(
         throw RuntimeException(
             OUSTR("specified registry could not be initialized"), Reference< XInterface >() );
     }
-    
+
     Bootstrap bootstrap;
     Reference< XComponentContext > xContext(
         bootstrapInitialContext( xSF, xRegistry, xRegistry, rBootstrapPath, bootstrap ) );
-    
+
     // initialize sf
     Reference< lang::XInitialization > xInit( xSF, UNO_QUERY );
     OSL_ASSERT( xInit.is() );
     Sequence< Any > aSFInit( 1 );
     aSFInit[ 0 ] <<= xRegistry;
     xInit->initialize( aSFInit );
-    
+
     return xSF;
 }
 
@@ -610,20 +610,20 @@ Reference< XComponentContext > SAL_CALL bootstrap_InitialComponentContext(
     SAL_THROW( (Exception) )
 {
     Bootstrap bootstrap;
-    
+
     Reference< lang::XMultiComponentFactory > xSF(
         bootstrapInitialSF( rBootstrapPath ) );
     Reference< XComponentContext > xContext(
         bootstrapInitialContext( xSF, xRegistry, xRegistry, rBootstrapPath, bootstrap ) );
-    
+
     // initialize sf
     Reference< lang::XInitialization > xInit( xSF, UNO_QUERY );
     OSL_ASSERT( xInit.is() );
     Sequence< Any > aSFInit( 2 );
     aSFInit[ 0 ] <<= xRegistry;
-    aSFInit[ 1 ] <<= xContext; // default context   
+    aSFInit[ 1 ] <<= xContext; // default context
     xInit->initialize( aSFInit );
-    
+
     return xContext;
 }
 
