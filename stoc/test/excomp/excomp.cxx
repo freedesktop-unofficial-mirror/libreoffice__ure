@@ -2,9 +2,9 @@
  *
  *  $RCSfile: excomp.cxx,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: jl $ $Date: 2001-03-19 11:12:34 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:15:07 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -82,7 +82,7 @@
 
 #ifndef _CPPUHELPER_SERVICEFACTORY_HXX_
 #include <cppuhelper/servicefactory.hxx>
-#endif 
+#endif
 
 
 using namespace com::sun::star::uno;
@@ -92,7 +92,7 @@ using namespace example;
 using namespace cppu;
 using namespace rtl;
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #define TEST_ENSHURE(c, m)   OSL_ENSURE(c, m)
 #else
 #define TEST_ENSHURE(c, m)   OSL_VERIFY(c)
@@ -109,8 +109,8 @@ OUString getExePath()
 #else
     exe = exe.copy(0, exe.getLength() - 6);
 #endif
-    return exe;	
-}	
+    return exe;
+}
 
 #if (defined UNX) || (defined OS2)
 int main( int argc, char * argv[] )
@@ -132,7 +132,7 @@ int _cdecl main( int argc, char * argv[] )
     excompRdb += OUString::createFromAscii("excomp.rdb");
 
     Reference< XMultiServiceFactory > xSMgr  = ::cppu::createRegistryServiceFactory( excompRdb );
-    TEST_ENSHURE( xSMgr.is(), "excomp error 0" );		
+    TEST_ENSHURE( xSMgr.is(), "excomp error 0" );
 
     typelib_TypeDescription* pTypeDesc = NULL;
     OUString sType = OUString::createFromAscii("com.sun.star.text.XTextDocument");
@@ -141,8 +141,8 @@ int _cdecl main( int argc, char * argv[] )
 
     Reference< XInterface > xIFace = xSMgr->createInstance(OUString::createFromAscii("com.sun.star.registry.ImplementationRegistration"));
     Reference< XImplementationRegistration > xImpReg( xIFace, UNO_QUERY);
-    TEST_ENSHURE( xImpReg.is(), "excomp error 1" );		
-    try 
+    TEST_ENSHURE( xImpReg.is(), "excomp error 1" );
+    try
     {
         xImpReg->registerImplementation(OUString::createFromAscii("com.sun.star.loader.SharedLibrary"),
                                         compName1,
@@ -153,25 +153,25 @@ int _cdecl main( int argc, char * argv[] )
     }
     catch( CannotRegisterImplementationException& e)
     {
-        TEST_ENSHURE( e.Message.getLength(), OUStringToOString(e.Message, RTL_TEXTENCODING_ASCII_US).getStr() );		
+        TEST_ENSHURE( e.Message.getLength(), OUStringToOString(e.Message, RTL_TEXTENCODING_ASCII_US).getStr() );
     }
 
-    Reference< XTest > xTest1( xSMgr->createInstance(OUString::createFromAscii("example.ExampleComponent1")), 
-                               UNO_QUERY); 
-    TEST_ENSHURE( xTest1.is(), "excomp error 2" );		
-    Reference< XTest > xTest2( xSMgr->createInstance(OUString::createFromAscii("example.ExampleComponent2")), 
-                               UNO_QUERY); 
-    TEST_ENSHURE( xTest2.is(), "excomp error 3" );		
+    Reference< XTest > xTest1( xSMgr->createInstance(OUString::createFromAscii("example.ExampleComponent1")),
+                               UNO_QUERY);
+    TEST_ENSHURE( xTest1.is(), "excomp error 2" );
+    Reference< XTest > xTest2( xSMgr->createInstance(OUString::createFromAscii("example.ExampleComponent2")),
+                               UNO_QUERY);
+    TEST_ENSHURE( xTest2.is(), "excomp error 3" );
 
-    OUString m1 = xTest1->getMessage();	
-    OUString m2 = xTest2->getMessage();	
+    OUString m1 = xTest1->getMessage();
+    OUString m2 = xTest2->getMessage();
 
     fprintf(stdout, "ExampleComponent1, Message = \"%s\"\n", OUStringToOString(m1, RTL_TEXTENCODING_ASCII_US).getStr());
     fprintf(stdout, "ExampleComponent2, Message = \"%s\"\n", OUStringToOString(m2, RTL_TEXTENCODING_ASCII_US).getStr());
 
     xImpReg->revokeImplementation(compName1, Reference< XSimpleRegistry >() );
     xImpReg->revokeImplementation(compName2, Reference< XSimpleRegistry >() );
-    
+
     Reference< XComponent >( xSMgr, UNO_QUERY )->dispose();
 
     return(0);
