@@ -2,9 +2,9 @@
  *
  *  $RCSfile: thread.c,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: kr $ $Date: 2001-02-08 16:54:02 $
+ *  last change: $Author: mfe $ $Date: 2001-02-09 10:39:20 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -122,8 +122,6 @@ static oslThread oslCreateThread(oslWorkerFunction pWorker, void* pThreadData, s
 
 #if defined(SOLARIS) 
 
-/*  extern void ChangeGlobalInit(); */
-
 static oslSignalAction oslSigAlarmHandler(void* pData, oslSignalInfo* pInfo)
 {
     if ( pInfo == 0 )
@@ -216,10 +214,10 @@ static sal_uInt16 insertThreadId()
 
         pEntry->Handle = hThread;
 
-        if ( LastIdent == 0 )
-            LastIdent =1;
-
         ++ LastIdent;
+
+        if ( LastIdent == 0 )
+            LastIdent = 1;
         
         pEntry->Ident  = LastIdent;
 
@@ -418,10 +416,8 @@ static sal_Bool osl_initThread()
 #endif /* NO_PTHREAD_PRIORITY */
 
 
-#if defined(SOLARIS) 
-
-/*      ChangeGlobalInit(); */
-
+#if defined(SOLARIS)
+    
     /*
      *  mfe: Under Solaris we get SIGALRM in e.g. pthread_join which terminates the process
      *       So we initialize our signal handling module and do register a SIGALRM Handler
