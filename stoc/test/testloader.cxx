@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testloader.cxx,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-19 14:19:55 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:14:35 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -91,7 +91,7 @@ using namespace osl;
 using namespace rtl;
 using namespace cppu;
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #define TEST_ENSHURE(c, m)   OSL_ENSURE(c, m)
 #else
 #define TEST_ENSHURE(c, m)   OSL_VERIFY(c)
@@ -133,13 +133,13 @@ int _cdecl main( int argc, char * argv[] )
     OUString dllName( OUString::createFromAscii("libcpld.so") );
 #endif
 #endif
-    
+
     if (module.load(dllName))
     {
         // try to get provider from module
         component_getFactoryFunc pCompFactoryFunc = (component_getFactoryFunc)
             module.getSymbol( OUString::createFromAscii(COMPONENT_GETFACTORY) );
-        
+
         if (pCompFactoryFunc)
         {
             XSingleServiceFactory * pRet = (XSingleServiceFactory *)(*pCompFactoryFunc)(
@@ -155,13 +155,13 @@ int _cdecl main( int argc, char * argv[] )
     TEST_ENSHURE( xIFace.is(), "testloader error1");
 
     Reference<XSingleComponentFactory> xFactory( Reference<XSingleComponentFactory>::query(xIFace) );
-    
+
     TEST_ENSHURE( xFactory.is(), "testloader error2");
 
-    Reference<XInterface> xLoader = xFactory->createInstanceWithContext( new EmptyComponentContext );	
+    Reference<XInterface> xLoader = xFactory->createInstanceWithContext( new EmptyComponentContext );
 
     TEST_ENSHURE( xLoader.is(), "testloader error3");
-    
+
     Reference<XServiceInfo> xServInfo( Reference<XServiceInfo>::query(xLoader) );
 
     TEST_ENSHURE( xServInfo.is(), "testloader error4");
@@ -174,7 +174,7 @@ int _cdecl main( int argc, char * argv[] )
     xFactory.clear();
     xLoader.clear();
     xServInfo.clear();
-    
+
     printf("Test Dll ComponentLoader, OK!\n");
 
     return(0);
