@@ -2,9 +2,9 @@
  *
  *  $RCSfile: permissions.cxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: dbo $ $Date: 2002-04-11 16:04:11 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:13:40 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -94,7 +94,7 @@ static inline sal_Int32 makeMask(
     OUString const & items, char const * const * strings ) SAL_THROW( () )
 {
     sal_Int32 mask = 0;
-    
+
     sal_Int32 n = 0;
     do
     {
@@ -111,7 +111,7 @@ static inline sal_Int32 makeMask(
             }
             ++nPos;
         }
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         if (! strings[ nPos ])
         {
             OUStringBuffer buf( 48 );
@@ -152,7 +152,7 @@ class SocketPermission : public Permission
 {
     static char const * s_actions [];
     sal_Int32 m_actions;
-    
+
     OUString m_host;
     sal_Int32 m_lowerPort;
     sal_Int32 m_upperPort;
@@ -160,9 +160,9 @@ class SocketPermission : public Permission
     mutable bool m_resolveErr;
     mutable bool m_resolvedHost;
     bool m_wildCardHost;
-    
+
     inline bool resolveHost() const SAL_THROW( () );
-    
+
 public:
     SocketPermission(
         connection::SocketPermission const & perm,
@@ -189,7 +189,7 @@ SocketPermission::SocketPermission(
 {
     if (0xe0000000 & m_actions) // if any (except resolve) is given => resolve implied
         m_actions |= 0x10000000;
-    
+
     // separate host from portrange
     sal_Int32 colon = m_host.indexOf( ':' );
     if (colon >= 0) // port [range] given
@@ -220,7 +220,7 @@ inline bool SocketPermission::resolveHost() const SAL_THROW( () )
 {
     if (m_resolveErr)
         return false;
-    
+
     if (! m_resolvedHost)
     {
         // dns lookup
@@ -231,7 +231,7 @@ inline bool SocketPermission::resolveHost() const SAL_THROW( () )
             addr.getHandle(), &ip.pData ));
         if (m_resolveErr)
             return false;
-        
+
         MutexGuard guard( Mutex::getGlobalMutex() );
         if (! m_resolvedHost)
         {
@@ -248,17 +248,17 @@ bool SocketPermission::implies( Permission const & perm ) const SAL_THROW( () )
     if (SOCKET != perm.m_type)
         return false;
     SocketPermission const & demanded = static_cast< SocketPermission const & >( perm );
-    
+
     // check actions
     if ((m_actions & demanded.m_actions) != demanded.m_actions)
         return false;
-    
+
     // check ports
     if (demanded.m_lowerPort < m_lowerPort)
         return false;
     if (demanded.m_upperPort > m_upperPort)
         return false;
-    
+
     // quick check host (DNS names: RFC 1034/1035)
     if (m_host.equalsIgnoreAsciiCase( demanded.m_host ))
         return true;
@@ -275,7 +275,7 @@ bool SocketPermission::implies( Permission const & perm ) const SAL_THROW( () )
     }
     if (demanded.m_wildCardHost)
         return false;
-    
+
     // compare IP addresses
     if (! resolveHost())
         return false;
@@ -324,10 +324,10 @@ class FilePermission : public Permission
 {
     static char const * s_actions [];
     sal_Int32 m_actions;
-    
+
     OUString m_url;
     bool m_allFiles;
-    
+
 public:
     FilePermission(
         io::FilePermission const & perm,
@@ -346,7 +346,7 @@ static OUString const & getWorkingDir() SAL_THROW( () )
     {
         OUString workingDir;
         ::osl_getProcessWorkingDir( &workingDir.pData );
-        
+
         MutexGuard guard( Mutex::getGlobalMutex() );
         if (! s_workingDir)
         {
@@ -408,17 +408,17 @@ bool FilePermission::implies( Permission const & perm ) const SAL_THROW( () )
     if (FILE != perm.m_type)
         return false;
     FilePermission const & demanded = static_cast< FilePermission const & >( perm );
-    
+
     // check actions
     if ((m_actions & demanded.m_actions) != demanded.m_actions)
         return false;
-    
+
     // check url
     if (m_allFiles)
         return true;
     if (demanded.m_allFiles)
         return false;
-    
+
 #ifdef SAL_W32
     if (m_url.equalsIgnoreAsciiCase( demanded.m_url ))
         return true;
@@ -480,7 +480,7 @@ OUString FilePermission::toString() const SAL_THROW( () )
 class RuntimePermission : public Permission
 {
     OUString m_name;
-    
+
 public:
     inline RuntimePermission(
         security::RuntimePermission const & perm,
@@ -499,7 +499,7 @@ bool RuntimePermission::implies( Permission const & perm ) const SAL_THROW( () )
     if (RUNTIME != perm.m_type)
         return false;
     RuntimePermission const & demanded = static_cast< RuntimePermission const & >( perm );
-    
+
     // check name
     return (sal_False != m_name.equals( demanded.m_name ));
 }
@@ -540,7 +540,7 @@ PermissionCollection::PermissionCollection(
     {
         Any const & perm = perms[ nPos ];
         Type const & perm_type = perm.getValueType();
-        
+
         // supported permission types
         if (perm_type.equals( ::getCppuType( (io::FilePermission const *)0 ) ))
         {
@@ -633,7 +633,7 @@ void PermissionCollection::checkPermission( Any const & perm ) const
     SAL_THROW( (RuntimeException) )
 {
     Type const & demanded_type = perm.getValueType();
-    
+
     // supported permission types
     // stack object of SimpleReferenceObject are ok, as long as they are not
     // assigned to a ::rtl::Reference<> (=> delete this)
