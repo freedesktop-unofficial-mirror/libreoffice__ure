@@ -2,9 +2,9 @@
  *
  *  $RCSfile: javavm.cxx,v $
  *
- *  $Revision: 1.53 $
+ *  $Revision: 1.54 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-27 12:00:46 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:13:09 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -278,7 +278,7 @@ rtl::OUString serviceGetServiceName()
 
 css::uno::Sequence< rtl::OUString > serviceGetSupportedServiceNames()
 {
-    rtl::OUString aServiceName = serviceGetServiceName();	
+    rtl::OUString aServiceName = serviceGetServiceName();
     return css::uno::Sequence< rtl::OUString >(&aServiceName, 1);
 }
 
@@ -349,51 +349,51 @@ void getINetPropsFromConfig(stoc_javavm::JVM * pjvm,
             rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.configuration.ConfigurationRegistry")),
             xCtx );
     if(!xConfRegistry.is()) throw css::uno::RuntimeException(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("javavm.cxx: couldn't get ConfigurationRegistry")), 0);
-    
+
     css::uno::Reference<css::registry::XSimpleRegistry> xConfRegistry_simple(xConfRegistry, css::uno::UNO_QUERY);
     if(!xConfRegistry_simple.is()) throw css::uno::RuntimeException(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("javavm.cxx: couldn't get ConfigurationRegistry")), 0);
-    
+
     xConfRegistry_simple->open(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("org.openoffice.Inet")), sal_True, sal_False);
     css::uno::Reference<css::registry::XRegistryKey> xRegistryRootKey = xConfRegistry_simple->getRootKey();
 
 //	if ooInetProxyType is not 0 then read the settings
     css::uno::Reference<css::registry::XRegistryKey> proxyEnable= xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Settings/ooInetProxyType")));
     if( proxyEnable.is() && 0 != proxyEnable->getLongValue())
-    {		
+    {
         // read ftp proxy name
         css::uno::Reference<css::registry::XRegistryKey> ftpProxy_name = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Settings/ooInetFTPProxyName")));
         if(ftpProxy_name.is() && ftpProxy_name->getStringValue().getLength()) {
             rtl::OUString ftpHost = rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ftp.proxyHost="));
             ftpHost += ftpProxy_name->getStringValue();
-                
+
             // read ftp proxy port
             css::uno::Reference<css::registry::XRegistryKey> ftpProxy_port = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Settings/ooInetFTPProxyPort")));
             if(ftpProxy_port.is() && ftpProxy_port->getLongValue()) {
                 rtl::OUString ftpPort = rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("ftp.proxyPort="));
                 ftpPort += rtl::OUString::valueOf(ftpProxy_port->getLongValue());
-            
+
                 pjvm->pushProp(ftpHost);
                 pjvm->pushProp(ftpPort);
             }
         }
-    
+
         // read http proxy name
         css::uno::Reference<css::registry::XRegistryKey> httpProxy_name = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Settings/ooInetHTTPProxyName")));
         if(httpProxy_name.is() && httpProxy_name->getStringValue().getLength()) {
             rtl::OUString httpHost = rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("http.proxyHost="));
             httpHost += httpProxy_name->getStringValue();
-        
+
             // read http proxy port
             css::uno::Reference<css::registry::XRegistryKey> httpProxy_port = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Settings/ooInetHTTPProxyPort")));
             if(httpProxy_port.is() && httpProxy_port->getLongValue()) {
                 rtl::OUString httpPort = rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("http.proxyPort="));
                 httpPort += rtl::OUString::valueOf(httpProxy_port->getLongValue());
-            
+
                 pjvm->pushProp(httpHost);
                 pjvm->pushProp(httpPort);
             }
         }
-    
+
         // read  nonProxyHosts
         css::uno::Reference<css::registry::XRegistryKey> nonProxies_name = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Settings/ooInetNoProxy")));
         if(nonProxies_name.is() && nonProxies_name->getStringValue().getLength()) {
@@ -402,26 +402,26 @@ void getINetPropsFromConfig(stoc_javavm::JVM * pjvm,
             rtl::OUString value= nonProxies_name->getStringValue();
             // replace the separator ";" by "|"
             value= value.replace((sal_Unicode)';', (sal_Unicode)'|');
-        
+
             httpNonProxyHosts += value;
             ftpNonProxyHosts += value;
-        
+
             pjvm->pushProp(httpNonProxyHosts);
             pjvm->pushProp(ftpNonProxyHosts);
         }
-    
+
         // read socks settings
 /*		Reference<XRegistryKey> socksProxy_name = xRegistryRootKey->openKey(OUSTR("Settings/ooInetSOCKSProxyName"));
         if (socksProxy_name.is() && httpProxy_name->getStringValue().getLength()) {
             OUString socksHost = OUSTR("socksProxyHost=");
             socksHost += socksProxy_name->getStringValue();
-        
+
             // read http proxy port
             Reference<XRegistryKey> socksProxy_port = xRegistryRootKey->openKey(OUSTR("Settings/ooInetSOCKSProxyPort"));
             if (socksProxy_port.is() && socksProxy_port->getLongValue()) {
                 OUString socksPort = OUSTR("socksProxyPort=");
                 socksPort += OUString::valueOf(socksProxy_port->getLongValue());
-            
+
                 pjvm->pushProp(socksHost);
                 pjvm->pushProp(socksPort);
             }
@@ -438,41 +438,41 @@ void getDefaultLocaleFromConfig(stoc_javavm::JVM * pjvm,
         rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.configuration.ConfigurationRegistry")),
         xCtx );
     if(!xConfRegistry.is()) throw css::uno::RuntimeException(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("javavm.cxx: couldn't get ConfigurationRegistry")), 0);
-    
+
     css::uno::Reference<css::registry::XSimpleRegistry> xConfRegistry_simple(xConfRegistry, css::uno::UNO_QUERY);
     if(!xConfRegistry_simple.is()) throw css::uno::RuntimeException(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("javavm.cxx: couldn't get ConfigurationRegistry")), 0);
-    
+
     xConfRegistry_simple->open(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("org.openoffice.Setup")), sal_True, sal_False);
     css::uno::Reference<css::registry::XRegistryKey> xRegistryRootKey = xConfRegistry_simple->getRootKey();
-    
+
     // read locale
     css::uno::Reference<css::registry::XRegistryKey> locale = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("L10N/ooLocale")));
     if(locale.is() && locale->getStringValue().getLength()) {
         rtl::OUString language;
         rtl::OUString country;
-        
+
         sal_Int32 index = locale->getStringValue().indexOf((sal_Unicode) '-');
-        
+
         if(index >= 0) {
-            language = locale->getStringValue().copy(0, index); 
+            language = locale->getStringValue().copy(0, index);
             country = locale->getStringValue().copy(index + 1);
-            
+
             if(language.getLength()) {
                 rtl::OUString prop(RTL_CONSTASCII_USTRINGPARAM("user.language="));
                 prop += language;
-                
+
                 pjvm->pushProp(prop);
             }
-            
+
             if(country.getLength()) {
                 rtl::OUString prop(RTL_CONSTASCII_USTRINGPARAM("user.region="));
                 prop += country;
-                
+
                 pjvm->pushProp(prop);
             }
         }
     }
-    
+
     xConfRegistry_simple->close();
 }
 
@@ -481,14 +481,14 @@ void getJavaPropsFromConfig(stoc_javavm::JVM * pjvm,
                             const css::uno::Reference<css::uno::XComponentContext> &xCtx) throw(css::uno::Exception)
 {
     rtl::OUString usInstallDir;
-    rtl::Bootstrap::get(OUSTR("UserInstallation"), 
+    rtl::Bootstrap::get(OUSTR("UserInstallation"),
                    usInstallDir,
                    OUSTR("${$SYSBINDIR/" SAL_CONFIGFILE("bootstrap") ":UserInstallation}"));
     rtl::OUString urlrcPath= usInstallDir + OUSTR("/user/config/" INI_FILE);
     std::auto_ptr<osl::File>  pIniFile(new osl::File(urlrcPath));
     if( pIniFile->open(OpenFlag_Read) != osl::File::E_None)
     {
-        rtl::Bootstrap::get(OUSTR("BaseInstallation"), 
+        rtl::Bootstrap::get(OUSTR("BaseInstallation"),
                usInstallDir,
                OUSTR("${$SYSBINDIR/" SAL_CONFIGFILE("bootstrap") ":BaseInstallation}"));
         urlrcPath= usInstallDir + OUSTR("/share/config/" INI_FILE);
@@ -519,7 +519,7 @@ void getJavaPropsFromConfig(stoc_javavm::JVM * pjvm,
                 bSectionFound= true;
                 break;
             }
-            
+
         }
         else
             break;
@@ -552,8 +552,8 @@ void getJavaPropsFromConfig(stoc_javavm::JVM * pjvm,
                         || *pIndex == '#')
                         goto nextLine;
 
-                        
-                    //the line must not contain spaces or tabs                    
+
+                    //the line must not contain spaces or tabs
                     while( pIndex != pEnd
                            && *pIndex != ' '
                            && *pIndex != '\t'
@@ -588,23 +588,23 @@ void getJavaPropsFromEnvironment(stoc_javavm::JVM * pjvm) throw() {
     pjvm->setRuntimeLib(
         rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(DEF_JAVALIB)));
     pjvm->setEnabled(1);
-    
+
     // See if properties have been set and parse them
     const char * pOOjavaProperties = getenv(PROPERTIES_ENV);
     if(pOOjavaProperties) {
         rtl::OUString properties(rtl::OUString(pOOjavaProperties,
                                                strlen(pOOjavaProperties),
                                                osl_getThreadTextEncoding()));
-        
+
         sal_Int32 index;
         sal_Int32 lastIndex = 0;
-        
+
         do {
             index = properties.indexOf((sal_Unicode)',', lastIndex);
             rtl::OUString token = (index == -1) ? properties.copy(lastIndex) : properties.copy(lastIndex, index - lastIndex);
-            
+
             lastIndex = index + 1;
-            
+
             pjvm->pushProp(token);
         }
         while(index > -1);
@@ -619,13 +619,13 @@ void getJavaPropsFromSafetySettings(stoc_javavm::JVM * pjvm,
         rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.configuration.ConfigurationRegistry")),
         xCtx);
     if(!xConfRegistry.is()) throw css::uno::RuntimeException(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("javavm.cxx: couldn't get ConfigurationRegistry")), 0);
-    
+
     css::uno::Reference<css::registry::XSimpleRegistry> xConfRegistry_simple(xConfRegistry, css::uno::UNO_QUERY);
     if(!xConfRegistry_simple.is()) throw css::uno::RuntimeException(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("javavm.cxx: couldn't get ConfigurationRegistry")), 0);
-    
+
     xConfRegistry_simple->open(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("org.openoffice.Office.Java")), sal_True, sal_False);
     css::uno::Reference<css::registry::XRegistryKey> xRegistryRootKey = xConfRegistry_simple->getRootKey();
-    
+
     if (xRegistryRootKey.is())
     {
         css::uno::Reference<css::registry::XRegistryKey> key_Enable = xRegistryRootKey->openKey(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("VirtualMachine/Enable")));
@@ -690,7 +690,7 @@ const rtl::Bootstrap & getBootstrapHandle()
             buf.append( exe.getStr() , nIndex +1 ).appendAscii( SAL_CONFIGFILE("uno") );
             ret = buf.makeStringAndClear();
         }
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         rtl::OString o = rtl::OUStringToOString( ret , RTL_TEXTENCODING_ASCII_US );
         printf( "JavaVM: Used ininame %s\n" , o.getStr() );
 #endif
@@ -782,7 +782,7 @@ rtl::OUString retrieveComponentClassPath( const sal_Char *pVariableName )
             }
         }
     }
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     fprintf( stderr, "JavaVM: classpath retrieved from $%s: %s\n", pVariableName,
              rtl::OUStringToOString( ret, RTL_TEXTENCODING_ASCII_US).getStr());
 #endif
@@ -805,7 +805,7 @@ static void setTimeZone(stoc_javavm::JVM * pjvm) throw() {
 #else
     char * p = tzname[0];
 #endif
-    
+
     if (!strcmp(TIMEZONE, p))
         pjvm->pushProp(rtl::OUString::createFromAscii("user.timezone=ECT"));
 }
@@ -818,22 +818,22 @@ void initVMConfiguration(stoc_javavm::JVM * pjvm,
         getINetPropsFromConfig(&jvm, xSMgr, xCtx);
     }
     catch(css::uno::Exception & exception) {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         rtl::OString message = rtl::OUStringToOString(exception.Message, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("javavm.cxx: can not get INetProps cause of >%s<", message.getStr());
 #endif
     }
-    
+
     try {
         getDefaultLocaleFromConfig(&jvm, xSMgr,xCtx);
     }
     catch(css::uno::Exception & exception) {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         rtl::OString message = rtl::OUStringToOString(exception.Message, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("javavm.cxx: can not get locale cause of >%s<", message.getStr());
 #endif
     }
-    
+
     sal_Bool bPropsFail= sal_False;
     sal_Bool bPropsFail2= sal_False;
     css::java::JavaNotConfiguredException confexc;
@@ -848,7 +848,7 @@ void initVMConfiguration(stoc_javavm::JVM * pjvm,
     }
     catch(css::uno::Exception & exception)
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         rtl::OString message = rtl::OUStringToOString(exception.Message, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("javavm.cxx: couldn't use configuration cause of >%s<", message.getStr());
 #endif
@@ -871,14 +871,14 @@ void initVMConfiguration(stoc_javavm::JVM * pjvm,
                                                        "and there are no environment variables set which " \
                                                        "contain configuration data")), 0);
         }
-                
+
     }
-    
+
     try {
         getJavaPropsFromSafetySettings(&jvm, xSMgr, xCtx);
     }
     catch(css::uno::Exception & exception) {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         rtl::OString message = rtl::OUStringToOString(exception.Message, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("javavm.cxx: couldn't get safety settings because of >%s<", message.getStr());
 #endif
@@ -887,8 +887,8 @@ void initVMConfiguration(stoc_javavm::JVM * pjvm,
     jvm.addUserClasspath( retrieveComponentClassPath( "UNO_USER_PACKAGES_CACHE" ) );
 
 //For a non product office we use the flag -ea
-// we cannot use -Xcheck:jni, because this prevents debugging (j2re1.4.1_01, netbeans 3.4)    
-#ifdef _DEBUG
+// we cannot use -Xcheck:jni, because this prevents debugging (j2re1.4.1_01, netbeans 3.4)
+#if OSL_DEBUG_LEVEL > 0
         if(!getenv( "DISABLE_SAL_DBGBOX" ) )
             jvm.pushProp(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("-ea")));
 #endif
@@ -1826,7 +1826,7 @@ void JavaVirtualMachine::registerConfigChangesListener()
         }
     }catch( css::uno::Exception & e)
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         rtl::OString message = rtl::OUStringToOString(e.Message, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("javavm.cxx: could not set up listener for Configuration because of >%s<", message.getStr());
 #endif
