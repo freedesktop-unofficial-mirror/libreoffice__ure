@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XComponentLoader.idl,v $
  *
- *  $Revision: 1.10 $
+ *  $Revision: 1.11 $
  *
- *  last change: $Author: mi $ $Date: 2001-11-01 10:29:29 $
+ *  last change: $Author: as $ $Date: 2001-11-20 14:05:39 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,47 +58,47 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_frame_XComponentLoader_idl__ 
-#define __com_sun_star_frame_XComponentLoader_idl__ 
- 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_XComponent_idl__ 
-#include <com/sun/star/lang/XComponent.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_PropertyValue_idl__ 
-#include <com/sun/star/beans/PropertyValue.idl> 
-#endif 
- 
-#ifndef __com_sun_star_io_IOException_idl__ 
-#include <com/sun/star/io/IOException.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_IllegalArgumentException_idl__ 
-#include <com/sun/star/lang/IllegalArgumentException.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
-module com {  module sun {  module star {  module frame {  
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_frame_XComponentLoader_idl__
+#define __com_sun_star_frame_XComponentLoader_idl__
+
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
+
+#ifndef __com_sun_star_lang_XComponent_idl__
+#include <com/sun/star/lang/XComponent.idl>
+#endif
+
+#ifndef __com_sun_star_beans_PropertyValue_idl__
+#include <com/sun/star/beans/PropertyValue.idl>
+#endif
+
+#ifndef __com_sun_star_io_IOException_idl__
+#include <com/sun/star/io/IOException.idl>
+#endif
+
+#ifndef __com_sun_star_lang_IllegalArgumentException_idl__
+#include <com/sun/star/lang/IllegalArgumentException.idl>
+#endif
+
+
+//=============================================================================
+
+module com {  module sun {  module star {  module frame {
+
+//=============================================================================
+
 // DocMerge from xml: interface com::sun::star::frame::XComponentLoader
 /** This is a simple interface to load components by an URL into a
     frame environment.
-        @see Desktop 
-        @see Frame 
+        @see Desktop
+        @see Frame
         @see XFrame
  */
 interface XComponentLoader: com::sun::star::uno::XInterface
-{ 
-    //------------------------------------------------------------------------- 
-     
+{
+    //-------------------------------------------------------------------------
+
     // DocMerge from xml: method com::sun::star::frame::XComponentLoader::loadComponentFromURL
     /** loads a component specified by an URL into the specified
         new or existing frame.
@@ -110,71 +110,75 @@ interface XComponentLoader: com::sun::star::uno::XInterface
         @param aTargetFrameName
             specifies the name of the frame to view the document in. If a frame
             with the specified name already exists, it is used, otherwise it
-            is created. "_blank" always creates a new frame, "_hidden" will
-            create a new, hidden frame.
+            is created. "_blank" always creates a new frame, "_self" means frame himself,
+            "_parent" address direct parent of frame, "_top" indicates top frame of
+            current path in tree.
 
         @param nSearchFlags
             use the values of <type>FrameSearchFlag</type> to specify
-            how to find the specified <var>aTargetFrameName</var>. 
+            how to find the specified <var>aTargetFrameName</var>.
             Normally, simply use <code>0</code>.
 
         @param aArgs
             these arguments specify component or filter specific behavior.
             For example, "ReadOnly" with a boolean value specifies whether
             the document is opened read-only. "FilterName" specifies the
-            component type to create and the filter to use, for example: 
-            "scalc: Text - csv". For more information see 
+            component type to create and the filter to use, for example:
+            "scalc: Text - csv". For more information see
             <type scope="com::sun::star::document">MediaDescriptor</type>.
      */
-    com::sun::star::lang::XComponent loadComponentFromURL( [in] string aURL, 
-             [in] string aTargetFrameName, 
-             [in] long nSearchFlags, 
-             [in] sequence<com::sun::star::beans::PropertyValue> aArgs ) 
-            raises( com::sun::star::io::IOException, 
-                    com::sun::star::lang::IllegalArgumentException ); 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
+    com::sun::star::lang::XComponent loadComponentFromURL( [in] string aURL,
+             [in] string aTargetFrameName,
+             [in] long nSearchFlags,
+             [in] sequence<com::sun::star::beans::PropertyValue> aArgs )
+            raises( com::sun::star::io::IOException,
+                    com::sun::star::lang::IllegalArgumentException );
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.10  2001/11/01 10:29:29  mi
+    proofreading and corrections from Richard Holt
+
     Revision 1.9  2001/03/22 17:25:56  mi
     #77161# arguments of XComponentLoader::loadComponents
-    
+
     Revision 1.8  2001/03/16 16:41:25  jsc
     remove interfaceheader with uik and remove [const] in method definitions
-    
+
     Revision 1.7  2000/12/21 15:04:54  mi
     typo fixed: FrameSearchFlags now without s at the end
-    
+
     Revision 1.6  2000/12/21 15:03:56  mi
     typo fixed: FrameSearchFlagsy now without y at the end
-    
+
     Revision 1.5  2000/12/21 08:35:10  mi
     @see interface/service/... ident -> @see ident - for new docu generator
-    
+
     Revision 1.4  2000/12/12 12:27:50  mi
     documentation for arguments added
-    
+
     Revision 1.3  2000/11/08 12:43:14  mi
     moved from api
-    
+
     Revision 1.1.1.1  2000/09/18 23:35:21  hjs
     initial import
-    
+
     Revision 1.6  2000/09/11 11:52:28  mi
     documentation merged from XML
-     
-    Revision 1.2  1999/11/18 11:49:56  mi 
-    XComponent now in module lang 
-     
-    Revision 1.1.1.1  1999/11/11 09:48:43  jsc 
-    new 
-     
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.2  1999/11/18 11:49:56  mi
+    XComponent now in module lang
+
+    Revision 1.1.1.1  1999/11/11 09:48:43  jsc
+    new
+
+
+=============================================================================*/
+#endif
