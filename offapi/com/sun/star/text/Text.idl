@@ -2,9 +2,9 @@
  *
  *  $RCSfile: Text.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: mi $ $Date: 2000-12-21 08:35:21 $
+ *  last change: $Author: os $ $Date: 2001-03-02 12:22:25 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,115 +58,117 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_text_Text_idl__ 
-#define __com_sun_star_text_Text_idl__ 
- 
-#ifndef __com_sun_star_container_XEnumerationAccess_idl__ 
-#include <com/sun/star/container/XEnumerationAccess.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module text { 
- 
-interface XText; 
-interface XTextRangeMover; 
-interface XTextRangeCompare; 
-interface XRelativeTextContentInsert; 
-//============================================================================= 
- 
+#ifndef __com_sun_star_text_Text_idl__
+#define __com_sun_star_text_Text_idl__
+
+#ifndef __com_sun_star_container_XEnumerationAccess_idl__
+#include <com/sun/star/container/XEnumerationAccess.idl>
+#endif
+
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module text {
+
+interface XText;
+interface XTextRangeMover;
+interface XTextRangeCompare;
+interface XRelativeTextContentInsert;
+//=============================================================================
+
 // DocMerge from xml: service com::sun::star::text::Text
 /** is an independent piece of text which consists of a
     series of one or more paragraphs.
-    
-    
-    
+
+
+
     <p>This service is used, for example, for the text of a TextDocument
     or the text in a cell or TextFrame.
-    
-    </p>@see com::sun::star::text::TextDocument 
-        @see com::sun::star::text::TextFrame 
+
+    </p>@see com::sun::star::text::TextDocument
+        @see com::sun::star::text::TextFrame
         @see com::sun::star::table::Cell
  */
 service Text
-{ 
- 
-     
+{
+
+
     // DocMerge from xml: service com::sun::star::text::Text: interface com::sun::star::container::XEnumerationAccess
-    /** This is the factory for an enumeration of the paragraphs in this text. 
-         
-                <p>This interface is mainly useful for exporting the text to a 
+    /** This is the factory for an enumeration of the paragraphs in this text.
+
+                <p>This interface is mainly useful for exporting the text to a
                 data format.
      */
-    interface com::sun::star::container::XEnumerationAccess; 
- 
-     
+    interface com::sun::star::container::XEnumerationAccess;
+
+
     // DocMerge from xml: service com::sun::star::text::Text: interface com::sun::star::text::XText
-    /** provides a cursor factory and insertion and removal 
+    /** provides a cursor factory and insertion and removal
                 of contents.
      */
-    interface XText; 
- 
-     
+    interface XText;
+
+
     // DocMerge from xml: service com::sun::star::text::Text: interface com::sun::star::text::XTextRangeCompare
-    /** optional interface to compere postions of <type>TextRange</type> 
+    /** optional interface to compere postions of <type>TextRange</type>
                 instances within this text.
      */
-    [optional] interface XTextRangeCompare; 
- 
-     
+    [optional] interface XTextRangeCompare;
+
+
     // DocMerge from xml: service com::sun::star::text::Text: interface com::sun::star::text::XTextRangeMover
     /** makes it possible to change the position of paragraphs.
 
-        @optional
      */
-    interface XTextRangeMover; 
-     
+    [optional] interface XTextRangeMover;
+
     // DocMerge from xml: service com::sun::star::text::Text: interface com::sun::star::text::XRelativeTextContentInsert
-    /** makes it possible to insert a new text content before or 
-                   after existing text contents. 
-         
+    /** makes it possible to insert a new text content before or
+                   after existing text contents.
+
                    @deprecated hack
      */
-    [optional] interface XRelativeTextContentInsert; 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; }; 
- 
-/*============================================================================= 
- 
+    [optional] interface XRelativeTextContentInsert;
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
     $Log: not supported by cvs2svn $
+    Revision 1.5  2000/12/21 08:35:21  mi
+    @see interface/service/... ident -> @see ident - for new docu generator
+
     Revision 1.4  2000/12/20 16:49:39  cl
     #81061# made some interfaces optional
-    
+
     Revision 1.3  2000/11/08 12:44:27  mi
     moved from api
-    
+
     Revision 1.3  2000/10/11 08:30:59  mi
     #73107# XTextRangeMover is optional now
-    
+
     Revision 1.2  2000/10/09 14:25:02  mi
     #78715# exchanged stardiv::... by com::sun::star::... (especially in @see tags)
-    
+
     Revision 1.1.1.1  2000/09/18 23:36:03  hjs
     initial import
-    
+
     Revision 1.5  2000/09/11 11:53:00  mi
     documentation merged from XML
-     
-    Revision 1.3  2000/07/11 08:31:35  os 
-    #76708# insert/remove paragraphs before/behind tables 
-     
-    Revision 1.2  2000/03/28 08:16:36  mi 
-    #74484# XTextRangeCompare: new interface 
- 
-    Revision 1.1.1.1  1999/11/11 09:48:46  jsc 
-    new 
- 
- 
-=============================================================================*/ 
-#endif 
+
+    Revision 1.3  2000/07/11 08:31:35  os
+    #76708# insert/remove paragraphs before/behind tables
+
+    Revision 1.2  2000/03/28 08:16:36  mi
+    #74484# XTextRangeCompare: new interface
+
+    Revision 1.1.1.1  1999/11/11 09:48:46  jsc
+    new
+
+
+=============================================================================*/
+#endif
