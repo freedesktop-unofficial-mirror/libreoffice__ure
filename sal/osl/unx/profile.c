@@ -2,9 +2,9 @@
  *
  *  $RCSfile: profile.c,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: mfe $ $Date: 2001-02-20 13:20:28 $
+ *  last change: $Author: mfe $ $Date: 2001-02-26 16:17:49 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -271,8 +271,10 @@ oslProfile SAL_CALL osl_psz_openProfile(const sal_Char *pszProfileName, oslProfi
 {
     osl_TFile*		  pFile;
     osl_TProfileImpl* pProfile;
-    sal_Char          Filename[PATH_MAX] = "";
+    sal_Char          Filename[PATH_MAX];
     sal_Bool bRet = sal_False;
+
+    Filename[0] = '\0';
     
 #ifdef TRACE_OSL_PROFILE
     OSL_TRACE("In  osl_openProfile\n");
@@ -698,8 +700,9 @@ sal_Bool SAL_CALL osl_readProfileBool(oslProfile Profile,
                             const sal_Char* pszSection, const sal_Char* pszEntry,
                             sal_Bool Default)
 {
-    sal_Char Line[32] = "";
-
+    sal_Char Line[32];
+    Line[0] = '\0';
+    
 #ifdef TRACE_OSL_PROFILE
     OSL_TRACE("In  osl_readProfileBool\n");
 #endif
@@ -731,8 +734,9 @@ sal_uInt32 SAL_CALL osl_readProfileIdent(oslProfile Profile,
                               sal_uInt32 Default)
 {
     sal_uInt32	i;
-    sal_Char		Line[256] = "";
-
+    sal_Char    Line[256];
+    Line[0] = '\0';
+    
 #ifdef TRACE_OSL_PROFILE
     OSL_TRACE("In  osl_readProfileIdent\n");
 #endif
@@ -1232,13 +1236,15 @@ sal_uInt32 SAL_CALL osl_getProfileSections(oslProfile Profile, sal_Char* pszBuff
 sal_Bool SAL_CALL osl_getProfileName(rtl_uString* ustrPath, rtl_uString* ustrName, rtl_uString** strProfileName)
 {
     sal_Bool bRet=sal_False;
-    sal_Char pszBuffer[PATH_MAX] = "";
+    sal_Char pszBuffer[PATH_MAX];
     rtl_uString* strNativeName=0;
     rtl_String* strPath=0;
     rtl_String* strName=0;
     sal_Char* pszPath=0;
     sal_Char* pszName=0;    
 
+    pszBuffer[0] = '\0';
+    
     
     if ( ustrPath != 0 && ustrPath->buffer[0] != 0 )
     {
@@ -1304,14 +1310,18 @@ sal_Bool SAL_CALL osl_psz_getProfileName(const sal_Char* pszPath, const sal_Char
 {
     sal_Char *pChr=0;
     const sal_Char *pStr=0;
-    sal_Char  Home[PATH_MAX] = "";
-    sal_Char  Config[PATH_MAX] = "";
-    sal_Char  Path[PATH_MAX] = "";
-    sal_Char  File[PATH_MAX] = "";
+    sal_Char  Home[PATH_MAX];
+    sal_Char  Config[PATH_MAX];
+    sal_Char  Path[PATH_MAX];
+    sal_Char  File[PATH_MAX];
     sal_Bool  bFailed;
     sal_Bool  bHidden = sal_False;
     oslSecurity security;
-    
+
+    Home[0] = '\0';
+    Config[0] = '\0';
+    Path[0] = '\0';
+    File[0] = '\0';
 
 #ifdef TRACE_OSL_PROFILE
     OSL_TRACE("In  osl_getProfileName\n");
@@ -1378,9 +1388,12 @@ sal_Bool SAL_CALL osl_psz_getProfileName(const sal_Char* pszPath, const sal_Char
     /* build directory path */
     if (pszPath)
     {
-        sal_Char  Dir[PATH_MAX] = "";
-        sal_Char  Loc[PATH_MAX] = "";
+        sal_Char  Dir[PATH_MAX];
+        sal_Char  Loc[PATH_MAX];
 
+        Dir[0] = '\0';
+        Loc[0] = '\0';
+        
         if ((strncmp(pszPath, STR_INI_METAHOME, sizeof(STR_INI_METAHOME) - 1) == 0) &&
             ((pszPath[sizeof(STR_INI_METAHOME) - 1] == '\0') ||
              (pszPath[sizeof(STR_INI_METAHOME) - 1] == '/')))
@@ -2414,9 +2427,11 @@ static osl_TFile* osl_openTmpProfileImpl(osl_TProfileImpl* pProfile)
 {
     osl_TFile* pFile=0;
     sal_Char* pszExtension = "tmp";
-    sal_Char pszTmpName[PATH_MAX] = "";
+    sal_Char pszTmpName[PATH_MAX];
     oslProfileOption PFlags=0;
 
+    pszTmpName[0] = '\0';
+    
     /* generate tmp profilename */
     osl_ProfileGenerateExtension(pProfile->m_FileName,pszExtension,pszTmpName);
 
@@ -2442,10 +2457,14 @@ static sal_Bool osl_ProfileSwapProfileNames(osl_TProfileImpl* pProfile)
 {
       sal_Bool bRet = sal_False;
 
-      sal_Char pszBakFile[PATH_MAX] = ""; 
-      sal_Char pszTmpFile[PATH_MAX] = "";
-      sal_Char pszIniFile[PATH_MAX] = "";
+      sal_Char pszBakFile[PATH_MAX]; 
+      sal_Char pszTmpFile[PATH_MAX];
+      sal_Char pszIniFile[PATH_MAX];
 
+    pszBakFile[0] = '\0';
+    pszTmpFile[0] = '\0';
+    pszIniFile[0] = '\0';
+    
       osl_ProfileGenerateExtension(pProfile->m_FileName,"bak",pszBakFile);
     
     strcpy(pszIniFile,pProfile->m_FileName);
@@ -2600,10 +2619,14 @@ static sal_Bool releaseProfile(osl_TProfileImpl* pProfile)
 static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, sal_Char *pPath)
 {
     sal_Char *pChr, *pStr;
-    sal_Char Path[PATH_MAX] = "";
-    sal_Char Product[132] = "";
-    sal_Char Buffer[1024] = "";
+    sal_Char Path[PATH_MAX];
+    sal_Char Product[132];
+    sal_Char Buffer[1024];
 
+    Path[0] = '\0';
+    Product[0] = '\0';
+    Buffer[0] = '\0';
+    
     if (*pszPath == '"')
     {
         int i = 0;
@@ -2628,10 +2651,13 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
         /* if we have no product identification, do a special handling for soffice.ini */
         if (strcasecmp(SVERSION_PROFILE, pszFile) == 0)
         {
-            sal_Char   Profile[PATH_MAX] = "";
-            sal_Char   Dir[PATH_MAX] = "";
+            sal_Char   Profile[PATH_MAX];
+            sal_Char   Dir[PATH_MAX];
             oslProfile hProfile;
 
+            Profile[0] = '\0';
+            Dir[0] = '\0';
+            
             /* open sversionrc in the system directory, and try to locate the entry
                with the highest version for StarOffice */
             if ((osl_psz_getProfileName(SVERSION_FALLBACK, SVERSION_NAME, Profile, sizeof(Profile))) &&
@@ -2806,9 +2832,11 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
 
         if ((access(Path, 0) < 0) && (strlen(Product) > 0))
         {
-            sal_Char   Profile[PATH_MAX] = "";
+            sal_Char   Profile[PATH_MAX];
             oslProfile hProfile;
 
+            Profile[0] = '\0';
+            
             /* remove appended filename */
             *pChr = '\0';
 
