@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testsmgr.cxx,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.8 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-27 12:01:26 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:14:57 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -86,7 +86,7 @@
 #define TRUE 1
 #endif
 
-#ifdef _DEBUG
+#if OSL_DEBUG_LEVEL > 0
 #define TEST_ENSHURE(c, m)   OSL_ENSURE(c, m)
 #else
 #define TEST_ENSHURE(c, m)   OSL_VERIFY(c)
@@ -107,8 +107,8 @@ OUString getExePath()
 #else
     exe = exe.copy(0, exe.getLength() - 12);
 #endif
-    return exe;	
-}	
+    return exe;
+}
 
 void setStarUserRegistry()
 {
@@ -119,7 +119,7 @@ void setStarUserRegistry()
         delete pLoader;
         return;
     }
-    
+
     Registry *myRegistry = new Registry(*pLoader);
     delete pLoader;
 
@@ -130,14 +130,14 @@ void setStarUserRegistry()
     if(myRegistry->open(userReg, REG_READWRITE))
     {
         TEST_ENSHURE(!myRegistry->create(userReg), "setStarUserRegistry error 1");
-    }	
+    }
 
     TEST_ENSHURE(!myRegistry->close(), "setStarUserRegistry error 9");
     delete myRegistry;
 
     userRegEnv += OUStringToOString(userReg, RTL_TEXTENCODING_ASCII_US);
     putenv((char *)userRegEnv.getStr());
-}	
+}
 
 
 
@@ -147,6 +147,6 @@ void SAL_CALL main()
     setStarUserRegistry();
     fflush( stdout );
     test_ServiceManager();
-    
+
     printf( "ServiceManagerTest : OK\n" );
 }
