@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testcomponent.cxx,v $
  *
- *  $Revision: 1.6 $
+ *  $Revision: 1.7 $
  *
- *  last change: $Author: jl $ $Date: 2001-03-19 10:20:56 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:59:08 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,7 +62,7 @@
 //------------------------------------------------------
 // testcomponent - Loads a service and its testcomponent from dlls performs a test.
 // Expands the dll-names depending on the actual environment.
-// Example : testcomponent stardiv.uno.io.Pipe stm 
+// Example : testcomponent stardiv.uno.io.Pipe stm
 //
 // Therefor the testcode must exist in teststm and the testservice must be named test.stardiv.uno.io.Pipe
 //
@@ -74,10 +74,6 @@
 #include <com/sun/star/test/XSimpleTest.hpp>
 
 #include <cppuhelper/servicefactory.hxx>
-
-
-#include <assert.h>
-
 
 using namespace ::rtl;
 using namespace ::cppu;
@@ -93,7 +89,7 @@ int main (int argc, char **argv)
 
     if( argc < 3) {
         printf( "usage : testcomponent service dll [additional dlls]\n" );
-        exit( 0 );			
+        exit( 0 );
     }
 
     // create service manager
@@ -114,10 +110,10 @@ int main (int argc, char **argv)
         printf( "Couldn't create ImplementationRegistration service\n" );
         exit(1);
     }
-    
+
     sal_Char szBuf[1024];
     OString sTestName;
-    
+
     try
     {
         // Load dll for the tested component
@@ -139,9 +135,9 @@ int main (int argc, char **argv)
         printf( "Couldn't reach dll %s\n" , szBuf );
         printf( "%s\n" , OUStringToOString( e.Message , RTL_TEXTENCODING_ASCII_US ).getStr() );
 
-        exit(1);			
+        exit(1);
     }
-    
+
 
     try
     {
@@ -165,21 +161,21 @@ int main (int argc, char **argv)
     catch( Exception & e )
     {
         printf( "Couldn't reach dll %s\n" , szBuf );
-        exit(1);						
+        exit(1);
     }
 
 
     // Instantiate test service
     sTestName = "test.";
     sTestName += argv[1];
-    
+
     Reference < XInterface > xIntTest =
         xSMgr->createInstance( OStringToOUString( sTestName , RTL_TEXTENCODING_ASCII_US ) );
     Reference< XSimpleTest > xTest( xIntTest , UNO_QUERY );
-    
+
     if( ! xTest.is() ) {
         printf( "Couldn't instantiate test service \n" );
-        exit( 1 );		
+        exit( 1 );
     }
 
 
@@ -197,7 +193,7 @@ int main (int argc, char **argv)
         if( ! x.is() )
         {
             printf( "Couldn't instantiate service !\n" );
-            exit( 1 );	
+            exit( 1 );
         }
 
         // do the test
@@ -216,8 +212,8 @@ int main (int argc, char **argv)
             printf( "testcomponent : uncaught unknown exception\n"  );
             exit(1);
         }
-        
-        
+
+
         // print errors and warning
         Sequence<OUString> seqErrors = xTest->getErrors();
         Sequence<OUString> seqWarnings = xTest->getWarnings();
@@ -237,7 +233,7 @@ int main (int argc, char **argv)
             printf( "Errors during test %d!\n" , nHandle );
             for( ; nErrorCount < seqErrors.getLength() ; nErrorCount ++ )
             {
-                OString o = OUStringToOString( 
+                OString o = OUStringToOString(
                     seqErrors.getArray()[nErrorCount], RTL_TEXTENCODING_ASCII_US );
                 printf( "%s\n" , o.getStr() );
             }
