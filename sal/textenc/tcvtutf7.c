@@ -2,9 +2,9 @@
  *
  *  $RCSfile: tcvtutf7.c,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-18 15:17:30 $
+ *  last change: $Author: sb $ $Date: 2001-10-12 10:44:53 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,17 +59,15 @@
  *
  ************************************************************************/
 
-#define _RTL_CCVTUTF7_C
+#ifndef INCLUDED_RTL_TEXTENC_TENCHELP_H
+#include "tenchelp.h"
+#endif
 
 #ifndef _RTL_ALLOC_H
-#include <rtl/alloc.h>
-#endif
-
-#ifndef _RTL_TENCHELP_H
-#include <tenchelp.h>
+#include "rtl/alloc.h"
 #endif
 #ifndef _RTL_TEXTCVT_H
-#include <rtl/textcvt.h>
+#include "rtl/textcvt.h"
 #endif
 
 /* ======================================================================= */
@@ -94,58 +92,58 @@ static sal_uChar const aImplBase64Tab[64] =
 /* Index in Base64Tab or 0xFF, when is a invalid character */
 static sal_uChar const aImplBase64IndexTab[128] =
 {
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x00-0x07 */
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x08-0x0F */
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x10-0x17 */
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x18-0x1F */
-    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x20-0x27  !"#$%&' */
-    0xFF, 0xFF, 0xFF,	62, 0xFF, 0xFF, 0xFF,	63, 	/* 0x28-0x2F ()*+,-./ */
-      52,	53,   54,	55,   56,	57,   58,	59, 	/* 0x30-0x37 01234567 */
-      60,	61, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x38-0x3F 89:;<=>? */
-    0xFF,	 0,    1,	 2,    3,	 4,    5,	 6, 	/* 0x40-0x47 @ABCDEFG */
-       7,	 8,    9,	10,   11,	12,   13,	14, 	/* 0x48-0x4F HIJKLMNO */
-      15,	16,   17,	18,   19,	20,   21,	22, 	/* 0x50-0x57 PQRSTUVW */
-      23,	24,   25, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 	/* 0x58-0x5F XYZ[\]^_ */
-    0xFF,	26,   27,	28,   29,	30,   31,	32, 	/* 0x60-0x67 `abcdefg */
-      33,	34,   35,	36,   37,	38,   39,	40, 	/* 0x68-0x6F hijklmno */
-      41,	42,   43,	44,   45,	46,   47,	48, 	/* 0x70-0x77 pqrstuvw */
-      49,	50,   51, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF		/* 0x78-0x7F xyz{|}~ */
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x00-0x07 */
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x08-0x0F */
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x10-0x17 */
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x18-0x1F */
+    0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x20-0x27  !"#$%&' */
+    0xFF, 0xFF, 0xFF,   62, 0xFF, 0xFF, 0xFF,   63,     /* 0x28-0x2F ()*+,-./ */
+      52,   53,   54,   55,   56,   57,   58,   59,     /* 0x30-0x37 01234567 */
+      60,   61, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x38-0x3F 89:;<=>? */
+    0xFF,    0,    1,    2,    3,    4,    5,    6,     /* 0x40-0x47 @ABCDEFG */
+       7,    8,    9,   10,   11,   12,   13,   14,     /* 0x48-0x4F HIJKLMNO */
+      15,   16,   17,   18,   19,   20,   21,   22,     /* 0x50-0x57 PQRSTUVW */
+      23,   24,   25, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,     /* 0x58-0x5F XYZ[\]^_ */
+    0xFF,   26,   27,   28,   29,   30,   31,   32,     /* 0x60-0x67 `abcdefg */
+      33,   34,   35,   36,   37,   38,   39,   40,     /* 0x68-0x6F hijklmno */
+      41,   42,   43,   44,   45,   46,   47,   48,     /* 0x70-0x77 pqrstuvw */
+      49,   50,   51, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF      /* 0x78-0x7F xyz{|}~ */
 };
 
 static sal_uChar const aImplMustShiftTab[128] =
 {
-    1, 1, 1, 1, 1, 1, 1, 1, 	/* 0x00-0x07 */
-    1, 0, 0, 1, 0, 1, 1, 1, 	/* 0x08-0x0F 0x09 == HTAB, 0x0A == LF 0x0C == CR */
-    1, 1, 1, 1, 1, 1, 1, 1, 	/* 0x10-0x17 */
-    1, 1, 1, 1, 1, 1, 1, 1, 	/* 0x18-0x1F */
-    0, 1, 1, 1, 1, 1, 1, 0, 	/* 0x20-0x27  !"#$%&' */
-    0, 0, 1, 1, 0, 1, 0, 0, 	/* 0x28-0x2F ()*+,-./ */
-    0, 0, 0, 0, 0, 0, 0, 0, 	/* 0x30-0x37 01234567 */
-    0, 0, 0, 1, 1, 1, 1, 0, 	/* 0x38-0x3F 89:;<=>? */
-    1, 0, 0, 0, 0, 0, 0, 0, 	/* 0x40-0x47 @ABCDEFG */
-    0, 0, 0, 0, 0, 0, 0, 0, 	/* 0x48-0x4F HIJKLMNO */
-    0, 0, 0, 0, 0, 0, 0, 0, 	/* 0x50-0x57 PQRSTUVW */
-    0, 0, 0, 1, 1, 1, 1, 1, 	/* 0x58-0x5F XYZ[\]^_ */
-    1, 0, 0, 0, 0, 0, 0, 0, 	/* 0x60-0x67 `abcdefg */
-    0, 0, 0, 0, 0, 0, 0, 0, 	/* 0x68-0x6F hijklmno */
-    0, 0, 0, 0, 0, 0, 0, 0, 	/* 0x70-0x77 pqrstuvw */
-    0, 0, 0, 1, 1, 1, 1, 1		/* 0x78-0x7F xyz{|}~ */
+    1, 1, 1, 1, 1, 1, 1, 1,     /* 0x00-0x07 */
+    1, 0, 0, 1, 0, 1, 1, 1,     /* 0x08-0x0F 0x09 == HTAB, 0x0A == LF 0x0C == CR */
+    1, 1, 1, 1, 1, 1, 1, 1,     /* 0x10-0x17 */
+    1, 1, 1, 1, 1, 1, 1, 1,     /* 0x18-0x1F */
+    0, 1, 1, 1, 1, 1, 1, 0,     /* 0x20-0x27  !"#$%&' */
+    0, 0, 1, 1, 0, 1, 0, 0,     /* 0x28-0x2F ()*+,-./ */
+    0, 0, 0, 0, 0, 0, 0, 0,     /* 0x30-0x37 01234567 */
+    0, 0, 0, 1, 1, 1, 1, 0,     /* 0x38-0x3F 89:;<=>? */
+    1, 0, 0, 0, 0, 0, 0, 0,     /* 0x40-0x47 @ABCDEFG */
+    0, 0, 0, 0, 0, 0, 0, 0,     /* 0x48-0x4F HIJKLMNO */
+    0, 0, 0, 0, 0, 0, 0, 0,     /* 0x50-0x57 PQRSTUVW */
+    0, 0, 0, 1, 1, 1, 1, 1,     /* 0x58-0x5F XYZ[\]^_ */
+    1, 0, 0, 0, 0, 0, 0, 0,     /* 0x60-0x67 `abcdefg */
+    0, 0, 0, 0, 0, 0, 0, 0,     /* 0x68-0x6F hijklmno */
+    0, 0, 0, 0, 0, 0, 0, 0,     /* 0x70-0x77 pqrstuvw */
+    0, 0, 0, 1, 1, 1, 1, 1      /* 0x78-0x7F xyz{|}~ */
 };
 
 /* + */
-#define IMPL_SHIFT_IN_CHAR		0x2B
+#define IMPL_SHIFT_IN_CHAR      0x2B
 /* - */
-#define IMPL_SHIFT_OUT_CHAR 	0x2D
+#define IMPL_SHIFT_OUT_CHAR     0x2D
 
 /* ----------------------------------------------------------------------- */
 
-typedef struct _ImplUTF7ToUCContextData
+typedef struct
 {
-    int 					mbShifted;
-    int 					mbFirst;
-    int 					mbWroteOne;
-    sal_uInt32				mnBitBuffer;
-    sal_uInt32				mnBufferBits;
+    int                     mbShifted;
+    int                     mbFirst;
+    int                     mbWroteOne;
+    sal_uInt32              mnBitBuffer;
+    sal_uInt32              mnBufferBits;
 } ImplUTF7ToUCContextData;
 
 /* ----------------------------------------------------------------------- */
@@ -154,11 +152,11 @@ void* ImplUTF7CreateUTF7TextToUnicodeContext( void )
 {
     ImplUTF7ToUCContextData* pContextData;
     pContextData = (ImplUTF7ToUCContextData*)rtl_allocateMemory( sizeof( ImplUTF7ToUCContextData ) );
-    pContextData->mbShifted 		= sal_False;
-    pContextData->mbFirst			= sal_False;
-    pContextData->mbWroteOne		= sal_False;
-    pContextData->mnBitBuffer		= 0;
-    pContextData->mnBufferBits		= 0;
+    pContextData->mbShifted         = sal_False;
+    pContextData->mbFirst           = sal_False;
+    pContextData->mbWroteOne        = sal_False;
+    pContextData->mnBitBuffer       = 0;
+    pContextData->mnBufferBits      = 0;
     return (void*)pContextData;
 }
 
@@ -174,11 +172,11 @@ void ImplUTF7DestroyTextToUnicodeContext( void* pContext )
 void ImplUTF7ResetTextToUnicodeContext( void* pContext )
 {
     ImplUTF7ToUCContextData* pContextData = (ImplUTF7ToUCContextData*)pContext;
-    pContextData->mbShifted 		= sal_False;
-    pContextData->mbFirst			= sal_False;
-    pContextData->mbWroteOne		= sal_False;
-    pContextData->mnBitBuffer		= 0;
-    pContextData->mnBufferBits		= 0;
+    pContextData->mbShifted         = sal_False;
+    pContextData->mbFirst           = sal_False;
+    pContextData->mbWroteOne        = sal_False;
+    pContextData->mnBitBuffer       = 0;
+    pContextData->mnBufferBits      = 0;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -189,42 +187,42 @@ sal_Size ImplUTF7ToUnicode( const ImplTextConverterData* pData, void* pContext,
                             sal_uInt32 nFlags, sal_uInt32* pInfo,
                             sal_Size* pSrcCvtBytes )
 {
-    ImplUTF7ToUCContextData*	pContextData = (ImplUTF7ToUCContextData*)pContext;
-    sal_uChar					c;
-    sal_uChar					nBase64Value;
-    int 						bEnd = sal_False;
-    int 						bShifted;
-    int 						bFirst;
-    int 						bWroteOne;
-    int 						bBase64End;
-    sal_uInt32					nBitBuffer;
-    sal_uInt32					nBitBufferTemp;
-    sal_uInt32					nBufferBits;
-    sal_Unicode*				pEndDestBuf;
-    const sal_Char* 			pEndSrcBuf;
+    ImplUTF7ToUCContextData*    pContextData = (ImplUTF7ToUCContextData*)pContext;
+    sal_uChar                   c;
+    sal_uChar                   nBase64Value;
+    int                         bEnd = sal_False;
+    int                         bShifted;
+    int                         bFirst;
+    int                         bWroteOne;
+    int                         bBase64End;
+    sal_uInt32                  nBitBuffer;
+    sal_uInt32                  nBitBufferTemp;
+    sal_uInt32                  nBufferBits;
+    sal_Unicode*                pEndDestBuf;
+    const sal_Char*             pEndSrcBuf;
 
 /* !!! Implementation not finnished !!!
     if ( pContextData )
     {
-        bShifted		= pContextData->mbShifted;
-        bFirst			= pContextData->mbFirst;
-        bWroteOne		= pContextData->mbWroteOne;
-        nBitBuffer		= pContextData->mnBitBuffer;
-        nBufferBits 	= pContextData->mnBufferBits;
+        bShifted        = pContextData->mbShifted;
+        bFirst          = pContextData->mbFirst;
+        bWroteOne       = pContextData->mbWroteOne;
+        nBitBuffer      = pContextData->mnBitBuffer;
+        nBufferBits     = pContextData->mnBufferBits;
     }
     else
 */
     {
-        bShifted		= sal_False;
-        bFirst			= sal_False;
-        bWroteOne		= sal_False;
-        nBitBuffer		= 0;
-        nBufferBits 	= 0;
+        bShifted        = sal_False;
+        bFirst          = sal_False;
+        bWroteOne       = sal_False;
+        nBitBuffer      = 0;
+        nBufferBits     = 0;
     }
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestChars;
-    pEndSrcBuf	= pSrcBuf+nSrcBytes;
+    pEndSrcBuf  = pSrcBuf+nSrcBytes;
     do
     {
         if ( pSrcBuf < pEndSrcBuf )
@@ -380,9 +378,9 @@ sal_Size ImplUTF7ToUnicode( const ImplTextConverterData* pData, void* pContext,
             {
                 if ( c == IMPL_SHIFT_IN_CHAR )
                 {
-                    bShifted	= sal_True;
-                    bFirst		= sal_True;
-                    bWroteOne	= sal_False;
+                    bShifted    = sal_True;
+                    bFirst      = sal_True;
+                    bWroteOne   = sal_False;
                 }
                 else
                 {
@@ -426,11 +424,11 @@ sal_Size ImplUTF7ToUnicode( const ImplTextConverterData* pData, void* pContext,
 
     if ( pContextData )
     {
-        pContextData->mbShifted 		= bShifted;
-        pContextData->mbFirst			= bFirst;
-        pContextData->mbWroteOne		= bWroteOne;
-        pContextData->mnBitBuffer		= nBitBuffer;
-        pContextData->mnBufferBits		= nBufferBits;
+        pContextData->mbShifted         = bShifted;
+        pContextData->mbFirst           = bFirst;
+        pContextData->mbWroteOne        = bWroteOne;
+        pContextData->mnBitBuffer       = nBitBuffer;
+        pContextData->mnBufferBits      = nBufferBits;
     }
 
     *pSrcCvtBytes = nSrcBytes - (pEndSrcBuf-pSrcBuf);
@@ -439,11 +437,11 @@ sal_Size ImplUTF7ToUnicode( const ImplTextConverterData* pData, void* pContext,
 
 /* ======================================================================= */
 
-typedef struct _ImplUTF7FromUCContextData
+typedef struct
 {
-    int 					mbShifted;
-    sal_uInt32				mnBitBuffer;
-    sal_uInt32				mnBufferBits;
+    int                     mbShifted;
+    sal_uInt32              mnBitBuffer;
+    sal_uInt32              mnBufferBits;
 } ImplUTF7FromUCContextData;
 
 /* ----------------------------------------------------------------------- */
@@ -452,9 +450,9 @@ void* ImplUTF7CreateUnicodeToTextContext( void )
 {
     ImplUTF7FromUCContextData* pContextData;
     pContextData = (ImplUTF7FromUCContextData*)rtl_allocateMemory( sizeof( ImplUTF7FromUCContextData ) );
-    pContextData->mbShifted 		= sal_False;
-    pContextData->mnBitBuffer		= 0;
-    pContextData->mnBufferBits		= 0;
+    pContextData->mbShifted         = sal_False;
+    pContextData->mnBitBuffer       = 0;
+    pContextData->mnBufferBits      = 0;
     return (void*)pContextData;
 }
 
@@ -470,9 +468,9 @@ void ImplUTF7DestroyUnicodeToTextContext( void* pContext )
 void ImplUTF7ResetUnicodeToTextContext( void* pContext )
 {
     ImplUTF7FromUCContextData* pContextData = (ImplUTF7FromUCContextData*)pContext;
-    pContextData->mbShifted 		= sal_False;
-    pContextData->mnBitBuffer		= 0;
-    pContextData->mnBufferBits		= 0;
+    pContextData->mbShifted         = sal_False;
+    pContextData->mnBitBuffer       = 0;
+    pContextData->mnBufferBits      = 0;
 }
 
 /* ----------------------------------------------------------------------- */
@@ -483,35 +481,35 @@ sal_Size ImplUnicodeToUTF7( const ImplTextConverterData* pData, void* pContext,
                             sal_uInt32 nFlags, sal_uInt32* pInfo,
                             sal_Size* pSrcCvtChars )
 {
-    ImplUTF7FromUCContextData*	pContextData = (ImplUTF7FromUCContextData*)pContext;
-    sal_Unicode 				c;
-    int 						bEnd = sal_False;
-    int 						bShifted;
-    int 						bNeedShift;
-    sal_uInt32					nBitBuffer;
-    sal_uInt32					nBitBufferTemp;
-    sal_uInt32					nBufferBits;
-    sal_Char*					pEndDestBuf;
-    const sal_Unicode*			pEndSrcBuf;
+    ImplUTF7FromUCContextData*  pContextData = (ImplUTF7FromUCContextData*)pContext;
+    sal_Unicode                 c;
+    int                         bEnd = sal_False;
+    int                         bShifted;
+    int                         bNeedShift;
+    sal_uInt32                  nBitBuffer;
+    sal_uInt32                  nBitBufferTemp;
+    sal_uInt32                  nBufferBits;
+    sal_Char*                   pEndDestBuf;
+    const sal_Unicode*          pEndSrcBuf;
 
 /* !!! Implementation not finnished !!!
     if ( pContextData )
     {
-        bShifted		= pContextData->mbShifted;
-        nBitBuffer		= pContextData->mnBitBuffer;
-        nBufferBits 	= pContextData->mnBufferBits;
+        bShifted        = pContextData->mbShifted;
+        nBitBuffer      = pContextData->mnBitBuffer;
+        nBufferBits     = pContextData->mnBufferBits;
     }
     else
 */
     {
-        bShifted		= sal_False;
-        nBitBuffer		= 0;
-        nBufferBits 	= 0;
+        bShifted        = sal_False;
+        nBitBuffer      = 0;
+        nBufferBits     = 0;
     }
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestBytes;
-    pEndSrcBuf	= pSrcBuf+nSrcChars;
+    pEndSrcBuf  = pSrcBuf+nSrcChars;
     do
     {
         if ( pSrcBuf < pEndSrcBuf )
@@ -612,9 +610,9 @@ sal_Size ImplUnicodeToUTF7( const ImplTextConverterData* pData, void* pContext,
 
     if ( pContextData )
     {
-        pContextData->mbShifted 	= bShifted;
-        pContextData->mnBitBuffer	= nBitBuffer;
-        pContextData->mnBufferBits	= nBufferBits;
+        pContextData->mbShifted     = bShifted;
+        pContextData->mnBitBuffer   = nBitBuffer;
+        pContextData->mnBufferBits  = nBufferBits;
     }
 
     *pSrcCvtChars = nSrcChars - (pEndSrcBuf-pSrcBuf);

@@ -1,71 +1,70 @@
 /*************************************************************************
  *
- *	$RCSfile: tcvtmb.c,v $
+ *  $RCSfile: tcvtmb.c,v $
  *
- *	$Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *	last change: $Author: jp $ $Date: 2001-09-19 14:02:35 $
+ *  last change: $Author: sb $ $Date: 2001-10-12 10:44:53 $
  *
- *	The Contents of this file are made available subject to the terms of
- *	either of the following licenses
+ *  The Contents of this file are made available subject to the terms of
+ *  either of the following licenses
  *
- *		   - GNU Lesser General Public License Version 2.1
- *		   - Sun Industry Standards Source License Version 1.1
+ *         - GNU Lesser General Public License Version 2.1
+ *         - Sun Industry Standards Source License Version 1.1
  *
- *	Sun Microsystems Inc., October, 2000
+ *  Sun Microsystems Inc., October, 2000
  *
- *	GNU Lesser General Public License Version 2.1
- *	=============================================
- *	Copyright 2000 by Sun Microsystems, Inc.
- *	901 San Antonio Road, Palo Alto, CA 94303, USA
+ *  GNU Lesser General Public License Version 2.1
+ *  =============================================
+ *  Copyright 2000 by Sun Microsystems, Inc.
+ *  901 San Antonio Road, Palo Alto, CA 94303, USA
  *
- *	This library is free software; you can redistribute it and/or
- *	modify it under the terms of the GNU Lesser General Public
- *	License version 2.1, as published by the Free Software Foundation.
+ *  This library is free software; you can redistribute it and/or
+ *  modify it under the terms of the GNU Lesser General Public
+ *  License version 2.1, as published by the Free Software Foundation.
  *
- *	This library is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *	Lesser General Public License for more details.
+ *  This library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ *  Lesser General Public License for more details.
  *
- *	You should have received a copy of the GNU Lesser General Public
- *	License along with this library; if not, write to the Free Software
- *	Foundation, Inc., 59 Temple Place, Suite 330, Boston,
- *	MA	02111-1307	USA
+ *  You should have received a copy of the GNU Lesser General Public
+ *  License along with this library; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston,
+ *  MA  02111-1307  USA
  *
  *
- *	Sun Industry Standards Source License Version 1.1
- *	=================================================
- *	The contents of this file are subject to the Sun Industry Standards
- *	Source License Version 1.1 (the "License"); You may not use this file
- *	except in compliance with the License. You may obtain a copy of the
- *	License at http://www.openoffice.org/license.html.
+ *  Sun Industry Standards Source License Version 1.1
+ *  =================================================
+ *  The contents of this file are subject to the Sun Industry Standards
+ *  Source License Version 1.1 (the "License"); You may not use this file
+ *  except in compliance with the License. You may obtain a copy of the
+ *  License at http://www.openoffice.org/license.html.
  *
- *	Software provided under this License is provided on an "AS IS" basis,
- *	WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
- *	WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
- *	MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
- *	See the License for the specific provisions governing your rights and
- *	obligations concerning the Software.
+ *  Software provided under this License is provided on an "AS IS" basis,
+ *  WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING,
+ *  WITHOUT LIMITATION, WARRANTIES THAT THE SOFTWARE IS FREE OF DEFECTS,
+ *  MERCHANTABLE, FIT FOR A PARTICULAR PURPOSE, OR NON-INFRINGING.
+ *  See the License for the specific provisions governing your rights and
+ *  obligations concerning the Software.
  *
- *	The Initial Developer of the Original Code is: Sun Microsystems, Inc.
+ *  The Initial Developer of the Original Code is: Sun Microsystems, Inc.
  *
- *	Copyright: 2000 by Sun Microsystems, Inc.
+ *  Copyright: 2000 by Sun Microsystems, Inc.
  *
- *	All Rights Reserved.
+ *  All Rights Reserved.
  *
- *	Contributor(s): _______________________________________
+ *  Contributor(s): _______________________________________
  *
  *
  ************************************************************************/
 
-#define _RTL_TCVTMB_C
-
-#ifndef _RTL_TENCHELP_H
-#include <tenchelp.h>
+#ifndef INCLUDED_RTL_TEXTENC_TENCHELP_H
+#include "tenchelp.h"
 #endif
+
 #ifndef _RTL_TEXTCVT_H
-#include <rtl/textcvt.h>
+#include "rtl/textcvt.h"
 #endif
 
 /* ======================================================================= */
@@ -83,18 +82,18 @@ sal_Size ImplDBCSToUnicode( const ImplTextConverterData* pData, void* pContext,
                             sal_uInt32 nFlags, sal_uInt32* pInfo,
                             sal_Size* pSrcCvtBytes )
 {
-    sal_uChar					cLead;
-    sal_uChar					cTrail;
-    sal_Unicode 				cConv;
+    sal_uChar                   cLead;
+    sal_uChar                   cTrail;
+    sal_Unicode                 cConv;
     const ImplDBCSToUniLeadTab* pLeadEntry;
-    const ImplDBCSConvertData*	pConvertData = (const ImplDBCSConvertData*)(pData->mpConvertTables);
+    const ImplDBCSConvertData*  pConvertData = (const ImplDBCSConvertData*)pData;
     const ImplDBCSToUniLeadTab* pLeadTab = pConvertData->mpToUniLeadTab;
-    sal_Unicode*				pEndDestBuf;
-    const sal_Char* 			pEndSrcBuf;
+    sal_Unicode*                pEndDestBuf;
+    const sal_Char*             pEndSrcBuf;
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestChars;
-    pEndSrcBuf	= pSrcBuf+nSrcBytes;
+    pEndSrcBuf  = pSrcBuf+nSrcBytes;
     while ( pSrcBuf < pEndSrcBuf )
     {
         cLead = (sal_uChar)*pSrcBuf;
@@ -120,7 +119,7 @@ sal_Size ImplDBCSToUnicode( const ImplTextConverterData* pData, void* pContext,
                     continue;
                 }
                 else
-                    cConv = ImplGetUndefinedUnicodeChar( cLead, nFlags, pData );
+                    cConv = ImplGetUndefinedUnicodeChar(cLead, nFlags);
             }
         }
         else
@@ -142,7 +141,7 @@ sal_Size ImplDBCSToUnicode( const ImplTextConverterData* pData, void* pContext,
             if ( !cConv )
             {
                 /* EUDC Ranges */
-                sal_uInt16				i;
+                sal_uInt16              i;
                 const ImplDBCSEUDCData* pEUDCTab = pConvertData->mpEUDCTab;
                 for ( i = 0; i < pConvertData->mnEUDCCount; i++ )
                 {
@@ -259,20 +258,19 @@ sal_Size ImplUnicodeToDBCS( const ImplTextConverterData* pData, void* pContext,
                             sal_uInt32 nFlags, sal_uInt32* pInfo,
                             sal_Size* pSrcCvtChars )
 {
-    int 						nAction;
-    sal_uInt16					cConv;
-    sal_Unicode 				c;
-    sal_uChar					nHighChar;
-    sal_uChar					nLowChar;
+    sal_uInt16                  cConv;
+    sal_Unicode                 c;
+    sal_uChar                   nHighChar;
+    sal_uChar                   nLowChar;
     const ImplUniToDBCSHighTab* pHighEntry;
-    const ImplDBCSConvertData*	pConvertData = (const ImplDBCSConvertData*)(pData->mpConvertTables);
+    const ImplDBCSConvertData*  pConvertData = (const ImplDBCSConvertData*)pData;
     const ImplUniToDBCSHighTab* pHighTab = pConvertData->mpToDBCSHighTab;
-    sal_Char*					pEndDestBuf;
-    const sal_Unicode*			pEndSrcBuf;
+    sal_Char*                   pEndDestBuf;
+    const sal_Unicode*          pEndSrcBuf;
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestBytes;
-    pEndSrcBuf	= pSrcBuf+nSrcChars;
+    pEndSrcBuf  = pSrcBuf+nSrcChars;
     while ( pSrcBuf < pEndSrcBuf )
     {
         c = *pSrcBuf;
@@ -291,7 +289,7 @@ sal_Size ImplUnicodeToDBCS( const ImplTextConverterData* pData, void* pContext,
         if ( !cConv && !c )
         {
             /* EUDC Ranges */
-            sal_uInt16				i;
+            sal_uInt16              i;
             const ImplDBCSEUDCData* pEUDCTab = pConvertData->mpEUDCTab;
             for ( i = 0; i < pConvertData->mnEUDCCount; i++ )
             {
@@ -321,7 +319,8 @@ sal_Size ImplUnicodeToDBCS( const ImplTextConverterData* pData, void* pContext,
                 pEUDCTab++;
             }
 
-            if ( (c >= 0xF100) && (c <= 0xF1FF) )
+            if (c >= RTL_TEXTCVT_BYTE_PRIVATE_START
+                && c <= RTL_TEXTCVT_BYTE_PRIVATE_END)
             {
                 if ( nFlags & RTL_UNICODETOTEXT_FLAGS_PRIVATE_MAPTO0 )
                     cConv = (sal_Char)(sal_uChar)(c & 0xFF);
@@ -342,14 +341,16 @@ sal_Size ImplUnicodeToDBCS( const ImplTextConverterData* pData, void* pContext,
 
             /* Handle undefined and surrogates characters */
             /* (all surrogates characters are undefined) */
-            nAction = ImplHandleUndefinedUnicodeToTextChar( pData,
-                                                            &pSrcBuf, pEndSrcBuf,
-                                                            &pDestBuf, pEndDestBuf,
-                                                            nFlags, pInfo );
-            if ( nAction == IMPL_TEXTCVT_BREAK )
-                break;
-            else
+            if (ImplHandleUndefinedUnicodeToTextChar(pData,
+                                                     &pSrcBuf,
+                                                     pEndSrcBuf,
+                                                     &pDestBuf,
+                                                     pEndDestBuf,
+                                                     nFlags,
+                                                     pInfo))
                 continue;
+            else
+                break;
         }
 
         /* SingleByte */
@@ -387,8 +388,8 @@ sal_Size ImplUnicodeToDBCS( const ImplTextConverterData* pData, void* pContext,
 
 /* ======================================================================= */
 
-#define JIS_EUC_LEAD_OFF										0x80
-#define JIS_EUC_TRAIL_OFF										0x80
+#define JIS_EUC_LEAD_OFF                                        0x80
+#define JIS_EUC_TRAIL_OFF                                       0x80
 
 /* ----------------------------------------------------------------------- */
 
@@ -399,19 +400,19 @@ sal_Size ImplEUCJPToUnicode( const ImplTextConverterData* pData,
                              sal_uInt32 nFlags, sal_uInt32* pInfo,
                              sal_Size* pSrcCvtBytes )
 {
-    sal_uChar					c;
-    sal_uChar					cLead;
-    sal_uChar					cTrail;
-    sal_Unicode 				cConv;
+    sal_uChar                   c;
+    sal_uChar                   cLead;
+    sal_uChar                   cTrail;
+    sal_Unicode                 cConv;
     const ImplDBCSToUniLeadTab* pLeadEntry;
     const ImplDBCSToUniLeadTab* pLeadTab;
-    const ImplEUCJPConvertData* pConvertData = (const ImplEUCJPConvertData*)(pData->mpConvertTables);
-    sal_Unicode*				pEndDestBuf;
-    const sal_Char* 			pEndSrcBuf;
+    const ImplEUCJPConvertData* pConvertData = (const ImplEUCJPConvertData*)pData;
+    sal_Unicode*                pEndDestBuf;
+    const sal_Char*             pEndSrcBuf;
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestChars;
-    pEndSrcBuf	= pSrcBuf+nSrcBytes;
+    pEndSrcBuf  = pSrcBuf+nSrcBytes;
     while ( pSrcBuf < pEndSrcBuf )
     {
         c = (sal_uChar)*pSrcBuf;
@@ -484,8 +485,8 @@ sal_Size ImplEUCJPToUnicode( const ImplTextConverterData* pData,
                     cConv = 0;
                 else
                 {
-                    cLead	-= JIS_EUC_LEAD_OFF;
-                    cTrail	-= JIS_EUC_TRAIL_OFF;
+                    cLead   -= JIS_EUC_LEAD_OFF;
+                    cTrail  -= JIS_EUC_TRAIL_OFF;
                     pLeadEntry = pLeadTab+cLead;
                     if ( (cTrail >= pLeadEntry->mnTrailStart) && (cTrail <= pLeadEntry->mnTrailEnd) )
                         cConv = pLeadEntry->mpToUniTrailTab[cTrail-pLeadEntry->mnTrailStart];
@@ -562,20 +563,19 @@ sal_Size ImplUnicodeToEUCJP( const ImplTextConverterData* pData,
                              sal_uInt32 nFlags, sal_uInt32* pInfo,
                              sal_Size* pSrcCvtChars )
 {
-    int 						nAction;
-    sal_uInt32					cConv;
-    sal_Unicode 				c;
-    sal_uChar					nHighChar;
-    sal_uChar					nLowChar;
+    sal_uInt32                  cConv;
+    sal_Unicode                 c;
+    sal_uChar                   nHighChar;
+    sal_uChar                   nLowChar;
     const ImplUniToDBCSHighTab* pHighEntry;
     const ImplUniToDBCSHighTab* pHighTab;
-    const ImplEUCJPConvertData* pConvertData = (const ImplEUCJPConvertData*)(pData->mpConvertTables);
-    sal_Char*					pEndDestBuf;
-    const sal_Unicode*			pEndSrcBuf;
+    const ImplEUCJPConvertData* pConvertData = (const ImplEUCJPConvertData*)pData;
+    sal_Char*                   pEndDestBuf;
+    const sal_Unicode*          pEndSrcBuf;
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestBytes;
-    pEndSrcBuf	= pSrcBuf+nSrcChars;
+    pEndSrcBuf  = pSrcBuf+nSrcChars;
     while ( pSrcBuf < pEndSrcBuf )
     {
         c = *pSrcBuf;
@@ -627,14 +627,16 @@ sal_Size ImplUnicodeToEUCJP( const ImplTextConverterData* pData,
 
                     /* Handle undefined and surrogates characters */
                     /* (all surrogates characters are undefined) */
-                    nAction = ImplHandleUndefinedUnicodeToTextChar( pData,
-                                                                    &pSrcBuf, pEndSrcBuf,
-                                                                    &pDestBuf, pEndDestBuf,
-                                                                    nFlags, pInfo );
-                    if ( nAction == IMPL_TEXTCVT_BREAK )
-                        break;
-                    else
+                    if (ImplHandleUndefinedUnicodeToTextChar(pData,
+                                                             &pSrcBuf,
+                                                             pEndSrcBuf,
+                                                             &pDestBuf,
+                                                             pEndDestBuf,
+                                                             nFlags,
+                                                             pInfo))
                         continue;
+                    else
+                        break;
                 }
             }
         }

@@ -2,9 +2,9 @@
  *
  *  $RCSfile: tcvtutf8.c,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-18 15:17:30 $
+ *  last change: $Author: sb $ $Date: 2001-10-12 10:44:53 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -59,18 +59,17 @@
  *
  ************************************************************************/
 
-#define _RTL_TCVTUTF8_C
-
-#ifndef _RTL_TENCHELP_H
-#include <tenchelp.h>
+#ifndef INCLUDED_RTL_TEXTENC_TENCHELP_H
+#include "tenchelp.h"
 #endif
+
 #ifndef _RTL_TEXTCVT_H
-#include <rtl/textcvt.h>
+#include "rtl/textcvt.h"
 #endif
 
-/* ======================================================================= */
-
-#define TEXTCVT_MAX_UNICHAR 			0x0010FFFF
+#define RTL_UNICODE_SURROGATES_HALFMASK 0x3FFUL
+#define RTL_UNICODE_SURROGATES_HALFBASE 0x10000UL
+#define RTL_UNICODE_SURROGATES_HALFSHIFT 10
 
 /* ----------------------------------------------------------------------- */
 
@@ -89,16 +88,16 @@ sal_Size ImplUTF8ToUnicode( const ImplTextConverterData* pData, void* pContext,
         0x07, 0x03, 0x01
     };
 
-    sal_uInt8				nBytes;
-    sal_uInt8				nTempBytes;
-    sal_uChar				c;
-    sal_uInt32				cConv;
-    sal_Unicode*			pEndDestBuf;
-    const sal_Char* 		pEndSrcBuf;
+    sal_uInt8               nBytes;
+    sal_uInt8               nTempBytes;
+    sal_uChar               c;
+    sal_uInt32              cConv;
+    sal_Unicode*            pEndDestBuf;
+    const sal_Char*         pEndSrcBuf;
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestChars;
-    pEndSrcBuf	= pSrcBuf+nSrcBytes;
+    pEndSrcBuf  = pSrcBuf+nSrcBytes;
     while ( pSrcBuf < pEndSrcBuf )
     {
         if ( pDestBuf == pEndDestBuf )
@@ -279,7 +278,7 @@ sal_Size ImplUTF8ToUnicode( const ImplTextConverterData* pData, void* pContext,
             else
             {
                 pSrcBuf++;
-                if ( cConv > TEXTCVT_MAX_UNICHAR )
+                if ( cConv > 0x10FFFF )
                 {
                     *pInfo |= RTL_TEXTTOUNICODE_INFO_MBUNDEFINED;
                     if ( (nFlags & RTL_TEXTTOUNICODE_FLAGS_MBUNDEFINED_MASK) == RTL_TEXTTOUNICODE_FLAGS_MBUNDEFINED_ERROR )
@@ -327,17 +326,17 @@ sal_Size ImplUnicodeToUTF8( const ImplTextConverterData* pData, void* pContext,
         0x00, 0xC0, 0xE0, 0xF0, 0xF8, 0xFC
     };
 
-    sal_Unicode 			c;
-    sal_Unicode 			c2;
-    sal_uInt32				nUCS4Char;
-    sal_uInt8				nBytes;
-    sal_Char*				pTempDestBuf;
-    sal_Char*				pEndDestBuf;
-    const sal_Unicode*		pEndSrcBuf;
+    sal_Unicode             c;
+    sal_Unicode             c2;
+    sal_uInt32              nUCS4Char;
+    sal_uInt8               nBytes;
+    sal_Char*               pTempDestBuf;
+    sal_Char*               pEndDestBuf;
+    const sal_Unicode*      pEndSrcBuf;
 
     *pInfo = 0;
     pEndDestBuf = pDestBuf+nDestBytes;
-    pEndSrcBuf	= pSrcBuf+nSrcChars;
+    pEndSrcBuf  = pSrcBuf+nSrcChars;
     while ( pSrcBuf < pEndSrcBuf )
     {
         c = *pSrcBuf;
@@ -391,9 +390,9 @@ sal_Size ImplUnicodeToUTF8( const ImplTextConverterData* pData, void* pContext,
                             pSrcBuf++;
                             continue;
                         }
-                        /* in UTF8 we save the original code. I think	*/
-                        /* this is better than the default char,		*/
-                        /* because it is a unicode format.				*/
+                        /* in UTF8 we save the original code. I think   */
+                        /* this is better than the default char,        */
+                        /* because it is a unicode format.              */
                     }
                 }
 
