@@ -2,9 +2,9 @@
  *
  *  $RCSfile: XTextSearch.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: mi $ $Date: 2000-12-14 15:53:02 $
+ *  last change: $Author: jp $ $Date: 2001-02-01 20:12:03 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -89,12 +89,12 @@ constants SearchFlags
     const long 	NORM_WORD_ONLY		= 0x00000010;
 
     /// Flag for "regular expression" search / interpret as extended regular expression
-    const long 	REG_EXTENDED		= 0x00000100; 
+    const long 	REG_EXTENDED		= 0x00000100;
     /// Flag for "regular expression" search / No replace means ie avoid sub regular expresions return true/false to match
-    const long 	REG_NOSUB		= 0x00000200; 
+    const long 	REG_NOSUB		= 0x00000200;
 
     /// Flag for "regular expression" search / Special new  line treatment
-    const long 	REG_NEWLINE		= 0x00000400; 
+    const long 	REG_NEWLINE		= 0x00000400;
 
     /** A NEWLINE character in string will not be matched by  a period outside  bracket expression or by any form of a non matching list.
         A circumflex (^) in pattern when used to specify expression anhoring will match the zero
@@ -120,8 +120,8 @@ struct SearchOptions  {
     /// search type, can be: ABSOLUTE, REGEXP, APPROXIMATE
     SearchAlgorithms	algorithmType;
 
-    /** some flags - can be mixed 
-        
+    /** some flags - can be mixed
+
         @see SearchFlags
     */
     long 			searchFlag;
@@ -136,13 +136,19 @@ struct SearchOptions  {
     ::com::sun::star::lang::Locale  Locale;
 
     /// this many characters can be different between the found and search word in a "Weight Levenshtein-Distance"
-    long			changedChars; 
+    long			changedChars;
 
     /// this many characters can be missed in the found word in a "Weight Levenshtein-Distance"
-    long			deletedChars; 
+    long			deletedChars;
 
     /// this many characters can be additional in the found word in a "Weight Levenshtein-Distance"
     long			insertedChars;
+
+    /** asian flags for the transliteration. Same meaning as the enum of TransliteratorModule
+
+        @see com/sun/star/i18n/XTransliteration.idl
+    */
+    long			transliterateFlags;
 };
 
 
