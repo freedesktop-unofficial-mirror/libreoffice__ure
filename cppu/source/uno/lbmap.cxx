@@ -2,9 +2,9 @@
  *
  *  $RCSfile: lbmap.cxx,v $
  *
- *  $Revision: 1.21 $
+ *  $Revision: 1.22 $
  *
- *  last change: $Author: vg $ $Date: 2003-03-20 14:44:59 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:37:52 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -91,7 +91,7 @@ namespace cppu
 class Mapping
 {
     uno_Mapping * _pMapping;
-    
+
 public:
     inline Mapping(
         uno_Environment * pFrom, uno_Environment * pTo,
@@ -154,7 +154,7 @@ struct MappingEntry
     uno_Mapping *		pMapping;
     uno_freeMappingFunc	freeMapping;
     OUString			aMappingName;
-    
+
     MappingEntry(
         uno_Mapping * pMapping_, uno_freeMappingFunc freeMapping_,
         const OUString & rMappingName_ )
@@ -192,10 +192,10 @@ struct MappingsData
     Mutex				aMappingsMutex;
     t_OUString2Entry	aName2Entry;
     t_Mapping2Entry		aMapping2Entry;
-    
+
     Mutex				aCallbacksMutex;
     t_CallbackSet		aCallbacks;
-    
+
     Mutex				aNegativeLibsMutex;
     t_OUStringSet		aNegativeLibs;
     ~MappingsData() SAL_THROW( () );
@@ -203,7 +203,7 @@ struct MappingsData
 //__________________________________________________________________________________________________
 MappingsData::~MappingsData() SAL_THROW( () )
 {
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
     OSL_ENSURE( aName2Entry.empty() && aMapping2Entry.empty(), "### unrevoked mappings!" );
     t_OUString2Entry::const_iterator iPos( aName2Entry.begin() );
     while (iPos != aName2Entry.end())
@@ -244,15 +244,15 @@ static MappingsData & getMappingsData() SAL_THROW( () )
 struct uno_Mediate_Mapping : public uno_Mapping
 {
     sal_Int32	nRef;
-    
+
     Environment aFrom;
     Environment aTo;
-    
+
     Mapping		aFrom2Uno;
     Mapping		aUno2To;
 
     OUString	aAddPurpose;
-    
+
     uno_Mediate_Mapping(
         const Environment & rFrom_, const Environment & rTo_,
         const Mapping & rFrom2Uno_, const Mapping & rUno2To_,
@@ -303,7 +303,7 @@ static void SAL_CALL mediate_mapInterface(
     {
         uno_Mediate_Mapping * that = static_cast< uno_Mediate_Mapping * >( pMapping );
         uno_Mapping * pFrom2Uno = that->aFrom2Uno.get();
-        
+
         uno_Interface * pUnoI = 0;
         (*pFrom2Uno->mapInterface)( pFrom2Uno, (void **) &pUnoI, pInterface, pInterfaceTypeDescr );
         if (0 == pUnoI)
@@ -398,7 +398,7 @@ static inline oslModule loadModule( const OUString & rBridgeName )
     const t_OUStringSet::const_iterator iFind( rData.aNegativeLibs.find( rBridgeName ) );
     bNeg = (iFind != rData.aNegativeLibs.end());
     }
-    
+
     if (! bNeg)
     {
         OUStringBuffer aLibName( rBridgeName.getLength() + 12 );
@@ -408,13 +408,13 @@ static inline oslModule loadModule( const OUString & rBridgeName )
         aLibName.append( rBridgeName );
         aLibName.appendAscii( RTL_CONSTASCII_STRINGPARAM(SAL_DLLEXTENSION) );
         OUString aModule( aLibName.makeStringAndClear() );
-        
+
         oslModule hModule = ::osl_loadModule(
             aModule.pData, SAL_LOADMODULE_GLOBAL | SAL_LOADMODULE_LAZY );
-        
+
         if (hModule)
             return hModule;
-        
+
         setNegativeBridge( rBridgeName ); // no load again
     }
     return 0;
@@ -430,20 +430,20 @@ static Mapping loadExternalMapping(
         // find proper lib
         oslModule hModule = 0;
         OUString aName;
-        
+
         if (rFrom.getTypeName().equalsAsciiL( RTL_CONSTASCII_STRINGPARAM(UNO_LB_UNO) ))
             hModule = loadModule( aName = getBridgeName( rTo, rFrom, rAddPurpose ) );
         if (! hModule)
             hModule = loadModule( aName = getBridgeName( rFrom, rTo, rAddPurpose ) );
         if (! hModule)
             hModule = loadModule( aName = getBridgeName( rTo, rFrom, rAddPurpose ) );
-        
+
         if (hModule)
         {
             OUString aSymbolName( RTL_CONSTASCII_USTRINGPARAM(UNO_EXT_GETMAPPING) );
             uno_ext_getMappingFunc fpGetMapFunc =
                 (uno_ext_getMappingFunc)::osl_getSymbol( hModule, aSymbolName.pData );
-            
+
             if (fpGetMapFunc)
             {
                 Mapping aExt;
@@ -472,11 +472,11 @@ static Mapping getDirectMapping(
     {
         MappingsData & rData = getMappingsData();
         ClearableMutexGuard aGuard( rData.aMappingsMutex );
-        
+
         // try to find registered mapping
         const t_OUString2Entry::const_iterator iFind( rData.aName2Entry.find(
             getMappingName( rFrom, rTo, rAddPurpose ) ) );
-        
+
         if (iFind == rData.aName2Entry.end())
         {
             aGuard.clear();
@@ -514,7 +514,7 @@ static Mapping getMediateMapping(
     Mapping aUno2To;
 
     // backwards: from dest to source of mapping chain
-    
+
     // connect to uno
     OUString aUnoEnvTypeName( RTL_CONSTASCII_USTRINGPARAM(UNO_LB_UNO) );
     if (rTo.getTypeName() == aUnoEnvTypeName) // to is uno
@@ -526,24 +526,24 @@ static Mapping getMediateMapping(
     {
         // get registered uno env
         ::uno_getEnvironment( (uno_Environment **)&aUno, aUnoEnvTypeName.pData, 0 );
-        
+
         aUno2To = getDirectMapping( aUno, rTo );
         // : uno <-> to
         if (! aUno2To.is())
             return Mapping();
     }
-    
+
     // connect to uno
     if (rAddPurpose.getLength()) // insert purpose mapping between new ano_uno <-> uno
     {
-        // create anonymous uno env 
+        // create anonymous uno env
         Environment aAnUno;
         ::uno_createEnvironment( (uno_Environment **)&aAnUno, aUnoEnvTypeName.pData, 0 );
-        
+
         Mapping aAnUno2Uno( getDirectMapping( aAnUno, aUno, rAddPurpose ) );
         if (! aAnUno2Uno.is())
             return Mapping();
-        
+
         if (aUno2To.is()) // to is not uno
         {
             // create another purposed mediate mapping
@@ -557,14 +557,14 @@ static Mapping getMediateMapping(
         }
         aUno = aAnUno;
     }
-    
+
     Mapping aFrom2Uno( getDirectMapping( rFrom, aUno ) );
     if (aFrom2Uno.is() && aUno2To.is())
     {
         return createMediateMapping( rFrom, rTo, aFrom2Uno, aUno2To, rAddPurpose );
         // : from <-> some uno ...
     }
-    
+
     return Mapping();
 }
 }
@@ -585,16 +585,16 @@ void SAL_CALL uno_getMapping(
         (*(*ppMapping)->release)( *ppMapping );
         *ppMapping = 0;
     }
-    
+
     Mapping aRet;
     Environment aFrom( pFrom ), aTo( pTo );
-    
+
     OUString aAddPurpose;
     if (pAddPurpose)
         aAddPurpose = pAddPurpose;
-    
+
     MappingsData & rData = getMappingsData();
-    
+
     // try registered mapping
     {
     MutexGuard aGuard( rData.aMappingsMutex );
@@ -603,7 +603,7 @@ void SAL_CALL uno_getMapping(
     if (iFind != rData.aName2Entry.end())
         aRet = (*iFind).second->pMapping;
     }
-    
+
     if (! aRet.is()) // try callback chain
     {
         MutexGuard aGuard( rData.aCallbacksMutex );
@@ -615,14 +615,14 @@ void SAL_CALL uno_getMapping(
                 return;
         }
     }
-    
+
     if (! aRet.is())
     {
         aRet = loadExternalMapping( aFrom, aTo, aAddPurpose ); // direct try
         if (! aRet.is())
             aRet = getMediateMapping( aFrom, aTo, aAddPurpose ); // try via uno
     }
-    
+
     if (aRet.is())
     {
         (*aRet.get()->acquire)( aRet.get() );
@@ -641,7 +641,7 @@ void SAL_CALL uno_getMappingByName(
         (*(*ppMapping)->release)( *ppMapping );
         *ppMapping = 0;
     }
-    
+
     uno_Environment * pEFrom = 0;
     uno_getEnvironment( &pEFrom, pFrom, 0 );
     OSL_ENSURE( pEFrom, "### cannot get source environment!" );
@@ -667,13 +667,13 @@ void SAL_CALL uno_registerMapping(
 {
     MappingsData & rData = getMappingsData();
     ClearableMutexGuard aGuard( rData.aMappingsMutex );
-    
+
     const t_Mapping2Entry::const_iterator iFind( rData.aMapping2Entry.find( *ppMapping ) );
     if (iFind == rData.aMapping2Entry.end())
     {
         OUString aMappingName(
             getMappingName( pFrom, pTo, pAddPurpose ? OUString(pAddPurpose) : OUString() ) );
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OString cstr( OUStringToOString( aMappingName, RTL_TEXTENCODING_ASCII_US ) );
         OSL_TRACE( "> inserting new mapping: %s", cstr.getStr() );
 #endif
@@ -686,7 +686,7 @@ void SAL_CALL uno_registerMapping(
     {
         MappingEntry * pEntry = (*iFind).second;
         ++pEntry->nRef;
-        
+
         if (pEntry->pMapping != *ppMapping) // exchange mapping to be registered
         {
             (*pEntry->pMapping->acquire)( pEntry->pMapping );
@@ -704,7 +704,7 @@ void SAL_CALL uno_revokeMapping(
 {
     MappingsData & rData = getMappingsData();
     ClearableMutexGuard aGuard( rData.aMappingsMutex );
-    
+
     const t_Mapping2Entry::const_iterator iFind( rData.aMapping2Entry.find( pMapping ) );
     OSL_ASSERT( iFind != rData.aMapping2Entry.end() );
     MappingEntry * pEntry = (*iFind).second;
@@ -713,7 +713,7 @@ void SAL_CALL uno_revokeMapping(
         rData.aMapping2Entry.erase( pEntry->pMapping );
         rData.aName2Entry.erase( pEntry->aMappingName );
         aGuard.clear();
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OString cstr( OUStringToOString( pEntry->aMappingName, RTL_TEXTENCODING_ASCII_US  ) );
         OSL_TRACE( "> revoking mapping %s", cstr.getStr() );
 #endif
