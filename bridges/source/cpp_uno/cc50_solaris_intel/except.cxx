@@ -2,9 +2,9 @@
  *
  *  $RCSfile: except.cxx,v $
  *
- *  $Revision: 1.9 $
+ *  $Revision: 1.10 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:06:44 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:23:52 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -213,7 +213,7 @@ RTTIHolder::~RTTIHolder()
     }
 }
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 #include <stdio.h>
 #endif
 
@@ -239,7 +239,7 @@ void* RTTIHolder::insertRTTI( const OString& rTypename )
 {
     OString aMangledName( toRTTImangledname( rTypename ) );
     NIST_Hash aHash( aMangledName.getStr(), aMangledName.getLength() );
-    
+
 
     // rSuperTypename MUST exist !!!
     void** pRTTI = new void*[ 19 ];
@@ -260,7 +260,7 @@ void* RTTIHolder::insertRTTI( const OString& rTypename )
     pRTTI[ 13 ] = (void*)0x80000000;
 
     aAllRTTI[ rTypename ] = (void*)pRTTI;
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     fprintf( stderr,
              "generating base RTTI for type %s:\n"
              "   mangled: %s\n"
@@ -277,7 +277,7 @@ void* RTTIHolder::generateRTTI( typelib_CompoundTypeDescription * pCompTypeDescr
 {
     OString aUNOCompTypeName( OUStringToOString( pCompTypeDescr->aBase.pTypeName, RTL_TEXTENCODING_ASCII_US ) );
     OString aRTTICompTypeName( toRTTIname( aUNOCompTypeName ) );
-    
+
     void* pHaveRTTI = getRTTI( aRTTICompTypeName );
     if( pHaveRTTI )
         return pHaveRTTI;
@@ -320,7 +320,7 @@ void* RTTIHolder::generateRTTI( typelib_CompoundTypeDescription * pCompTypeDescr
 
     aAllRTTI[ aRTTICompTypeName ] = (void*)pRTTI;
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     fprintf( stderr,
              "generating struct RTTI for type %s:\n"
              "   mangled: %s\n"
@@ -351,7 +351,7 @@ static void deleteException( void* pExc )
 
 void cc50_solaris_intel_raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cpp )
 {
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
     OString cstr(
         OUStringToOString(
             *reinterpret_cast< OUString const * >( &pUnoExc->pType->pTypeName ),
@@ -366,7 +366,7 @@ void cc50_solaris_intel_raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cp
     {
     static ::osl::Mutex aMutex;
     ::osl::Guard< ::osl::Mutex > guard( aMutex );
-    
+
     static RTTIHolder * s_pRTTI = 0;
     if (! s_pRTTI)
     {
@@ -377,13 +377,13 @@ void cc50_solaris_intel_raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cp
         s_pRTTI = &s_aRTTI;
 #endif
     }
-    
+
     pRTTI = s_pRTTI->generateRTTI( (typelib_CompoundTypeDescription *)pTypeDescr );
     }
-    
+
     // a must be
     OSL_ENSURE( sizeof(sal_Int32) == sizeof(void *), "### pointer size differs from sal_Int32!" );
-    
+
     void** pExcSpace = (void**)__Crun::ex_alloc( pTypeDescr->nSize + 8 );
     void * pCppExc = (void*)(((char*)pExcSpace)+8);
     // will be released in generated dtor
@@ -391,10 +391,10 @@ void cc50_solaris_intel_raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cp
     pExcSpace[0] = pTypeDescr;
     pExcSpace[1] = (void*)0xbadfad;
     uno_copyAndConvertData( pCppExc, pUnoExc->pData, pTypeDescr, pUno2Cpp );
-    
+
     // destruct uno exception
     uno_any_destruct( pUnoExc, 0 );
-    
+
     __Crun::ex_throw( pCppExc, (const __Crun::static_type_info*)pRTTI, deleteException );
 }
 
@@ -405,7 +405,7 @@ void cc50_solaris_intel_fillUnoException(
     uno_Mapping * pCpp2Uno )
 {
     OString uno_name( toUNOname( pInfo ) );
-#if defined DEBUG
+#if OSL_DEBUG_LEVEL > 1
     fprintf( stderr, "> c++ exception occured: %s\n", uno_name.getStr() );
 #endif
     typelib_TypeDescription * pExcTypeDescr = 0;
@@ -418,7 +418,7 @@ void cc50_solaris_intel_fillUnoException(
             Reference< XInterface >() );
         Type const & rType = ::getCppuType( &aRE );
         uno_type_any_constructAndConvert( pUnoExc, &aRE, rType.getTypeLibType(), pCpp2Uno );
-#if defined _DEBUG
+#if OSL_DEBUG_LEVEL > 0
         OString cstr( OUStringToOString( aRE.Message, RTL_TEXTENCODING_ASCII_US ) );
         OSL_ENSURE( 0, cstr.getStr() );
 #endif
