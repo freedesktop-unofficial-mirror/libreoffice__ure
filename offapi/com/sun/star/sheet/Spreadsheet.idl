@@ -2,9 +2,9 @@
  *
  *  $RCSfile: Spreadsheet.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: rt $ $Date: 2003-12-01 09:46:04 $
+ *  last change: $Author: hr $ $Date: 2004-02-03 12:02:28 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -252,10 +252,18 @@ service Spreadsheet
 
     //-------------------------------------------------------------------------
 
+    /** specifies the layout of the sheet as represented by the
+        <type scope="com::sun::star::text">WritingMode2</type> constants
+        Only the both constants LR_TB and RL_TB are supported.
+     */
+    [optional, property] short TableLayout;
+
+    //-------------------------------------------------------------------------
+
     /** specifies whether the sheet has an automatic print area.
 
-    <p> The automatic print area is used to print a sheet without 
-        explicit print areas, also if other sheets have print areas.</p> 
+    <p> The automatic print area is used to print a sheet without
+        explicit print areas, also if other sheets have print areas.</p>
 
     <p> If the property is true, and there are print areas on other sheets,
         the used area of this sheet is also printed.</p>
@@ -267,7 +275,7 @@ service Spreadsheet
         whether property is true or false.</p>
 
     <p> This property can only be true, if there are no print areas given
-        on this sheet. If the property is set to true the print areas of 
+        on this sheet. If the property is set to true the print areas of
         this sheet will be removed.</p>
 
         @see XPrintAreas
