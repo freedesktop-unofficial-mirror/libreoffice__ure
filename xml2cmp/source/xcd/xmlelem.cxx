@@ -2,9 +2,9 @@
  *
  *  $RCSfile: xmlelem.cxx,v $
  *
- *  $Revision: 1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: np $Date:  $
+ *  last change: $Author: vg $Date$
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -66,6 +66,10 @@
 // NOT FULLY DEFINED SERVICES
 #include <parse.hxx>
 #include <cr_html.hxx>
+
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 
 
@@ -101,7 +105,7 @@ MultipleElement::~MultipleElement()
 MultipleElement::MultipleElement( const char * i_sName )
     :	XmlElement(i_sName)
 {
-}                                 
+}
 
 void
 MultipleElement::AddChild( XmlElement &	let_drElement )
