@@ -2,9 +2,9 @@
  *
  *  $RCSfile: uno2cpp.cxx,v $
  *
- *  $Revision: 1.13 $
+ *  $Revision: 1.14 $
  *
- *  last change: $Author: hr $ $Date: 2004-02-03 12:35:57 $
+ *  last change: $Author: rt $ $Date: 2004-05-19 13:10:20 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -105,7 +105,7 @@ static void cpp_call(
     typelib_TypeDescription * pReturnTypeDescr = 0;
     TYPELIB_DANGER_GET( &pReturnTypeDescr, pReturnTypeRef );
     OSL_ENSURE( pReturnTypeDescr, "### expected return type description!" );
-    
+
       void * pCppReturn = 0; // if != 0 && != pUnoReturn, needs reconversion
 
     if (pReturnTypeDescr)
@@ -145,7 +145,7 @@ static void cpp_call(
         const typelib_MethodParameter & rParam = pParams[nPos];
         typelib_TypeDescription * pParamTypeDescr = 0;
         TYPELIB_DANGER_GET( &pParamTypeDescr, rParam.pTypeRef );
-        
+
         if (!rParam.bOut
             && bridges::cpp_uno::shared::isSimpleType( pParamTypeDescr ))
         {
@@ -153,7 +153,7 @@ static void cpp_call(
                 pCppStack, pParamTypeDescr );
             uno_copyAndConvertData( pCppArgs[nPos], pUnoArgs[nPos], pParamTypeDescr,
                                     pThis->getBridge()->getUno2Cpp() );
-            
+
             switch (pParamTypeDescr->eTypeClass)
             {
             case typelib_TypeClass_HYPER:
@@ -184,7 +184,7 @@ static void cpp_call(
                     *(void **)pCppStack = pCppArgs[nPos] = alloca( pParamTypeDescr->nSize ),
                     pUnoArgs[nPos], pParamTypeDescr,
                     pThis->getBridge()->getUno2Cpp() );
-                
+
                 pTempIndizes[nTempIndizes] = nPos; // has to be reconverted
                 // will be released at reconversion
                 ppTempParamTypeDescr[nTempIndizes++] = pParamTypeDescr;
@@ -223,7 +223,7 @@ static void cpp_call(
         if( nStackLongs & 1 )
             // stack has to be 8 byte aligned
             nStackLongs++;
-        
+
         callVirtualMethod(
             pAdjustedThisPtr,
             aVtableSlot.index,
@@ -232,16 +232,16 @@ static void cpp_call(
             (sal_Int32 *)pCppStackStart,
             nStackLongs
             );
-    
+
         // NO exception occured...
         *ppUnoExc = 0;
-        
+
         // reconvert temporary params
         for ( ; nTempIndizes--; )
         {
             sal_Int32 nIndex = pTempIndizes[nTempIndizes];
             typelib_TypeDescription * pParamTypeDescr = ppTempParamTypeDescr[nTempIndizes];
-            
+
             if (pParams[nIndex].bIn)
             {
                 if (pParams[nIndex].bOut) // inout
@@ -258,7 +258,7 @@ static void cpp_call(
             }
             // destroy temp cpp param => cpp: every param was constructed
             uno_destructData( pCppArgs[nIndex], pParamTypeDescr, cpp_release );
-            
+
             TYPELIB_DANGER_RELEASE( pParamTypeDescr );
         }
         // return value
@@ -272,14 +272,27 @@ static void cpp_call(
      catch( ... )
      {
         void* pExc = __Crun::ex_get();
-        const char* pName;
+        const char* pName = 0;
+        typelib_TypeDescription * pExcTypeDescr = 0;
+
+        // test for magic code set in cc50_solaris_sparc_raiseException()
         if( ((void**)pExc)[-1] != (void*)0xbadfad )
+        {
             pName = __Cimpl::ex_name();
+        }
         else
-            pName = *(const char**)((void**)pExc)[-18];
-          // get exception
-        CPPU_CURRENT_NAMESPACE::cc50_solaris_sparc_fillUnoException(
-            pExc, pName, *ppUnoExc, pThis->getBridge()->getCpp2Uno());
+        {
+            // in case of an exception thrown in
+            // cc50_solaris_sparc_raiseException(),
+            // the typedescription has not been released yet, but will be
+            // by deleteException().
+            pExcTypeDescr = (typelib_TypeDescription *)((void**)pExc)[-2];
+        }
+
+        // get exception
+        CPPU_CURRENT_NAMESPACE::cc50_solaris_sparc_fillUnoException( 
+            pExc, pName, pExcTypeDescr, *ppUnoExc, pThis->getBridge()->getCpp2Uno());
+
         // temporary params
         for ( ; nTempIndizes--; )
         {
@@ -305,7 +318,7 @@ void bridges::cpp_uno::shared::UnoInterfaceProxy::dispatch(
     bridges::cpp_uno::shared::UnoInterfaceProxy * pThis
         = static_cast< bridges::cpp_uno::shared::UnoInterfaceProxy * >(pUnoI);
     typelib_InterfaceTypeDescription * pTypeDescr = pThis->pTypeDescr;
-    
+
     switch (pMemberDescr->eTypeClass)
     {
     case typelib_TypeClass_INTERFACE_ATTRIBUTE:
@@ -337,7 +350,7 @@ void bridges::cpp_uno::shared::UnoInterfaceProxy::dispatch(
             OUString aVoidName( RTL_CONSTASCII_USTRINGPARAM("void") );
             typelib_typedescriptionreference_new(
                 &pReturnTypeRef, typelib_TypeClass_VOID, aVoidName.pData );
-            
+
             // dependent dispatch
             aVtableSlot.index += 1; // get, then set method
             cpp_call(
@@ -345,10 +358,10 @@ void bridges::cpp_uno::shared::UnoInterfaceProxy::dispatch(
                 pReturnTypeRef,
                 1, &aParam,
                 pReturn, pArgs, ppException );
-            
+
             typelib_typedescriptionreference_release( pReturnTypeRef );
         }
-        
+
         break;
     }
     case typelib_TypeClass_INTERFACE_METHOD:
@@ -379,7 +392,7 @@ void bridges::cpp_uno::shared::UnoInterfaceProxy::dispatch(
                 (*pThis->pBridge->getUnoEnv()->getRegisteredInterface)(
                     pThis->pBridge->getUnoEnv(),
                     (void **)&pInterface, pThis->oid.pData, (typelib_InterfaceTypeDescription *)pTD );
-            
+
                 if (pInterface)
                 {
                     ::uno_any_construct(
@@ -409,7 +422,7 @@ void bridges::cpp_uno::shared::UnoInterfaceProxy::dispatch(
         ::com::sun::star::uno::RuntimeException aExc(
             OUString( RTL_CONSTASCII_USTRINGPARAM("illegal member type description!") ),
             ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface >() );
-        
+
         Type const & rExcType = ::getCppuType( &aExc );
         // binary identical null reference
         ::uno_type_any_construct( *ppException, &aExc, rExcType.getTypeLibType(), 0 );
