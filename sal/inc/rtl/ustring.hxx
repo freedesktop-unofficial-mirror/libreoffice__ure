@@ -2,9 +2,9 @@
  *
  *  $RCSfile: ustring.hxx,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 16:45:53 $
+ *  last change: $Author: hr $ $Date: 2003-04-04 18:21:48 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -157,7 +157,7 @@ public:
         rtl_uString_acquire( pData );
     }
     /** New OUString from OUString data without acquiring it.  Takeover of ownership.
-        
+
         @param str
                OUString data
         @param dummy
@@ -165,7 +165,7 @@ public:
     */
     inline OUString( rtl_uString * str, __sal_NoAcquire ) SAL_THROW( () )
         { pData = str; }
-    
+
     /**
       New string from a Unicode character buffer array.
 
@@ -1089,8 +1089,8 @@ public:
     inline bool convertToString(OString * pTarget, rtl_TextEncoding nEncoding,
                                 sal_uInt32 nFlags)
     {
-        return rtl_convertUStringToString(&pTarget->pData, pData->buffer,
-                                          pData->length, nEncoding, nFlags);
+        return ( rtl_convertUStringToString(&pTarget->pData, pData->buffer,
+                                            pData->length, nEncoding, nFlags) != sal_False );
     }
 
     /**
