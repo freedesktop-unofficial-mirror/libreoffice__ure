@@ -2,9 +2,9 @@
  *
  *  $RCSfile: Shape.idl,v $
  *
- *  $Revision: 1.16 $
+ *  $Revision: 1.17 $
  *
- *  last change: $Author: obo $ $Date: 2004-06-03 19:19:48 $
+ *  last change: $Author: vg $ $Date: 2005-03-23 13:16:36 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,24 +58,24 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_drawing_Shape_idl__ 
-#define __com_sun_star_drawing_Shape_idl__ 
- 
-#ifndef __com_sun_star_document_LinkTarget_idl__ 
-#include <com/sun/star/document/LinkTarget.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_XShape_idl__ 
-#include <com/sun/star/drawing/XShape.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_XComponent_idl__ 
-#include <com/sun/star/lang/XComponent.idl> 
-#endif 
- 
-#ifndef __com_sun_star_style_XStyle_idl__ 
-#include <com/sun/star/style/XStyle.idl> 
-#endif 
+#ifndef __com_sun_star_drawing_Shape_idl__
+#define __com_sun_star_drawing_Shape_idl__
+
+#ifndef __com_sun_star_document_LinkTarget_idl__
+#include <com/sun/star/document/LinkTarget.idl>
+#endif
+
+#ifndef __com_sun_star_drawing_XShape_idl__
+#include <com/sun/star/drawing/XShape.idl>
+#endif
+
+#ifndef __com_sun_star_lang_XComponent_idl__
+#include <com/sun/star/lang/XComponent.idl>
+#endif
+
+#ifndef __com_sun_star_style_XStyle_idl__
+#include <com/sun/star/style/XStyle.idl>
+#endif
 
 #ifndef __com_sun_star_drawing_HomogenMatrix3_idl__
 #include <com/sun/star/drawing/HomogenMatrix3.idl>
@@ -89,50 +89,54 @@
 #include <com/sun/star/container/XNameContainer.idl>
 #endif
 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module drawing {  
- 
-//============================================================================= 
- 
-/** This abstract service specifies the general characteristics of all  
+#ifndef __com_sun_star_beans_XTolerantMultiPropertySet_idl__
+#include <com/sun/star/beans/XTolerantMultiPropertySet.idl>
+#endif
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module drawing {
+
+//=============================================================================
+
+/** This abstract service specifies the general characteristics of all
     <type>Shape</type>s.
 
-    @see XShape 
-    @see com::sun::star::lang::XComponent 
-    @see com::sun::star::text::XText 
+    @see XShape
+    @see com::sun::star::lang::XComponent
+    @see com::sun::star::text::XText
     @see ShapeDescriptor
  */
 published service Shape
-{ 
-    //------------------------------------------------------------------------- 
+{
+    //-------------------------------------------------------------------------
 
     /** handles all the properties of this instance.
      */
-    interface com::sun::star::beans::XPropertySet; 
+    interface com::sun::star::beans::XPropertySet;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
 
-    /** This gives you the size and position of this <type>Shape</type> 
-                and lets you change it. You can use <member>getShapeType</member> 
+    /** This gives you the size and position of this <type>Shape</type>
+                and lets you change it. You can use <member>getShapeType</member>
                 to determine what kind of shape this is.
      */
-    interface com::sun::star::drawing::XShape; 
+    interface com::sun::star::drawing::XShape;
 
-    //------------------------------------------------------------------------- 
- 
+    //-------------------------------------------------------------------------
+
     /** is used for lifetime control of this <type>Shape</type>.
      */
-    interface com::sun::star::lang::XComponent; 
+    interface com::sun::star::lang::XComponent;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
 
-    /** The <type>XShapeDescriptor</type> tells you what kind of 
+    /** The <type>XShapeDescriptor</type> tells you what kind of
                 <type>Shape</type> this instance is.
      */
-    interface com::sun::star::drawing::XShapeDescriptor; 
+    interface com::sun::star::drawing::XShapeDescriptor;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
 
     /** This interfaces gives access to an optional container of glue points.
         To have unique ids you should query the returned interface for
@@ -140,61 +144,65 @@ published service Shape
     */
     [optional] interface com::sun::star::drawing::XGluePointsSupplier;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
+
+        [optional] interface com::sun::star::beans::XTolerantMultiPropertySet;
+
+    //-------------------------------------------------------------------------
 
     /** is used to query or change the ZOrder of this <type>Shape</type>. */
     [optional, property] long ZOrder;
- 
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** This is the ID of the <type>Layer</type> to which this
         <type>Shape</type> is attached.
      */
-    [optional, property] short LayerID; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [optional, property] short LayerID;
+
+    //-------------------------------------------------------------------------
+
     /** This is the name of the <type>Layer</type> to which this
         <type>Shape</type> is attached.
      */
-    [optional, property] string LayerName; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [optional, property] string LayerName;
+
+    //-------------------------------------------------------------------------
+
     /** If this is <FALSE/>, the <type>Shape</type> is not visible
         on printer outputs.
      */
-    [optional, property] boolean Printable; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [optional, property] boolean Printable;
+
+    //-------------------------------------------------------------------------
+
     /** With this set to <TRUE/>, this <type>Shape</type>
         cannot be moved interactively in the user interface.
      */
-    [optional, property] boolean MoveProtect; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** This is the name of this <type>Shape</type>. 
+    [optional, property] boolean MoveProtect;
+
+    //-------------------------------------------------------------------------
+
+    /** This is the name of this <type>Shape</type>.
      */
-    [optional, property] string Name; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [optional, property] string Name;
+
+    //-------------------------------------------------------------------------
+
     /** With this set to <TRUE/>, this <type>Shape</type> may not be
         sized interactively in the user interface.
      */
-    [optional, property] boolean SizeProtect; 
- 
-    //------------------------------------------------------------------------- 
-     
+    [optional, property] boolean SizeProtect;
+
+    //-------------------------------------------------------------------------
+
     /** this property lets you get and set a style for this shape.
      */
-    [optional, property] com::sun::star::style::XStyle Style; 
+    [optional, property] com::sun::star::style::XStyle Style;
 
-    //------------------------------------------------------------------------- 
-     
-    /** this property lets you get and set the transformation matrix 
+    //-------------------------------------------------------------------------
+
+    /** this property lets you get and set the transformation matrix
         for this shape.
 
         The transformation is a 3x3 homogen matrix and can contain
@@ -202,7 +210,7 @@ published service Shape
      */
     [optional, property] com::sun::star::drawing::HomogenMatrix3 Transformation;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
 
     /** this property stores xml attributes.
         They will be saved to and restored from automatic styles inside xml files.
@@ -210,11 +218,11 @@ published service Shape
         @see com::sun::star::xml::AttributeContainer
     */
     [optional, property] com::sun::star::container::XNameContainer ShapeUserDefinedAttributes;
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-#endif 
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
 
