@@ -2,9 +2,9 @@
  *
  *  $RCSfile: acceptor.cxx,v $
  *
- *  $Revision: 1.12 $
+ *  $Revision: 1.13 $
  *
- *  last change: $Author: sb $ $Date: 2002-10-04 09:39:17 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 15:57:58 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -93,7 +93,7 @@ ClassData2 cppu::WeakImplHelper2<com::sun::star::connection::XConnection, com::s
 namespace io_acceptor
 {
     rtl_StandardModuleCount g_moduleCount = MODULE_COUNT_INIT;
-    
+
     class OAcceptor : public WeakImplHelper2< XAcceptor, XServiceInfo >
     {
     public:
@@ -125,7 +125,7 @@ namespace io_acceptor
         Reference<XAcceptor>         _xAcceptor;
     };
 
-    
+
     OAcceptor::OAcceptor( const Reference< XComponentContext > & xCtx )
         : m_pPipe( 0 )
         , m_pSocket( 0 )
@@ -135,7 +135,7 @@ namespace io_acceptor
     {
         g_moduleCount.modCnt.acquire( &g_moduleCount.modCnt );
     }
-        
+
     OAcceptor::~OAcceptor()
     {
         if( m_pPipe )
@@ -152,7 +152,7 @@ namespace io_acceptor
     struct BeingInAccept
     {
         BeingInAccept( sal_Bool *pFlag,const OUString & sConnectionDescription  ) throw( AlreadyAcceptingException)
-            : m_pFlag( pFlag )	
+            : m_pFlag( pFlag )
             {
                   if( *m_pFlag )
                   {
@@ -175,13 +175,13 @@ namespace io_acceptor
                IllegalArgumentException,
                RuntimeException)
     {
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
         OString tmp = OUStringToOString(sConnectionDescription, RTL_TEXTENCODING_ASCII_US);
         OSL_TRACE("acceptor %s\n", tmp.getStr());
-#endif 
+#endif
         // if there is a thread alread accepting in this object, throw an exception.
         struct BeingInAccept guard( &m_bInAccept, sConnectionDescription );
-        
+
         Reference< XConnection > r;
         if( m_sLastDescription.getLength() &&
             m_sLastDescription != sConnectionDescription )
@@ -264,7 +264,7 @@ namespace io_acceptor
                     OUString delegatee = OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.connection.Acceptor."));
                     delegatee += aDesc.getName();
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
                     OString tmp = OUStringToOString(delegatee, RTL_TEXTENCODING_ASCII_US);
                     OSL_TRACE("trying to get service %s\n", tmp.getStr());
 #endif
@@ -289,7 +289,7 @@ namespace io_acceptor
             }
             m_sLastDescription = sConnectionDescription;
         }
-        
+
         if( m_pPipe )
         {
             r = m_pPipe->accept();
@@ -298,7 +298,7 @@ namespace io_acceptor
         {
             r = m_pSocket->accept();
         }
-        else 
+        else
         {
             r = _xAcceptor->accept(sConnectionDescription);
         }
@@ -309,7 +309,7 @@ namespace io_acceptor
     void SAL_CALL OAcceptor::stopAccepting(  ) throw( RuntimeException)
     {
         MutexGuard guard( m_mutex );
-        
+
         if( m_pPipe )
         {
             m_pPipe->stopAccepting();
@@ -322,19 +322,19 @@ namespace io_acceptor
         {
             _xAcceptor->stopAccepting();
         }
-            
+
     }
 
     OUString acceptor_getImplementationName()
     {
         return OUString( RTL_CONSTASCII_USTRINGPARAM( IMPLEMENTATION_NAME ) );
     }
-    
+
     Reference< XInterface > SAL_CALL acceptor_CreateInstance( const Reference< XComponentContext > & xCtx)
     {
         return Reference < XInterface >( ( OWeakObject * ) new OAcceptor(xCtx) );
     }
-    
+
     Sequence< OUString > acceptor_getSupportedServiceNames()
     {
         static Sequence < OUString > *pNames = 0;
@@ -360,11 +360,11 @@ namespace io_acceptor
     {
         Sequence< OUString > aSNL = getSupportedServiceNames();
         const OUString * pArray = aSNL.getConstArray();
-        
+
         for( sal_Int32 i = 0; i < aSNL.getLength(); i++ )
             if( pArray[i] == ServiceName )
                 return sal_True;
-        
+
         return sal_False;
     }
 
@@ -372,7 +372,7 @@ namespace io_acceptor
     {
         return acceptor_getSupportedServiceNames();
     }
-    
+
 
 }
 
@@ -395,7 +395,7 @@ sal_Bool SAL_CALL component_canUnload( TimeValue *pTime )
 {
     return g_moduleCount.canUnload( &g_moduleCount , pTime );
 }
-    
+
 //==================================================================================================
 void SAL_CALL component_getImplementationEnvironment(
     const sal_Char ** ppEnvTypeName, uno_Environment ** ppEnv )
