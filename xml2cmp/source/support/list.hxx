@@ -2,9 +2,9 @@
  *
  *  $RCSfile: list.hxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: mh $ $Date: 2001-09-28 14:32:42 $
+ *  last change: $Author: np $ $Date: 2002-08-08 16:07:56 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -70,43 +70,43 @@ template <class XX>
 class List
 {
   public :
-    typedef XX * 		iterator;
-    typedef const XX *	const_iterator;
+    typedef XX *        iterator;
+    typedef const XX *  const_iterator;
 
     // LIFECYCLE
                         List();
-    virtual				~List() { }
+    virtual             ~List() { }
 
     // OPERATORS
-    const XX &        	operator[](
+    const XX &          operator[](
                             unsigned 			n) const
                                                 { return elem(n); }
-    XX &              	operator[](
+    XX &                operator[](
                             unsigned 			n)
                                                 { return elem(n); }
     // OPERATIONS
-    void	            reserve(
+    void                reserve(
                             unsigned			i_nSize )
                                                 { alloc(i_nSize,true); }
-    virtual	void  	 	insert(
+    virtual void        insert(
                             unsigned 			pos,
                             const XX &          elem );
-    void              	push_back(
+    void                push_back(
                             const XX & 			elem)
                                                 { insert(size(),elem); }
 
-    virtual	void  	 	remove(
+    virtual void        remove(
                             unsigned 			pos );
-    void              	pop_back()				{ remove(size()-1); }
-    void 				erase_all()            	{ while (size()) remove(size()-1); }
+    void                pop_back()              { remove(size()-1); }
+    void                erase_all()             { while (size()) remove(size()-1); }
 
     // INQUIRY
-    const XX &          front() const       	{ return elem(0); }
-    const XX &          back() const        	{ return elem(len-1); }
+    const XX &          front() const           { return elem(0); }
+    const XX &          back() const            { return elem(len-1); }
 
-    unsigned			size() const            { return len; }
-    unsigned			space() const           { return allocated; }
-    bool              	is_valid_index(
+    unsigned            size() const            { return len; }
+    unsigned            space() const           { return allocated; }
+    bool                is_valid_index(
                             unsigned			n) const
                                                 { return n < len; }
     // ACCESS
@@ -114,27 +114,27 @@ class List
     XX &                back()                  { return elem(len-1); }
 
   protected:
-    void  				checkSize(
+    void                checkSize(
                             unsigned 			newLength);
-    void				alloc(
+    void        		alloc(
                             unsigned			newSpace,
                             bool                re = false );
 
-    const XX &		   	elem(
+    const XX &         	elem(
                             unsigned 			n ) const
                                                 { return inhalt[n]; }
-    XX &				elem(
+    XX &        		elem(
                             unsigned 			n )
                                                 { return inhalt[n]; }
   // DATA
-    XX *				inhalt;
+    XX *        		inhalt;
     unsigned            len;
-    unsigned			allocated;
+    unsigned            allocated;
 
   private:
     // forbidden functions
                         List(const List<XX> & L);
-    List<XX> & 			operator=(
+    List<XX> &          operator=(
                             const List<XX> & 	L);
 
 };
@@ -143,12 +143,12 @@ template <class XY>
 class DynamicList : public List<XY*>
 {
   public:
-    virtual				~DynamicList();
+    virtual             ~DynamicList();
 
-    virtual	void  	 	insert(
+    virtual void        insert(
                             unsigned 			pos,
                             XY * const &        elem );
-    virtual	void  	 	remove(
+    virtual void        remove(
                             unsigned 			pos );
 };
 
@@ -156,8 +156,10 @@ class DynamicList : public List<XY*>
 
 template <class XX>
 List<XX>::List()
-    :	inhalt(0),
-        len(0)
+    :   inhalt(0),
+        len(0),
+        allocated(0)
+
 {
     alloc(1);
 }
@@ -225,7 +227,7 @@ List<XX>::checkSize(unsigned newLength)
 
 template <class XX>
 void
-List<XX>::alloc( unsigned			newSpace,
+List<XX>::alloc( unsigned           newSpace,
                  bool               re )
 {
     XX * pNew = new XX[newSpace];
@@ -268,7 +270,7 @@ DynamicList<XY>::insert(unsigned pos, XY * const & elem)
 
 template <class XY>
 void
-DynamicList<XY>::remove( unsigned 			pos )
+DynamicList<XY>::remove( unsigned           pos )
 {
     if (!is_valid_index(pos) )
         return;
