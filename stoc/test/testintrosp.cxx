@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testintrosp.cxx,v $
  *
- *  $Revision: 1.8 $
+ *  $Revision: 1.9 $
  *
- *  last change: $Author: hr $ $Date: 2002-08-19 14:16:58 $
+ *  last change: $Author: hr $ $Date: 2003-03-27 12:01:25 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -201,7 +201,7 @@ OUString AnyToString( const Any& aValue, sal_Bool bIncludeType, const Reference<
         {
             float f;
             aValue >>= f;
-            sprintf( pBuffer, "%f", f ); 
+            snprintf( pBuffer, sizeof( pBuffer ), "%f", f );
             aRetStr = OUString( pBuffer, strlen( pBuffer ), RTL_TEXTENCODING_ASCII_US );
             break;
         }
@@ -209,7 +209,7 @@ OUString AnyToString( const Any& aValue, sal_Bool bIncludeType, const Reference<
         {
             double d;
             aValue >>= d;
-            sprintf( pBuffer, "%f", d ); 
+            snprintf( pBuffer, sizeof( pBuffer ), "%f", d );
             aRetStr = OUString( pBuffer, strlen( pBuffer ), RTL_TEXTENCODING_ASCII_US );
             break;
         }
@@ -250,7 +250,7 @@ OUString AnyToString( const Any& aValue, sal_Bool bIncludeType, const Reference<
             aRetStr = StringToUString(WSString(aValue.getUINT32()), CHARSET_SYSTEM);
             break;
         }
-        case TypeClass_UNSIGNED_HYPER:	
+        case TypeClass_UNSIGNED_HYPER:
         {
             aRetStr = L"TYPE UNSIGNED_HYPER";
             break;
@@ -327,13 +327,13 @@ public:
 */
 
     // Methods of XPropertySetInfo
-    virtual Sequence< Property > SAL_CALL getProperties(  ) 
+    virtual Sequence< Property > SAL_CALL getProperties(  )
         throw(RuntimeException);
-    virtual Property SAL_CALL getPropertyByName( const OUString& aName ) 
+    virtual Property SAL_CALL getPropertyByName( const OUString& aName )
         throw(UnknownPropertyException, RuntimeException);
-    virtual sal_Bool SAL_CALL hasPropertyByName( const OUString& Name ) 
+    virtual sal_Bool SAL_CALL hasPropertyByName( const OUString& Name )
         throw(RuntimeException);
-    //virtual Sequence< Property > SAL_CALL getProperties(void) throw( RuntimeException ); 
+    //virtual Sequence< Property > SAL_CALL getProperties(void) throw( RuntimeException );
     //virtual Property SAL_CALL getPropertyByName(const OUString& Name) throw( RuntimeException );
     //virtual sal_Bool SAL_CALL hasPropertyByName(const OUString& Name) throw( RuntimeException );
 };
@@ -345,7 +345,7 @@ sal_Bool SAL_CALL ImplPropertySetInfo::queryInterface( const Uik & rUik, Any & i
     throw( RuntimeException )
 {
     // PropertySet-Implementation
-    if( com::sun::star::uno::queryInterface( rUik, ifc, 
+    if( com::sun::star::uno::queryInterface( rUik, ifc,
                                              SAL_STATIC_CAST(XPropertySetInfo*, this) ) )
         return sal_True;
 
@@ -438,7 +438,7 @@ sal_Bool ImplPropertySetInfo::hasPropertyByName(const OUString& Name)
 class ImplIntroTest : public ImplIntroTestHelper
 {
       Reference< XMultiServiceFactory > mxMgr;
-    
+
     friend class ImplPropertySetInfo;
 
     // Properties fuer das PropertySet
@@ -528,13 +528,13 @@ public:
     /*
     virtual void setIndexedPropertyValue(const OUString& aPropertyName, INT32 nIndex, const Any& aValue) {}
     virtual Any getIndexedPropertyValue(const UString& aPropertyName, INT32 nIndex) const { return Any(); }
-    virtual void addPropertyChangeListener(const UString& aPropertyName, const XPropertyChangeListenerRef& aListener) 
+    virtual void addPropertyChangeListener(const UString& aPropertyName, const XPropertyChangeListenerRef& aListener)
         THROWS( (UnknownPropertyException, WrappedTargetException, UsrSystemException) ) {}
-    virtual void removePropertyChangeListener(const UString& aPropertyName, const XPropertyChangeListenerRef& aListener) 
+    virtual void removePropertyChangeListener(const UString& aPropertyName, const XPropertyChangeListenerRef& aListener)
         THROWS( (UnknownPropertyException, WrappedTargetException, UsrSystemException) ) {}
-    virtual void addVetoableChangeListener(const UString& aPropertyName, const XVetoableChangeListenerRef& aListener) 
+    virtual void addVetoableChangeListener(const UString& aPropertyName, const XVetoableChangeListenerRef& aListener)
         THROWS( (UnknownPropertyException, WrappedTargetException, UsrSystemException) ) {}
-    virtual void removeVetoableChangeListener(const UString& aPropertyName, const XVetoableChangeListenerRef& aListener) 
+    virtual void removeVetoableChangeListener(const UString& aPropertyName, const XVetoableChangeListenerRef& aListener)
         THROWS( (UnknownPropertyException, WrappedTargetException, UsrSystemException) ) {}
         */
 
@@ -621,7 +621,7 @@ public:
         throw(RuntimeException);
     virtual sal_Bool SAL_CALL hasByName( const OUString& aName )
         throw(RuntimeException);
-    //virtual Any getByName(const UString& Name) const 
+    //virtual Any getByName(const UString& Name) const
         //THROWS( (NoSuchElementException, WrappedTargetException, UsrSystemException) );
     //virtual Sequence<UString> getElementNames(void) const THROWS( (UsrSystemException) );
     //virtual BOOL hasByName(const UString& Name) const THROWS( (UsrSystemException) );
@@ -633,7 +633,7 @@ public:
     virtual Any SAL_CALL getByIndex( sal_Int32 Index )
         throw(IndexOutOfBoundsException, WrappedTargetException, RuntimeException);
     //virtual INT32 getCount(void) const THROWS( (UsrSystemException) );
-    //virtual Any getByIndex(INT32 Index) const 
+    //virtual Any getByIndex(INT32 Index) const
         //THROWS( (IndexOutOfBoundsException, WrappedTargetException, UsrSystemException) );
 };
 
@@ -715,11 +715,11 @@ BOOL ImplIntroTest::queryInterface( Uik aUik, XInterfaceRef & rOut )
 
 XIdlClassRef ImplIntroTest::getIdlClass()
 {
-    static XIdlClassRef xClass = createStandardClass( L"ImplIntroTest", 
-        UsrObject::getUsrObjectIdlClass(), 4, 
+    static XIdlClassRef xClass = createStandardClass( L"ImplIntroTest",
+        UsrObject::getUsrObjectIdlClass(), 4,
             XIntroTest_getReflection(),
-            XPropertySet_getReflection(), 
-            XNameAccess_getReflection(), 
+            XPropertySet_getReflection(),
+            XNameAccess_getReflection(),
             XIndexAccess_getReflection() );
     return xClass;
 }
@@ -749,9 +749,9 @@ void ImplIntroTest::setPropertyValue( const OUString& aPropertyName, const Any& 
         aEvt.Source = (OWeakObject*)this;
         aEvt.PropertyName = aPropertyName;
         aEvt.PropertyHandle = 0L;
-        //aEvt.OldValue; 
-        //aEvt.NewValue; 
-        //aEvt.PropagationId; 
+        //aEvt.OldValue;
+        //aEvt.NewValue;
+        //aEvt.PropagationId;
         aPropChangeListener->propertyChange( aEvt );
     }
     if( aVetoPropChangeListener.is() && aPropertyName == aVetoPropChangeListenerStr )
@@ -760,9 +760,9 @@ void ImplIntroTest::setPropertyValue( const OUString& aPropertyName, const Any& 
         aEvt.Source = (OWeakObject*)this;
         aEvt.PropertyName = aVetoPropChangeListenerStr;
         aEvt.PropertyHandle = 0L;
-        //aEvt.OldValue; 
-        //aEvt.NewValue; 
-        //aEvt.PropagationId; 
+        //aEvt.OldValue;
+        //aEvt.NewValue;
+        //aEvt.PropagationId;
         aVetoPropChangeListener->vetoableChange( aEvt );
     }
 
@@ -780,7 +780,7 @@ Any ImplIntroTest::getPropertyValue( const OUString& PropertyName )
     throw(UnknownPropertyException, WrappedTargetException, RuntimeException)
 //Any ImplIntroTest::getPropertyValue(const UString& aPropertyName) const
     //THROWS( (UnknownPropertyException, WrappedTargetException, UsrSystemException) )
-{ 
+{
     Sequence<Property> aPropSeq = m_xMyInfo->getProperties();
     sal_Int32 nLen = aPropSeq.getLength();
     for( sal_Int32 i = 0 ; i < nLen ; i++ )
@@ -789,13 +789,13 @@ Any ImplIntroTest::getPropertyValue( const OUString& PropertyName )
         if( aProp.Name == PropertyName )
             return aAnyArray[i];
     }
-    return Any(); 
+    return Any();
 }
 
 OUString ImplIntroTest::getFirstName(void)
     throw(RuntimeException)
-{ 
-    return OUString( OUString::createFromAscii("Markus") ); 
+{
+    return OUString( OUString::createFromAscii("Markus") );
 }
 
 void ImplIntroTest::writeln( const OUString& Text )
@@ -821,7 +821,7 @@ Reference< XIntroTest > ImplIntroTest::getIntroTest()
 {
     if( !m_xIntroTest.is() )
         m_xIntroTest = new ImplIntroTest( mxMgr );
-    return m_xIntroTest; 
+    return m_xIntroTest;
 }
 
 // Methoden von XElementAccess
@@ -881,7 +881,7 @@ Any ImplIntroTest::getByName( const OUString& aName )
             p->setObjectName( aName );
             pNameAccessTab[iIndex] = p;
         }
-        
+
         Reference< XIntroTest > xRet = pNameAccessTab[iIndex];
         aRetAny = makeAny( xRet );
 
@@ -949,7 +949,7 @@ Any ImplIntroTest::getByIndex( sal_Int32 Index )
     return aRetAny;
 }
 
-void ImplIntroTest::addPropertiesChangeListener( const Sequence< OUString >& PropertyNames, 
+void ImplIntroTest::addPropertiesChangeListener( const Sequence< OUString >& PropertyNames,
     const Reference< XPropertiesChangeListener >& Listener )
         throw(RuntimeException)
 //void ImplIntroTest::addPropertiesChangeListener
@@ -987,10 +987,10 @@ Any getIntrospectionTestObject( const Reference< XMultiServiceFactory > & xMgr )
     return aObjAny;
 }
 
-static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr, 
+static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
     Reference< XIdlReflection > xRefl, Reference< XIntrospection > xIntrospection )
 {
-    DefItem pPropertyDefs[] = 
+    DefItem pPropertyDefs[] =
     {
         { "Factor", PropertyConcept::PROPERTYSET },
         { "MyCount", PropertyConcept::PROPERTYSET },
@@ -1129,7 +1129,7 @@ static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
     //is() nDemandedPropCount = 22;
 
 
-    DefItem pMethodDefs[] = 
+    DefItem pMethodDefs[] =
     {
         { "queryInterface", MethodConcept_NORMAL_IMPL },
         { "acquire", MethodConcept::DANGEROUS },
@@ -1187,7 +1187,7 @@ static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
     //TEST_ENSHURE( xIntrospection.is(), "Creation of introspection instance failed" );
     //if( !xIntrospection.is() )
         //return sal_False;
-    
+
     // und unspecten
     Reference< XIntrospectionAccess > xAccess = xIntrospection->inspect( aObjAny );
     xAccess = xIntrospection->inspect( aObjAny );
@@ -1237,7 +1237,7 @@ static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
             Reference< XPropertySetInfo > xPropSetInfo = xPropSet->getPropertySetInfo();
             //Sequence<Property> aRetSeq = xPropSetInfo->getProperties();
             Sequence<Property> aRetSeq = xAccess->getProperties( nConcepts );
-            
+
             sal_Int32 nLen = aRetSeq.getLength();
 
             aErrorStr  = "Expected to find ";
@@ -1284,7 +1284,7 @@ static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
                 aErrorStr += "\"";
                 TEST_ENSHURE( aNameStr == aDemandedName, aErrorStr.getStr() );
                 // cout << "Property " << (i+1) << ": \"" << (const char*)UStringToString(aPropName, CHARSET_SYSTEM) << "\"";
-                
+
 
                 Type aPropType = aProp.Type;
                 OString aTypeNameStr( OUStringToOString(aPropType.getTypeName(), RTL_TEXTENCODING_ASCII_US) );
@@ -1399,7 +1399,7 @@ static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
 
                     aPropVal = xPropSet->getPropertyValue( aPropName );
                     // cout << "\n\tModifizierter Wert = " << (const char*) UStringToString(AnyToString( aPropVal, sal_True ), CHARSET_SYSTEM) << "\n";
-                    
+
                     OUString aStr = AnyToString( aPropVal, sal_False, xMgr );
                     OString aModifiedValStr = OUStringToOString( aStr, RTL_TEXTENCODING_ASCII_US );
                     OString aDemandedModifiedValStr = pDemandedModifiedPropVals[ i ];
@@ -1491,7 +1491,7 @@ static sal_Bool test_introsp( Reference< XMultiServiceFactory > xMgr,
         {
             // Methode ansprechen
             const Reference< XIdlMethod >& rxMethod = pMethods[i];
-            
+
             // Methode ausgeben
             OUString aMethName = rxMethod->getName();
             OString aNameStr = OUStringToOString(aMethName, RTL_TEXTENCODING_ASCII_US );
@@ -1586,7 +1586,7 @@ int __cdecl main( int argc, char * argv[] )
 #endif
 {
     Reference< XMultiServiceFactory > xMgr( createRegistryServiceFactory( OUString::createFromAscii("stoctest.rdb") ) );
-    
+
     sal_Bool bSucc = sal_False;
     try
     {
@@ -1609,7 +1609,7 @@ int __cdecl main( int argc, char * argv[] )
 #endif
 //  		ORealDynamicLoader::computeLibraryName( OUString::createFromAscii("corefl"), libName);
         fprintf(stderr, "1\n" );
-        xImplReg->registerImplementation(OUString::createFromAscii("com.sun.star.loader.SharedLibrary"), 
+        xImplReg->registerImplementation(OUString::createFromAscii("com.sun.star.loader.SharedLibrary"),
                                          libName, Reference< XSimpleRegistry >() );
         fprintf(stderr, "2\n" );
         Reference< XIdlReflection > xRefl( xMgr->createInstance( OUString::createFromAscii("com.sun.star.reflection.CoreReflection") ), UNO_QUERY );
@@ -1627,7 +1627,7 @@ int __cdecl main( int argc, char * argv[] )
 #endif
 //  		ORealDynamicLoader::computeLibraryName( OUString::createFromAscii("insp"), libName);
         fprintf(stderr, "3\n" );
-        xImplReg->registerImplementation(OUString::createFromAscii("com.sun.star.loader.SharedLibrary"), 
+        xImplReg->registerImplementation(OUString::createFromAscii("com.sun.star.loader.SharedLibrary"),
                                          libName, Reference< XSimpleRegistry >() );
         fprintf(stderr, "4\n" );
         Reference< XIntrospection > xIntrosp( xMgr->createInstance( OUString::createFromAscii("com.sun.star.beans.Introspection") ), UNO_QUERY );
@@ -1648,7 +1648,7 @@ int __cdecl main( int argc, char * argv[] )
     }
 
     Reference< XComponent >( xMgr, UNO_QUERY )->dispose();
-    
+
     printf( "testintrosp %s !\n", (bSucc ? "succeeded" : "failed") );
     return (bSucc ? 0 : -1);
 }
