@@ -493,7 +493,7 @@ UDK_3.1 {
     global:
         osl_getTempDirURL;
         osl_createTempFile;
-        
+
         rtl_math_doubleToString;
         rtl_math_doubleToUString;
         rtl_math_pow10Exp;
@@ -505,12 +505,12 @@ UDK_3.1 {
         osl_joinProcessWithTimeout;
 
         rtl_getTextEncodingFromWindowsCodePage;
-        rtl_getWindowsCodePageFromTextEncoding;				
+        rtl_getWindowsCodePageFromTextEncoding;
 } UDK_3_0_0;
 
 UDK_3.2 {
     global:
-        osl_syncFile;        
+        osl_syncFile;
 } UDK_3.1;
 
 UDK_3.3 {
@@ -518,6 +518,12 @@ UDK_3.3 {
         osl_createDirectoryPath;
         osl_getFunctionSymbol;
         osl_getModuleURLFromFunctionAddress;
+        rtl_cipher_createARCFOUR;
+        rtl_cipher_initARCFOUR;
+        rtl_cipher_decodeARCFOUR;
+        rtl_cipher_encodeARCFOUR;
+        rtl_cipher_destroyARCFOUR;
+        rtl_digest_rawMD5;
         rtl_uStringbuffer_insertUtf32;
         rtl_ustr_ascii_compareIgnoreAsciiCase_WithLengths;
 } UDK_3.2;
