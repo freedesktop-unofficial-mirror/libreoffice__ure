@@ -1,10 +1,10 @@
 /*************************************************************************
  *
- *  $RCSfile: TextureKind2.idl,v $
+ *  $RCSfile: ShapeCollection.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: mi $ $Date: 2002-10-02 15:12:27 $
+ *  last change: $Author: mi $ $Date: 2002-10-02 15:12:24 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,43 +58,44 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_drawing_TextureKind2_idl__ 
-#define __com_sun_star_drawing_TextureKind2_idl__ 
- 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module drawing {  
- 
-//============================================================================= 
- 
-/** These enumeration values specify how the texture is applied.
- */
-enum TextureKind2
-{ 
-    //------------------------------------------------------------------------- 
-     
-    /** With <type>TextureKind</type> <const>LUMINANCE</const>, the texture
-        and the lighting information are	mixed to produce the image, so a
-        lit, textured object is achieved.
+#ifndef __com_sun_star_drawing_ShapeCollection_idl__
+#define __com_sun_star_drawing_ShapeCollection_idl__
+
+#ifndef __com_sun_star_drawing_Shapes_idl__
+#include <com/sun/star/drawing/Shapes.idl>
+#endif
+
+#ifndef __com_sun_star_lang_XComponent_idl__
+#include <com/sun/star/lang/XComponent.idl>
+#endif
+
+//=============================================================================
+
+module com { module sun { module star { module drawing { 
+
+//=============================================================================
+/** This service describes a generic container to manage collections of
+    <type>Shape</type>. The <type>Shape</type> that are added to this
+    collection are not owned by the collection.
+
+    This service is used by the view f.e. to return a collection of
+    <type>Shape</type> that are selected at the ui.
+*/
+service ShapeCollection
+{
+    /** gives access to the shapes
      */
-    LUMINANCE, 
- 
-    /** With <type>TextureKind</type> <const>INTENSITY</const>, each texture
-        pixel is used as an intensity value.
+    interface com::sun::star::drawing::XShapes;
+
+    /** allows controlling or observing the lifetime of this collection
      */
-    INTENSITY,
-    //------------------------------------------------------------------------- 
-     
-    /** With this mode, the lighting is ignored and only the
-        texture color information is used.
-     */
-    COLOR  
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-#endif 
+    interface com::sun::star::lang::XComponent;
+
+};
+
+//=============================================================================
+
+}; }; }; }; 
+
+#endif
 
