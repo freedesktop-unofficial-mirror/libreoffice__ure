@@ -2,9 +2,9 @@
  *
  *  $RCSfile: stub.cxx,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-18 19:07:07 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:28:49 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -79,7 +79,7 @@
 
 #include "remote_types.hxx"
 
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
 #include <bridges/remote/counter.hxx>
 static MyCounter thisCounter( "DEBUG : Uno2RemoteStub");
 #endif
@@ -115,7 +115,7 @@ Uno2RemoteStub::Uno2RemoteStub( uno_Interface *pUnoI,
                                            m_sOid.pData,
                                            m_pType );
     m_pUnoI->acquire( m_pUnoI );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.acquire();
 #endif
 }
@@ -128,7 +128,7 @@ Uno2RemoteStub::~Uno2RemoteStub()
     m_pUnoI->release( m_pUnoI );
     m_pEnvUno->release( m_pEnvUno );
     m_pEnvRemote->release( m_pEnvRemote );
-#ifdef DEBUG
+#if OSL_DEBUG_LEVEL > 1
     thisCounter.release();
 #endif
 }
@@ -166,16 +166,16 @@ void Uno2RemoteStub::thisRelease( remote_Interface *pThis )
 }
 
 void Uno2RemoteStub::thisDispatch(
-    remote_Interface * pRemoteI, 
+    remote_Interface * pRemoteI,
     typelib_TypeDescription * pType,
     void * pReturn,
     void * ppArgs[],
     uno_Any ** ppException )
-{	
+{
     Uno2RemoteStub *p = ( Uno2RemoteStub * ) pRemoteI;
 
     RemoteThreadCounter counter( p->m_pEnvRemote );
-    
+
     typelib_InterfaceMethodTypeDescription *pMethodType = 0;
     typelib_InterfaceAttributeTypeDescription *pAttributeType = 0;
     typelib_TypeDescription *pReturnType = 0;
@@ -185,11 +185,11 @@ void Uno2RemoteStub::thisDispatch(
     sal_Bool *pbIsOut = 0;
     sal_Bool bConversionNeededForReturn = sal_False;
     sal_Bool *pbConversionNeeded = 0;
-    
+
     sal_Int32 i;
     //--------------------------------
     // Collect all needed types !
-    //--------------------------------	
+    //--------------------------------
     if( typelib_TypeClass_INTERFACE_ATTRIBUTE == pType->eTypeClass )
     {
         pAttributeType = ( typelib_InterfaceAttributeTypeDescription * ) pType;
@@ -222,7 +222,7 @@ void Uno2RemoteStub::thisDispatch(
         pbIsIn  = (sal_Bool * ) alloca( sizeof( sal_Bool ) * nArgCount );
         pbIsOut = (sal_Bool * ) alloca( sizeof( sal_Bool ) * nArgCount );
         pbConversionNeeded = ( sal_Bool * ) alloca( sizeof( sal_Bool ) * nArgCount );
-        
+
         for( i = 0 ; i < nArgCount ; i ++ )
         {
             ppArgType[i] = 0;
@@ -275,19 +275,19 @@ void Uno2RemoteStub::thisDispatch(
     // do the call
     uno_Any any;
     uno_Any *pAny = &any;
-    
+
     p->m_pUnoI->pDispatcher( p->m_pUnoI,
                              pType,
                              pUnoReturn,
                              ppUnoArgs,
                              &pAny);
-    
+
     if( ! pAny )
     {
         // ------------------
         // No Exception
         // ------------------
-        
+
         // Map return value
         if( pReturnType && bConversionNeededForReturn )
         {
@@ -298,8 +298,8 @@ void Uno2RemoteStub::thisDispatch(
                 p->m_mapUno2Remote.get() );
             uno_destructData( pUnoReturn , pReturnType, 0 );
         }
-        
-        // map arguments 
+
+        // map arguments
         for( i = 0 ; i < nArgCount ; i ++ )
         {
             if( pbConversionNeeded[i] )
@@ -316,7 +316,7 @@ void Uno2RemoteStub::thisDispatch(
                                                 p->m_mapUno2Remote.get()  );
                     }
                 }
-                else // pure out 
+                else // pure out
                 {
                     uno_copyAndConvertData( ppArgs[i] ,
                                             ppUnoArgs[i],
