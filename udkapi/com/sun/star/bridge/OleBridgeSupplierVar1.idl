@@ -1,10 +1,10 @@
 /*************************************************************************
  *
- *  $RCSfile: XNameReplace.idl,v $
+ *  $RCSfile: OleBridgeSupplierVar1.idl,v $
  *
- *  $Revision: 1.7 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: mi $ $Date: 2002-10-03 12:43:54 $
+ *  last change: $Author: mi $ $Date: 2002-10-03 12:43:49 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -58,52 +58,33 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_container_XNameReplace_idl__ 
-#define __com_sun_star_container_XNameReplace_idl__ 
+#ifndef __com_sun_star_bridge_OleBridgeSupplierVar1_idl__ 
+#define __com_sun_star_bridge_OleBridgeSupplierVar1_idl__ 
  
-#ifndef __com_sun_star_container_XNameAccess_idl__ 
-#include <com/sun/star/container/XNameAccess.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_IllegalArgumentException_idl__ 
-#include <com/sun/star/lang/IllegalArgumentException.idl> 
-#endif 
- 
-#ifndef __com_sun_star_container_NoSuchElementException_idl__ 
-#include <com/sun/star/container/NoSuchElementException.idl> 
-#endif 
- 
-#ifndef __com_sun_star_lang_WrappedTargetException_idl__ 
-#include <com/sun/star/lang/WrappedTargetException.idl> 
-#endif 
- 
-//============================================================================= 
- 
-module com {  module sun {  module star {  module container {  
- 
-//============================================================================= 
- 
-/** This is the generic interface for supporting the replacement of named
-    elements.
+#ifndef __com_sun_star_bridge_OBridgeSupplier2_idl__ 
+#include <com/sun/star/bridge/OleBridgeSupplier2.idl> 
+#endif
 
-    @see XContainer
- */
-interface XNameReplace: com::sun::star::container::XNameAccess
-{ 
-    //------------------------------------------------------------------------- 
-     
-    /** replaces the element with the specified name with the given element.
-     */
-    void replaceByName( [in] string aName, 
-             [in] any aElement ) 
-            raises( com::sun::star::lang::IllegalArgumentException, 
-                    com::sun::star::container::NoSuchElementException, 
-                    com::sun::star::lang::WrappedTargetException ); 
+
+ module com {  module sun {  module star {  module bridge {  
  
-}; 
+
+/** maps UNO types to COM types and vice versa. It is optimized for use in a
+     remote szenario. <p> 
+The functionality is basically the same as
+<type scope="com::sun::star::bridge">com::sun::star::bridge::OleBridgeSupplier2</type>.
+However, the implementation should be optimized for remote access. For example, it could
+try to reduce the calls into the remote process. Also it could create components on its own behalf in the remote process, if this increases performance.
+*/
+service OleBridgeSupplierVar1
+{
+    service OleBridgeSupplier2;
+
+};
  
 //============================================================================= 
  
 }; }; }; };  
  
+
 #endif 
