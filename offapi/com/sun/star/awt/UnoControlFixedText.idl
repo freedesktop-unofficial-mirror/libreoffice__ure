@@ -2,9 +2,9 @@
  *
  *  $RCSfile: UnoControlFixedText.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: hr $ $Date: 2003-03-26 13:52:42 $
+ *  last change: $Author: vg $ $Date: 2003-06-27 08:55:38 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -72,7 +72,7 @@
 #ifndef __com_sun_star_awt_XLayoutConstrains_idl__ 
 #include <com/sun/star/awt/XLayoutConstrains.idl> 
 #endif 
- 
+
  
 //============================================================================= 
  
@@ -80,20 +80,16 @@
  
 //============================================================================= 
  
-// DocMerge from xml: service com::sun::star::awt::UnoFixedTextControl
-/** specifies a control to display a fixed text.
+/** specifies a control for displaying fixed text.
  */
 service UnoControlFixedText
 { 
-    // DocMerge: empty anyway
     service com::sun::star::awt::UnoControl; 
     
-    // DocMerge: empty anyway
     interface com::sun::star::awt::XFixedText; 
     
-    // DocMerge: empty anyway
-    interface com::sun::star::awt::XLayoutConstrains; 
- 
+    interface com::sun::star::awt::XLayoutConstrains;
+
 }; 
  
 //============================================================================= 
