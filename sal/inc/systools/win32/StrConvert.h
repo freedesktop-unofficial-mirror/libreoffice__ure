@@ -2,9 +2,9 @@
  *
  *  $RCSfile: StrConvert.h,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: obr $ $Date: 2001-06-07 09:21:10 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 17:41:18 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -62,6 +62,14 @@
 #define _STRCONVERT_H_
 
 #include <windows.h>
+
+#ifdef NDEBUG
+#define STRCONVERT_H_HAD_NDEBUG
+#undef NDEBUG
+#endif
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 
 #ifdef __cplusplus
@@ -74,14 +82,14 @@ int  CalcLenDblNullTerminatedWStr( LPCWSTR lpcwstrString );
 int  CalcLenDblNullTerminatedStr( LPCSTR lpcstrString );
 void FreeSpaceStr( LPSTR lpszString );
 
-/* WC2MB allocates a sufficient amount of memory on stack and converts 
-   the wide char parameter to multi byte string using the actual code 
+/* WC2MB allocates a sufficient amount of memory on stack and converts
+   the wide char parameter to multi byte string using the actual code
    page.
 
    @Param: wcStr - a wide char string
            mbStr - the corresponding multi byte string
- 
-   NOTE: due to the use of _alloca, this must be a macro and no function 
+
+   NOTE: due to the use of _alloca, this must be a macro and no function
 */
 
 #define WC2MB( wcStr, mbStr ) \
@@ -95,11 +103,11 @@ if( wcStr ) \
         copied = WideCharToMultiByte( CP_ACP, 0, wcStr, -1, mbStr, needed, NULL, NULL ); \
         assert( copied == needed ); \
     } \
-} 
+}
 
 
-/* WideCharListGetMultiByteLength  
-   calculates the needed length of a corresponding the multi byte string 
+/* WideCharListGetMultiByteLength
+   calculates the needed length of a corresponding the multi byte string
    list for a wide char string list.
 
    @Param: cp - the code page to use for convertion.
@@ -108,7 +116,7 @@ if( wcStr ) \
 
 int WideCharListGetMultiByteLength( UINT codepage, LPCWSTR wcList );
 
-/* WideCharListToMultiByteList  
+/* WideCharListToMultiByteList
    converts a double '\0' terminated list of wide char strings to a
    multi byte string list.
 
@@ -121,14 +129,14 @@ int WideCharListGetMultiByteLength( UINT codepage, LPCWSTR wcList );
 int WideCharListToMultiByteList( UINT codepage, LPCWSTR wcList, LPSTR mbList, DWORD dwSize );
 
 
-/* WCL2MBL allocates a sufficient amount of memory on stack and converts 
-   the wide char list parameter to multi byte string list using the actual 
+/* WCL2MBL allocates a sufficient amount of memory on stack and converts
+   the wide char list parameter to multi byte string list using the actual
    code page.
 
    @Param: wcList - a wide char string list
            mbList - the corresponding multi byte string list
- 
-   NOTE: due to the use of _alloca, this must be a macro and no function 
+
+   NOTE: due to the use of _alloca, this must be a macro and no function
 */
 
 #define WCL2MBL( wcList, mbList ) \
@@ -142,10 +150,17 @@ if( wcList ) \
         copied = WideCharListToMultiByteList( CP_ACP, wcList, mbList, needed ); \
         assert( copied == needed ); \
     } \
-} 
+}
 
 #ifdef __cplusplus
 }
+#endif
+
+// Restore NDEBUG state
+#ifdef STRCONVERT_H_HAD_NDEBUG
+#define NDEBUG
+#else
+#undef NDEBUG
 #endif
 
 #endif
