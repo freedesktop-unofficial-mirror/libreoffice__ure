@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: ConnectorShape.idl,v $
+ *  $RCSfile: LineProperties.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: cl $ $Date: 2001-03-06 16:53:32 $
  *
@@ -58,35 +58,23 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_drawing_ConnectorShape_idl__ 
-#define __com_sun_star_drawing_ConnectorShape_idl__ 
- 
-#ifndef __com_sun_star_drawing_XConnectorShape_idl__ 
-#include <com/sun/star/drawing/XConnectorShape.idl> 
-#endif 
-
-#ifndef __com_sun_star_drawing_ConnectorProperties_idl__ 
-#include <com/sun/star/drawing/ConnectorProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_Shape_idl__ 
-#include <com/sun/star/drawing/Shape.idl> 
-#endif 
- 
 #ifndef __com_sun_star_drawing_LineProperties_idl__ 
-#include <com/sun/star/drawing/LineProperties.idl> 
+#define __com_sun_star_drawing_LineProperties_idl__ 
+ 
+#ifndef __com_sun_star_drawing_LineStyle_idl__ 
+#include <com/sun/star/drawing/LineStyle.idl> 
 #endif 
  
-#ifndef __com_sun_star_drawing_Text_idl__ 
-#include <com/sun/star/drawing/Text.idl> 
+#ifndef __com_sun_star_drawing_LineDash_idl__ 
+#include <com/sun/star/drawing/LineDash.idl> 
 #endif 
  
-#ifndef __com_sun_star_drawing_ShadowProperties_idl__ 
-#include <com/sun/star/drawing/ShadowProperties.idl> 
+#ifndef __com_sun_star_drawing_PolyPolygonBezierCoords_idl__ 
+#include <com/sun/star/drawing/PolyPolygonBezierCoords.idl> 
 #endif 
  
-#ifndef __com_sun_star_drawing_RotationDescriptor_idl__ 
-#include <com/sun/star/drawing/RotationDescriptor.idl> 
+#ifndef __com_sun_star_drawing_LineJoint_idl__ 
+#include <com/sun/star/drawing/LineJoint.idl> 
 #endif 
  
  
@@ -96,44 +84,90 @@
  
 //============================================================================= 
  
-/** This service is for a <type>ConnectorShape</type>, a specialized <type>Shape</type>
-    which can be connected to other <type>Shape</type>s or <type>GluePoint</type>s.
+/** This is a set of properties to describe the style for rendering a Line.
+    <p>The properties for line ends and line starts are only supported by
+    shapes with open line ends.
  */
-service ConnectorShape
+service LineProperties
 { 
-    service com::sun::star::drawing::Shape; 
-
-    service com::sun::star::drawing::LineProperties; 
-
-    service com::sun::star::drawing::ConnectorProperties; 
-    
-    service com::sun::star::drawing::ShadowProperties; 
-
-    service com::sun::star::drawing::Text; 
-    
-    service com::sun::star::drawing::RotationDescriptor; 
-
-    //------------------------------------------------------------------------- 
-
-    interface com::sun::star::drawing::XConnectorShape; 
-
-    //------------------------------------------------------------------------- 
- 
-    /** This property contains the distance of line 1.
+    /** This property contains the type of the line.
      */
-    [property] long EdgeLine1Delta; 
+    [property] com::sun::star::drawing::LineStyle LineStyle; 
  
     //------------------------------------------------------------------------- 
      
-    /** This property contains the distance of line 2.
+    /** This property contains the dash of the line.
      */
-    [property] long EdgeLine2Delta; 
+    [property] com::sun::star::drawing::LineDash LineDash; 
  
     //------------------------------------------------------------------------- 
      
-    /** This property contains the distance of line 3.
+    /** This property contains the line color.
      */
-    [property] long EdgeLine3Delta; 
+    [property] long LineColor; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the extent of transparency.
+     */
+    [property] short LineTransparence; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the width of the line in 1/100th mm.
+     */
+    [property] long LineWidth; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property defines the rendering of joints between thick lines
+     */
+    [property] com::sun::star::drawing::LineJoint LineJoint; 
+
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the name of the line starts poly polygon bezier.
+        <p>If this string is empty, no line end polygon is rendered.
+     */
+    [optional, property] string LineStartName;
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the line start in the form of a poly polygon bezier.
+     */
+    [optional, property] com::sun::star::drawing::PolyPolygonBezierCoords LineStart; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the line end in the form of a poly polygon bezier.
+     */
+    [optional, property] com::sun::star::drawing::PolyPolygonBezierCoords LineEnd; 
+
+    //------------------------------------------------------------------------- 
+     
+    /** If this property is <TRUE/>, the line will
+        start from the center of the polygon.
+     */
+    [optional, property] boolean LineStartCenter; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the width of the line start polygon.
+     */
+    [optional, property] long LineStartWidth; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** If this property is <TRUE/>, the line will end
+        in the center of the polygon.
+     */
+    [optional, property] boolean LineEndCenter; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the width of the line end polygon.
+     */
+    [optional, property] long LineEndWidth; 
 }; 
  
 //============================================================================= 

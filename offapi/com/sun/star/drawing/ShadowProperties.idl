@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: ConnectorShape.idl,v $
+ *  $RCSfile: ShadowProperties.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: cl $ $Date: 2001-03-06 16:53:32 $
  *
@@ -58,36 +58,8 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_drawing_ConnectorShape_idl__ 
-#define __com_sun_star_drawing_ConnectorShape_idl__ 
- 
-#ifndef __com_sun_star_drawing_XConnectorShape_idl__ 
-#include <com/sun/star/drawing/XConnectorShape.idl> 
-#endif 
-
-#ifndef __com_sun_star_drawing_ConnectorProperties_idl__ 
-#include <com/sun/star/drawing/ConnectorProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_Shape_idl__ 
-#include <com/sun/star/drawing/Shape.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_LineProperties_idl__ 
-#include <com/sun/star/drawing/LineProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_Text_idl__ 
-#include <com/sun/star/drawing/Text.idl> 
-#endif 
- 
 #ifndef __com_sun_star_drawing_ShadowProperties_idl__ 
-#include <com/sun/star/drawing/ShadowProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_RotationDescriptor_idl__ 
-#include <com/sun/star/drawing/RotationDescriptor.idl> 
-#endif 
+#define __com_sun_star_drawing_ShadowProperties_idl__ 
  
  
 //============================================================================= 
@@ -96,44 +68,44 @@
  
 //============================================================================= 
  
-/** This service is for a <type>ConnectorShape</type>, a specialized <type>Shape</type>
-    which can be connected to other <type>Shape</type>s or <type>GluePoint</type>s.
+/** This is a set of properties to describe the style for rendering a shadow.
  */
-service ConnectorShape
+service ShadowProperties
 { 
-    service com::sun::star::drawing::Shape; 
-
-    service com::sun::star::drawing::LineProperties; 
-
-    service com::sun::star::drawing::ConnectorProperties; 
-    
-    service com::sun::star::drawing::ShadowProperties; 
-
-    service com::sun::star::drawing::Text; 
-    
-    service com::sun::star::drawing::RotationDescriptor; 
-
     //------------------------------------------------------------------------- 
-
-    interface com::sun::star::drawing::XConnectorShape; 
-
-    //------------------------------------------------------------------------- 
- 
-    /** This property contains the distance of line 1.
+     
+    /** enables/disables the shadow of a <type>Shape</type>.	
+        <p>The other shadow properties are only applied if this is
+        set to <TRUE/>.</p>
      */
-    [property] long EdgeLine1Delta; 
+    [property] boolean Shadow; 
  
     //------------------------------------------------------------------------- 
      
-    /** This property contains the distance of line 2.
+    /** This is the color of the shadow of this <type>Shape</type>.
      */
-    [property] long EdgeLine2Delta; 
+    [property] long ShadowColor; 
  
     //------------------------------------------------------------------------- 
      
-    /** This property contains the distance of line 3.
+    /** This defines the degree of transparence of the shadow in percent.
      */
-    [property] long EdgeLine3Delta; 
+    [property] short ShadowTransparence; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This is the horizontal distance of the left edge of the
+        <type>Shape</type> to the shadow.
+     */
+    [property] long ShadowXDistance; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This is the vertical distance of the top edge of the
+        <type>Shape</type> to the shadow.
+     */
+    [property] long ShadowYDistance; 
+ 
 }; 
  
 //============================================================================= 

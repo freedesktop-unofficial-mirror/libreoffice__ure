@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: ConnectorShape.idl,v $
+ *  $RCSfile: ConnectorProperties.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: cl $ $Date: 2001-03-06 16:53:32 $
  *
@@ -58,35 +58,11 @@
  *
  *
  ************************************************************************/
-#ifndef __com_sun_star_drawing_ConnectorShape_idl__ 
-#define __com_sun_star_drawing_ConnectorShape_idl__ 
- 
-#ifndef __com_sun_star_drawing_XConnectorShape_idl__ 
-#include <com/sun/star/drawing/XConnectorShape.idl> 
-#endif 
-
 #ifndef __com_sun_star_drawing_ConnectorProperties_idl__ 
-#include <com/sun/star/drawing/ConnectorProperties.idl> 
-#endif 
+#define __com_sun_star_drawing_ConnectorProperties_idl__ 
  
-#ifndef __com_sun_star_drawing_Shape_idl__ 
-#include <com/sun/star/drawing/Shape.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_LineProperties_idl__ 
-#include <com/sun/star/drawing/LineProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_Text_idl__ 
-#include <com/sun/star/drawing/Text.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_ShadowProperties_idl__ 
-#include <com/sun/star/drawing/ShadowProperties.idl> 
-#endif 
- 
-#ifndef __com_sun_star_drawing_RotationDescriptor_idl__ 
-#include <com/sun/star/drawing/RotationDescriptor.idl> 
+#ifndef __com_sun_star_drawing_ConnectorType_idl__ 
+#include <com/sun/star/drawing/ConnectorType.idl> 
 #endif 
  
  
@@ -96,44 +72,40 @@
  
 //============================================================================= 
  
-/** This service is for a <type>ConnectorShape</type>, a specialized <type>Shape</type>
-    which can be connected to other <type>Shape</type>s or <type>GluePoint</type>s.
+/** This is a set of properties to describe the style for rendering connector.
  */
-service ConnectorShape
+service ConnectorProperties
 { 
-    service com::sun::star::drawing::Shape; 
-
-    service com::sun::star::drawing::LineProperties; 
-
-    service com::sun::star::drawing::ConnectorProperties; 
-    
-    service com::sun::star::drawing::ShadowProperties; 
-
-    service com::sun::star::drawing::Text; 
-    
-    service com::sun::star::drawing::RotationDescriptor; 
-
     //------------------------------------------------------------------------- 
-
-    interface com::sun::star::drawing::XConnectorShape; 
-
-    //------------------------------------------------------------------------- 
- 
-    /** This property contains the distance of line 1.
+     
+    /** This property contains the kind of the connector.
      */
-    [property] long EdgeLine1Delta; 
+    [property] com::sun::star::drawing::ConnectorType EdgeKind; 
  
     //------------------------------------------------------------------------- 
      
-    /** This property contains the distance of line 2.
+    /** This property contains the horizontal distance of node 1.
      */
-    [property] long EdgeLine2Delta; 
+    [property] long EdgeNode1HorzDist; 
  
     //------------------------------------------------------------------------- 
      
-    /** This property contains the distance of line 3.
+    /** This property contains the vertical distance of node 1.
      */
-    [property] long EdgeLine3Delta; 
+    [property] long EdgeNode1VertDist; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the horizontal distance of node 2.
+     */
+    [property] long EdgeNode2HorzDist; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** This property contains the vertical distance of node 2.
+     */
+    [property] long EdgeNode2VertDist; 
+ 
 }; 
  
 //============================================================================= 
