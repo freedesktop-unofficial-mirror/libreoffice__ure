@@ -2,9 +2,9 @@
  *
  *  $RCSfile: testproptyphlp.cxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-18 15:26:11 $
+ *  last change: $Author: vg $ $Date: 2003-04-15 16:36:10 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -61,6 +61,10 @@
 #include <cppuhelper/proptypehlp.hxx>
 
 #include <com/sun/star/beans/Property.hpp>
+
+#if OSL_DEBUG_LEVEL == 0
+#define NDEBUG
+#endif
 #include <assert.h>
 
 using namespace ::com::sun::star::uno;
@@ -69,25 +73,25 @@ using namespace ::cppu;
 void testPropertyTypeHelper()
 {
     Any a;
-    
+
     a <<= ( sal_Int8 ) 25;
-    
+
     sal_Int32 i;
     convertPropertyValue( i ,  a );
     assert( 25 == i );
-    
+
     sal_Int16 i16;
     convertPropertyValue( i16 ,  a );
     assert( 25 == i16 );
-    
+
     sal_Int8 i8;
     convertPropertyValue( i8 ,  a );
     assert( 25 == i8 );
-    
+
     sal_uInt32 i32;
     convertPropertyValue( i32 ,  a );
     assert( 25 == i32 );
-    
+
     double d;
     convertPropertyValue( d , a );
     assert( 25. == d );
@@ -95,9 +99,9 @@ void testPropertyTypeHelper()
     float f;
     convertPropertyValue( f , a );
     assert( 25. == f );
-    
+
     ::com::sun::star::beans::Property prop;
-    
+
     prop.Name = rtl::OUString( RTL_CONSTASCII_USTRINGPARAM("Huhu") );
     prop.Handle = 5;
     prop.Attributes = 3;
