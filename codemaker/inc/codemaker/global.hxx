@@ -2,9 +2,9 @@
  *
  *  $RCSfile: global.hxx,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: jsc $ $Date: 2001-08-17 13:12:57 $
+ *  last change: $Author: obo $ $Date: 2003-10-20 13:09:02 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -68,12 +68,9 @@
 
 #include <stdio.h>
 
-#ifndef _RTL_USTRING_HXX_
-#include <rtl/ustring.hxx>	
-#endif
-#ifndef _RTL_STRBUF_HXX_
-#include <rtl/strbuf.hxx>	
-#endif
+#include "osl/file.hxx"
+#include "rtl/ustring.hxx"
+#include "rtl/strbuf.hxx"
 
 struct EqualString
 {
@@ -108,7 +105,52 @@ typedef ::std::list< ::rtl::OString > 				StringList;
 typedef ::std::vector< ::rtl::OString > 			StringVector;
 typedef ::std::set< ::rtl::OString, LessString > 	StringSet;
 
-::rtl::OString makeTempName(sal_Char* prefix);
+//*************************************************************************
+// FileStream
+//*************************************************************************
+enum FileAccessMode
+{
+    FAM_READ,                   // "r"
+    FAM_WRITE,                  // "w"
+    FAM_READWRITE_EXIST,        // "r+"
+    FAM_READWRITE,              // "w+"
+};
+
+class FileStream
+{
+public:
+    FileStream();
+    FileStream(const ::rtl::OString& name, FileAccessMode nMode = FAM_READWRITE);	
+    virtual ~FileStream();
+    
+    sal_Bool isValid();
+
+    void open(const ::rtl::OString& name, FileAccessMode nMode = FAM_READWRITE);
+    void createTempFile(const ::rtl::OString& sPath);
+    void close();
+
+    ::rtl::OString 	getName() { return m_name; }
+
+    // friend functions
+    friend FileStream &operator<<(FileStream& o, sal_uInt32 i);
+    friend FileStream &operator<<(FileStream& o, sal_Char* s);
+    friend FileStream &operator<<(FileStream& o, ::rtl::OString* s);
+    friend FileStream &operator<<(FileStream& o, const ::rtl::OString& s);
+    friend FileStream &operator<<(FileStream& o, ::rtl::OStringBuffer* s);
+    friend FileStream &operator<<(FileStream& o, const ::rtl::OStringBuffer& s);
+
+private:
+    sal_uInt32 checkAccessMode(FileAccessMode mode);
+
+    oslFileHandle m_file;
+    ::rtl::OString  m_name;    
+};
+
+
+//*************************************************************************
+// Helper functions
+//*************************************************************************
+::rtl::OString getTempDir(const ::rtl::OString& sFileName);
 
 ::rtl::OString createFileNameFromType(const ::rtl::OString& destination, 
                                       const ::rtl::OString type, 
@@ -117,7 +159,10 @@ typedef ::std::set< ::rtl::OString, LessString > 	StringSet;
                                       const ::rtl::OString prefix="");
 
 sal_Bool fileExists(const ::rtl::OString& fileName);
-sal_Bool checkFileContent(const ::rtl::OString& targetFileName, const ::rtl::OString& tmpFileName);
+sal_Bool makeValidTypeFile(const ::rtl::OString& targetFileName,
+                           const ::rtl::OString& tmpFileName,
+                           sal_Bool bFileCheck);
+sal_Bool removeTypeFile(const ::rtl::OString& fileName);
 
 const ::rtl::OString inGlobalSet(const ::rtl::OUString & r);
 inline const ::rtl::OString inGlobalSet(sal_Char* p)
@@ -127,66 +172,6 @@ inline const ::rtl::OString inGlobalSet(sal_Char* p)
 
 ::rtl::OUString convertToFileUrl(const ::rtl::OString& fileName);
 
-//*************************************************************************
-// FileStream
-//*************************************************************************
-enum FileAccessMode
-{
-    FAM_READ,                   // "r"
-    FAM_WRITE,                  // "w"
-    FAM_APPEND,                 // "a"
-    FAM_READWRITE_EXIST,        // "r+"
-    FAM_READWRITE,              // "w+"
-    FAM_READAPPEND              // "a+"
-};
-
-class FileStream //: public ofstream
-{
-public:
-    FileStream();	
-    FileStream(const ::rtl::OString& name, FileAccessMode nMode = FAM_READWRITE);	
-    virtual ~FileStream();
-    
-    sal_Bool isValid();
-
-    void open(const ::rtl::OString& name, FileAccessMode nMode = FAM_READWRITE);
-    void close();
-
-    sal_Int32 		getSize();
-    ::rtl::OString 	getName() { return m_name; }
-
-    // friend functions
-    friend FileStream &operator<<(FileStream& o, sal_uInt32 i)
-        {   fprintf(o.m_pFile, "%d", i);
-            return o;
-        }
-    friend FileStream &operator<<(FileStream& o, sal_Char* s)
-        {   fprintf(o.m_pFile, "%s", s);
-            return o;
-        }
-    friend FileStream &operator<<(FileStream& o, ::rtl::OString* s)
-        {   fprintf(o.m_pFile, "%s", s->getStr());
-            return o;
-        }
-    friend FileStream &operator<<(FileStream& o, const ::rtl::OString& s)
-        {   fprintf(o.m_pFile, "%s", s.getStr());
-            return o;
-        }
-    friend FileStream &operator<<(FileStream& o, ::rtl::OStringBuffer* s)
-        {   fprintf(o.m_pFile, "%s", s->getStr());
-            return o;
-        }
-    friend FileStream &operator<<(FileStream& o, const ::rtl::OStringBuffer& s)
-        {   fprintf(o.m_pFile, "%s", s.getStr());
-            return o;
-        }
-
-protected:
-    const sal_Char* checkAccessMode(FileAccessMode mode);
-    
-    FILE*               m_pFile;
-    ::rtl::OString      m_name;
-};
 
 #endif // _CODEMAKER_GLOBAL_HXX_
 
