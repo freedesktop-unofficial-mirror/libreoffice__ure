@@ -2,9 +2,9 @@
  *
  *  $RCSfile: cpputype.cxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.3 $
  *
- *  last change: $Author: jsc $ $Date: 2000-11-06 15:44:06 $
+ *  last change: $Author: ts $ $Date: 2000-12-11 13:57:15 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -94,7 +94,21 @@ CppuType::CppuType(TypeReader& typeReader,
     , m_reader(typeReader)
     , m_typeMgr((TypeManager&)typeMgr)
     , m_dependencies(typeDependencies)
+    , m_bIsNestedType(sal_False)
 {
+    // check if this type is nested 
+    sal_Int32 i = typeName.lastIndexOf('/');
+
+    if (i >= 0)
+    {
+        OString outerTypeName(typeName.copy(0, i));
+        m_bIsNestedType = (m_typeMgr.getTypeClass(outerTypeName) == RT_TYPE_INTERFACE);
+    }
+
+    // check if this type has nested types
+    RegistryKey key = m_typeMgr.getTypeKey(typeName);
+
+    key.getKeyNames(OUString(), m_nestedTypeNames);
 }
 
 CppuType::~CppuType()
@@ -102,10 +116,43 @@ CppuType::~CppuType()
     
 }	
 
+sal_Bool CppuType::isNestedTypeByName(const ::rtl::OString& type)
+{
+    sal_Bool ret = sal_False;
+
+    sal_Int32 i = type.lastIndexOf('/');
+
+    if (i >= 0)
+    {
+        OString outerTypeName(type.copy(0, i));
+        ret = (m_typeMgr.getTypeClass(outerTypeName) == RT_TYPE_INTERFACE);
+    }
+
+    return ret;
+}
+
+sal_Bool CppuType::hasNestedType(const ::rtl::OString& type)
+{
+    sal_Bool ret = sal_False;
+
+    if (m_nestedTypeNames.getLength() > 0)
+    {
+        OUString typeName(OStringToOUString(type, RTL_TEXTENCODING_UTF8));
+
+        for (sal_Int32 i = 0; !ret && (i < m_nestedTypeNames.getLength()); i++)
+            ret = typeName.equals(m_nestedTypeNames.getElement(i).copy(5));
+    }
+
+    return ret;
+}
+
 sal_Bool CppuType::dump(CppuOptions* pOptions)
     throw( CannotDumpException )
 {
     sal_Bool ret = sal_False;
+
+    if (isNestedType())
+        return sal_True;
 
     if (pOptions->isValid("-L"))
         m_cppuTypeLeak = sal_True;
@@ -366,6 +413,7 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
     OString 	relType;
     while (iter != usingSet.end())
     {
+        sal_Bool bDumpThisType = sal_True;
         index = (*iter).m_type.lastIndexOf(']');
         seqNum = (index > 0 ? ((index+1) / 2) : 0);
 
@@ -373,69 +421,125 @@ void CppuType::dumpDepIncludes(FileStream& o, const OString& typeName, sal_Char*
         if (index > 0)
             relType = relType.copy(index+1);
 
-        OString defPrefix("HXX");
-        if (sPrefix.equals("HDL"))
-            defPrefix = "H";
+        if (isNestedTypeByName(relType) && hasNestedType(relType))
+            bDumpThisType = sal_False;
 
-        if (seqNum > 0 && !bSequenceDumped)
+        if (bDumpThisType) 
         {
-            bSequenceDumped = sal_True;
-            o << "#ifndef _COM_SUN_STAR_UNO_SEQUENCE_" << defPrefix
-              << "_\n#include <com/sun/star/uno/Sequence." << defPrefix.toLowerCase() 
-              << ">\n#endif\n";		
-        }
+            OString defPrefix("HXX");
+            if (sPrefix.equals("HDL"))
+                defPrefix = "H";
 
-        if (getBaseType(relType).getLength() == 0 &&
-            m_typeName != relType)
-        {
-            if (m_typeMgr.getTypeClass(relType) == RT_TYPE_INTERFACE
-                && sPrefix.equals("HDL"))
+            if (seqNum > 0 && !bSequenceDumped)
             {
-                if (!bInterfaceDumped)
-                {
-                    bInterfaceDumped = sal_True;
-                    o << "#ifndef _COM_SUN_STAR_UNO_REFERENCE_H_\n"
-                      << "#include <com/sun/star/uno/Reference.h>\n" 
-                      << "#endif\n";		
-                }
+                bSequenceDumped = sal_True;
+                o << "#ifndef _COM_SUN_STAR_UNO_SEQUENCE_" << defPrefix
+                  << "_\n#include <com/sun/star/uno/Sequence." << defPrefix.toLowerCase() 
+                  << ">\n#endif\n";		
+            }
 
-                if (!((*iter).m_use & TYPEUSE_SUPER))
+            if (getBaseType(relType).getLength() == 0 &&
+                m_typeName != relType)
+            {
+                if (m_typeMgr.getTypeClass(relType) == RT_TYPE_INTERFACE
+                    && sPrefix.equals("HDL"))
                 {
-                    o << endl;
-                    dumpNameSpace(o, sal_True, sal_False, relType);
-                    o << "\nclass " << scopedName(m_typeName, relType, sal_True) << ";\n";
-                    dumpNameSpace(o, sal_False, sal_False, relType);
-                    o << "\n\n";
+                    if (!bInterfaceDumped)
+                    {
+                        bInterfaceDumped = sal_True;
+                        o << "#ifndef _COM_SUN_STAR_UNO_REFERENCE_H_\n"
+                          << "#include <com/sun/star/uno/Reference.h>\n" 
+                          << "#endif\n";		
+                    }
+
+                    if (!((*iter).m_use & TYPEUSE_SUPER))
+                    {
+                        if (isNestedTypeByName(relType))
+                        {
+                            sal_Int32 iLastS = relType.lastIndexOf('/');
+
+                            OString outerNamespace(relType.copy(0,iLastS));
+                            OString innerClass(relType.copy(iLastS+1));
+
+                            iLastS = outerNamespace.lastIndexOf('/');
+                            OString outerClass(outerNamespace.copy(iLastS+1));
+
+                            o << endl;
+                            dumpNameSpace(o, sal_True, sal_False, outerNamespace);
+                            o << "\nclass " << outerClass << "::" << innerClass << ";\n";
+                            dumpNameSpace(o, sal_False, sal_False, outerNamespace);
+                            o << "\n\n";
+                        }
+                        else
+                        {
+                            o << endl;
+                            dumpNameSpace(o, sal_True, sal_False, relType);
+                            o << "\nclass " << scopedName(m_typeName, relType, sal_True) << ";\n";
+                            dumpNameSpace(o, sal_False, sal_False, relType);
+                            o << "\n\n";
+                        }
+                    } else
+                    {
+                        if (isNestedTypeByName(relType))
+                        {
+                            sal_Int32 iLastS = relType.lastIndexOf('/');
+
+                            OString outerNamespace(relType.copy(0,iLastS));
+
+                            dumpInclude(o, outerNamespace, prefix);
+                        }
+                        else
+                            dumpInclude(o, relType, prefix);
+                    }
                 } else
                 {
-                    dumpInclude(o, relType, prefix);
+                    if (isNestedTypeByName(relType))
+                    {
+                        sal_Int32 iLastS = relType.lastIndexOf('/');
+                        
+                        OString outerNamespace(relType.copy(0,iLastS));
+                        
+                        dumpInclude(o, outerNamespace, prefix);
+                    }
+                    else
+                        dumpInclude(o, relType, prefix);
                 }
             } else
+            if (relType == "any")
             {
-                dumpInclude(o, relType, prefix);
-            }
-        } else
-        if (relType == "any")
-        {
-            o << "#ifndef _COM_SUN_STAR_UNO_ANY_" << defPrefix
-              << "_\n#include <com/sun/star/uno/Any." << defPrefix.toLowerCase() 
-              << ">\n#endif\n";		
-        } else
-        if (relType == "type")
-        {
-            o << "#ifndef _COM_SUN_STAR_UNO_TYPE_" << defPrefix
-              << "_\n#include <com/sun/star/uno/Type." << defPrefix.toLowerCase() 
-              << ">\n#endif\n";		
-        } else
-        if (relType == "string" && sPrefix.equals("HDL"))
-        {
-            o << "#ifndef _RTL_USTRING_HXX_\n"
-              << "#include <rtl/ustring.hxx>\n"
-              << "#endif\n";		
-        }				
-
+                o << "#ifndef _COM_SUN_STAR_UNO_ANY_" << defPrefix
+                  << "_\n#include <com/sun/star/uno/Any." << defPrefix.toLowerCase() 
+                  << ">\n#endif\n";		
+            } else
+            if (relType == "type")
+            {
+                o << "#ifndef _COM_SUN_STAR_UNO_TYPE_" << defPrefix
+                  << "_\n#include <com/sun/star/uno/Type." << defPrefix.toLowerCase() 
+                  << ">\n#endif\n";		
+            } else
+            if (relType == "string" && sPrefix.equals("HDL"))
+            {
+                o << "#ifndef _RTL_USTRING_HXX_\n"
+                  << "#include <rtl/ustring.hxx>\n"
+                  << "#endif\n";		
+            }				
+        }
+        
         iter++;
     }		
+    if (m_typeName.equals(typeName) && (getNestedTypeNames().getLength() > 0))
+    {
+        o << "// includes for nested types\n\n";
+
+        for (sal_Int32 i = 0; i < getNestedTypeNames().getLength(); i++)
+        {
+            OUString s(getNestedTypeNames().getElement(i));
+            
+            OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_DONTKNOW);
+
+            dumpDepIncludes(o, nestedName, prefix);
+        }
+    }
 }	
 
 void CppuType::dumpNameSpace(FileStream& o, sal_Bool bOpen, sal_Bool bFull, const OString& type)
@@ -1399,21 +1503,7 @@ sal_Bool InterfaceType::dumpHFile(FileStream& o)
     dumpDepIncludes(o, m_typeName, "hdl");
     o << endl;
     dumpNameSpace(o);
-    o << "\nclass " << m_name;
-
-    OString superType(m_reader.getSuperTypeName());
-    if (superType.getLength() > 0)
-        o << " : public " << scopedName(m_typeName, superType);
-
-    o << "\n{\npublic:\n";
-    inc();
-
-    dumpAttributes(o);
-    dumpMethods(o);
-
-    dec();
-    o << "};\n\n";
-
+    dumpDeclaration(o);
     dumpNameSpace(o, sal_False);
 
     o << "\nnamespace com { namespace sun { namespace star { namespace uno {\n"
@@ -1427,7 +1517,112 @@ sal_Bool InterfaceType::dumpHFile(FileStream& o)
     dumpType(o, m_typeName, sal_True, sal_False); 
     o << "* );\n\n";
 
+    if (getNestedTypeNames().getLength() > 0)
+    {
+        o << indent() << "// nested types\n\n";
+        for (sal_Int32 i = 0; i < getNestedTypeNames().getLength(); i++)
+        {
+            OUString s(getNestedTypeNames().getElement(i));
+            
+            OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_DONTKNOW);
+            
+            nestedName = checkRealBaseType(nestedName.copy(5));
+
+            if (nestedName.lastIndexOf(']') < 0)
+            {
+                if (m_cppuTypeStatic)
+                    o << "static";
+                else
+                    o << "inline";
+                    
+                o << " const ::com::sun::star::uno::Type& SAL_CALL getCppuType( ";
+                dumpType(o, nestedName, sal_True, sal_False); 
+                o << "* );\n\n";
+            }
+        }
+    }
+
     o << "#endif // "<< headerDefine << endl;
+    return sal_True;
+}
+
+sal_Bool InterfaceType::dumpDeclaration(FileStream& o)
+    throw( CannotDumpException )
+{
+    o << "\nclass " << m_name;
+        
+    OString superType(m_reader.getSuperTypeName());
+    if (superType.getLength() > 0)
+        o << " : public " << scopedName(m_typeName, superType);
+
+    o << "\n{\npublic:\n";
+
+    if (getNestedTypeNames().getLength() > 0)
+    {
+        inc();
+        o << indent() << "// nested types\n\n";
+        for (sal_Int32 i = 0; i < getNestedTypeNames().getLength(); i++)
+        {
+            OUString s(getNestedTypeNames().getElement(i));
+            
+            OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_DONTKNOW);
+
+            nestedName = nestedName.copy(5);
+
+            o << indent() << "// " << nestedName.getStr() << "\n";
+
+            TypeReader reader(m_typeMgr.getTypeReader(nestedName));
+
+            if (reader.isValid())
+            {
+                RTTypeClass typeClass = reader.getTypeClass();
+                switch (typeClass) {
+                    case RT_TYPE_INTERFACE:
+                        {
+                            InterfaceType iType(reader, nestedName, m_typeMgr, m_dependencies);
+                            iType.dumpDeclaration(o);
+                        }
+                        break;
+                    case RT_TYPE_STRUCT:
+                        {
+                            StructureType sType(reader, nestedName, m_typeMgr, m_dependencies);
+                            sType.dumpDeclaration(o);
+                        }
+                        break;
+                    case RT_TYPE_ENUM:
+                        {
+                            EnumType enType(reader, nestedName, m_typeMgr, m_dependencies);
+                            enType.dumpDeclaration(o);
+                        }
+                        break;
+                    case RT_TYPE_EXCEPTION:
+                        {
+                            ExceptionType eType(reader, nestedName, m_typeMgr, m_dependencies);
+                            eType.dumpDeclaration(o);
+                        }
+                        break;
+                    case RT_TYPE_TYPEDEF:
+                        {
+                            TypeDefType tdType(reader, nestedName, m_typeMgr, m_dependencies);
+                            tdType.dumpDeclaration(o);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        dec();
+    }
+
+    inc();
+        
+    dumpAttributes(o);
+    dumpMethods(o);
+
+    dec();
+    o << "};\n\n";
+
     return sal_True;
 }
 
@@ -1447,6 +1642,62 @@ sal_Bool InterfaceType::dumpHxxFile(FileStream& o)
     o << endl;
 
     dumpGetCppuType(o);
+
+    if (getNestedTypeNames().getLength() > 0)
+    {
+        o << indent() << "// nested types\n\n";
+        for (sal_Int32 i = 0; i < getNestedTypeNames().getLength(); i++)
+        {
+            OUString s(getNestedTypeNames().getElement(i));
+            
+            OString nestedName(s.getStr(), s.getLength(), RTL_TEXTENCODING_DONTKNOW);
+            
+            nestedName = nestedName.copy(5);
+
+            o << indent() << "// " << nestedName.getStr() << "\n";
+
+            TypeReader reader(m_typeMgr.getTypeReader(nestedName));
+
+            if (reader.isValid())
+            {
+                RTTypeClass typeClass = reader.getTypeClass();
+                switch (typeClass) {
+                    case RT_TYPE_INTERFACE:
+                        {
+                            InterfaceType iType(reader, nestedName, m_typeMgr, m_dependencies);
+                            iType.dumpGetCppuType(o);
+                        }
+                        break;
+                    case RT_TYPE_STRUCT:
+                        {
+                            StructureType sType(reader, nestedName, m_typeMgr, m_dependencies);
+                            sType.dumpGetCppuType(o);
+                        }
+                        break;
+                    case RT_TYPE_ENUM:
+                        {
+                            EnumType enType(reader, nestedName, m_typeMgr, m_dependencies);
+                            enType.dumpGetCppuType(o);
+                        }
+                        break;
+                    case RT_TYPE_EXCEPTION:
+                        {
+                            ExceptionType eType(reader, nestedName, m_typeMgr, m_dependencies);
+                            eType.dumpGetCppuType(o);
+                        }
+                        break;
+                    case RT_TYPE_TYPEDEF:
+                        {
+                            TypeDefType tdType(reader, nestedName, m_typeMgr, m_dependencies);
+                            tdType.dumpGetCppuType(o);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
 
     o << "\n#endif // "<< headerDefine << endl;
     return sal_True;
@@ -2301,7 +2552,19 @@ sal_Bool ModuleType::dumpHFile(FileStream& o)
 
     dumpNameSpace(o, sal_True, sal_True);
     o << endl;
-    
+
+    dumpDeclaration(o);
+    o << endl;
+
+    dumpNameSpace(o, sal_False, sal_True);
+    o << "\n#endif // "<< headerDefine << endl;
+
+    return sal_True;
+}
+
+sal_Bool ModuleType::dumpDeclaration(FileStream& o)
+    throw( CannotDumpException )
+{
     sal_uInt32 		fieldCount = m_reader.getFieldCount();
     RTFieldAccess 	access = RT_ACCESS_INVALID;
     OString 		fieldName;
@@ -2314,7 +2577,7 @@ sal_Bool ModuleType::dumpHFile(FileStream& o)
         {
             fieldName = m_reader.getFieldName(i);
             fieldType = m_reader.getFieldType(i);
-    
+                
             o << "static const ";
             dumpType(o, fieldType);	
             o << " " << fieldName << " = ";
@@ -2322,10 +2585,6 @@ sal_Bool ModuleType::dumpHFile(FileStream& o)
             o << ";\n";
         }
     }		
-    
-    o << endl;
-    dumpNameSpace(o, sal_False, sal_True);
-    o << "\n#endif // "<< headerDefine << endl;
 
     return sal_True;
 }
@@ -2508,77 +2767,7 @@ sal_Bool StructureType::dumpHFile(FileStream& o)
 
     dumpNameSpace(o);
 
-    o << "\n#ifdef SAL_W32\n"
-      << "#   pragma pack(push, 8)\n"					   
-      << "#elif defined(SAL_OS2)\n"
-      << "#   pragma pack(8)\n"
-      << "#endif\n\n";
-
-    o << "struct " << m_name;
-
-    OString superType(m_reader.getSuperTypeName());
-    if (superType.getLength() > 0)
-        o << " : public " << scopedName(m_typeName, superType);
-    
-    o << "\n{\n";
-    inc();
-    o << indent() << "inline " << m_name << "();\n\n";
-    
-    sal_uInt32 		fieldCount = m_reader.getFieldCount();
-    RTFieldAccess 	access = RT_ACCESS_INVALID;
-    OString 		fieldName;
-    OString 		fieldType;	
-    sal_uInt16 		i=0;
-    if (fieldCount > 0 || getInheritedMemberCount() > 0)
-    {
-        o << indent() << m_name << "(";
-
-        sal_Bool superHasMember = dumpSuperMember(o, superType, sal_True);
-
-        for (i=0; i < fieldCount; i++)
-        {
-            access = m_reader.getFieldAccess(i);
-            
-            if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
-                continue;
-
-            fieldName = m_reader.getFieldName(i);
-            fieldType = m_reader.getFieldType(i);
-        
-            if (superHasMember)
-                o << ", ";
-            else
-                superHasMember = sal_True;
-                
-            dumpType(o, fieldType, sal_True, sal_True);	
-            o << " __" << fieldName;
-        }		
-        o << ");\n\n";
-    }
-
-    for (i=0; i < fieldCount; i++)
-    {
-        access = m_reader.getFieldAccess(i);
-        
-        if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
-            continue;
-
-        fieldName = m_reader.getFieldName(i);
-        fieldType = m_reader.getFieldType(i);
-    
-        o << indent();
-        dumpType(o, fieldType);	
-        o << " " << fieldName << ";\n";
-    }		
-
-    dec();
-    o << "};\n\n";
-    
-    o << "#ifdef SAL_W32\n"
-      << "#   pragma pack(pop)\n"
-      << "#elif defined(SAL_OS2)\n"
-      << "#   pragma pack()\n"
-      << "#endif\n\n";
+    dumpDeclaration(o);
 
     dumpNameSpace(o, sal_False);
 
@@ -2594,6 +2783,84 @@ sal_Bool StructureType::dumpHFile(FileStream& o)
     o << "* );\n\n";
 
     o << "#endif // "<< headerDefine << endl;
+
+    return sal_True;
+}
+
+sal_Bool StructureType::dumpDeclaration(FileStream& o)
+    throw( CannotDumpException )
+{
+    o << "\n#ifdef SAL_W32\n"
+      << "#   pragma pack(push, 8)\n"					   
+      << "#elif defined(SAL_OS2)\n"
+      << "#   pragma pack(8)\n"
+      << "#endif\n\n";
+
+    o << "struct " << m_name;
+
+    OString superType(m_reader.getSuperTypeName());
+    if (superType.getLength() > 0)
+        o << " : public " << scopedName(m_typeName, superType);
+
+    o << "\n{\n";
+    inc();
+    o << indent() << "inline " << m_name << "();\n\n";
+
+    sal_uInt32 		fieldCount = m_reader.getFieldCount();
+    RTFieldAccess 	access = RT_ACCESS_INVALID;
+    OString 		fieldName;
+    OString 		fieldType;	
+    sal_uInt16 		i=0;
+    if (fieldCount > 0 || getInheritedMemberCount() > 0)
+    {
+        o << indent() << m_name << "(";
+        
+        sal_Bool superHasMember = dumpSuperMember(o, superType, sal_True);
+        
+        for (i=0; i < fieldCount; i++)
+        {
+            access = m_reader.getFieldAccess(i);
+            
+            if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
+                            continue;
+            
+            fieldName = m_reader.getFieldName(i);
+            fieldType = m_reader.getFieldType(i);
+            
+            if (superHasMember)
+                o << ", ";
+            else
+                superHasMember = sal_True;
+            
+            dumpType(o, fieldType, sal_True, sal_True);	
+            o << " __" << fieldName;
+        }
+        o << ");\n\n";
+    }
+
+    for (i=0; i < fieldCount; i++)
+    {
+        access = m_reader.getFieldAccess(i);
+        
+        if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
+            continue;
+        
+        fieldName = m_reader.getFieldName(i);
+        fieldType = m_reader.getFieldType(i);
+        
+        o << indent();
+        dumpType(o, fieldType);	
+        o << " " << fieldName << ";\n";
+    }		
+
+    dec();
+    o << "};\n\n";
+
+    o << "#ifdef SAL_W32\n"
+      << "#   pragma pack(pop)\n"
+      << "#elif defined(SAL_OS2)\n"
+      << "#   pragma pack()\n"
+      << "#endif\n\n";
 
     return sal_True;
 }
@@ -2851,67 +3118,7 @@ sal_Bool ExceptionType::dumpHFile(FileStream& o)
 
     dumpNameSpace(o);
 
-    o << "\nclass " << m_name;
-
-    OString superType(m_reader.getSuperTypeName());
-    if (superType.getLength() > 0)
-        o << " : public " << scopedName(m_typeName, superType);
-    
-    o << "\n{\npublic:\n";
-    inc();
-    o << indent() << "inline " << m_name << "();\n\n";
-
-    sal_uInt32 		fieldCount = m_reader.getFieldCount();
-    RTFieldAccess 	access = RT_ACCESS_INVALID;
-    OString 		fieldName;
-    OString 		fieldType;	
-    sal_uInt16 		i = 0;
-
-    if (fieldCount > 0 || getInheritedMemberCount() > 0)
-    {
-        o << indent() << "inline " << m_name << "(";
-
-        sal_Bool superHasMember = dumpSuperMember(o, superType, sal_True);
-
-        for (i=0; i < fieldCount; i++)
-        {
-            access = m_reader.getFieldAccess(i);
-            
-            if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
-                continue;
-
-            fieldName = m_reader.getFieldName(i);
-            fieldType = m_reader.getFieldType(i);
-        
-            if (superHasMember)
-                o << ", ";
-            else
-                superHasMember = sal_True;
-                
-            dumpType(o, fieldType, sal_True, sal_True);	
-            o << " __" << fieldName;
-        }		
-        o << ");\n\n";
-    }
-
-    for (i=0; i < fieldCount; i++)
-    {
-        access = m_reader.getFieldAccess(i);
-        
-        if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
-            continue;
-
-        fieldName = m_reader.getFieldName(i);
-        fieldType = m_reader.getFieldType(i);
-    
-        o << indent();
-        dumpType(o, fieldType);	
-        o << " " << fieldName << ";\n";
-    }		
-
-
-    dec();
-    o << "};\n\n";
+    dumpDeclaration(o);
     
     dumpNameSpace(o, sal_False);
 
@@ -2927,6 +3134,75 @@ sal_Bool ExceptionType::dumpHFile(FileStream& o)
     o << "* );\n\n";
 
     o << "#endif // "<< headerDefine << endl;
+
+    return sal_True;
+}
+
+sal_Bool ExceptionType::dumpDeclaration(FileStream& o)
+    throw( CannotDumpException )
+{
+    o << "\nclass " << m_name;
+
+    OString superType(m_reader.getSuperTypeName());
+    if (superType.getLength() > 0)
+                    o << " : public " << scopedName(m_typeName, superType);
+        
+    o << "\n{\npublic:\n";
+    inc();
+    o << indent() << "inline " << m_name << "();\n\n";
+//	o << indent() << "inline " << m_name << "() { }\n\n";
+        
+    sal_uInt32 		fieldCount = m_reader.getFieldCount();
+    RTFieldAccess 	access = RT_ACCESS_INVALID;
+    OString 		fieldName;
+    OString 		fieldType;	
+    sal_uInt16 		i = 0;
+        
+    if (fieldCount > 0 || getInheritedMemberCount() > 0)
+    {
+        o << indent() << "inline " << m_name << "(";
+            
+        sal_Bool superHasMember = dumpSuperMember(o, superType, sal_True);
+            
+        for (i=0; i < fieldCount; i++)
+        {
+            access = m_reader.getFieldAccess(i);
+                
+            if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
+                            continue;
+                
+            fieldName = m_reader.getFieldName(i);
+            fieldType = m_reader.getFieldType(i);
+
+            if (superHasMember)
+                o << ", ";
+            else
+                superHasMember = sal_True;
+
+            dumpType(o, fieldType, sal_True, sal_True);	
+            o << " __" << fieldName;
+        }		
+        o << ");\n\n";
+    }
+
+    for (i=0; i < fieldCount; i++)
+    {
+        access = m_reader.getFieldAccess(i);
+
+        if (access == RT_ACCESS_CONST || access == RT_ACCESS_INVALID)
+            continue;
+
+        fieldName = m_reader.getFieldName(i);
+        fieldType = m_reader.getFieldType(i);
+
+        o << indent();
+        dumpType(o, fieldType);	
+        o << " " << fieldName << ";\n";
+    }		
+
+    
+    dec();
+    o << "};\n\n";
 
     return sal_True;
 }
@@ -3201,37 +3477,7 @@ sal_Bool EnumType::dumpHFile(FileStream& o)
 
     dumpNameSpace(o);
 
-    o << "\nenum " << m_name << "\n{\n";
-    inc();
-
-    sal_uInt32 		fieldCount = m_reader.getFieldCount();
-    RTFieldAccess 	access = RT_ACCESS_INVALID;
-    RTConstValue	constValue;
-    OString 		fieldName;
-    sal_uInt32		value=0;
-    for (sal_uInt16 i=0; i < fieldCount; i++)
-    {
-        access = m_reader.getFieldAccess(i);
-        
-        if (access != RT_ACCESS_CONST)
-            continue;
-
-        fieldName = m_reader.getFieldName(i);
-        constValue = m_reader.getFieldConstValue(i);
-
-        if (constValue.m_type == RT_TYPE_INT32)
-            value = constValue.m_value.aLong;
-        else
-            value++;
-                
-        o << indent() << m_name << "_" << fieldName << " = " 
-          << value << ",\n";
-    }		
-
-    o << indent() << m_name << "_MAKE_FIXED_SIZE = SAL_MAX_ENUM\n";
-
-    dec();
-    o << "};\n\n";
+    dumpDeclaration(o);
 
     dumpNameSpace(o, sal_False);
 
@@ -3247,6 +3493,43 @@ sal_Bool EnumType::dumpHFile(FileStream& o)
     o << "* );\n\n";
 
     o << "#endif // "<< headerDefine << endl;
+
+    return sal_True;
+}
+
+sal_Bool EnumType::dumpDeclaration(FileStream& o)
+    throw( CannotDumpException )
+{
+    o << "\nenum " << m_name << "\n{\n";
+    inc();
+
+    sal_uInt32 		fieldCount = m_reader.getFieldCount();
+    RTFieldAccess 	access = RT_ACCESS_INVALID;
+    RTConstValue	constValue;
+    OString 		fieldName;
+    sal_uInt32		value=0;
+    for (sal_uInt16 i=0; i < fieldCount; i++)
+    {
+        access = m_reader.getFieldAccess(i);
+
+        if (access != RT_ACCESS_CONST)
+            continue;
+
+        fieldName = m_reader.getFieldName(i);
+        constValue = m_reader.getFieldConstValue(i);
+        
+        if (constValue.m_type == RT_TYPE_INT32)
+            value = constValue.m_value.aLong;
+        else
+            value++;
+        
+        o << indent() << m_name << "_" << fieldName << " = " << value << ",\n";
+    }		
+    
+    o << indent() << m_name << "_MAKE_FIXED_SIZE = SAL_MAX_ENUM\n";
+    
+    dec();
+    o << "};\n\n";
 
     return sal_True;
 }
@@ -3445,9 +3728,7 @@ sal_Bool TypeDefType::dumpHFile(FileStream& o)
 
     dumpNameSpace(o);
 
-    o << "\ntypedef ";
-    dumpType(o, m_reader.getSuperTypeName());
-    o << " " << m_name << ";\n\n";
+    dumpDeclaration(o);
 
     dumpNameSpace(o, sal_False);
 
@@ -3457,6 +3738,16 @@ sal_Bool TypeDefType::dumpHFile(FileStream& o)
 //	  <<  "_Type( );\n\n";
 
     o << "#endif // "<< headerDefine << endl;
+
+    return sal_True;
+}
+
+sal_Bool TypeDefType::dumpDeclaration(FileStream& o)
+    throw( CannotDumpException )
+{
+    o << "\ntypedef ";
+    dumpType(o, m_reader.getSuperTypeName());
+    o << " " << m_name << ";\n\n";
 
     return sal_True;
 }
