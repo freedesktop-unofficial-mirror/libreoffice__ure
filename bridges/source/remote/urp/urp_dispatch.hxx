@@ -2,9 +2,9 @@
  *
  *  $RCSfile: urp_dispatch.hxx,v $
  *
- *  $Revision: 1.1.1.1 $
+ *  $Revision: 1.2 $
  *
- *  last change: $Author: hr $ $Date: 2000-09-18 15:28:50 $
+ *  last change: $Author: jbu $ $Date: 2000-09-29 08:42:06 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -73,14 +73,18 @@ struct remote_Interface;
 
 namespace bridges_urp {
 
-    const sal_uInt8 HDRFLAG_LONG    = 0x80;
-    const sal_uInt8 HDRFLAG_REQUEST = 0x40;
-    const sal_uInt8 HDRFLAG_EXCEPTIONOCCURED = 0x20;
-    const sal_uInt8 HDRFLAG_NEWTYPE = 0x20;
-    const sal_uInt8 HDRFLAG_NEWOID  = 0x10;
-    const sal_uInt8 HDRFLAG_NEWTID  = 0x08;
-    const sal_uInt8 HDRFLAG_LONGMETHODID = 0x04;
-    const sal_uInt8 HDRFLAG_ONEWAY  = 0x02;
+    const sal_uInt8 HDRFLAG_LONGHEADER       = 0x80;
+    const sal_uInt8 HDRFLAG_REQUEST          = 0x40;
+    const sal_uInt8 HDRFLAG_NEWTYPE          = 0x20;
+    const sal_uInt8 HDRFLAG_NEWOID           = 0x10;
+    const sal_uInt8 HDRFLAG_NEWTID           = 0x08;
+    const sal_uInt8 HDRFLAG_LONGMETHODID     = 0x04;
+    const sal_uInt8 HDRFLAG_IGNORECACHE      = 0x02;
+    const sal_uInt8 HDRFLAG_MOREFLAGS        = 0x01;
+    const sal_uInt8 HDRFLAG_MUSTREPLY        = 0x80;
+    const sal_uInt8 HDRFLAG_SYNCHRONOUS      = 0x40;
+
+    const sal_uInt8 HDRFLAG_EXCEPTION        = 0x20;
 
     void SAL_CALL urp_sendCloseConnection( uno_Environment *pEnvRemote );
     

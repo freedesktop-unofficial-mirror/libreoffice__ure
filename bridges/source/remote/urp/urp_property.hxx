@@ -1,8 +1,8 @@
 /*************************************************************************
  *
- *  $RCSfile: urp_reader.hxx,v $
+ *  $RCSfile: urp_property.hxx,v $
  *
- *  $Revision: 1.2 $
+ *  $Revision: 1.1 $
  *
  *  last change: $Author: jbu $ $Date: 2000-09-29 08:42:06 $
  *
@@ -58,46 +58,46 @@
  *
  *
  ************************************************************************/
-#include <vos/thread.hxx>
+#ifndef _URP_PROPERTY_HXX_
+#define _URP_PROPERTY_HXX_
+#include <bridges/remote/remote.h>
 
-#include "urp_unmarshal.hxx"
-
-struct remote_Connection;
-typedef struct _uno_Environment uno_Environment;
+#include <rtl/ustring.hxx>
+#include <rtl/byteseq.hxx>
 
 namespace bridges_urp
-{
-    
-class OWriterThread;
-struct MessageFlags;
+{	
+    struct Properties
+    {
+        ::rtl::ByteSequence seqBridgeID;
+        sal_Int32           nTypeCacheSize;
+        sal_Int32           nOidCacheSize;
+        sal_Int32           nTidCacheSize;
+        ::rtl::OUString     sSupportedVersions;
+        ::rtl::OUString     sVersion;
+        sal_Int32           nFlushBlockSize;
+        sal_Int32           nOnewayTimeoutMUSEC;
+        sal_Bool            bSupportsMustReply;
+        sal_Bool            bSupportsSynchronous;
+        sal_Bool            bSupportsMultipleSynchronous;
+        sal_Bool            bClearCache;
 
-class OReaderThread :
-    public ::vos::OThread
-{
-public:
-    OReaderThread( remote_Connection *pConnection ,
-                   uno_Environment *pEnvRemote,
-                   OWriterThread *pWriterThread );
-    ~OReaderThread();
-    
-    virtual void SAL_CALL run();
-    virtual void SAL_CALL onTerminated();
-
-    // may only be called in the callstack of this thread !!!!!
-    // run() -> disposeEnvironment() -> dispose() -> destroyYourself() 
-    void destroyYourself();
-
-    inline sal_Bool readBlock( sal_Int32 *pnMessageCount );
-    inline sal_Bool readFlags( struct MessageFlags *pFlags );
-private:
-    void disposeEnvironment();
-    
-    remote_Connection *m_pConnection;
-    uno_Environment *m_pEnvRemote;
-    OWriterThread *m_pWriterThread;
-    sal_Bool m_bDestroyMyself;
-    urp_BridgeImpl *m_pBridgeImpl;
-    Unmarshal m_unmarshal;
-};
-
-}
+        inline Properties & SAL_CALL operator = ( const Properties &props )
+        {
+            seqBridgeID                  = props.seqBridgeID;
+            nTypeCacheSize               = props.nTypeCacheSize;
+            nOidCacheSize                = props.nOidCacheSize;
+            nTidCacheSize                = props.nTidCacheSize;
+            sSupportedVersions           = props.sSupportedVersions;
+            sVersion                     = props.sVersion;
+            nFlushBlockSize              = props.nFlushBlockSize;
+            nOnewayTimeoutMUSEC          = props.nOnewayTimeoutMUSEC;
+            bSupportsMustReply           = props.bSupportsMustReply;
+            bSupportsSynchronous         = props.bSupportsSynchronous;
+            bSupportsMultipleSynchronous = props.bSupportsMultipleSynchronous;
+            bClearCache                  = props.bClearCache;
+            return *this;
+        }
+    };
+} // end namespace bridges_urp
+#endif
