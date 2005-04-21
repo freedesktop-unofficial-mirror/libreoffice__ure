@@ -2,9 +2,9 @@
  *
  *  $RCSfile: diagnose.c,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: obo $ $Date: 2005-04-20 11:59:57 $
+ *  last change: $Author: obo $ $Date: 2005-04-21 15:33:09 $
  *
  *  The Contents of this file are made available subject to the terms of
  *  either of the following licenses
@@ -150,7 +150,8 @@ static void osl_diagnose_frame_Impl (
               sname ? sname : "???",
               offset);
 
-    OSL_DIAGNOSE_OUTPUTMESSAGE(f, szMessage);
+    if ( !getenv("DISABLE_SAL_DBGBOX") || 0 != f )
+        OSL_DIAGNOSE_OUTPUTMESSAGE(f, szMessage);
 }
 
 /************************************************************************/
@@ -228,7 +229,7 @@ static void osl_diagnose_backtrace_Impl (oslDebugMessageFunc f)
 /* osl_assertFailedLine */
 /************************************************************************/
 sal_Bool SAL_CALL osl_assertFailedLine (
-    const sal_Char* pszFileName, 
+    const sal_Char* pszFileName,
     sal_Int32       nLine,
     const sal_Char* pszMessage)
 {
@@ -312,7 +313,7 @@ void SAL_CALL osl_trace (
     fprintf(stderr, "Trace Message: ");
 #endif
 #endif
-    
+
     va_start(args, lpszFormat);
     vfprintf(stderr, lpszFormat, args);
     va_end(args);
