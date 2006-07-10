@@ -4,9 +4,9 @@
  *
  *  $RCSfile: XSingleSelectQueryAnalyzer.idl,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 03:32:11 $
+ *  last change: $Author: obo $ $Date: 2006-07-10 14:50:34 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,63 +32,63 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
-#ifndef __com_sun_star_sdb_XSingleSelectQueryAnalyzer_idl__ 
-#define __com_sun_star_sdb_XSingleSelectQueryAnalyzer_idl__ 
- 
-#ifndef __com_sun_star_beans_XPropertySet_idl__ 
-#include <com/sun/star/beans/XPropertySet.idl> 
-#endif 
- 
-#ifndef __com_sun_star_beans_PropertyValue_idl__ 
-#include <com/sun/star/beans/PropertyValue.idl> 
-#endif 
- 
-#ifndef __com_sun_star_sdbc_SQLException_idl__ 
-#include <com/sun/star/sdbc/SQLException.idl> 
-#endif 
- 
-module com {  module sun {  module star {  module container { 
-interface XIndexAccess; 
-};};};}; 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module sdb { 
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_sdb_XSingleSelectQueryAnalyzer_idl__
+#define __com_sun_star_sdb_XSingleSelectQueryAnalyzer_idl__
+
+#ifndef __com_sun_star_beans_XPropertySet_idl__
+#include <com/sun/star/beans/XPropertySet.idl>
+#endif
+
+#ifndef __com_sun_star_beans_PropertyValue_idl__
+#include <com/sun/star/beans/PropertyValue.idl>
+#endif
+
+#ifndef __com_sun_star_sdbc_SQLException_idl__
+#include <com/sun/star/sdbc/SQLException.idl>
+#endif
+
+module com {  module sun {  module star {  module container {
+interface XIndexAccess;
+};};};};
+//=============================================================================
+
+ module com {  module sun {  module star {  module sdb {
+
+//=============================================================================
+
 /** simplifies the analyzing of single select statements.
-    
+
     <p>
     The interface can be used for analyzing single SELECT statements without knowing the
     structure of the used query.
     </p>
  */
 interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
-{ 
-     
+{
+
     /** returns the query.
         @returns
             the query
      */
-    string getQuery(); 
-    //------------------------------------------------------------------------- 
-     
+    string getQuery();
+    //-------------------------------------------------------------------------
+
     /** sets a new query for the composer, which may be expanded by filters, group by, having
         and sort criteria.
         @param command
             the single select statement to set
-        @throws com::sun::star::sdbc::SQLException 
-            if a database access error occurs 
-            or the statement isn't a single select statement 
-            or the statement isn't valid 
+        @throws com::sun::star::sdbc::SQLException
+            if a database access error occurs
+            or the statement isn't a single select statement
+            or the statement isn't valid
             or the statement can not be parsed.
      */
-    void setQuery([in] string command ) 
-            raises (com::sun::star::sdbc::SQLException); 
-    //------------------------------------------------------------------------- 
+    void setQuery([in] string command )
+            raises (com::sun::star::sdbc::SQLException);
+    //-------------------------------------------------------------------------
     // FILTER
-    //------------------------------------------------------------------------- 
-     
+    //-------------------------------------------------------------------------
+
     /** returns the used filter.
         <p>
         The filter criteria returned is part of the where condition of the
@@ -97,26 +97,26 @@ interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
         @returns
             the filter
      */
-    string getFilter(); 
-    //------------------------------------------------------------------------- 
-     
-    /** returns the currently used filter. 
+    string getFilter();
+    //-------------------------------------------------------------------------
+
+    /** returns the currently used filter.
              <p>
-             The filter criteria is split into levels. Each level represents the 
-             OR criterias. Within each level, the filters are provided as an AND criteria 
-             with the name of the column and the filter condition. The filter condition 
+             The filter criteria is split into levels. Each level represents the
+             OR criterias. Within each level, the filters are provided as an AND criteria
+             with the name of the column and the filter condition. The filter condition
              is of type string. The operator used, is defined by <type scope="com::sun::star::sdb">SQLFilterOperator</type>.
              </p>
         @returns
             the structured filter
      */
-    sequence< sequence<com::sun::star::beans::PropertyValue> > 
+    sequence< sequence<com::sun::star::beans::PropertyValue> >
         getStructuredFilter();
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
     // GROUP BY
-    //-------------------------------------------------------------------------  
-     
+    //-------------------------------------------------------------------------
+
     /** returns the currently used GROUP BY.
         <p>
         The group criteria returned is part of the GROUP BY clause of the
@@ -125,9 +125,9 @@ interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
         @returns
             the group
      */
-    string getGroup(); 
+    string getGroup();
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
     /** returns the currently used group.
         <p>
         The columns returned form the GROUP BY clause.
@@ -135,12 +135,12 @@ interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
         @returns
             a collection of <type scope="com::sun::star::sdb">GroupColumn</type> which form the GROUP BY.
      */
-    com::sun::star::container::XIndexAccess getGroupColumns(); 
-    
-    //------------------------------------------------------------------------- 
+    com::sun::star::container::XIndexAccess getGroupColumns();
+
+    //-------------------------------------------------------------------------
     // HAVING
-    //------------------------------------------------------------------------- 
-     
+    //-------------------------------------------------------------------------
+
     /** returns the used HAVING filter.
         <p>
         The HAVING filter criteria returned is part of the HAVING condition of the
@@ -149,25 +149,25 @@ interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
         @returns
             the filter
      */
-    string getHavingClause(); 
-    //------------------------------------------------------------------------- 
-     
-    /** returns the currently used HAVING filter. 
+    string getHavingClause();
+    //-------------------------------------------------------------------------
+
+    /** returns the currently used HAVING filter.
              <p>
-             The HAVING filter criteria is split into levels. Each level represents the 
-             OR criterias. Within each level, the filters are provided as an AND criteria 
-             with the name of the column and the filter condition. The filter condition 
+             The HAVING filter criteria is split into levels. Each level represents the
+             OR criterias. Within each level, the filters are provided as an AND criteria
+             with the name of the column and the filter condition. The filter condition
              is of type string. The operator used, is defined by <type scope="com::sun::star::sdb">SQLFilterOperator</type>.
              </p>
         @returns
             the structured HAVING filter
      */
-    sequence< sequence<com::sun::star::beans::PropertyValue> > 
+    sequence< sequence<com::sun::star::beans::PropertyValue> >
         getStructuredHavingClause();
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
     // ORDER BY
-    //-------------------------------------------------------------------------  
+    //-------------------------------------------------------------------------
     /** returns the currently used sort order.
         <p>
         The order criteria returned is part of the ORDER BY clause of the
@@ -176,9 +176,9 @@ interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
         @returns
             the order
      */
-    string getOrder(); 
+    string getOrder();
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
     /** returns the currently used sort order.
         <p>
         The order criteria returned is part of the ORDER BY clause of the
@@ -187,15 +187,54 @@ interface XSingleSelectQueryAnalyzer : com::sun::star::uno::XInterface
         @returns
             a collection of <type scope="com::sun::star::sdb">OrderColumn</type> which form the ORDER BY.
      */
-    com::sun::star::container::XIndexAccess getOrderColumns(); 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; }; 
- 
-/*============================================================================= 
- 
-=============================================================================*/ 
-#endif 
+    com::sun::star::container::XIndexAccess getOrderColumns();
+
+    //-------------------------------------------------------------------------
+    /** returns the query previously set at the analyzer, with all application-level
+        features being substituted by their database-level counterparts.
+
+        <p>The <type>XSingleSelectQueryAnalyzer</type> is an application-level component,
+        which in some respect understands SQL features usually not present at the database
+        level. As a prominent example, you might pass a <code>SELECT</code> statement to the analyzer
+        which is based on another query.</p>
+
+        <p>While all other methods will handle those additional features transparently - e.g.
+        the query in the <code>FROM</code> part of a <code>SELECT</code> statement will be handled
+        as if it really is a table -, <code>getQueryWithSubstitution</code> gives you the SQL statement
+        where all those features have been stripped, and replaced with appropriate standard SQL.</p>
+
+        <p>For example, consider a database document which contains a client-side query named <code>All Orders</code>.
+        This query is not known to the underlying database, so an SQL statement like
+        <code>SELECT * from "All Orders"</code> would be rejected by the database. However, instantiating
+        a <type>SingleSelectQueryAnalyzer</type> at the <type>Connection</type> object, and passing it the above query,
+        you can then use <code>getQueryWithSubstitution</code> to retrieve a statement where <code>"All Orders"</code>
+        has been replaced with the <code>SELECT</code> statement which actually constitutes the <code>"All Orders"</code>
+        query.</p>
+
+        @throws com::sun::star::sdbc::SQLException
+            if the query represented cannot be completely substituted. A usual case for this is a recursion in
+            the sub queries: Consider a query named <code>foo</code>, which is defined as <code>SELECT * FROM "bar"</code>.
+            Now assume that <code>bar</code> is a query defined as <code>SELECT * FROM "foo"</code>. Passing either
+            of those statements to an analyzer, and calling <member>getQueryWithSubstitution</member>, would result
+            in an exception being thrown, since it's impossible to substitute the sub queries with their
+            constituting statements.
+
+        @see Connection
+        @see XQueriesSupplier
+        @see DatabaseDocument
+
+        @since OOo 2.0.4
+    */
+    string getQueryWithSubstitution()
+        raises (com::sun::star::sdbc::SQLException);
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
+=============================================================================*/
+#endif
 
