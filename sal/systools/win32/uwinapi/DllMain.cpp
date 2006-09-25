@@ -4,9 +4,9 @@
  *
  *  $RCSfile: DllMain.cpp,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2006-06-20 04:32:35 $
+ *  last change: $Author: vg $ $Date: 2006-09-25 13:16:02 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -59,7 +59,7 @@ static HMODULE WINAPI _LoadUnicowsLibrary(VOID)
 
         if ( lpLastBkSlash )
         {
-            size_t	nParentDirSize = _tcsinc( lpLastBkSlash ) - szModulePath;
+            size_t	nParentDirSize = (size_t) (_tcsinc( lpLastBkSlash ) - szModulePath);
             LPSTR	lpUnicowsModulePath = (LPTSTR)_alloca( nParentDirSize + sizeof(szUnicowsModuleName) );
 
             if ( lpUnicowsModulePath )
@@ -88,25 +88,25 @@ static HMODULE WINAPI LoadUnicowsLibrary(VOID)
     do
     {
         hModuleUnicows = _LoadUnicowsLibrary();
-        
+
         if ( !hModuleUnicows )
         {
             LPVOID lpMsgBuf;
 
-            FormatMessageA( 
-                FORMAT_MESSAGE_ALLOCATE_BUFFER | 
-                FORMAT_MESSAGE_FROM_SYSTEM | 
+            FormatMessageA(
+                FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                FORMAT_MESSAGE_FROM_SYSTEM |
                 FORMAT_MESSAGE_IGNORE_INSERTS,
                 NULL,
                 ERROR_DLL_NOT_FOUND /* GetLastError() */,
                 MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), // Default language
                 (LPSTR)&lpMsgBuf,
                 0,
-                NULL 
+                NULL
             );
             // Process any inserts in lpMsgBuf.
             CHAR szModuleFileName[MAX_PATH];
-            
+
             GetModuleFileNameA( NULL, szModuleFileName, sizeof(szModuleFileName) );
             LPSTR	lpMessage = (LPSTR)_alloca( strlen( (LPCSTR)lpMsgBuf ) + sizeof(szUnicowsModuleName) + 1 );
             strcpy( lpMessage, (LPCSTR)lpMsgBuf );
@@ -115,7 +115,7 @@ static HMODULE WINAPI LoadUnicowsLibrary(VOID)
             // Free the buffer.
             LocalFree( lpMsgBuf );
             // Display the string.
-            idMsg = MessageBoxA( NULL, lpMessage, 
+            idMsg = MessageBoxA( NULL, lpMessage,
                 szModuleFileName, MB_ABORTRETRYIGNORE | MB_ICONERROR | MB_TASKMODAL );
 
             if ( IDABORT == idMsg )
@@ -140,7 +140,6 @@ extern "C" BOOL WINAPI DllMain( HMODULE hModule, DWORD dwReason, LPVOID )
     }
 
 }
-
 
 
 

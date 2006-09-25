@@ -4,9 +4,9 @@
  *
  *  $RCSfile: CopyFileExA.cpp,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2006-06-20 04:32:10 $
+ *  last change: $Author: vg $ $Date: 2006-09-25 13:14:58 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,6 +32,9 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#pragma warning(disable:4740)
+#endif
 
 #define _WIN32_WINNT 0x0400
 #include "macros.h"
@@ -44,7 +47,7 @@ static DWORD CALLBACK DefCopyProgressRoutine(
                                     // total number of bytes transferred
     LARGE_INTEGER	StreamSize,		// total number of bytes for this stream
     LARGE_INTEGER	StreamBytesTransferred,
-                                    // total number of bytes transferred for 
+                                    // total number of bytes transferred for
                                     // this stream
     DWORD		dwStreamNumber,		// the current stream
     DWORD		dwCallbackReason,	// reason for callback
@@ -61,7 +64,7 @@ IMPLEMENT_THUNK( kernel32, WINDOWS, BOOL, WINAPI, CopyFileExA, ( LPCSTR lpExisti
 {
     BOOL	fSuccess = FALSE; // Assume failure
 
-    HANDLE	hSourceFile = CreateFileA( 
+    HANDLE	hSourceFile = CreateFileA(
         lpExistingFileNameA,
         GENERIC_READ,
         FILE_SHARE_READ | FILE_SHARE_WRITE,
@@ -81,12 +84,12 @@ IMPLEMENT_THUNK( kernel32, WINDOWS, BOOL, WINAPI, CopyFileExA, ( LPCSTR lpExisti
         BytesTransferred.QuadPart = 0;
 
         if ( (DWORD)-1 != FileSize.LowPart || ERROR_SUCCESS == GetLastError() )
-            hTargetFile = CreateFileA( 
+            hTargetFile = CreateFileA(
                 lpNewFileNameA,
                 GENERIC_WRITE,
                 0,
                 NULL,
-                (dwCopyFlags & COPY_FILE_FAIL_IF_EXISTS) ? CREATE_NEW : CREATE_ALWAYS,
+                (DWORD) ((dwCopyFlags & COPY_FILE_FAIL_IF_EXISTS) ? CREATE_NEW : CREATE_ALWAYS),
                 0,
                 NULL
                 );
