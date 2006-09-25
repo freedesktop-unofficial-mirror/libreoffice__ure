@@ -4,9 +4,9 @@
  *
  *  $RCSfile: DrawStateW.cpp,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 16:12:21 $
+ *  last change: $Author: vg $ $Date: 2006-09-25 13:16:16 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -35,7 +35,7 @@
 
 #include "macros.h"
 
-IMPLEMENT_THUNK( user32, WINDOWS, BOOL, WINAPI, DrawStateW, 
+IMPLEMENT_THUNK( user32, WINDOWS, BOOL, WINAPI, DrawStateW,
 (
     HDC				hdc,			// handle to device context
     HBRUSH			hbr,			// handle to brush
@@ -47,7 +47,7 @@ IMPLEMENT_THUNK( user32, WINDOWS, BOOL, WINAPI, DrawStateW,
     int				cx,				// width of image
     int				cy,				// height of image
     UINT			fuFlags			// image type and state
- 
+
 ))
 {
     switch ( fuFlags & 0x000F )
@@ -59,7 +59,7 @@ IMPLEMENT_THUNK( user32, WINDOWS, BOOL, WINAPI, DrawStateW,
 
             if ( lData )
             {
-                int	cchWideChar = wData ? wData : -1;
+                int	cchWideChar = (int) (wData ? wData : -1);
                 int	cchNeeded = WideCharToMultiByte( CP_ACP, 0, (LPCWSTR)lData, cchWideChar, NULL, 0, NULL, NULL );
 
                 lpTextA = (LPSTR)_alloca( cchNeeded * sizeof(CHAR) );
@@ -71,7 +71,7 @@ IMPLEMENT_THUNK( user32, WINDOWS, BOOL, WINAPI, DrawStateW,
                 }
 
                 WideCharToMultiByte( CP_ACP, 0, (LPCWSTR)lData, cchWideChar, lpTextA, cchNeeded, NULL, NULL );
-                
+
             }
 
             return DrawStateA( hdc, hbr, lpOutputFunc, (LPARAM)lpTextA, wData, x, y, cx, cy, fuFlags );
@@ -80,4 +80,3 @@ IMPLEMENT_THUNK( user32, WINDOWS, BOOL, WINAPI, DrawStateW,
         return DrawStateA( hdc, hbr, lpOutputFunc, lData, wData, x, y, cx, cy, fuFlags );
     }
 }
-
