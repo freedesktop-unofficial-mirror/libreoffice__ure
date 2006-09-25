@@ -6,6 +6,10 @@
 #include <tchar.h>
 #include <systools/win32/snprintf.h>
 
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#pragma warning(disable:4273)		// inconsistent dll linkage
+#endif
+
 #if _MSC_VER < 1300
 
 /*	The non-debug versions of _vscprintf/_scprintf are just calls
@@ -29,14 +33,14 @@ static int __cdecl _vsctprintf( const _TXCHAR *format, va_list ap )
 #endif
 
 /*	This function retrieves the pointer to the last character of a buffer.
-    That is the pointer to the last character of the buffer that fits 
+    That is the pointer to the last character of the buffer that fits
     completly into that	buffer or the position of the terminating zero.
 
     buffer	Pointer to a _TXCHAR buffer to be examined
     count	size of the buffer to be examined
 
-    return	The pointer to the last character that fits into the buffer or 
-            NULL if count is zero or count is one and the first byte was a 
+    return	The pointer to the last character that fits into the buffer or
+            NULL if count is zero or count is one and the first byte was a
             leading	DBCS character
 */
 
@@ -109,4 +113,3 @@ _SNPRINTF_DLLIMPORT int __cdecl sntprintf( _TCHAR *buffer, size_t count, const _
 
     return retval;
 }
-
