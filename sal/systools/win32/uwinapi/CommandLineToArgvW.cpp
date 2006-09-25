@@ -4,9 +4,9 @@
  *
  *  $RCSfile: CommandLineToArgvW.cpp,v $
  *
- *  $Revision: 1.4 $
+ *  $Revision: 1.5 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 16:10:11 $
+ *  last change: $Author: vg $ $Date: 2006-09-25 13:14:47 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,6 +32,9 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
+#if defined(_MSC_VER) && (_MSC_VER >= 1400)
+#pragma warning(disable:4740)
+#endif
 
 #include "macros.h"
 
@@ -43,7 +46,7 @@
 
 local LPCWSTR SkipBlanks( LPCWSTR lpScan )
 {
-    while ( ' ' == *lpScan || '\t' == *lpScan ) 
+    while ( ' ' == *lpScan || '\t' == *lpScan )
         lpScan++;
 
     return lpScan;
@@ -82,7 +85,7 @@ local LPCWSTR SkipArgument( LPCWSTR lpScan )
     return lpScan;
 }
 
-    
+
 IMPLEMENT_THUNK( shell32, WINDOWS, LPWSTR *, WINAPI, CommandLineToArgvW, ( LPCWSTR lpCmdLineW, int *pNumArgs ) )
 {
     LPWSTR	*lpArgvW = NULL;
@@ -115,7 +118,7 @@ IMPLEMENT_THUNK( shell32, WINDOWS, LPWSTR *, WINAPI, CommandLineToArgvW, ( LPCWS
         LPCWSTR	lpScan = lpCmdLineW;
         int		nTokens = 0;
         int		cchNeeded = 0;
-        
+
         // Count arguments and required size
 
         while ( *lpScan )
@@ -132,7 +135,7 @@ IMPLEMENT_THUNK( shell32, WINDOWS, LPWSTR *, WINAPI, CommandLineToArgvW, ( LPCWS
         }
 
         // Allocate space for one additional NULL pointer to terminate list
-        
+
         lpArgvW = (LPWSTR *)GlobalAlloc( 0, sizeof(LPWSTR) * (nTokens + 1) + sizeof(WCHAR) * cchNeeded );
 
         if ( lpArgvW )
@@ -170,7 +173,7 @@ IMPLEMENT_THUNK( shell32, WINDOWS, LPWSTR *, WINAPI, CommandLineToArgvW, ( LPCWS
         }
         else
             SetLastError( ERROR_OUTOFMEMORY );
-        
+
     }
 
     return lpArgvW;
