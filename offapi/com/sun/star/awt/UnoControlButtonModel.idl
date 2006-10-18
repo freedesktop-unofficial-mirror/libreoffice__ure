@@ -4,9 +4,9 @@
  *
  *  $RCSfile: UnoControlButtonModel.idl,v $
  *
- *  $Revision: 1.13 $
+ *  $Revision: 1.14 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-07 21:18:38 $
+ *  last change: $Author: ihi $ $Date: 2006-10-18 13:19:37 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,69 +32,69 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
-#ifndef __com_sun_star_awt_UnoControlButtonModel_idl__ 
-#define __com_sun_star_awt_UnoControlButtonModel_idl__ 
+#ifndef __com_sun_star_awt_UnoControlButtonModel_idl__
+#define __com_sun_star_awt_UnoControlButtonModel_idl__
 
-#ifndef __com_sun_star_awt_FontDescriptor_idl__ 
-#include <com/sun/star/awt/FontDescriptor.idl> 
-#endif 
-
-#ifndef __com_sun_star_awt_UnoControlModel_idl__ 
-#include <com/sun/star/awt/UnoControlModel.idl> 
-#endif 
-
+#ifndef __com_sun_star_awt_FontDescriptor_idl__
+#include <com/sun/star/awt/FontDescriptor.idl>
+#endif
+#ifndef __com_sun_star_awt_UnoControlModel_idl__
+#include <com/sun/star/awt/UnoControlModel.idl>
+#endif
 #ifndef __com_sun_star_style_VerticalAlignment_idl__
 #include <com/sun/star/style/VerticalAlignment.idl>
 #endif
-
+#ifndef com_sun_star_graphic_XGraphic_idl
+#include <com/sun/star/graphic/XGraphic.idl>
+#endif
 #ifndef __com_sun_star_util_Color_idl__
 #include <com/sun/star/util/Color.idl>
 #endif
 
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module awt {  
- 
-//============================================================================= 
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module awt {
+
+//=============================================================================
 
 /** specifies the standard model of an <type>UnoControlButton</type>.
  */
 published service UnoControlButtonModel
-{ 
+{
     service com::sun::star::awt::UnoControlModel;
-    
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the horizontal alignment of the text in the control. 
-                
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the horizontal alignment of the text in the control.
+
         <pre>
         0: left
         1: center
         2: right
         </pre>
      */
-    [optional, property] short Align; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies the background color (RGB) of the control.
-     */
-    [property] com::sun::star::util::Color BackgroundColor; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** specifies that the button is the default button on the document.
-     */
-    [property] boolean DefaultButton; 
+    [optional, property] short Align;
 
     //-------------------------------------------------------------------------
-    
+
+    /** specifies the background color (RGB) of the control.
+     */
+    [property] com::sun::star::util::Color BackgroundColor;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies that the button is the default button on the document.
+     */
+    [property] boolean DefaultButton;
+
+    //-------------------------------------------------------------------------
+
     /** determines whether the control is enabled or disabled.
      */
     [property] boolean Enabled;
-    
-    //------------------------------------------------------------------------- 
+
+    //-------------------------------------------------------------------------
 
     /** specifies whether the button control should grab the focus when clicked.
 
@@ -112,34 +112,34 @@ published service UnoControlButtonModel
     /** specifies the font attributes of the text in the control.
      */
     [property] com::sun::star::awt::FontDescriptor FontDescriptor;
-    
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the <type scope="com::sun::star::text">FontEmphasis</type>
         value of the text in the control.
      */
     [property] short FontEmphasisMark;
- 
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the <type scope="com::sun::star::text">FontRelief</type>
         value of the text in the control.
      */
     [property] short FontRelief;
- 
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the help text of the control.
      */
     [property] string HelpText;
- 
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** specifies the help URL of the control.
      */
     [property] string HelpURL;
- 
-    //------------------------------------------------------------------------- 
+
+    //-------------------------------------------------------------------------
 
     /** specifies the alignment of the image inside the button as
         <type>ImageAlign</type> value.
@@ -147,7 +147,7 @@ published service UnoControlButtonModel
     [property] short ImageAlign;
 
     //-------------------------------------------------------------------------
-     
+
     /** specifies the position of the image, if any, relative to the text, if any
 
         <p>Valid values of this property are specified with <type>ImagePosition</type>.</p>
@@ -156,40 +156,58 @@ published service UnoControlButtonModel
         one of both properties sets the other one to the best possible match.</p>
      */
     [optional, property] short ImagePosition;
-    
+
     //-------------------------------------------------------------------------
-     
+
     /** specifies an URL to an image to use for the button.
+        @see Graphic
      */
     [property] string ImageURL;
- 
+
     //-------------------------------------------------------------------------
-    
+
+    /** specifies a graphic to be displayed at the button
+
+        <p>If this property is present, it interacts with the <member>ImageURL</member>in the
+        following way:
+        <ul><li>If <member>ImageURL</member> is set, <member>Graphic</member> will be reset
+            to an object as loaded from the given image URL, or <NULL/> if <member>ImageURL</member>
+            does not point to a valid image file.</li>
+            <li>If <member>Graphic</member> is set, <member>ImageURL</member> will be reset
+            to an empty string.</li>
+        </ul></p>
+
+        @since OOo 2.1
+     */
+    [optional, property, transient] com::sun::star::graphic::XGraphic Graphic;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the label of the control.
      */
     [property] string Label;
-    
+
     //-------------------------------------------------------------------------
 
     /** specifies that the text may be displayed on more than one line.
 
         @since OOo 2.0.0
      */
-    [optional, property] boolean MultiLine; 
- 
-    //------------------------------------------------------------------------- 
+    [optional, property] boolean MultiLine;
+
+    //-------------------------------------------------------------------------
 
     /** specifies that the control will be printed with the document.
      */
     [property] boolean Printable;
-    
-    //------------------------------------------------------------------------- 
-     
+
+    //-------------------------------------------------------------------------
+
     /** specifies the default action of the button as <type>PushButtonType</type> value.
      */
     [property] short PushButtonType;
-    
-    //------------------------------------------------------------------------- 
+
+    //-------------------------------------------------------------------------
 
     /** specifies whether the control should show repeating behaviour.
 
@@ -202,7 +220,7 @@ published service UnoControlButtonModel
      */
     [optional, property] boolean Repeat;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
 
     /** specifies the mouse repeat delay, in milliseconds.
 
@@ -216,32 +234,32 @@ published service UnoControlButtonModel
      */
     [optional, property] long RepeatDelay;
 
-    //------------------------------------------------------------------------- 
+    //-------------------------------------------------------------------------
 
     /** specifies the state of the control.
      */
     [property] short State;
-    
-    //-------------------------------------------------------------------------
-    
-    /** specifies that the control can be reached with the TAB key.
-     */
-    [property] boolean Tabstop; 
 
     //-------------------------------------------------------------------------
-    
+
+    /** specifies that the control can be reached with the TAB key.
+     */
+    [property] boolean Tabstop;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the text color (RGB) of the control.
      */
     [property] com::sun::star::util::Color TextColor;
-    
+
     //-------------------------------------------------------------------------
-    
+
     /** specifies the text line color (RGB) of the control.
      */
     [property] com::sun::star::util::Color TextLineColor;
 
     //-------------------------------------------------------------------------
-    
+
     /** specifies whether the button should toggle on a single operation.
 
         <p>If this property is set to <TRUE/>, a single operation of the button control (pressing space
@@ -263,10 +281,10 @@ published service UnoControlButtonModel
      */
     [optional, property] com::sun::star::style::VerticalAlignment VerticalAlign;
 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-#endif 
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
