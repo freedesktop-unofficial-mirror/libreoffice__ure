@@ -4,9 +4,9 @@
  *
  *  $RCSfile: dllentry.c,v $
  *
- *  $Revision: 1.27 $
+ *  $Revision: 1.28 $
  *
- *  last change: $Author: ihi $ $Date: 2006-08-04 11:12:33 $
+ *  last change: $Author: rt $ $Date: 2006-10-27 12:00:10 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -53,11 +53,11 @@
 
 extern HRESULT (WINAPI *_CoInitializeEx) (LPVOID pvReserved, DWORD dwCoInit);
 
-extern DWORD			g_dwTLSTextEncodingIndex;
-extern void SAL_CALL	_osl_callThreadKeyCallbackOnThreadDetach(void);
-extern CRITICAL_SECTION	g_ThreadKeyListCS;
-extern oslMutex			g_Mutex;
-extern oslMutex			g_CurrentDirectoryMutex;
+extern DWORD            g_dwTLSTextEncodingIndex;
+extern void SAL_CALL    _osl_callThreadKeyCallbackOnThreadDetach(void);
+extern CRITICAL_SECTION g_ThreadKeyListCS;
+extern oslMutex         g_Mutex;
+extern oslMutex         g_CurrentDirectoryMutex;
 
 extern void rtl_memory_fini (void);
 extern void rtl_cache_fini (void);
@@ -85,9 +85,9 @@ extern BOOL (WINAPI *_pRawDllMain)(HANDLE, DWORD, LPVOID) = _RawDllMain;
 // defines
 //------------------------------------------------------------------------------
 
-#define ERR_GENERAL_WRONG_CPU		101
-#define ERR_WINSOCK_INIT_FAILED		102
-#define ERR_WINSOCK_WRONG_VERSION	103			
+#define ERR_GENERAL_WRONG_CPU       101
+#define ERR_WINSOCK_INIT_FAILED     102
+#define ERR_WINSOCK_WRONG_VERSION   103         
 #define ERR_NO_DCOM_UPDATE          104
 
 //------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ static sal_Bool showMessage(int MessageId)
             pStr = "Failed to initialize WINSOCK library!\nThe application may not run stable.";
             break;
 
-        case ERR_WINSOCK_WRONG_VERSION:			
+        case ERR_WINSOCK_WRONG_VERSION:         
             pStr = "Wrong version of WINSOCK library!\nThe application may not run stable.";
             break;
 
@@ -156,6 +156,9 @@ static void InitDCOM(void)
 //------------------------------------------------------------------------------
 // DllMain
 //------------------------------------------------------------------------------
+#ifdef _M_IX86
+int osl_isSingleCPU = 0;
+#endif
 
 static BOOL WINAPI _RawDllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
 {
@@ -167,7 +170,7 @@ static BOOL WINAPI _RawDllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
     {
         case DLL_PROCESS_ATTACH:
             {
-                OSVERSIONINFO aInfo;				
+                OSVERSIONINFO aInfo;                
                 WSADATA wsaData;
                 int     error;
                 WORD    wVersionRequested;
@@ -179,7 +182,17 @@ static BOOL WINAPI _RawDllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 
                 if ((SystemInfo.dwProcessorType != PROCESSOR_INTEL_486) && 
                     (SystemInfo.dwProcessorType != PROCESSOR_INTEL_PENTIUM))
-                    showMessage(ERR_GENERAL_WRONG_CPU);			
+                    showMessage(ERR_GENERAL_WRONG_CPU);
+
+                /* Determine if we are on a multiprocessor/multicore/HT x86/x64 system
+                 *
+                 * The lock prefix for atomic operations in osl_[inc|de]crementInterlockedCount()
+                 * comes with a cost and is especially expensive on pre HT x86 single processor
+                 * systems, where it isn't needed at all.
+                 */
+                if ( SystemInfo.dwNumberOfProcessors == 1 ) {
+                    osl_isSingleCPU = 1;
+                }
 #endif
                 /* Suppress file error messages from system like "Floppy A: not inserted" */
                 SetErrorMode( SEM_NOOPENFILEERRORBOX | SEM_FAILCRITICALERRORS );
@@ -202,16 +215,16 @@ static BOOL WINAPI _RawDllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
                     if ((LOBYTE(wsaData.wVersion) <  wMajorVersionRequired) ||
                         (LOBYTE(wsaData.wVersion) == wMajorVersionRequired) &&
                         ((HIBYTE(wsaData.wVersion) < wMinorVersionRequired)))
-                        {						
-                            showMessage(ERR_WINSOCK_WRONG_VERSION);			
+                        {                       
+                            showMessage(ERR_WINSOCK_WRONG_VERSION);         
                         }
                 }
                 else
                 {
-                    showMessage(ERR_WINSOCK_INIT_FAILED);			
+                    showMessage(ERR_WINSOCK_INIT_FAILED);           
                 }
 
-                /* initialize Win9x unicode functions */				
+                /* initialize Win9x unicode functions */                
                 aInfo.dwOSVersionInfoSize = sizeof( OSVERSIONINFO );
 
                 if ( GetVersionEx(&aInfo) )
@@ -221,7 +234,7 @@ static BOOL WINAPI _RawDllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
                     }
 
                     g_dwPlatformId = aInfo.dwPlatformId;
-                }				
+                }               
                 
                 g_dwTLSTextEncodingIndex = TlsAlloc();
                 InitializeCriticalSection( &g_ThreadKeyListCS );
@@ -258,13 +271,13 @@ static BOOL WINAPI _RawDllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvR
 
 static DWORD GetParentProcessId()
 {
-    DWORD	dwParentProcessId = 0;
-    HANDLE	hSnapshot = CreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, 0 );
+    DWORD   dwParentProcessId = 0;
+    HANDLE  hSnapshot = CreateToolhelp32Snapshot( TH32CS_SNAPPROCESS, 0 );
 
     if ( IsValidHandle( hSnapshot ) )
     {
-        PROCESSENTRY32	pe;
-        BOOL			fSuccess;
+        PROCESSENTRY32  pe;
+        BOOL            fSuccess;
 
         ZeroMemory( &pe, sizeof(pe) );
         pe.dwSize = sizeof(pe);
@@ -289,9 +302,9 @@ static DWORD GetParentProcessId()
 
 static DWORD WINAPI ParentMonitorThreadProc( LPVOID lpParam )
 {
-    DWORD	dwParentProcessId = (DWORD)lpParam;
+    DWORD   dwParentProcessId = (DWORD)lpParam;
 
-    HANDLE	hParentProcess = OpenProcess( SYNCHRONIZE, FALSE, dwParentProcessId );
+    HANDLE  hParentProcess = OpenProcess( SYNCHRONIZE, FALSE, dwParentProcessId );
     if ( IsValidHandle( hParentProcess ) )
     {
         if ( WAIT_OBJECT_0 == WaitForSingleObject( hParentProcess, INFINITE ) )
@@ -311,7 +324,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
     {
         case DLL_PROCESS_ATTACH:
         {
-            TCHAR	szBuffer[64];
+            TCHAR   szBuffer[64];
 
             // This code will attach the process to it's parent process
             // if the parent process had set the environment variable.
@@ -319,13 +332,13 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
             // is is desktop/win32/source/officeloader.cxx
 
 
-            DWORD	dwResult = GetEnvironmentVariable( "ATTACHED_PARENT_PROCESSID", szBuffer, sizeof(szBuffer) );
+            DWORD   dwResult = GetEnvironmentVariable( "ATTACHED_PARENT_PROCESSID", szBuffer, sizeof(szBuffer) );
 
             if ( dwResult && dwResult < sizeof(szBuffer) )
             {
-                DWORD	dwThreadId = 0;
+                DWORD   dwThreadId = 0;
 
-                DWORD	dwParentProcessId = (DWORD)atol( szBuffer );
+                DWORD   dwParentProcessId = (DWORD)atol( szBuffer );
 
                 if ( dwParentProcessId && GetParentProcessId() == dwParentProcessId )
                 {
@@ -338,7 +351,7 @@ BOOL WINAPI DllMain( HINSTANCE hinstDLL, DWORD fdwReason, LPVOID lpvReserved )
             return TRUE;
         }
 
-        case DLL_THREAD_ATTACH:			
+        case DLL_THREAD_ATTACH:         
             break;
 
         case DLL_THREAD_DETACH:
