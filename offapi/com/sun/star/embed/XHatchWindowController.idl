@@ -4,9 +4,9 @@
  *
  *  $RCSfile: XHatchWindowController.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 00:11:55 $
+ *  last change: $Author: vg $ $Date: 2006-11-01 18:11:27 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,8 +32,8 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
-#ifndef __com_sun_star_embed_XHatchWindowController_idl__ 
-#define __com_sun_star_embed_XHatchWindowController_idl__ 
+#ifndef __com_sun_star_embed_XHatchWindowController_idl__
+#define __com_sun_star_embed_XHatchWindowController_idl__
 
 #ifndef __com_sun_star_uno_XInterface_idl__
 #include <com/sun/star/uno/XInterface.idl>
@@ -44,13 +44,13 @@
 #endif
 
 //============================================================================
- 
- module com {  module sun {  module star {  module embed {  
- 
+
+ module com {  module sun {  module star {  module embed {
+
 //============================================================================
- 
+
 /** specifies the operations for a hatch window.
-        
+
     <p>
     A hatch window owner is responsible to handle resize/move requests
     sent by the window. It is also responsible to validate tracking
@@ -58,7 +58,7 @@
     </p>
  */
 interface XHatchWindowController: com::sun::star::uno::XInterface
-{ 
+{
     //------------------------------------------------------------------------
     /** requests window owner to resize/move the window.
 
@@ -66,7 +66,7 @@ interface XHatchWindowController: com::sun::star::uno::XInterface
             the new requested position and size of the window
      */
     void requestPositioning( [in] com::sun::star::awt::Rectangle aRect );
-    
+
     //------------------------------------------------------------------------
     /** returns the closest valid rectangle to the provided one.
 
@@ -77,12 +77,15 @@ interface XHatchWindowController: com::sun::star::uno::XInterface
             the closest valid position and size to the provided one
      */
     com::sun::star::awt::Rectangle calcAdjustedRectangle(
-                    [in] com::sun::star::awt::Rectangle aRect ); 
-}; 
- 
+                    [in] com::sun::star::awt::Rectangle aRect );
+
+    void activated();
+    void deactivated();
+};
+
 //============================================================================
- 
-}; }; }; };  
- 
-#endif 
+
+}; }; }; };
+
+#endif
 
