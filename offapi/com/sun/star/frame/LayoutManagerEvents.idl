@@ -4,9 +4,9 @@
  *
  *  $RCSfile: LayoutManagerEvents.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: hr $ $Date: 2005-09-23 15:33:00 $
+ *  last change: $Author: vg $ $Date: 2007-05-22 15:10:13 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -42,39 +42,39 @@ module com {  module sun {  module star {  module frame {
 //=============================================================================
 /** provides information about layout manager events
 
-    <p>Events are provided <strong>only</strong> for notification 
+    <p>Events are provided <strong>only</strong> for notification
     purposes only.</p>
 
     @see com::sun::star::frame::LayoutManager
     @see com::sun::star::frame::XLayoutManagerEventBroadcaster
-    
+
     @since OOo 2.0.0
  */
 constants LayoutManagerEvents
 {
-    //------------------------------------------------------------------------- 		
+    //-------------------------------------------------------------------------
     /** specifies that the layout manager processed a lock call, which
         prevents it from doing layouts.
 
         <p>
-        This event sends the current lock count as additional 
+        This event sends the current lock count as additional
         information.
         </p>
      */
     const short LOCK = 0;
 
-    //------------------------------------------------------------------------- 		
+    //-------------------------------------------------------------------------
     /** specifies that the layout manager processed an unlock call, which
         admit layouts when the lock count is zero.
 
         <p>
-        This event sends the current lock count as additional 
+        This event sends the current lock count as additional
         information.
         </p>
      */
     const short UNLOCK = 1;
 
-    //------------------------------------------------------------------------- 		
+    //-------------------------------------------------------------------------
     /** specifies that the layout manager refreshed the layout of
         the frame.
 
@@ -84,8 +84,8 @@ constants LayoutManagerEvents
      */
     const short LAYOUT = 2;
 
-    //------------------------------------------------------------------------- 		
-    /** specifies that the layout manager container frame window 
+    //-------------------------------------------------------------------------
+    /** specifies that the layout manager container frame window
         becomes visible.
 
         <p>
@@ -94,8 +94,8 @@ constants LayoutManagerEvents
      */
     const short VISIBLE = 3;
 
-    //------------------------------------------------------------------------- 		
-    /** specifies that the layout manager container frame window 
+    //-------------------------------------------------------------------------
+    /** specifies that the layout manager container frame window
         becomes invisible.
 
         <p>
@@ -103,6 +103,15 @@ constants LayoutManagerEvents
         </p>
      */
     const short INVISIBLE = 4;
+
+    //-------------------------------------------------------------------------
+    /** A merged menu bar has been set at the layout manager.
+
+        <p>
+        This event sends no additional information.
+        </p>
+     */
+    const short MERGEDMENUBAR = 5;
 };
 
 }; }; }; };
