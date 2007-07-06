@@ -4,9 +4,9 @@
  *
  *  $RCSfile: UnoControlEditModel.idl,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-07 21:23:21 $
+ *  last change: $Author: rt $ $Date: 2007-07-06 14:31:09 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -72,6 +72,24 @@ published service UnoControlEditModel
      */
     [property] short Align; 
  
+    //------------------------------------------------------------------------- 
+     
+    /** If set to true an horizontal scrollbar will be added automaticly
+        when needed.
+
+        @since OOo 2.3.0
+     */
+    [optional, property] boolean AutoHScroll;
+    
+    //-------------------------------------------------------------------------
+
+    /** If set to true an vertical scrollbar will be added automaticly
+        when needed.
+
+        @since OOo 2.3.0
+     */
+    [optional, property] boolean AutoVScroll;
+    
     //------------------------------------------------------------------------- 
      
     /** specifies the background color (RGB) of the control.
@@ -201,6 +219,14 @@ published service UnoControlEditModel
      */
     [property] boolean MultiLine; 
  
+    //------------------------------------------------------------------------- 
+
+    /** specifies whether the control paints it background or not.
+
+        @since OOo 2.3.0
+     */
+    [optional, property] boolean PaintTransparent;
+
     //------------------------------------------------------------------------- 
      
     /** specifies that the control will be printed with the document.
