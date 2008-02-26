@@ -4,9 +4,9 @@
  *
  *  $RCSfile: propshlp.hxx,v $
  *
- *  $Revision: 1.14 $
+ *  $Revision: 1.15 $
  *
- *  last change: $Author: kz $ $Date: 2007-05-15 12:18:08 $
+ *  last change: $Author: obo $ $Date: 2008-02-26 13:48:10 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -44,6 +44,9 @@
 #include <com/sun/star/beans/XMultiPropertySet.hpp>
 #include <com/sun/star/beans/XFastPropertySet.hpp>
 
+#include <memory>
+
+
 namespace cppu
 {
 
@@ -67,12 +70,12 @@ public:
         { return pMem; }
     inline static void SAL_CALL operator delete( void *, void * ) SAL_THROW( () )
         {}
-    
+
     /**
        Folowing the rule, the first virtual method impies the virtual destructor.
      */
     virtual ~IPropertyArrayHelper();
-    
+
     /**
        Return the property members Name and Attribute from the handle nHandle.
        @param nHandle	the handle of a property. If the values of the handles
@@ -138,7 +141,7 @@ public:
         sal_Int32 nElements ,
         sal_Bool bSorted = sal_True )
         SAL_THROW( () );
-    
+
      /**
        Create an object which supports the common property interfaces.
        @param aProps     sequence of properties which are supported by this helper.
@@ -149,7 +152,7 @@ public:
         const ::com::sun::star::uno::Sequence< ::com::sun::star::beans::Property > & aProps,
         sal_Bool bSorted = sal_True )
         SAL_THROW( () );
-    
+
     /**
        Return the number of properties.
      */
@@ -198,18 +201,18 @@ public:
      */
     virtual sal_Int32 SAL_CALL fillHandles(
         /*out*/sal_Int32 * pHandles, const ::com::sun::star::uno::Sequence< ::rtl::OUString > & rPropNames );
-    
+
 protected:
     /** reserved for future use. do not use.
      */
     void * m_pReserved;
-    
+
 private:
     void init( sal_Bool bSorted ) SAL_THROW( () );
-    
+
     /** The sequence generstet from the pProperties array. */
     ::com::sun::star::uno::Sequence< ::com::sun::star::beans::Property > aInfos;
-    
+
     /**
        True, If the values of the handles are sorted in the same way as the names
        and the highest handle value	is getCount() -1, otherwise false.
@@ -247,7 +250,7 @@ public:
         { return pMem; }
     inline static void SAL_CALL operator delete( void *, void * ) SAL_THROW( () )
         {}
-    
+
     /**
       Create a container of interface containers.
      
@@ -272,7 +275,7 @@ public:
                  was not created, null was returned.
      */
     OInterfaceContainerHelper * SAL_CALL getContainer( const sal_Int32 & rKey ) const SAL_THROW( () );
-    
+
     /**
       Insert an element in the container specified with the key. The position is not specified.
       @param rKey		the id of the container.
@@ -284,7 +287,7 @@ public:
         const sal_Int32 & rKey,
         const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & r )
         SAL_THROW( () );
-    
+
     /**
       Remove an element from the container specified with the key.
       It uses the equal definition of uno objects to remove the interfaces.
@@ -296,7 +299,7 @@ public:
         const sal_Int32 & rKey,
         const ::com::sun::star::uno::Reference< ::com::sun::star::uno::XInterface > & rxIFace )
         SAL_THROW( () );
-    
+
     /**
       Call disposing on all object in the container that
       support XEventListener. Than clear the container.
@@ -314,6 +317,28 @@ private:
 
     inline OMultiTypeInterfaceContainerHelperInt32( const OMultiTypeInterfaceContainerHelperInt32 & ) SAL_THROW( () );
     inline OMultiTypeInterfaceContainerHelperInt32 & operator = ( const OMultiTypeInterfaceContainerHelperInt32 & ) SAL_THROW( () );
+};
+
+
+/** An interface to extend event notification actions.
+  */
+class IEventNotificationHook
+{
+public:
+    /**
+        Method to be called by OPropertySetHelper::fire.
+
+        @param bIgnoreRuntimeExceptionsWhileFiring
+                        indicates whether occuring RuntimeExceptions shall be
+                        ignored when firing notifications
+
+        @see OPropertySetHelper::fire
+     */
+    virtual void fireEvents(
+        sal_Int32 * pnHandles,
+        sal_Int32 nCount,
+        sal_Bool bVetoable,
+        bool bIgnoreRuntimeExceptionsWhileFiring) = 0;
 };
 
 
@@ -336,17 +361,17 @@ class OPropertySetHelper : public ::com::sun::star::beans::XMultiPropertySet,
 {
 public:
     /**
-       @param rBHelper	this structure containes the basic members of
+       @param rBHelper	this structure contains the basic members of
                           a broadcaster.
                           The lifetime must be longer than the lifetime
                           of this object. Stored in the variable rBHelper.
      */
     OPropertySetHelper( OBroadcastHelper & rBHelper ) SAL_THROW( () );
-    
+
     /** Constructor.
        
         @param rBHelper
-                        this structure containes the basic members of
+                        this structure contains the basic members of
                         a broadcaster.
                           The lifetime must be longer than the lifetime
                           of this object. Stored in the variable rBHelper.
@@ -362,7 +387,32 @@ public:
     */
     OPropertySetHelper(
         OBroadcastHelper & rBHelper, bool bIgnoreRuntimeExceptionsWhileFiring );
-    
+
+    /** Constructor.
+       
+        @param rBHelper
+                        this structure contains the basic members of
+                        a broadcaster.
+                        The lifetime must be longer than the lifetime
+                        of this object. Stored in the variable rBHelper.
+                          
+        @param i_pFireEvents
+                        additional event notifier
+
+        @param bIgnoreRuntimeExceptionsWhileFiring
+                        indicates whether occuring RuntimeExceptions will be
+                        ignored when firing notifications (vetoableChange((),
+                        propertyChange()) to listeners.
+                        PropertyVetoExceptions may still be thrown.
+                        This flag is useful in a inter-process scenarios when
+                        remote bridges may break down
+                        (firing DisposedExceptions).
+    */
+    OPropertySetHelper(
+        OBroadcastHelper & rBHelper,
+        IEventNotificationHook *i_pFireEvents,
+        bool bIgnoreRuntimeExceptionsWhileFiring = false);
+
     /**
        Only returns a reference to XMultiPropertySet, XFastPropertySet, XPropertySet and
        XEventListener.
@@ -401,25 +451,25 @@ public:
         const ::rtl::OUString& aPropertyName,
         const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertyChangeListener >& aListener)
         throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     /** Ignored if the property is not bound. */
     virtual void SAL_CALL removePropertyChangeListener(
         const ::rtl::OUString& aPropertyName,
         const ::com::sun::star::uno::Reference < ::com::sun::star::beans::XPropertyChangeListener >& aListener)
         throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     /** Ignored if the property is not constrained. */
     virtual void SAL_CALL addVetoableChangeListener(
         const ::rtl::OUString& aPropertyName,
         const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XVetoableChangeListener >& aListener)
         throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     /** Ignored if the property is not constrained. */
     virtual void SAL_CALL removeVetoableChangeListener(
         const ::rtl::OUString& aPropertyName,
         const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XVetoableChangeListener > & aListener )
         throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     /**
        Throw UnknownPropertyException or PropertyVetoException if the property with the name
        rPropertyName does not exist or is readonly. Otherwise the method convertFastPropertyValue
@@ -429,33 +479,33 @@ public:
       */
     virtual void SAL_CALL setFastPropertyValue( sal_Int32 nHandle, const ::com::sun::star::uno::Any& rValue )
         throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::beans::PropertyVetoException, ::com::sun::star::lang::IllegalArgumentException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     /**
        @exception com::sun::star::beans::UnknownPropertyException
          if the property with the handle nHandle does not exist.
      */
     virtual ::com::sun::star::uno::Any SAL_CALL getFastPropertyValue( sal_Int32 nHandle )
         throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     // XMultiPropertySet
     virtual void SAL_CALL setPropertyValues(
         const ::com::sun::star::uno::Sequence< ::rtl::OUString >& PropertyNames,
         const ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Any >& Values )
         throw(::com::sun::star::beans::PropertyVetoException, ::com::sun::star::lang::IllegalArgumentException, ::com::sun::star::lang::WrappedTargetException, ::com::sun::star::uno::RuntimeException);
-    
+
     virtual ::com::sun::star::uno::Sequence< ::com::sun::star::uno::Any > SAL_CALL getPropertyValues(
         const ::com::sun::star::uno::Sequence< ::rtl::OUString >& PropertyNames )
         throw(::com::sun::star::uno::RuntimeException);
-    
+
     virtual void SAL_CALL addPropertiesChangeListener(
         const ::com::sun::star::uno::Sequence< ::rtl::OUString >& PropertyNames,
         const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertiesChangeListener >& Listener )
         throw(::com::sun::star::uno::RuntimeException);
-    
+
     virtual void SAL_CALL removePropertiesChangeListener(
         const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertiesChangeListener >& Listener )
         throw(::com::sun::star::uno::RuntimeException);
-    
+
     virtual void SAL_CALL firePropertiesChangeEvent(
         const ::com::sun::star::uno::Sequence< ::rtl::OUString >& PropertyNames,
         const ::com::sun::star::uno::Reference< ::com::sun::star::beans::XPropertiesChangeListener > & Listener )
@@ -497,13 +547,13 @@ protected:
         const ::com::sun::star::uno::Any * pValues,
         sal_Int32 nHitCount )
         SAL_THROW( (::com::sun::star::uno::Exception) );
-    
+
     /**
        This abstract method must return the name to index table. This table contains all property
        names and types of this object. The method is not implemented in this class.
      */
     virtual IPropertyArrayHelper & SAL_CALL getInfoHelper() = 0;
-    
+
     /**
        Converted the value rValue and return the result in rConvertedValue and the
        old value in rOldValue. A IllegalArgumentException is thrown.
@@ -521,7 +571,7 @@ protected:
         sal_Int32 nHandle,
         const ::com::sun::star::uno::Any& rValue )
         throw (::com::sun::star::lang::IllegalArgumentException) = 0;
-    
+
     /** The same as setFastProperyValue; nHandle is always valid.
         The changes must not be broadcasted in this method.
         The method is implemented in a derived class.
@@ -552,7 +602,7 @@ protected:
     virtual void SAL_CALL getFastPropertyValue(
         ::com::sun::star::uno::Any& rValue,
         sal_Int32 nHandle ) const = 0;
-    
+
     /** The common data of a broadcaster. Use the mutex, disposing state and the listener container. */
     OBroadcastHelper	&rBHelper;
     /**
@@ -563,11 +613,13 @@ protected:
        Container for the XPropertyVetoableListener. The listeners are inserted by handle.
      */
     OMultiTypeInterfaceContainerHelperInt32 aVetoableLC;
-    
-    /** reserved for future use. do not use.
+
+    class Impl;
+
+    /** reserved for future use. finally, the future has arrived...
      */
-    void * m_pReserved;
-    
+    const std::auto_ptr<const Impl> m_pReserved;
+
 private:
     OPropertySetHelper( const OPropertySetHelper & ) SAL_THROW( () );
     OPropertySetHelper &	operator = ( const OPropertySetHelper & ) SAL_THROW( () );
