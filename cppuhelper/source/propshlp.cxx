@@ -4,9 +4,9 @@
  *
  *  $RCSfile: propshlp.cxx,v $
  *
- *  $Revision: 1.18 $
+ *  $Revision: 1.19 $
  *
- *  last change: $Author: vg $ $Date: 2007-09-20 14:25:51 $
+ *  last change: $Author: obo $ $Date: 2008-02-26 13:51:46 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -91,7 +91,7 @@ class OPropertySetHelperInfo_Impl
 
 public:	
     OPropertySetHelperInfo_Impl( IPropertyArrayHelper & rHelper_ ) SAL_THROW( () );
-    
+
     // XPropertySetInfo-Methoden
     virtual Sequence< Property > SAL_CALL getProperties(void) throw(::com::sun::star::uno::RuntimeException);
     virtual Property SAL_CALL getPropertyByName(const OUString& PropertyName) throw(::com::sun::star::beans::UnknownPropertyException, ::com::sun::star::uno::RuntimeException);
@@ -147,6 +147,24 @@ sal_Bool OPropertySetHelperInfo_Impl::hasPropertyByName( const OUString & Proper
 }
 
 //	----------------------------------------------------
+//	class PropertySetHelper_Impl
+//	----------------------------------------------------
+class OPropertySetHelper::Impl {
+
+public:
+    Impl (  bool i_bIgnoreRuntimeExceptionsWhileFiring,
+            IEventNotificationHook *i_pFireEvents)
+    :   m_bIgnoreRuntimeExceptionsWhileFiring(
+            i_bIgnoreRuntimeExceptionsWhileFiring ),
+        m_pFireEvents( i_pFireEvents )
+    { }
+
+    bool m_bIgnoreRuntimeExceptionsWhileFiring;
+    class IEventNotificationHook * const m_pFireEvents;
+};
+
+
+//	----------------------------------------------------
 //	class PropertySetHelper
 //	----------------------------------------------------
 OPropertySetHelper::OPropertySetHelper(
@@ -154,17 +172,27 @@ OPropertySetHelper::OPropertySetHelper(
     : rBHelper( rBHelper_ ),
       aBoundLC( rBHelper_.rMutex ),
       aVetoableLC( rBHelper_.rMutex ),
-      m_pReserved( 0 )
+      m_pReserved( new Impl(false, 0) )
 {
 }
 
-OPropertySetHelper::OPropertySetHelper( 
+OPropertySetHelper::OPropertySetHelper(
     OBroadcastHelper  & rBHelper_, bool bIgnoreRuntimeExceptionsWhileFiring )
     : rBHelper( rBHelper_ ),
       aBoundLC( rBHelper_.rMutex ),
       aVetoableLC( rBHelper_.rMutex ),
-      m_pReserved( reinterpret_cast< void * >(
-                       bIgnoreRuntimeExceptionsWhileFiring ? 1 : 0 ) )
+      m_pReserved( new Impl( bIgnoreRuntimeExceptionsWhileFiring, 0 ) )
+{
+}
+
+OPropertySetHelper::OPropertySetHelper(
+    OBroadcastHelper  & rBHelper_, IEventNotificationHook * i_pFireEvents,
+    bool bIgnoreRuntimeExceptionsWhileFiring)
+    : rBHelper( rBHelper_ ),
+      aBoundLC( rBHelper_.rMutex ),
+      aVetoableLC( rBHelper_.rMutex ),
+      m_pReserved(
+        new Impl( bIgnoreRuntimeExceptionsWhileFiring, i_pFireEvents) )
 {
 }
 
@@ -274,7 +302,7 @@ void OPropertySetHelper::addPropertyChangeListener(
                 // property not known throw exception
                 throw  UnknownPropertyException() ;
             }
-            
+
             sal_Int16 nAttributes;
             rPH.fillPropertyMembersByHandle( NULL, &nAttributes, nHandle );
             if( !(nAttributes & ::com::sun::star::beans::PropertyAttribute::BOUND) )
@@ -356,7 +384,7 @@ void OPropertySetHelper::addVetoableChangeListener(
                 // property not known throw exception
                 throw UnknownPropertyException();
             }
-            
+
             sal_Int16 nAttributes;
             rPH.fillPropertyMembersByHandle( NULL, &nAttributes, nHandle );
             if( !(nAttributes & PropertyAttribute::CONSTRAINED) )
@@ -510,6 +538,13 @@ void OPropertySetHelper::fire
     sal_Bool bVetoable
 )
 {
+    OSL_ENSURE( m_pReserved.get(), "No OPropertySetHelper::Impl" );
+    if (m_pReserved->m_pFireEvents) {
+        m_pReserved->m_pFireEvents->fireEvents(
+            pnHandles, nHandles, bVetoable,
+            m_pReserved->m_bIgnoreRuntimeExceptionsWhileFiring);
+    }
+
     // Only fire, if one or more properties changed
     if( nHandles )
     {
@@ -540,10 +575,10 @@ void OPropertySetHelper::fire
                 nChangesLen++;
             }
         }
-        
+
         bool bIgnoreRuntimeExceptionsWhileFiring =
-            (m_pReserved == reinterpret_cast< void const * >(1));
-        
+                m_pReserved->m_bIgnoreRuntimeExceptionsWhileFiring;
+
         // fire the events for all changed properties
         for( i = 0; i < nChangesLen; i++ )
         {
@@ -659,7 +694,7 @@ void OPropertySetHelper::fire
 
         // reduce array to changed properties
         aEvts.realloc( nChangesLen );
-        
+
         if( !bVetoable )
         {
             OInterfaceContainerHelper * pCont = 0;
@@ -952,7 +987,7 @@ void OPropertySetHelper::removePropertyStateChangeListener( const OUString& aPro
 //  {
 //  	sal_Int32 nLen = strlen(p);
 //  	sal_Unicode *pw = new sal_Unicode[nLen];
-    
+
 //  	for( int i = 0 ; i < nLen ; i ++ ) {
 
 //  		// Only ascii strings allowed with this helper !
@@ -1040,7 +1075,7 @@ sal_Bool OPropertyArrayHelper::fillPropertyMembersByHandle
 {
     const Property* pProperties = aInfos.getConstArray();
     sal_Int32 nElements = aInfos.getLength();	
-    
+
     if( bRightOrdered )
     {
         if( nHandle < 0 || nHandle >= nElements )
