@@ -4,9 +4,9 @@
  *
  *  $RCSfile: XTextTableCursor.idl,v $
  *
- *  $Revision: 1.12 $
+ *  $Revision: 1.13 $
  *
- *  last change: $Author: rt $ $Date: 2007-01-30 15:25:18 $
+ *  last change: $Author: kz $ $Date: 2008-03-05 19:17:04 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,20 +32,20 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
-#ifndef __com_sun_star_text_XTextTableCursor_idl__ 
-#define __com_sun_star_text_XTextTableCursor_idl__ 
- 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
- 
- 
-//============================================================================= 
- 
-module com {  module sun {  module star {  module text { 
- 
-//============================================================================= 
- 
+#ifndef __com_sun_star_text_XTextTableCursor_idl__
+#define __com_sun_star_text_XTextTableCursor_idl__
+
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
+
+
+//=============================================================================
+
+module com {  module sun {  module star {  module text {
+
+//=============================================================================
+
 /** The TextTableCursor provide methods to navigate throught the table structure, to merge and split cells
 
     @see com::sun::star::text::TextTable
@@ -54,21 +54,21 @@ module com {  module sun {  module star {  module text {
     @see com::sun::star::text::XTextTable
  */
 published interface XTextTableCursor: com::sun::star::uno::XInterface
-{ 
-    //------------------------------------------------------------------------- 
-     
-    /** @returns 
-                the name of the cell range that is selected by this cursor. 
-                <p>The name is the cell name of the top left table cell of the range 
-                 contatenated by ':' with the table cell name of the bottom left table cell of the cell range. 
-                If the range consists of one table cell only then the name of that table cell is returned. 
+{
+    //-------------------------------------------------------------------------
+
+    /** @returns
+                the name of the cell range that is selected by this cursor.
+                <p>The name is the cell name of the top left table cell of the range
+                 contatenated by ':' with the table cell name of the bottom left table cell of the cell range.
+                If the range consists of one table cell only then the name of that table cell is returned.
              </p>
         @see com::sun:star::text::CellRange
      */
-    string getRangeName(); 
- 
-    //------------------------------------------------------------------------- 
-     
+    string getRangeName();
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the cell with the specified name.
 
         @param aCellName
@@ -79,11 +79,11 @@ published interface XTextTableCursor: com::sun::star::uno::XInterface
 
         @see com::sun::star::text::Cell
      */
-    boolean gotoCellByName( [in] string aCellName, 
-             [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    boolean gotoCellByName( [in] string aCellName,
+             [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the left neighbor.
 
         @param nCount
@@ -92,11 +92,11 @@ published interface XTextTableCursor: com::sun::star::uno::XInterface
         @param bExpand
             determines wether the selection is to be expanded.
      */
-    boolean goLeft( [in] short nCount, 
-             [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    boolean goLeft( [in] short nCount,
+             [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the right neighbor.
 
         @param nCount
@@ -105,11 +105,11 @@ published interface XTextTableCursor: com::sun::star::uno::XInterface
         @param bExpand
             determines wether the selection is to be expanded.
      */
-    boolean goRight( [in] short nCount, 
-             [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    boolean goRight( [in] short nCount,
+             [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the top neighbor.
 
         @param nCount
@@ -118,11 +118,11 @@ published interface XTextTableCursor: com::sun::star::uno::XInterface
         @param bExpand
             determines wether the selection is to be expanded.
      */
-    boolean goUp( [in] short nCount, 
-             [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    boolean goUp( [in] short nCount,
+             [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the bottom neighbor cell.
 
         @param nCount
@@ -131,57 +131,57 @@ published interface XTextTableCursor: com::sun::star::uno::XInterface
         @param bExpand
             determines wether the selection is to be expanded.
      */
-    boolean goDown( [in] short nCount, 
-             [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    boolean goDown( [in] short nCount,
+             [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the top left cell of the table.
 
         @param bExpand
             determines wether the selection is to be expanded.
      */
-    void gotoStart( [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    void gotoStart( [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** moves the cursor to the bottom right cell of the table.
 
         @param bExpand
             determines wether the selection is to be expanded.
      */
-    void gotoEnd( [in] boolean bExpand ); 
- 
-    //------------------------------------------------------------------------- 
-     
+    void gotoEnd( [in] boolean bExpand );
+
+    //-------------------------------------------------------------------------
+
     /** merges the selected range of cells.
-        
+
         @see com:sun::star::CellRange
      */
-    boolean mergeRange(); 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** splits the range of cells. 
+    boolean mergeRange();
+
+    //-------------------------------------------------------------------------
+
+    /** splits the range of cells.
 
         @param nCount
-            specifies the number of new cells that will be created 
+            specifies the number of new cells that will be created
             for each cell contained in the range.
 
         @param bHorizontal
-            </true> if the range should be split vertically.
+            <true/> if the range should be split vertically.
             Otherwise it will be split horizontally.
 
         @see com:sun::star::Cell
         @see com:sun::star::CellRange
      */
-    boolean splitRange( [in] short nCount, 
-             [in] boolean bHorizontal ); 
- 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; }; 
- 
-#endif 
+    boolean splitRange( [in] short nCount,
+             [in] boolean bHorizontal );
+
+};
+
+//=============================================================================
+
+}; }; }; };
+
+#endif
