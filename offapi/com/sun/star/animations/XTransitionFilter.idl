@@ -4,9 +4,9 @@
  *
  *  $RCSfile: XTransitionFilter.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-07 20:42:48 $
+ *  last change: $Author: kz $ $Date: 2008-03-05 19:13:05 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -32,18 +32,18 @@
  *    MA  02111-1307  USA
  *
  ************************************************************************/
-#ifndef __com_sun_star_animations_XTransitionFilter_idl__ 
-#define __com_sun_star_animations_XTransitionFilter_idl__ 
+#ifndef __com_sun_star_animations_XTransitionFilter_idl__
+#define __com_sun_star_animations_XTransitionFilter_idl__
 
 #ifndef __com_sun_star_animations_XAnimate_idl__
 #include <com/sun/star/animations/XAnimate.idl>
 #endif
 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module animations {  
- 
-//============================================================================= 
+//=============================================================================
+
+ module com {  module sun {  module star {  module animations {
+
+//=============================================================================
 
 /**
     Base members <member>XAnimate::Values</member>, <member>XAnimate::From</member>,
@@ -62,7 +62,7 @@ interface XTransitionFilter : XAnimate
     */
     [attribute] short Transition;
 
-    /** This is the subtype of the transition. 
+    /** This is the subtype of the transition.
         <br>
         This must be one of the transition subtypes appropriate for the specified <member>Type</member>
         as listed in <const>TransitionSubType</const>.
@@ -74,11 +74,11 @@ interface XTransitionFilter : XAnimate
         Legal values are <true/> indicating that the parent media will become more visible as
         the transition progress increases and <false/> indicating that the parent media will
         become less visible as the transition progress increases.
-        
-        The default value is </true>.
+
+        The default value is <true/>.
     */
     [attribute] boolean Mode;
-    
+
     /** This specifies the direction the transition will run.
         <br>
         The legal values are <true/> for forward and <false/> for reverse.
@@ -89,9 +89,9 @@ interface XTransitionFilter : XAnimate
         direction attribute and assume the default value of <true/>.
     */
     [attribute] boolean Direction;
- 
+
     /** If the value of the <member>Type</member> attribute is <const>TransitionType::FADE</const> and
-        the value of the <member>Subtype</member> attribute is 	<const>TransitionSubType::FADETOCOLOR</const> or 
+        the value of the <member>Subtype</member> attribute is 	<const>TransitionSubType::FADETOCOLOR</const> or
         <const>TransitionSubType::FADEFROMCOLOR</const>, then this attribute specifies the starting or ending
         color of the fade.
         The default value is 0 (black).
@@ -100,8 +100,8 @@ interface XTransitionFilter : XAnimate
     [attribute] long FadeColor;
 };
 
-//============================================================================= 
- 
-}; }; }; };  
+//=============================================================================
+
+}; }; }; };
 
 #endif
