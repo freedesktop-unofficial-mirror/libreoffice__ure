@@ -4,9 +4,9 @@
  *
  *  $RCSfile: XModuleUIConfigurationManager.idl,v $
  *
- *  $Revision: 1.3 $
+ *  $Revision: 1.4 $
  *
- *  last change: $Author: rt $ $Date: 2005-09-08 08:28:48 $
+ *  last change: $Author: kz $ $Date: 2008-03-05 19:18:09 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -44,7 +44,7 @@
 #include <com/sun/star/container/XIndexAccess.idl>
 #endif
 
-#ifndef __com_sun_star_container_NoSuchElementException_idl__ 
+#ifndef __com_sun_star_container_NoSuchElementException_idl__
 #include <com/sun/star/container/NoSuchElementException.idl>
 #endif
 
@@ -56,59 +56,59 @@
 #include <com/sun/star/lang/IllegalAccessException.idl>
 #endif
 
-module com { module sun { module star { module ui { 
+module com { module sun { module star { module ui {
 
-/** specifies specific functions of a module based user interface 
+/** specifies specific functions of a module based user interface
     configuration manager interface.
 
     <p>
-    A module user interface configuration manager supports, unlike a 
-    document based ui configration manager, two layers of configuration 
+    A module user interface configuration manager supports, unlike a
+    document based ui configration manager, two layers of configuration
     settings data:<br/>
-    1. Layer: A module default user interface configuration which 
-              describe all user interface elements settings that are 
-              used by OpenOffice. It is not possible to insert, remove 
-              or changeelements settings in this layer through the 
+    1. Layer: A module default user interface configuration which
+              describe all user interface elements settings that are
+              used by OpenOffice. It is not possible to insert, remove
+              or changeelements settings in this layer through the
               interfaces.</br>
-    2. Layer: A module user interface configuration which only contains 
-              customized user interface elements and user-defined ones. 
+    2. Layer: A module user interface configuration which only contains
+              customized user interface elements and user-defined ones.
               All changes on user interface element settings are done on
-              this layer. This layer is the same as the document ui 
+              this layer. This layer is the same as the document ui
               configuration manager uses.</br>
     </p>
 
     @since OOo 2.0.0
 */
-    
+
 interface XModuleUIConfigurationManager : ::com::sun::star::uno::XInterface
 {
-    /** determine if the settings of a user interface element is part 
+    /** determine if the settings of a user interface element is part
         of the default layer of the user interface configuration manager.
-        
+
         @param ResourceURL
-            a resource URL which identifies the user interface element. A 
-            resourcce URL must meet the following syntax: 
-            "private:resource/$type/$name. It is only allowed to use ascii 
-            characters for type and name. 
+            a resource URL which identifies the user interface element. A
+            resourcce URL must meet the following syntax:
+            "private:resource/$type/$name. It is only allowed to use ascii
+            characters for type and name.
 
         @return
-            </TRUE> if settings have been found in the default layer, 
-            otherwise </FALSE>.
+            <TRUE/> if settings have been found in the default layer,
+            otherwise <FALSE/>.
     */
     boolean isDefaultSettings( [in] string ResourceURL ) raises ( com::sun::star::lang::IllegalArgumentException );
 
-    /** retrieves the settings from the default layer of the user interface 
+    /** retrieves the settings from the default layer of the user interface
         configuration manager if it has a default layer.
-        
+
         @param ResourceURL
-            a resource URL which identifies the user interface element. A 
-            resourcce URL must meet the following syntax: 
-            "private:resource/$type/$name. It is only allowed to use ascii 
-            characters for type and name. 
+            a resource URL which identifies the user interface element. A
+            resourcce URL must meet the following syntax:
+            "private:resource/$type/$name. It is only allowed to use ascii
+            characters for type and name.
 
         @return
-            </TRUE> if default settings have been found in the default layer, 
-            otherwise </FALSE>.
+            <TRUE/> if default settings have been found in the default layer,
+            otherwise <FALSE/>.
     */
     ::com::sun::star::container::XIndexAccess getDefaultSettings( [in] string ResourceURL ) raises ( com::sun::star::container::NoSuchElementException, com::sun::star::lang::IllegalArgumentException );
 
