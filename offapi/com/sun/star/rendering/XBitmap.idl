@@ -4,9 +4,9 @@
  *
  *  $RCSfile: XBitmap.idl,v $
  *
- *  $Revision: 1.5 $
+ *  $Revision: 1.6 $
  *
- *  last change: $Author: kz $ $Date: 2005-11-02 13:23:05 $
+ *  last change: $Author: kz $ $Date: 2008-03-05 19:15:47 $
  *
  *  The Contents of this file are made available subject to
  *  the terms of GNU Lesser General Public License Version 2.1.
@@ -35,12 +35,12 @@
 #ifndef __com_sun_star_rendering_XBitmap_idl__
 #define __com_sun_star_rendering_XBitmap_idl__
 
-#ifndef __com_sun_star_uno_XInterface_idl__ 
-#include <com/sun/star/uno/XInterface.idl> 
-#endif 
+#ifndef __com_sun_star_uno_XInterface_idl__
+#include <com/sun/star/uno/XInterface.idl>
+#endif
 #ifndef __com_sun_star_lang_IllegalArgumentException_idl__
 #include <com/sun/star/lang/IllegalArgumentException.idl>
-#endif 
+#endif
 #ifndef __com_sun_star_geometry_IntegerSize2D_idl__
 #include <com/sun/star/geometry/IntegerSize2D.idl>
 #endif
@@ -65,7 +65,7 @@ interface XBitmapCanvas;
 
     @since OOo 2.0.0
  */
-interface XBitmap : ::com::sun::star::uno::XInterface 
+interface XBitmap : ::com::sun::star::uno::XInterface
 {
     /** Query the size of the bitmap.<p>
 
@@ -82,7 +82,7 @@ interface XBitmap : ::com::sun::star::uno::XInterface
         This method checks, whether the bitmap contains any alpha
         information.<p>
 
-        @return </TRUE>, if the bitmap has alpha data, or </FALSE> if
+        @return <TRUE/>, if the bitmap has alpha data, or <FALSE/> if
         not.
       */
     boolean										hasAlpha();
@@ -114,7 +114,7 @@ interface XBitmap : ::com::sun::star::uno::XInterface
         @param newSize
         Requested size of the new bitmap. Both of the two size
         components must be greater than zero.
-    
+
         @param beFast
         When set to true, this parameter advises getScaledBitmap to
         use the fastest available algorithm to scale the bitmap, which
@@ -131,7 +131,7 @@ interface XBitmap : ::com::sun::star::uno::XInterface
      */
     XBitmap							getScaledBitmap( [in] ::com::sun::star::geometry::RealSize2D newSize, [in] boolean beFast )
         raises (com::sun::star::lang::IllegalArgumentException,
-                VolatileContentDestroyedException); 
+                VolatileContentDestroyedException);
 };
 
 }; }; }; };
