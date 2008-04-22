@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: simpleregistry.cxx,v $
- * $Revision: 1.17 $
+ * $Revision: 1.18 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -988,13 +988,13 @@ sal_Bool SAL_CALL RegistryKeyImpl::createLink( const OUString& aLinkName, const 
                 throw InvalidRegistryException(
                     OUString( RTL_CONSTASCII_USTRINGPARAM("InvalidRegistryException") ),
                     (OWeakObject *)this );
-            } else
+            } else 
+            {
                 return sal_False;
-        } else
-        {
-            return sal_True;
+            }
         }
-    }		
+    }
+    return sal_True;
 }
 
 //*************************************************************************
