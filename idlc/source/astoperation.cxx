@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: astoperation.cxx,v $
- * $Revision: 1.8 $
+ * $Revision: 1.9 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -49,16 +49,6 @@ void AstOperation::setExceptions(DeclList const * pExceptions)
         m_exceptions = *pExceptions;
     }
 }
-
-sal_Bool AstOperation::isVoid()
-{
-    if ( m_pReturnType && (m_pReturnType->getNodeType() == NT_predefined) )
-    {
-        if ( ((AstBaseType*)m_pReturnType)->getExprType() == ET_void )
-            return sal_True;
-    }	
-    return sal_False;
-}	
 
 bool AstOperation::isVariadic() const {
     DeclList::const_iterator i(getIteratorEnd());
