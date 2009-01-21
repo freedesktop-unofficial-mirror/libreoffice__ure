@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: Subject.idl,v $
- * $Revision: 1.4.122.1 $
+ * $RCSfile: MenuLogo.idl,v $
+ * $Revision: 1.0 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -27,42 +27,47 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
+#ifndef __com_sun_star_awt_MenuLogo_idl__
+#define __com_sun_star_awt_MenuLogo_idl__
 
-#ifndef __com_sun_star_text_textfield_docinfo_Subject_idl__
-#define __com_sun_star_text_textfield_docinfo_Subject_idl_
+#ifndef com_sun_star_graphic_XGraphic_idl
+#include <com/sun/star/graphic/XGraphic.idl>
+#endif
 
-#include <com/sun/star/text/TextField.idl>
+#ifndef __com_sun_star_util_color_idl__
+#include <com/sun/star/util/Color.idl>
+#endif
 
 //=============================================================================
 
-module com { module sun { module star {
-    module text { module textfield { module docinfo {
+ module com {  module sun {  module star {  module awt {
 
 //=============================================================================
-/** specifies service of a text field that provides the subject that is contained
-    in the document information.
-    @see com::sun::star::text::TextField
-*/
-published service Subject
+
+/** specifies a logo to be displayed on a menu, with a background gradient.
+ */
+struct MenuLogo
 {
-    service  com::sun::star::text::TextField;
+    /** specifies the logo image.
+     */
+    ::com::sun::star::graphic::XGraphic Graphic;
 
-    /** contains content information.
+    //-------------------------------------------------------------------------
+
+    /** specifies the color at the start point of the gradient.
      */
-    [property] string Content;
-    /** contains the current content of the text field.
-        <p> This property is escpecially useful for import/export purposes. </p>
+    ::com::sun::star::util::Color StartColor;
+
+    //-------------------------------------------------------------------------
+
+    /** specifies the color at the end point of the gradient.
      */
-    [property]string CurrentPresentation;
-    /** If this flag is set to <FALSE/> the content updated everytime the document
-        information is changed.
-     */
-    [property]boolean IsFixed;
+    ::com::sun::star::util::Color EndColor;
+
 };
 
 //=============================================================================
 
-}; }; }; }; }; };
+}; }; }; };
 
 #endif
-

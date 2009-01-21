@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: Subject.idl,v $
- * $Revision: 1.4.122.1 $
+ * $RCSfile: XMenuBarExtended.idl,v $
+ * $Revision: 1.0 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -27,42 +27,46 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
+#ifndef __com_sun_star_awt_XMenuBarExtended_idl__
+#define __com_sun_star_awt_XMenuBarExtended_idl__
 
-#ifndef __com_sun_star_text_textfield_docinfo_Subject_idl__
-#define __com_sun_star_text_textfield_docinfo_Subject_idl_
+#ifndef __com_sun_star_awt_XMenuBar_idl__
+#include <com/sun/star/awt/XMenuBar.idl>
+#endif
 
-#include <com/sun/star/text/TextField.idl>
+#ifndef __com_sun_star_awt_XMenuExtended2_idl__
+#include <com/sun/star/awt/XMenuExtended2.idl>
+#endif
+
+#ifndef com_sun_star_graphic_XGraphic_idl
+#include <com/sun/star/graphic/XGraphic.idl>
+#endif
+
+#ifndef __com_sun_star_awt_Rectangle_idl__
+#include <com/sun/star/awt/Rectangle.idl>
+#endif
 
 //=============================================================================
 
-module com { module sun { module star {
-    module text { module textfield { module docinfo {
+ module com {  module sun {  module star {  module awt {
+
+ interface XMenuBarButtonListener;
 
 //=============================================================================
-/** specifies service of a text field that provides the subject that is contained
-    in the document information.
-    @see com::sun::star::text::TextField
-*/
-published service Subject
+
+/** multiple-inheritance interface designed to ease the use of all functions
+    available for a <type scope="com::sun::star::awt">MenuBar</type>.
+
+    @since OOo 3.1
+ */
+ interface XMenuBarExtended
 {
-    service  com::sun::star::text::TextField;
-
-    /** contains content information.
-     */
-    [property] string Content;
-    /** contains the current content of the text field.
-        <p> This property is escpecially useful for import/export purposes. </p>
-     */
-    [property]string CurrentPresentation;
-    /** If this flag is set to <FALSE/> the content updated everytime the document
-        information is changed.
-     */
-    [property]boolean IsFixed;
+    interface com::sun::star::awt::XMenuExtended2;
+    interface com::sun::star::awt::XMenuBar;
 };
 
 //=============================================================================
 
-}; }; }; }; }; };
+}; }; }; };
 
 #endif
-

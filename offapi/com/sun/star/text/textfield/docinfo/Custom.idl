@@ -6,8 +6,8 @@
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: Subject.idl,v $
- * $Revision: 1.4.122.1 $
+ * $RCSfile: Custom.idl,v $
+ * $Revision: 1.1.2.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -28,8 +28,8 @@
  *
  ************************************************************************/
 
-#ifndef __com_sun_star_text_textfield_docinfo_Subject_idl__
-#define __com_sun_star_text_textfield_docinfo_Subject_idl_
+#ifndef __com_sun_star_text_textfield_docinfo_Custom_idl__
+#define __com_sun_star_text_textfield_docinfo_Custom_idl_
 
 #include <com/sun/star/text/TextField.idl>
 
@@ -39,25 +39,30 @@ module com { module sun { module star {
     module text { module textfield { module docinfo {
 
 //=============================================================================
-/** specifies service of a text field that provides the subject that is contained
-    in the document information.
+/** specifies service of a text field that refers to the content of a
+    user-defined field in the document information.
+
+    @since OOo 3.0
+
     @see com::sun::star::text::TextField
 */
-published service Subject
+published service Custom
 {
     service  com::sun::star::text::TextField;
 
-    /** contains content information.
+    /** the name of the user-defined property that this field refers to.
      */
-    [property] string Content;
+    [property] string Name;
+
     /** contains the current content of the text field.
-        <p> This property is escpecially useful for import/export purposes. </p>
+        <p>This property is useful for import/export purposes.</p>
      */
-    [property]string CurrentPresentation;
-    /** If this flag is set to <FALSE/> the content updated everytime the document
-        information is changed.
+    [property] string CurrentPresentation;
+
+    /** If this flag is set to <FALSE/>, the content is updated when 
+        the document information changes.
      */
-    [property]boolean IsFixed;
+    [property] boolean IsFixed;
 };
 
 //=============================================================================

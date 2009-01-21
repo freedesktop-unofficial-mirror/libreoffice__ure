@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: TextField.idl,v $
- * $Revision: 1.11 $
+ * $Revision: 1.11.122.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -29,27 +29,27 @@
  ************************************************************************/
 #ifndef __com_sun_star_text_TextField_idl__ 
 #define __com_sun_star_text_TextField_idl__ 
- 
+
 #ifndef __com_sun_star_beans_XPropertySet_idl__
 #include <com/sun/star/beans/XPropertySet.idl> 
 #endif 
- 
+
 #ifndef __com_sun_star_text_TextContent_idl__ 
 #include <com/sun/star/text/TextContent.idl> 
 #endif 
- 
+
 #ifndef __com_sun_star_text_XTextField_idl__ 
 #include <com/sun/star/text/XTextField.idl> 
 #endif 
- 
- 
+
+
 //============================================================================= 
- 
+
  module com {  module sun {  module star {  module text {  
  
 //============================================================================= 
  
-/** A <type scope="com::sun::star::form::component">TextField</type> is a <type>TextContent</type> which fades its
+/** A <type>TextField</type> is a <type>TextContent</type> which fades its
     textual representation into the text range to which it is anchored.
  */
 published service TextField
@@ -97,5 +97,5 @@ published service TextField
 //============================================================================= 
  
 }; }; }; };  
- 
+
 #endif 
