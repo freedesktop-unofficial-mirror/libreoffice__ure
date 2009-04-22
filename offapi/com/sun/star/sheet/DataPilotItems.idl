@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -47,7 +47,9 @@ module com {  module sun {  module star {  module sheet {
 
 //=============================================================================
 
-/** represents a collection of Items in a data pilot field.
+/** represents a collection of items in a data pilot field.
+
+    @see DataPilotItem
  */
 service DataPilotItems
 {
