@@ -3,6 +3,7 @@
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
 # Copyright 2008 by Sun Microsystems, Inc.
+# Copyright IBM Corporation 2009.
 #
 # OpenOffice.org - a multi-platform office productivity suite
 #
@@ -42,42 +43,43 @@ PACKAGE=com$/sun$/star$/task
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    ClassifiedInteractionRequest.idl\
-    DocumentMacroConfirmationRequest.idl\
-    DocumentPasswordRequest.idl\
-    ErrorCodeRequest.idl\
-    ErrorCodeIOException.idl\
-    FutureDocumentVersionProductUpdateRequest.idl\
-    InteractionClassification.idl\
-    InteractionHandler.idl\
-    JobExecutor.idl\
-    Job.idl\
-    AsyncJob.idl\
-    MasterPasswordRequest.idl\
-    NoMasterException.idl\
-    PasswordContainer.idl\
-    PasswordRequest.idl\
-    PasswordRequestMode.idl\
-    UnsupportedOverwriteRequest.idl\
-    UrlRecord.idl\
-    UserRecord.idl\
-    XAsyncJob.idl\
-    XInteractionApprove.idl\
-    XInteractionAskLater.idl\
-    XInteractionDisapprove.idl\
-    XInteractionPassword.idl\
-    XJob.idl\
-    XJobExecutor.idl\
-    XJobListener.idl\
-    XMasterPasswordHandling.idl\
-    XMasterPasswordHandling2.idl\
-    XPasswordContainer.idl\
-    XStatusIndicator.idl\
-    XStatusIndicatorFactory.idl\
-    XStatusIndicatorSupplier.idl\
-    XAbortChannel.idl\
-    XInteractionRequestStringResolver.idl\
-    InteractionRequestStringResolver.idl
+	ClassifiedInteractionRequest.idl\
+	DocumentMacroConfirmationRequest.idl\
+	DocumentPasswordRequest.idl\
+	DocumentMSPasswordRequest.idl\
+	ErrorCodeRequest.idl\
+	ErrorCodeIOException.idl\
+	FutureDocumentVersionProductUpdateRequest.idl\
+	InteractionClassification.idl\
+	InteractionHandler.idl\
+	JobExecutor.idl\
+	Job.idl\
+	AsyncJob.idl\
+	MasterPasswordRequest.idl\
+	NoMasterException.idl\
+	PasswordContainer.idl\
+	PasswordRequest.idl\
+	PasswordRequestMode.idl\
+	UnsupportedOverwriteRequest.idl\
+	UrlRecord.idl\
+	UserRecord.idl\
+	XAsyncJob.idl\
+	XInteractionApprove.idl\
+	XInteractionAskLater.idl\
+	XInteractionDisapprove.idl\
+	XInteractionPassword.idl\
+	XJob.idl\
+	XJobExecutor.idl\
+	XJobListener.idl\
+	XMasterPasswordHandling.idl\
+	XMasterPasswordHandling2.idl\
+	XPasswordContainer.idl\
+	XStatusIndicator.idl\
+	XStatusIndicatorFactory.idl\
+	XStatusIndicatorSupplier.idl\
+	XAbortChannel.idl\
+	XInteractionRequestStringResolver.idl\
+	InteractionRequestStringResolver.idl
 
 # ------------------------------------------------------------------
 
