@@ -48,18 +48,18 @@ POLICY_ASSEMBLY_FILE=$(BIN)/$(CLI_OOOTYPES_POLICY_ASSEMBLY).dll
 .IF "$(BUILD_FOR_CLI)" != ""
 
 ALLTAR : \
-    $(BIN)$/clioootypesversion.mk \
-    $(BIN)$/cli_oootypes.dll \
-    $(POLICY_ASSEMBLY_FILE)
+	$(BIN)$/clioootypesversion.mk \
+	$(BIN)$/cli_oootypes.dll \
+	$(POLICY_ASSEMBLY_FILE)
 
 .ELSE
 
 ALLTAR : \
-    $(BIN)$/clioootypesversion.mk 
+	$(BIN)$/clioootypesversion.mk 
 
 .ENDIF
 
-    
+	
 CLIMAKERFLAGS =
 .IF "$(debug)" != ""
 CLIMAKERFLAGS += --verbose
@@ -69,30 +69,30 @@ RDB = $(SOLARBINDIR)$/offapi.rdb
 EXTRA_RDB = $(SOLARBINDIR)$/udkapi.rdb
 
 $(BIN)/cli_oootypes.dll : $(RDB) $(EXTRA_RDB) version.txt
-    $(WRAPCMD) $(SOLARBINDIR)$/climaker.exe $(CLIMAKERFLAGS) \
-        --out $@ \
-         --assembly-version $(CLI_OOOTYPES_NEW_VERSION) \
-        --assembly-company "OpenOffice.org" \
-        --assembly-description "This assembly contains metadata for the StarOffice/OpenOffice.org API." \
-        -X $(EXTRA_RDB) \
-        -r $(SOLARBINDIR)$/cli_uretypes.dll \
+		$(CLIMAKER) $(CLIMAKERFLAGS) \
+		--out $@ \
+ 		--assembly-version $(CLI_OOOTYPES_NEW_VERSION) \
+		--assembly-company "OpenOffice.org" \
+		--assembly-description "This assembly contains metadata for the StarOffice/OpenOffice.org API." \
+		-X $(EXTRA_RDB) \
+		-r $(SOLARBINDIR)$/cli_uretypes.dll \
         --keyfile $(SOLARBINDIR)$/cliuno.snk \
-        $(RDB)
-        
+		$(RDB)
+		
 
 #Create the config file that is used with the policy assembly
 $(BIN)$/cli_oootypes.config: cli_oootypes_config version.txt
-    $(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
-    $< $@
+	$(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
+	$< $@
 
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_oootypes.config $(BIN)$/cli_oootypes.dll
-    $(WRAPCMD) AL.exe -out:$@ \
-            -version:$(CLI_OOOTYPES_POLICY_VERSION) \
-            -keyfile:$(SOLARBINDIR)$/cliuno.snk \
-            -link:$(BIN)$/cli_oootypes.config
+	$(WRAPCMD) AL.exe -out:$@ \
+			-version:$(CLI_OOOTYPES_POLICY_VERSION) \
+			-keyfile:$(SOLARBINDIR)$/cliuno.snk \
+			-link:$(BIN)$/cli_oootypes.config
 
 #always deliver a clioootypesversion.mk. It is needed for the packing process even for all other
 #platforms. Therefore BUILD_FOR_CLI is not used here 
 $(BIN)$/clioootypesversion.mk: version.txt
-    $(GNUCOPY) $< $@
-    
+	$(GNUCOPY) $< $@
+	
