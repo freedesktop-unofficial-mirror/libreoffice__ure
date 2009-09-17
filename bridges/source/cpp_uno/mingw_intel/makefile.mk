@@ -47,18 +47,24 @@ ENABLE_EXCEPTIONS=TRUE
 .IF "$(cppu_no_leak)" == ""
 CFLAGS += -DLEAK_STATIC_DATA
 .ENDIF
+.IF "$(EXCEPTIONS)" == "sjlj"
+CFLAGS += -DBROKEN_ALLOCA
+.ENDIF
 
 # In case someone enabled the non-standard -fomit-frame-pointer which does not
 # work with the .cxx sources in this directory:
 CFLAGSCXX += -fno-omit-frame-pointer
 
+NOOPTFILES= \
+	$(SLO)$/uno2cpp.obj
+
 CFLAGSNOOPT=-O0
 
 SLOFILES= \
-    $(SLO)$/dllinit.obj		\
-    $(SLO)$/smallstruct.obj		\
-    $(SLO)$/except.obj		\
-    $(SLO)$/cpp2uno.obj		\
+	$(SLO)$/dllinit.obj		\
+	$(SLO)$/smallstruct.obj		\
+	$(SLO)$/except.obj		\
+	$(SLO)$/cpp2uno.obj		\
     $(SLO)$/uno2cpp.obj \
     $(SLO)$/call.obj
 
@@ -73,8 +79,8 @@ SHL1OBJS = $(SLOFILES)
 SHL1LIBS = $(SLB)$/cpp_uno_shared.lib
 
 SHL1STDLIBS= \
-    $(CPPULIB)			\
-    $(SALLIB)
+	$(CPPULIB)			\
+	$(SALLIB)
 
 DEF1NAME=	$(SHL1TARGET)
 

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -113,6 +113,7 @@ published service TextPortion
         <dt>Ruby</dt><dd>a ruby attribute which is used in Asian text</dd>
         <dt>Frame</dt><dd>a frame</dd>
         <dt>SoftPageBreak</dt><dd>a soft page break</dd>
+        <dt>InContentMetadata</dt><dd>a text range with attached metadata</dd>
     </dl>
     <p>For Reference marks, document index marks, etc., 2 text portions
        will be generated, one for the start position and one for the
@@ -123,42 +124,50 @@ published service TextPortion
     //-------------------------------------------------------------------------
     /** contains the control character of a text portion of type
         ControlCharacter.
+        @deprecated type ControlCharacter no longer implemented
      */
     [readonly, property] short ControlCharacter;
-    
+
     //-------------------------------------------------------------------------
     /** contains the bookmark of a text portion of type Bookmark. */
     [optional, readonly, property]
     ::com::sun::star::text::XTextContent Bookmark;
-    
+
     //-------------------------------------------------------------------------
     /** contains the document index mark of a text portion of type
         DocumentIndexMark. */
     [optional, readonly, property]
     ::com::sun::star::text::XTextContent DocumentIndexMark;
-    
+
     //-------------------------------------------------------------------------
     /** contains the bookmark of a text portion of type ReferenceMark. */
     [optional, readonly, property]
     ::com::sun::star::text::XTextContent ReferenceMark;
-    
+
     //-------------------------------------------------------------------------
     /** contains the footnote of a text portion of type Footnote. */
     [optional, readonly, property]
     ::com::sun::star::text::XFootnote Footnote;
-    
+
     //-------------------------------------------------------------------------
     /** contains the text field of a text portion of type TextField. */
     [optional, readonly, property]
     ::com::sun::star::text::XTextField TextField;
-    
+
+    //-------------------------------------------------------------------------
+    /** contains the text range of a text portion of type InContentMetadata.
+        @since OOo 3.2
+     */
+    [optional, readonly, property]
+    ::com::sun::star::text::XTextContent InContentMetadata;
+
     //-------------------------------------------------------------------------
     /** contains whether the portion is a point only. */
     [optional, readonly, property] boolean IsCollapsed;
-    
+
     //-------------------------------------------------------------------------
     /** contains whether the portion is the start of the portion.
-    
+
         <p>This is used for portions which are represented by
         2 TextPortion objects (e.g., DocmentIndexMark).</p>
      */
