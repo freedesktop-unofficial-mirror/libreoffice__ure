@@ -69,11 +69,11 @@ CFLAGS+= -I..$/source
 # --- Files ---
 
 OBJFILES=	\
-    $(OBJ)$/t_leak.obj	\
-    $(OBJ)$/t_file.obj	\
-    $(OBJ)$/t_page.obj	\
-    $(OBJ)$/t_base.obj	\
-    $(OBJ)$/t_store.obj
+	$(OBJ)$/t_leak.obj	\
+	$(OBJ)$/t_file.obj	\
+	$(OBJ)$/t_page.obj	\
+	$(OBJ)$/t_base.obj	\
+	$(OBJ)$/t_store.obj
 
 APP1TARGET=		t_file
 APP1OBJS=		$(OBJ)$/t_file.obj
@@ -93,11 +93,12 @@ APP3STDLIBS=	$(STOREDBGLIB)
 APP3STDLIBS+=	$(SALLIB)
 APP3DEPN=	$(STOREDBGLIB)
 
- APP4TARGET=		t_store
- APP4OBJS=		$(OBJ)$/t_store.obj
- APP4STDLIBS=	$(STORELIB)
- APP4STDLIBS+=	$(SALLIB)
- APP4DEPN=	$(SLB)$/store.lib
+APP4TARGET=		t_store
+APP4OBJS=		$(OBJ)$/t_store.obj
+APP4STDLIBS=	$(STORELIB)
+APP4STDLIBS+=	$(SALLIB)
+APP4DEPN=	$(SLB)$/store.lib
+APP4RPATH=	UREBIN
 
  APP5TARGET=		t_leak
  APP5OBJS=		$(OBJ)$/t_leak.obj
