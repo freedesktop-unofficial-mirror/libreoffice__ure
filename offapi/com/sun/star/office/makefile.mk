@@ -8,7 +8,7 @@
 #
 # $RCSfile: makefile.mk,v $
 #
-# $Revision: 1.13 $
+# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -29,42 +29,23 @@
 #
 #*************************************************************************
 
-PRJ=..$/..
-
-PRJNAME=remotebridges
-TARGET = bridgefac.uno
-ENABLE_EXCEPTIONS=TRUE
-COMP1TYPELIST = brdgfctr
+PRJ=..$/..$/..$/..
+PRJNAME=offapi
+TARGET=cssoffice
+PACKAGE=com$/sun$/star$/office
 
 # --- Settings -----------------------------------------------------
-.INCLUDE :  settings.mk
-.IF "$(L10N_framework)"==""
-DLLPRE =
+
+.INCLUDE :  $(PRJ)$/util$/makefile.pmk
+
+# ------------------------------------------------------------------------
+
+IDLFILES=\
+    XAnnotation.idl\
+    XAnnotationEnumeration.idl\
+    XAnnotationAccess.idl
+
 # ------------------------------------------------------------------
 
-SLOFILES= \
-	$(SLO)$/bridgefactory.obj\
-	$(SLO)$/bridgeimpl.obj 
-
-SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = brdgfctr.map
-
-SHL1STDLIBS= \
-		$(SALLIB)	\
-		$(CPPULIB) 	\
-		$(CPPUHELPERLIB) \
-		$(RMCXTLIB)
-
-#SHL1DEPN=
-SHL1IMPLIB=		i$(TARGET)
-SHL1LIBS=		$(SLB)$/$(TARGET).lib
-SHL1DEF=		$(MISC)$/$(SHL1TARGET).def
-SHL1RPATH=      URELIB
-
-DEF1NAME=		$(SHL1TARGET)
-.ENDIF 		# L10N_framework
-
-# --- Targets ------------------------------------------------------
-
-.INCLUDE :	target.mk
-
+.INCLUDE :  target.mk
+.INCLUDE :  $(PRJ)$/util$/target.pmk
