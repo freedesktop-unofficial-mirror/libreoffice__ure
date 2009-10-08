@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -72,9 +72,9 @@ service DataPilotItem
 
     //=========================================================================
 
-        /** specifies whether the item is hidden.
-        */
-        [property] boolean IsHidden;
+    /** specifies whether the item is hidden.
+    */
+    [property] boolean IsHidden;
 
     //=========================================================================
 
@@ -82,7 +82,7 @@ service DataPilotItem
 
         @since OOo 2.4.0
      */
-    [optional, property] boolean Position;
+    [optional, property] long Position;
 };
 
 //=============================================================================

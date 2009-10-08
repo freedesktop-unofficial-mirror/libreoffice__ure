@@ -49,7 +49,7 @@ published constants KeyModifier
  
     //------------------------------------------------------------------------- 
      
-    /** refers in the most cases to the 'Ctrl' key.
+    /** refers in the most cases to the 'Ctrl' key (Cmd on Mac OS X).
      */
     const short MOD1 = 2; 
  
@@ -58,7 +58,10 @@ published constants KeyModifier
     /** refers in the most cases to the 'Alt' key.
      */
     const short MOD2 = 4; 
- 
+
+    /** refers in the most cases to the 'Ctrl' key (Mac OS X)
+         */
+    const short MOD3 = 8; 
 }; 
  
 //============================================================================= 
