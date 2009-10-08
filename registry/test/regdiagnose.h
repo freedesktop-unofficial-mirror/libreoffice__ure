@@ -6,9 +6,8 @@
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: flushcode.cxx,v $
- *
- * $Revision: 1.3 $
+ * $RCSfile: regdiagnose.h,v $
+ * $Revision: 1.1.2.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -29,22 +28,20 @@
  *
  ************************************************************************/
 
-#include "precompiled_bridges.hxx"
-#include "sal/config.h"
 
-#include "doflushcode.hxx"
-#include "flushcode.hxx"
+#ifndef REG_DIAGNOSE_H
+#define REG_DIAGNOSE_H
 
-namespace bridges { namespace cpp_uno { namespace cc5_solaris_sparc64 {
+#include <osl/diagnose.h>
 
-void flushCode(void const * begin, void const * end) {
-    unsigned long n =
-        static_cast< char const * >(end) - static_cast< char const * >(begin);
-    if (n != 0) {
-        unsigned long adr = reinterpret_cast< unsigned long >(begin);
-        unsigned long off = adr & 7;
-        doFlushCode(adr - off, (n + off + 7) >> 3);
-    }
-}
+#define REG_ENSURE(c, m)   _REG_ENSURE(c, OSL_THIS_FILE, __LINE__, m)
 
-} } }
+#define _REG_ENSURE(c, f, l, m) \
+    do \
+    {  \
+        if (!(c) && _OSL_GLOBAL osl_assertFailedLine(f, l, m)) \
+            _OSL_GLOBAL osl_breakDebug(); \
+    } while (0)
+
+
+#endif // REG_DIAGNOSE_H

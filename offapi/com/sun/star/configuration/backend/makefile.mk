@@ -8,7 +8,7 @@
 #
 # $RCSfile: makefile.mk,v $
 #
-# $Revision: 1.9 $
+# $Revision: 1.9.102.1 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -38,71 +38,70 @@ PACKAGE = com$/sun$/star$/configuration$/backend
 .INCLUDE: $(PRJ)$/util$/makefile.pmk
 
 IDLFILES = \
-    Backend.idl				\
-    SingleBackend.idl	    \
-    LocalSingleBackend.idl	\
-    LdapSingleBackend.idl	\
-    BackendAdapter.idl		\
-    SingleBackendAdapter.idl \
-    OfflineBackend.idl		\
-    OnlineBackend.idl		\
-    HierarchyBrowser.idl	\
-    LocalHierarchyBrowser.idl	\
-    DataImporter.idl		\
-    LocalDataImporter.idl	\
-    LayerFilter.idl	\
-    LayerUpdateMerger.idl	\
-    Importer.idl			\
-    MergeImporter.idl		\
-    CopyImporter.idl		\
-    Schema.idl				\
-    Layer.idl				\
-    UpdatableLayer.idl      \
-    SingleLayerStratum.idl  \
-    LocalSingleStratum.idl  \
-    LdapSingleStratum.idl	\
-    MultiStratumBackend.idl \
-    MultiLayerStratum.idl   \
-    LdapMultiLayerStratum.idl \
+	Backend.idl				\
+	SingleBackend.idl	    \
+	LocalSingleBackend.idl	\
+	LdapSingleBackend.idl	\
+	BackendAdapter.idl		\
+	SingleBackendAdapter.idl \
+	OfflineBackend.idl		\
+	OnlineBackend.idl		\
+	HierarchyBrowser.idl	\
+	LocalHierarchyBrowser.idl	\
+	DataImporter.idl		\
+	LocalDataImporter.idl	\
+	LayerFilter.idl	\
+	LayerUpdateMerger.idl	\
+	Importer.idl			\
+	MergeImporter.idl		\
+	CopyImporter.idl		\
+	Schema.idl				\
+	Layer.idl				\
+	UpdatableLayer.idl      \
+	SingleLayerStratum.idl  \
+	LocalSingleStratum.idl  \
+	LdapSingleStratum.idl	\
+	MultiStratumBackend.idl \
+	MultiLayerStratum.idl   \
+	LdapMultiLayerStratum.idl \
     SchemaSupplier.idl	    \
-    LocalSchemaSupplier.idl \
-    PolicyLayerBackend.idl  \
-    PlatformBackend.idl		\
-    SystemIntegration.idl	\
-    LayerDescriber.idl		\
-    InteractionHandler.idl  \
-    XBackend.idl			\
-    XBackendEntities.idl	\
-    XSchemaSupplier.idl		\
-    XVersionedSchemaSupplier.idl		\
-    XSingleLayerStratum.idl	\
-    XMultiLayerStratum.idl	\
-    XSchema.idl				\
-    XLayer.idl				\
-    XCompositeLayer.idl     \
-    XUpdatableLayer.idl     \
-    XSchemaHandler.idl		\
-    XLayerHandler.idl		\
-    XUpdateHandler.idl      \
-    XLayerImporter.idl		\
-    XBackendChangesNotifier.idl	\
-    XBackendChangesListener.idl	\
-    XLayerContentDescriber.idl	\
-    ComponentChangeEvent.idl	\
-    TemplateIdentifier.idl  \
-    SchemaAttribute.idl     \
-    NodeAttribute.idl       \
-    PropertyInfo.idl			\
-    MergeRecoveryRequest.idl	\
-    MalformedDataException.idl	\
-    BackendSetupException.idl	\
-    StratumCreationException.idl	\
-    AuthenticationFailedException.idl	\
-    CannotConnectException.idl	\
-    InvalidAuthenticationMechanismException.idl \
-    BackendAccessException.idl	\
-    ConnectionLostException.idl	\
-    InsufficientAccessRightsException.idl
+	LocalSchemaSupplier.idl \
+	PlatformBackend.idl		\
+	SystemIntegration.idl	\
+	LayerDescriber.idl		\
+	InteractionHandler.idl  \
+	XBackend.idl			\
+	XBackendEntities.idl	\
+	XSchemaSupplier.idl		\
+	XVersionedSchemaSupplier.idl		\
+	XSingleLayerStratum.idl	\
+	XMultiLayerStratum.idl	\
+	XSchema.idl				\
+	XLayer.idl				\
+	XCompositeLayer.idl     \
+	XUpdatableLayer.idl     \
+	XSchemaHandler.idl		\
+	XLayerHandler.idl		\
+	XUpdateHandler.idl      \
+	XLayerImporter.idl		\
+	XBackendChangesNotifier.idl	\
+	XBackendChangesListener.idl	\
+	XLayerContentDescriber.idl	\
+	ComponentChangeEvent.idl	\
+	TemplateIdentifier.idl  \
+	SchemaAttribute.idl     \
+	NodeAttribute.idl       \
+	PropertyInfo.idl			\
+	MergeRecoveryRequest.idl	\
+	MalformedDataException.idl	\
+	BackendSetupException.idl	\
+	StratumCreationException.idl	\
+	AuthenticationFailedException.idl	\
+	CannotConnectException.idl	\
+	InvalidAuthenticationMechanismException.idl \
+	BackendAccessException.idl	\
+	ConnectionLostException.idl	\
+	InsufficientAccessRightsException.idl
 
 .INCLUDE: target.mk
 .INCLUDE: $(PRJ)$/util$/target.pmk

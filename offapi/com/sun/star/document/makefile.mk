@@ -8,7 +8,7 @@
 #
 # $RCSfile: makefile.mk,v $
 #
-# $Revision: 1.47 $
+# $Revision: 1.46.12.2 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,69 +42,72 @@ PACKAGE=com$/sun$/star$/document
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AmbigousFilterRequest.idl\
-    BrokenPackageRequest.idl\
-        CorruptedFilterConfigurationException.idl\
-    DocumentInfo.idl\
-        DocumentProperties.idl\
-    EventDescriptor.idl\
-    EventObject.idl\
-    Events.idl\
-    ExportFilter.idl\
-    ExtendedTypeDetection.idl\
-        ExtendedTypeDetectionFactory.idl\
-    FilterAdapter.idl\
-    FilterFactory.idl\
-    FilterOptionsRequest.idl\
-    HeaderFooterSettings.idl\
-    ImportFilter.idl\
-    LinkTarget.idl\
-    LinkTargets.idl\
-    LockedDocumentRequest.idl\
-    MacroExecMode.idl\
-    MediaDescriptor.idl\
-    NoSuchFilterRequest.idl\
-    OfficeDocument.idl\
-    OleEmbeddedServerRegistration.idl\
-    PrinterIndependentLayout.idl\
-    RedlineDisplayType.idl \
-    Settings.idl\
-    StandaloneDocumentInfo.idl\
-    TypeDetection.idl\
-    UpdateDocMode.idl\
-    XActionLockable.idl\
-    XBinaryStreamResolver.idl\
-    XDocumentInfo.idl\
-    XDocumentInfoSupplier.idl\
-    XDocumentInsertable.idl\
-    XDocumentProperties.idl\
-    XDocumentPropertiesSupplier.idl\
-    XDocumentSubStorageSupplier.idl\
-    XEmbeddedObjectResolver.idl\
-    XEmbeddedObjectSupplier.idl\
-    XEmbeddedObjectSupplier2.idl\
-    XEmbeddedScripts.idl\
-    XEventBroadcaster.idl\
-    XEventListener.idl\
-    XEventsSupplier.idl\
-    XExporter.idl\
-    XExtendedFilterDetection.idl\
-    XFilter.idl\
-    XFilterAdapter.idl\
-    XGraphicObjectResolver.idl\
-    XImporter.idl\
-    XInteractionFilterOptions.idl\
-    XInteractionFilterSelect.idl\
-    XLinkTargetSupplier.idl\
-    XMimeTypeInfo.idl\
-    XOOXMLDocumentPropertiesImporter.idl\
+	AmbigousFilterRequest.idl\
+	BrokenPackageRequest.idl\
+    CorruptedFilterConfigurationException.idl\
+    DocumentEvent.idl\
+	DocumentInfo.idl\
+    DocumentProperties.idl\
+	EventDescriptor.idl\
+	EventObject.idl\
+	Events.idl\
+	ExportFilter.idl\
+	ExtendedTypeDetection.idl\
+    ExtendedTypeDetectionFactory.idl\
+	FilterAdapter.idl\
+	FilterFactory.idl\
+	FilterOptionsRequest.idl\
+	HeaderFooterSettings.idl\
+	ImportFilter.idl\
+	LinkTarget.idl\
+	LinkTargets.idl\
+	LockedDocumentRequest.idl\
+	MacroExecMode.idl\
+	MediaDescriptor.idl\
+	NoSuchFilterRequest.idl\
+	OfficeDocument.idl\
+	OleEmbeddedServerRegistration.idl\
+	PrinterIndependentLayout.idl\
+	RedlineDisplayType.idl \
+	Settings.idl\
+	StandaloneDocumentInfo.idl\
+	TypeDetection.idl\
+	UpdateDocMode.idl\
+	XActionLockable.idl\
+	XBinaryStreamResolver.idl\
+	XDocumentEventBroadcaster.idl\
+	XDocumentEventListener.idl\
+	XDocumentInfo.idl\
+	XDocumentInfoSupplier.idl\
+	XDocumentInsertable.idl\
+	XDocumentProperties.idl\
+	XDocumentPropertiesSupplier.idl\
+	XDocumentSubStorageSupplier.idl\
+	XEmbeddedObjectResolver.idl\
+	XEmbeddedObjectSupplier.idl\
+	XEmbeddedObjectSupplier2.idl\
+	XEmbeddedScripts.idl\
+	XEventBroadcaster.idl\
+	XEventListener.idl\
+	XEventsSupplier.idl\
+	XExporter.idl\
+	XExtendedFilterDetection.idl\
+	XFilter.idl\
+	XFilterAdapter.idl\
+	XGraphicObjectResolver.idl\
+	XImporter.idl\
+	XInteractionFilterOptions.idl\
+	XInteractionFilterSelect.idl\
+	XLinkTargetSupplier.idl\
+	XMimeTypeInfo.idl\
+	XOOXMLDocumentPropertiesImporter.idl\
         XRedlinesSupplier.idl \
-    XScriptInvocationContext.idl\
-    XStandaloneDocumentInfo.idl\
-    XStorageBasedDocument.idl\
-    XStorageChangeListener.idl\
-    XTypeDetection.idl\
-    XViewDataSupplier.idl\
+	XScriptInvocationContext.idl\
+	XStandaloneDocumentInfo.idl\
+	XStorageBasedDocument.idl\
+	XStorageChangeListener.idl\
+	XTypeDetection.idl\
+	XViewDataSupplier.idl\
     LinkUpdateModes.idl\
     XDocumentRevisionListPersistence.idl\
     DocumentRevisionListPersistence.idl \

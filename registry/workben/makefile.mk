@@ -8,7 +8,7 @@
 #
 # $RCSfile: makefile.mk,v $
 #
-# $Revision: 1.8 $
+# $Revision: 1.8.10.2 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -36,6 +36,8 @@ TARGET=regtest
 TARGETTYPE=CUI
 LIBTARGET=NO
 
+ENABLE_EXCEPTIONS := TRUE
+
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
 
@@ -49,8 +51,8 @@ RGTLIB = -lrgt$(DLLPOSTFIX)
 
 
 CXXFILES= 	regtest.cxx   	\
-            test.cxx		\
-            regspeed.cxx
+			test.cxx		\
+			regspeed.cxx
 
 
 APP1TARGET= $(TARGET)
@@ -62,15 +64,27 @@ APP1STDLIBS=\
 
 APP2TARGET= test
 APP2OBJS=   $(OBJ)$/test.obj
+APP2RPATH=NONE
+.IF "$(GUI)"=="UNX" && "$(OS)"!="MACOSX"
 
+.IF "$(OS)"=="LINUX"
+APP2LINKFLAGS=-Wl,-rpath,\''$$ORIGIN:$$ORIGIN/../lib'\'
+.ENDIF
+
+.IF "$(OS)"=="SOLARIS"
+APP2LINKFLAGS=-R\''$$ORIGIN/../lib:$$ORIGIN'\'
+.ENDIF
+    
+.ENDIF # "$(OS)"=="UNX"
+    
 APP2STDLIBS=\
-            $(RGTLIB)
+			$(RGTLIB)
 
 APP3TARGET= regspeed
 APP3OBJS=   $(OBJ)$/regspeed.obj
 
 APP3STDLIBS=\
-            $(SALLIB)	\
+			$(SALLIB)	\
             $(REGLIB) 	 
 
 .INCLUDE :  target.mk

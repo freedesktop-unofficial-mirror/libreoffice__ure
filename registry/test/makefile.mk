@@ -8,7 +8,7 @@
 #
 # $RCSfile: makefile.mk,v $
 #
-# $Revision: 1.8 $
+# $Revision: 1.8.10.2 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -35,8 +35,8 @@ PRJNAME=registry
 TARGET=regtest
 
 USE_LDUMP2=TRUE
-#LDUMP2=LDUMP3
 
+ENABLE_EXCEPTIONS := TRUE
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
@@ -46,29 +46,30 @@ USE_LDUMP2=TRUE
 CDEFS += -DDLL_VERSION=$(EMQ)"$(DLLPOSTFIX)$(EMQ)"
 
 CXXFILES= \
-               testregcpp.cxx	\
-               testmerge.cxx		
+	       	testregcpp.cxx	\
+	       	testmerge.cxx		
 
 
 LIB1TARGET= $(SLB)$/$(TARGET).lib
 
 LIB1OBJFILES= \
-                $(SLO)$/testregcpp.obj	\
-                $(SLO)$/testmerge.obj
+				$(SLO)$/testregcpp.obj	\
+				$(SLO)$/testmerge.obj
 
 
 SHL1TARGET= rgt$(DLLPOSTFIX)
 SHL1IMPLIB= rgt
 SHL1STDLIBS=	\
-                $(SALLIB) \
-                $(SALHELPERLIB)	\
-                $(STDLIBCPP)
+				$(SALLIB) \
+				$(SALHELPERLIB)	\
+                $(REGLIB) \
+				$(STDLIBCPP)
 
 SHL1LIBS=	$(LIB1TARGET)
 SHL1DEPN=	$(LIB1TARGET)
 SHL1DEF=	$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=	$(SHL1TARGET)
-             
+			 
 DEF1DEPN	=$(MISC)$/rgt$(DLLPOSTFIX).flt $(SLOFILES)
 DEFLIB1NAME =$(TARGET)
 DEF1DES 	=Registry Runtime - TestDll
@@ -84,10 +85,10 @@ DEF1DES 	=Registry Runtime - TestDll
 
 
 $(MISC)$/rgt$(DLLPOSTFIX).flt:
-    @echo ------------------------------
-    @echo Making: $@
-    @echo WEP>$@
-    @echo LIBMAIN>>$@
-    @echo LibMain>>$@
+	@echo ------------------------------
+	@echo Making: $@
+	@echo WEP>$@
+	@echo LIBMAIN>>$@
+	@echo LibMain>>$@
 
 
