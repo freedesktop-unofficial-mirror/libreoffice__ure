@@ -45,6 +45,18 @@
 #ifndef __com_sun_star_chart_ChartAxisArrangeOrderType_idl__ 
 #include <com/sun/star/chart/ChartAxisArrangeOrderType.idl> 
 #endif 
+
+#ifndef __com_sun_star_chart_ChartAxisPosition_idl__ 
+#include <com/sun/star/chart/ChartAxisPosition.idl> 
+#endif 
+
+#ifndef __com_sun_star_chart_ChartAxisLabelPosition_idl__ 
+#include <com/sun/star/chart/ChartAxisLabelPosition.idl> 
+#endif 
+
+#ifndef __com_sun_star_chart_ChartAxisMarkPosition_idl__ 
+#include <com/sun/star/chart/ChartAxisMarkPosition.idl> 
+#endif 
  
 #ifndef _com_sun_star_xml_UserDefinedAttributeSupplier_idl_
 #include <com/sun/star/xml/UserDefinedAttributeSupplier.idl>
@@ -83,6 +95,10 @@ published service ChartAxis
     [optional] service com::sun::star::xml::UserDefinedAttributeSupplier;
 
     interface com::sun::star::beans::XPropertySet; 
+
+    //------------------------------------------------------------------------- 
+    /** Properties for scaling:
+    */
  
     //------------------------------------------------------------------------- 
      
@@ -98,15 +114,17 @@ published service ChartAxis
  
     //------------------------------------------------------------------------- 
      
-    /** Contains the origin of the axis scale.
-     */
-    [optional, property] double Origin; 
- 
-    //------------------------------------------------------------------------- 
-     
     /** Contains the distance between the main tick marks.
      */
     [optional, property] double StepMain; 
+
+    //------------------------------------------------------------------------- 
+     
+    /** 
+    Contains the number of help intervals within a main interval. E.g. a StepHelpCount of 5 divides
+    the main interval into 5 pieces and thus producces 4 help tick marks.
+    */
+    [optional, property] long StepHelpCount; 
  
     //------------------------------------------------------------------------- 
      
@@ -115,14 +133,6 @@ published service ChartAxis
     Contains the distance between the help tick marks.
     */
     [optional, property] double StepHelp; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** 
-    Contains the number of help intervals within a main interval. E.g. a StepHelpCount of 5 divides
-    the main interval into 5 pieces and thus producces 4 help tick marks.
-    */
-    [optional, property] long StepHelpCount; 
  
     //------------------------------------------------------------------------- 
      
@@ -137,12 +147,6 @@ published service ChartAxis
         this property is <TRUE/>.
      */
     [optional, property] boolean AutoMin; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** The origin is calculated by the chart if this property is <TRUE/>.
-     */
-    [optional, property] boolean AutoOrigin; 
  
     //-------------------------------------------------------------------------
 
@@ -165,71 +169,69 @@ published service ChartAxis
         not (linear).
      */
     [optional, property] boolean Logarithmic; 
- 
+
     //------------------------------------------------------------------------- 
      
-    /** Determines whether to display text at the axis or not.
+    /** Determines if the axis orientation is mathematical or reversed.
      */
-    [property] boolean DisplayLabels; 
- 
+    [optional, property] boolean ReverseDirection;
+
     //------------------------------------------------------------------------- 
      
-    /** Determines the rotation of the text elements
-        (axis description) in 100th degrees.
+    /** Determines where the axis crosses the other axis.
      */
-    [property] long TextRotation; 
- 
+    [optional, property] com::sun::star::chart::ChartAxisPosition CrossoverPosition; 
+
     //------------------------------------------------------------------------- 
      
-    /** Determines the position of the marks.@see ChartAxisMarks
+    /** Determines the scale value on the other axis when CrossoverPosition is set to VALUE.
+     */
+    [optional, property] double CrossoverValue; 
+
+    //------------------------------------------------------------------------- 
+     
+    /** Indicates the reference value where bars or areas have their grounding.
+        This property has only an effect when the used odf fileformat does not allow for
+        further axis posiioning or the axis is a secondary y-axis.
+     */
+    [optional, property] double Origin; 
+
+    //------------------------------------------------------------------------- 
+     
+    /** The origin is calculated by the chart if this property is <TRUE/>.
+     */
+    [optional, property] boolean AutoOrigin; 
+     
+    //------------------------------------------------------------------------- 
+    /** Properties for interval marks:
+    */
+
+    //------------------------------------------------------------------------- 
+     
+    /** Determines the type of the marks.@see ChartAxisMarks
      */
     [property] long Marks; 
  
     //------------------------------------------------------------------------- 
      
-    /** Determines the position of the help marks.@see ChartAxisMarks
+    /** Determines the type of the help marks.@see ChartAxisMarks
      */
     [property] long HelpMarks; 
- 
     //------------------------------------------------------------------------- 
      
-    /** Determines the overlap of the bars in a bar-type chart.
-        
-        <p>The value is given in percent of the width of the bars. The
-        valid range is -100% to +100%. +100% means full overlap, -100%
-        indicates a distance of one bar between 2 neighboring bars.</p>
+    /** Determines where the interval marks are placed.
      */
-    [property] long Overlap; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** Specifies the width of the gaps between each set of data points
-        in a bar chart.
-        
-        <p>The value is given in percent of the width of a bar; the
-        valid range is 0 to 600%.</p>
-     */
-    [property] long GapWidth; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** The axis description may be arranged in a special order for a
-        better placement.
-     */
-    [property] com::sun::star::chart::ChartAxisArrangeOrderType ArrangeOrder; 
- 
-    //------------------------------------------------------------------------- 
-     
-    /** Determines if long text is broken into multiple lines.
-     */
-    [property] boolean TextBreak; 
+    [optional, property] com::sun::star::chart::ChartAxisMarkPosition MarkPosition; 
 
     //------------------------------------------------------------------------- 
+    /** Properties for axes labels:
+    */
 
-    /** Determines if certain labels are hidden, if they would otherwise overlap.
-        In this case, the value of this property must be set to <FALSE/>.
+    //------------------------------------------------------------------------- 
+     
+    /** Determines whether to display text at the axis or not.
      */
-    [property] boolean TextCanOverlap;
+    [property] boolean DisplayLabels; 
 
     //------------------------------------------------------------------------- 
      
@@ -249,10 +251,60 @@ published service ChartAxis
 
     //------------------------------------------------------------------------- 
      
-    /** Determines if the axis orientation is mathematical or reversed.
+    /** Determines where the axis labels are placed.
      */
-    [optional, property] boolean ReverseDirection; 
+    [optional, property] com::sun::star::chart::ChartAxisLabelPosition LabelPosition; 
  
+    //------------------------------------------------------------------------- 
+     
+    /** Determines the rotation of the text elements
+        (axis description) in 100th degrees.
+     */
+    [property] long TextRotation; 
+
+    //------------------------------------------------------------------------- 
+     
+    /** The axis description may be arranged in a special order for a
+        better placement.
+     */
+    [property] com::sun::star::chart::ChartAxisArrangeOrderType ArrangeOrder; 
+  
+    //------------------------------------------------------------------------- 
+     
+    /** Determines if long text is broken into multiple lines.
+     */
+    [property] boolean TextBreak; 
+
+    //------------------------------------------------------------------------- 
+
+    /** Determines if certain labels are hidden, if they would otherwise overlap.
+        In this case, the value of this property must be set to <FALSE/>.
+     */
+    [property] boolean TextCanOverlap;
+
+    //------------------------------------------------------------------------- 
+    /** Properties related to bar charts:
+    */
+
+    //------------------------------------------------------------------------- 
+     
+    /** Determines the overlap of the bars in a bar-type chart.
+        
+        <p>The value is given in percent of the width of the bars. The
+        valid range is -100% to +100%. +100% means full overlap, -100%
+        indicates a distance of one bar between 2 neighboring bars.</p>
+     */
+    [property] long Overlap; 
+ 
+    //------------------------------------------------------------------------- 
+     
+    /** Specifies the width of the gaps between each set of data points
+        in a bar chart.
+        
+        <p>The value is given in percent of the width of a bar; the
+        valid range is 0 to 600%.</p>
+     */
+    [property] long GapWidth; 
 }; 
  
 //============================================================================= 

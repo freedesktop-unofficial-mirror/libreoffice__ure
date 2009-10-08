@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: XTextAppendAndConvert.idl,v $
- * $Revision: 1.4 $
+ * $Revision: 1.4.44.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -29,7 +29,7 @@
  ************************************************************************/
 #ifndef __com_sun_star_text_XTextAppendAndConvert_idl__ 
 #define __com_sun_star_text_XTextAppendAndConvert_idl__ 
- 
+
 
 #ifndef __com_sun_star_text_XTextAppend_idl__ 
 #include <com/sun/star/text/XTextAppend.idl> 
@@ -42,12 +42,13 @@
 #endif 
 
 //============================================================================= 
- 
+
  module com {  module sun {  module star {  module text {  
  
 //============================================================================= 
  
-/** merges the functions of XTextAppend, XTextContentAppend and XTextConvert.
+/** merges the functions of <type>XTextAppend</type>,
+    <type>XTextContentAppend</type> and <type>XTextConvert</type>.
  */
      interface XTextAppendAndConvert
 { 
@@ -59,5 +60,5 @@
 //============================================================================= 
  
 }; }; }; };  
- 
+
 #endif 

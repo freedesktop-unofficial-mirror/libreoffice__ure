@@ -55,9 +55,10 @@ CFLAGSCXX += -fno-omit-frame-pointer
 CFLAGSNOOPT=-O0
 
 SLOFILES= \
-    $(SLO)$/dllinit.obj		\
-    $(SLO)$/except.obj		\
-    $(SLO)$/cpp2uno.obj		\
+	$(SLO)$/dllinit.obj		\
+	$(SLO)$/smallstruct.obj		\
+	$(SLO)$/except.obj		\
+	$(SLO)$/cpp2uno.obj		\
     $(SLO)$/uno2cpp.obj \
     $(SLO)$/call.obj
 
@@ -72,8 +73,8 @@ SHL1OBJS = $(SLOFILES)
 SHL1LIBS = $(SLB)$/cpp_uno_shared.lib
 
 SHL1STDLIBS= \
-    $(CPPULIB)			\
-    $(SALLIB)
+	$(CPPULIB)			\
+	$(SALLIB)
 
 DEF1NAME=	$(SHL1TARGET)
 

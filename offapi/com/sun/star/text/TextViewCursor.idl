@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: TextViewCursor.idl,v $
- * $Revision: 1.10 $
+ * $Revision: 1.10.122.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -29,25 +29,26 @@
  ************************************************************************/
 #ifndef __com_sun_star_text_TextViewCursor_idl__ 
 #define __com_sun_star_text_TextViewCursor_idl__ 
- 
+
 #ifndef __com_sun_star_text_TextLayoutCursor_idl__ 
 #include <com/sun/star/text/TextLayoutCursor.idl> 
 #endif 
- 
+
 #ifndef __com_sun_star_view_XScreenCursor_idl__ 
 #include <com/sun/star/view/XScreenCursor.idl> 
 #endif 
- 
- 
+
+
 //============================================================================= 
- 
+
  module com {  module sun {  module star {  module text {  
  
 //============================================================================= 
  
 // DocMerge from xml: service com::sun::star::text::TextViewCursor
 /** A <type>TextViewCursor</type> is a <type>TextRange</type> which can travel 
-    within a view of a <type scope="com::sun::star::drawing">Text</type> object.@see TextDocumentView
+    within a view of a <type>Text</type> object.
+    @see TextDocumentView
  */
 published service TextViewCursor
 { 
@@ -62,5 +63,5 @@ published service TextViewCursor
 //============================================================================= 
  
 }; }; }; };  
- 
+
 #endif 

@@ -29,6 +29,7 @@
 #
 #*************************************************************************
 
+
 PRJ=..$/..$/..$/..
 
 PRJNAME=offapi
@@ -47,51 +48,55 @@ IDLFILES=\
     ConversionDictionaryType.idl \
     ConversionDirection.idl \
     ConversionPropertyType.idl \
-    DictionaryEvent.idl\
-    DictionaryEventFlags.idl\
-    DictionaryList.idl\
-    DictionaryListEvent.idl\
-    DictionaryListEventFlags.idl\
-    DictionaryType.idl\
+    Dictionary.idl\
+	DictionaryEvent.idl\
+	DictionaryEventFlags.idl\
+	DictionaryList.idl\
+	DictionaryListEvent.idl\
+	DictionaryListEventFlags.idl\
+	DictionaryType.idl\
     HangulHanjaConversionDictionary.idl \
-    Hyphenator.idl\
-    LinguProperties.idl\
-    LinguServiceEvent.idl\
-    LinguServiceEventFlags.idl\
-    LinguServiceManager.idl\
-    SpellChecker.idl\
-    SpellFailure.idl\
-    Thesaurus.idl\
-    XAvailableLocales.idl\
+	Hyphenator.idl\
+	LinguProperties.idl\
+	LinguServiceEvent.idl\
+	LinguServiceEventFlags.idl\
+	LinguServiceManager.idl\
+	SpellChecker.idl\
+	SpellFailure.idl\
+	Thesaurus.idl\
+	XAvailableLocales.idl\
     XConversionDictionary.idl \
     XConversionDictionaryList.idl \
     XConversionPropertyType.idl \
-    XDictionary.idl\
-    XDictionary1.idl\
-    XDictionaryEntry.idl\
-    XDictionaryEventListener.idl\
-    XDictionaryList.idl\
-    XDictionaryListEventListener.idl\
-    XHyphenatedWord.idl\
-    XHyphenator.idl\
+	XDictionary.idl\
+	XDictionary1.idl\
+	XDictionaryEntry.idl\
+	XDictionaryEventListener.idl\
+	XDictionaryList.idl\
+	XDictionaryListEventListener.idl\
+	XHyphenatedWord.idl\
+	XHyphenator.idl\
     XLanguageGuessing.idl\
-    XLinguServiceEventBroadcaster.idl\
-    XLinguServiceEventListener.idl\
-    XLinguServiceManager.idl\
-    XMeaning.idl\
-    XPossibleHyphens.idl\
-    XSearchableDictionaryList.idl\
-    XSpellAlternatives.idl\
-    XSpellChecker.idl\
-    XSpellChecker1.idl\
-    XSupportedLanguages.idl\
-    XSupportedLocales.idl\
+	XLinguServiceEventBroadcaster.idl\
+	XLinguServiceEventListener.idl\
+	XLinguServiceManager.idl\
+	XMeaning.idl\
+	XPossibleHyphens.idl\
+    XSearchableDictionary.idl\
+	XSearchableDictionaryList.idl\
+	XSpellAlternatives.idl\
+    XSetSpellAlternatives.idl\
+	XSpellChecker.idl\
+	XSpellChecker1.idl\
+	XSupportedLanguages.idl\
+	XSupportedLocales.idl\
     XThesaurus.idl\
-    SingleGrammarError.idl\
-    GrammarCheckingResult.idl\
-    XGrammarChecker.idl\
-    XGrammarCheckingIterator.idl\
-    GrammarCheckingIterator.idl
+    SingleProofreadingError.idl\
+    ProofreadingResult.idl\
+    Proofreader.idl\
+    XProofreader.idl\
+    XProofreadingIterator.idl\
+    ProofreadingIterator.idl
 
 
 # ------------------------------------------------------------------

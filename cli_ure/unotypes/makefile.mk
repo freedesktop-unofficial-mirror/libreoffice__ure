@@ -48,8 +48,8 @@ TARGET = unotypes
 POLICY_ASSEMBLY_FILE=$(BIN)/$(CLI_URETYPES_POLICY_ASSEMBLY).dll
 
 ALLTAR : \
-    $(OUT)$/bin$/cli_uretypes.dll \
-    $(POLICY_ASSEMBLY_FILE)
+	$(OUT)$/bin$/cli_uretypes.dll \
+	$(POLICY_ASSEMBLY_FILE)
 
 CLIMAKERFLAGS =
 .IF "$(debug)" != ""
@@ -58,25 +58,26 @@ CLIMAKERFLAGS += --verbose
 
 #When changing the assembly version then this must also be done in scp2
 $(OUT)$/bin$/cli_uretypes.dll : $(BIN)$/climaker.exe $(SOLARBINDIR)$/types.rdb $(BIN)$/cliureversion.mk
-    $(WRAPCMD) $(BIN)$/climaker.exe $(CLIMAKERFLAGS) \
-        --out $@ \
-        --keyfile $(BIN)$/cliuno.snk \
-        --assembly-version $(CLI_URETYPES_NEW_VERSION) \
-        --assembly-description "This assembly contains metadata for the StarOffice/OpenOffice.org API." \
-        --assembly-company "OpenOffice.org" \
-        $(SOLARBINDIR)$/udkapi.rdb
+	$(WRAPCMD) $(BIN)$/climaker.exe $(CLIMAKERFLAGS) \
+		--out $@ \
+		--keyfile $(BIN)$/cliuno.snk \
+		--assembly-version $(CLI_URETYPES_NEW_VERSION) \
+		--assembly-description "This assembly contains metadata for the StarOffice/OpenOffice.org API." \
+		--assembly-company "OpenOffice.org" \
+		$(SOLARBINDIR)$/udkapi.rdb
 
 #do not forget to deliver cli_uretypes.config. It is NOT embedded in the policy file.
+#see i62886 for the dependency on cli_uretypes.dll
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_uretypes.config $(OUT)$/bin$/cli_uretypes.dll
-    $(WRAPCMD) AL.exe -out:$@ \
-            -version:$(CLI_URETYPES_POLICY_VERSION) \
-            -keyfile:$(BIN)$/cliuno.snk \
-            -link:$(BIN)$/cli_uretypes.config
+	$(WRAPCMD) AL.exe -out:$@ \
+			-version:$(CLI_URETYPES_POLICY_VERSION) \
+			-keyfile:$(BIN)$/cliuno.snk \
+			-link:$(BIN)$/cli_uretypes.config
 
 #Create the config file that is used with the policy assembly
 $(BIN)$/cli_uretypes.config: cli_uretypes_config $(BIN)$/cliureversion.mk 
-    $(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
-    $< $@
+	$(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
+	$< $@
 
 
 .ENDIF

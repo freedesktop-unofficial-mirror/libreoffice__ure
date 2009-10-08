@@ -1,7 +1,7 @@
 #*************************************************************************
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-# 
+#
 # Copyright 2008 by Sun Microsystems, Inc.
 #
 # OpenOffice.org - a multi-platform office productivity suite
@@ -42,35 +42,36 @@ PACKAGE=com$/sun$/star$/ui$/dialogs
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    FilterOptionsDialog.idl\
-    ControlActions.idl\
-    ExecutableDialogException.idl\
-    ExecutableDialogResults.idl\
-    XExecutableDialog.idl\
-    CommonFilePickerElementIds.idl\
-    ExtendedFilePickerElementIds.idl\
-    FilePicker.idl\
-    FilePickerEvent.idl\
-    FilePreviewImageFormats.idl\
-    FolderPicker.idl\
-    ListboxControlActions.idl\
-    TemplateDescription.idl\
-    XFilePicker.idl\
-    XFilePicker2.idl\
-    XFilePickerControlAccess.idl	\
-    XFilePickerListener.idl\
-    XFilePickerNotifier.idl\
-    XFilePreview.idl\
-    XFilterGroupManager.idl\
-    XFilterManager.idl\
-    XFolderPicker.idl\
-    XControlAccess.idl\
-    XControlInformation.idl \
-    XAsynchronousExecutableDialog.idl \
-    XDialogClosedListener.idl \
-    DialogClosedEvent.idl
+	FilterOptionsDialog.idl\
+	ControlActions.idl\
+	ExecutableDialogException.idl\
+	ExecutableDialogResults.idl\
+	XExecutableDialog.idl\
+	CommonFilePickerElementIds.idl\
+	ExtendedFilePickerElementIds.idl\
+	FilePicker.idl\
+	FilePickerEvent.idl\
+	FilePreviewImageFormats.idl\
+	FolderPicker.idl\
+	ListboxControlActions.idl\
+	TemplateDescription.idl\
+	XFilePicker.idl\
+	XFilePicker2.idl\
+	XFilePickerControlAccess.idl	\
+	XFilePickerListener.idl\
+	XFilePickerNotifier.idl\
+	XFilePreview.idl\
+	XFilterGroupManager.idl\
+	XFilterManager.idl\
+	XFolderPicker.idl\
+        XControlAccess.idl\
+        XControlInformation.idl \
+        XAsynchronousExecutableDialog.idl \
+        XDialogClosedListener.idl \
+        DialogClosedEvent.idl
 
 # ------------------------------------------------------------------
 
 .INCLUDE :  target.mk
 .INCLUDE :  $(PRJ)$/util$/target.pmk
+

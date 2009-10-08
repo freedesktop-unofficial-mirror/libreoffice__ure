@@ -65,10 +65,10 @@ CHECKFORPIC=
 
 LIB1TARGET=$(SLB)$/$(TARGET).lib
 LIB1FILES=	\
-    $(SLB)$/oslall.lib	\
-    $(SLB)$/cpposl.lib	\
-    $(SLB)$/cpprtl.lib	\
-    $(SLB)$/textenc.lib 
+	$(SLB)$/oslall.lib	\
+	$(SLB)$/cpposl.lib	\
+	$(SLB)$/cpprtl.lib	\
+	$(SLB)$/textenc.lib 
 
 #.IF "$(GUI)"=="UNX"
 #LIB1FILES+=$(SLB)$/systoolsunx.lib
@@ -78,10 +78,10 @@ LIB1FILES=	\
 LIB3TARGET=$(LB)$/a$(TARGET).lib
 LIB3ARCHIV=$(LB)$/lib$(TARGET)$(DLLPOSTFIX).a
 LIB3FILES=	\
-    $(LB)$/oslall.lib	\
-    $(LB)$/cpposl.lib	\
-    $(LB)$/cpprtl.lib	\
-    $(LB)$/textenc.lib
+	$(LB)$/oslall.lib	\
+	$(LB)$/cpposl.lib	\
+	$(LB)$/cpprtl.lib	\
+	$(LB)$/textenc.lib
 
 #.IF "$(GUI)"=="UNX"
 #LIB3FILES+=$(LB)$/systoolsunx.lib
@@ -97,17 +97,22 @@ SHL1VERSIONMAP=	$(TARGET).map
 SHL1RPATH=URELIB
 
 .IF "$(GUI)"=="WNT"
+
+.IF "$(COM)"=="GCC"
+UWINAPILIB=     -luwinapi
+.ELSE
 UWINAPILIB=     $(LB)$/uwinapi.lib
+.ENDIF
 
 SHL1STDLIBS=	\
-                $(UWINAPILIB)\
-                $(ADVAPI32LIB)\
-                $(WSOCK32LIB)\
-                $(MPRLIB)\
-                $(SHELL32LIB)\
-                $(COMDLG32LIB)\
-                $(USER32LIB)\
-                $(OLE32LIB)
+				$(UWINAPILIB)\
+				$(ADVAPI32LIB)\
+				$(WSOCK32LIB)\
+				$(MPRLIB)\
+				$(SHELL32LIB)\
+				$(COMDLG32LIB)\
+				$(USER32LIB)\
+				$(OLE32LIB)
 .ENDIF # WNT
 
 .IF "$(GUI)"=="UNX"
@@ -169,11 +174,7 @@ SHL1OBJS= \
 .ENDIF # UNX
 .ENDIF # lincinc
 
-.IF "$(GUI)"=="WNT"
-SHL1DEPN=   $(UWINAPILIB)
-.ELSE
 SHL1DEPN=
-.ENDIF
 SHL1DEF=    $(MISC)$/$(SHL1TARGET).def
 
 DEF1NAME= $(SHL1TARGET)
@@ -229,25 +230,25 @@ $(SHL1TARGETN) : $(OUT)$/inc$/udkversion.h
 .IF "$(GUI)"=="UNX" || "$(USE_SHELL)"!="4nt"
 
 $(OUT)$/inc$/udkversion.h: 
-    echo '#ifndef _SAL_UDKVERSION_H_'           >  $@
-    echo '#define _SAL_UDKVERSION_H_'           >> $@
-    echo ''                                     >> $@
-    echo '#define SAL_UDK_MAJOR "$(UDK_MAJOR)"' >> $@
-    echo '#define SAL_UDK_MINOR "$(UDK_MINOR)"' >> $@
-    echo '#define SAL_UDK_MICRO "$(UDK_MICRO)"' >> $@
-    echo ''                                     >> $@
-    echo '#endif'                               >> $@
+	echo '#ifndef _SAL_UDKVERSION_H_'           >  $@
+	echo '#define _SAL_UDKVERSION_H_'           >> $@
+	echo ''                                     >> $@
+	echo '#define SAL_UDK_MAJOR "$(UDK_MAJOR)"' >> $@
+	echo '#define SAL_UDK_MINOR "$(UDK_MINOR)"' >> $@
+	echo '#define SAL_UDK_MICRO "$(UDK_MICRO)"' >> $@
+	echo ''                                     >> $@
+	echo '#endif'                               >> $@
 
 .ELSE
 
 $(OUT)$/inc$/udkversion.h: 
-    echo #ifndef _SAL_UDKVERSION_H_           >  $@
-    echo #define _SAL_UDKVERSION_H_           >> $@
-    echo.                                     >> $@
-    echo #define SAL_UDK_MAJOR "$(UDK_MAJOR)" >> $@
-    echo #define SAL_UDK_MINOR "$(UDK_MINOR)" >> $@
-    echo #define SAL_UDK_MICRO "$(UDK_MICRO)" >> $@
-    echo.                                     >> $@
-    echo #endif                               >> $@
+	echo #ifndef _SAL_UDKVERSION_H_           >  $@
+	echo #define _SAL_UDKVERSION_H_           >> $@
+	echo.                                     >> $@
+	echo #define SAL_UDK_MAJOR "$(UDK_MAJOR)" >> $@
+	echo #define SAL_UDK_MINOR "$(UDK_MINOR)" >> $@
+	echo #define SAL_UDK_MICRO "$(UDK_MICRO)" >> $@
+	echo.                                     >> $@
+	echo #endif                               >> $@
 
 .ENDIF

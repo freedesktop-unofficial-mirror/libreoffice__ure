@@ -42,20 +42,21 @@ PACKAGE=com$/sun$/star$/xml
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AttributeContainer.idl \
-    AttributeData.idl \
-    Attribute.idl \
-    ExportFilter.idl \
-    ImportFilter.idl \
-    NamespaceContainer.idl \
+	AttributeContainer.idl \
+	AttributeData.idl \
+	Attribute.idl \
+	ExportFilter.idl \
+	FastAttribute.idl \
+	ImportFilter.idl \
+	NamespaceContainer.idl \
     ParaUserDefinedAttributesSupplier.idl \
     TextUserDefinedAttributesSupplier.idl \
     UserDefinedAttributesSupplier.idl \
-    UserDefinedAttributeSupplier.idl \
-    XExportFilter.idl \
-    XImportFilter.idl \
-    XMLExportFilter.idl \
-    XMLImportFilter.idl
+	UserDefinedAttributeSupplier.idl \
+	XExportFilter.idl \
+	XImportFilter.idl \
+	XMLExportFilter.idl \
+	XMLImportFilter.idl
 
 # ------------------------------------------------------------------
 

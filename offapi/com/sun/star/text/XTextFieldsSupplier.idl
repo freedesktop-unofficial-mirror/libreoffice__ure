@@ -7,7 +7,7 @@
  * OpenOffice.org - a multi-platform office productivity suite
  *
  * $RCSfile: XTextFieldsSupplier.idl,v $
- * $Revision: 1.11 $
+ * $Revision: 1.11.122.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -29,22 +29,22 @@
  ************************************************************************/
 #ifndef __com_sun_star_text_XTextFieldsSupplier_idl__ 
 #define __com_sun_star_text_XTextFieldsSupplier_idl__ 
- 
+
 #ifndef __com_sun_star_uno_XInterface_idl__ 
 #include <com/sun/star/uno/XInterface.idl> 
 #endif 
- 
+
 #ifndef __com_sun_star_container_XEnumerationAccess_idl__ 
 #include <com/sun/star/container/XEnumerationAccess.idl> 
 #endif 
- 
+
 #ifndef __com_sun_star_container_XNameAccess_idl__ 
 #include <com/sun/star/container/XNameAccess.idl> 
 #endif 
- 
- 
+
+
 //============================================================================= 
- 
+
  module com {  module sun {  module star {  module text {  
  
 //============================================================================= 
@@ -60,7 +60,7 @@ published interface XTextFieldsSupplier: com::sun::star::uno::XInterface
      
     // DocMerge from idl: method com::sun::star::text::XTextFieldsSupplier::getTextFields
     /** @returns 
-                the collection of <type scope="com::sun::star::form::component">TextField</type> instances 
+                the collection of <type>TextField</type> instances 
                 in this context (i.e. this document).
      */
     com::sun::star::container::XEnumerationAccess getTextFields(); 
@@ -79,5 +79,5 @@ published interface XTextFieldsSupplier: com::sun::star::uno::XInterface
 //============================================================================= 
  
 }; }; }; };  
- 
+
 #endif 
