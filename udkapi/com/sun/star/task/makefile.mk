@@ -42,11 +42,12 @@ PACKAGE=com$/sun$/star$/task
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    XInteractionAbort.idl\
-    XInteractionContinuation.idl\
-    XInteractionHandler.idl\
-    XInteractionRequest.idl\
-    XInteractionRetry.idl
+	XInteractionAbort.idl\
+	XInteractionContinuation.idl\
+	XInteractionHandler.idl\
+    XInteractionHandler2.idl\
+	XInteractionRequest.idl\
+	XInteractionRetry.idl
 # ------------------------------------------------------------------
 
 .INCLUDE :  target.mk

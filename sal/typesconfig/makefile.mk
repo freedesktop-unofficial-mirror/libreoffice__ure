@@ -60,6 +60,6 @@ ALLTAR : $(INCCOM)$/sal$/typesizes.h
 .ENDIF			# "$(L10N-framework)"==""
 
 $(INCCOM)$/sal$/typesizes.h : $(BIN)$/$(TARGET)
-    -$(MKDIR) $(INCCOM)$/sal
-    $(BIN)$/$(TARGET) $@
+	-$(MKDIR) $(INCCOM)$/sal
+	$(AUGMENT_LIBRARY_PATH) $(BIN)$/$(TARGET) $@
 

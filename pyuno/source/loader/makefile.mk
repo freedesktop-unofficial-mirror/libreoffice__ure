@@ -62,11 +62,11 @@ CFLAGS+=-I$(SOLARINCDIR)$/python
 SHL1TARGET=	$(TARGET)
 
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALLIB)		\
-        $(PYUNOLIB)		\
-        $(PYTHONLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALLIB)		\
+		$(PYUNOLIB)		\
+		$(PYTHONLIB)
 
 SHL1VERSIONMAP=$(SOLARENV)$/src$/component.map
 SHL1DEPN=
@@ -88,39 +88,31 @@ SLOFILES=       $(SLO)$/pyuno_loader.obj
 
 
 COMPONENTS= \
-    stocservices.uno	\
-    invocation.uno		\
-    introspection.uno	\
-    invocadapt.uno		\
-    proxyfac.uno 		\
-    reflection.uno	\
-    pythonloader.uno
+	stocservices.uno	\
+	invocation.uno		\
+	introspection.uno	\
+	invocadapt.uno		\
+	proxyfac.uno 		\
+	reflection.uno	\
+	.$/pythonloader.uno
 
 # --- Targets ------------------------------------------------------
 
 ALL : ALLTAR \
-    $(DLLDEST)$/pythonloader.py	\
-    $(DLLDEST)$/pyuno_services.rdb
+	$(DLLDEST)$/pythonloader.py	\
+	$(DLLDEST)$/pyuno_services.rdb
 
 .INCLUDE :  target.mk
 
 $(DLLDEST)$/%.py: %.py
-    cp $? $@
+	cp $? $@
 
-# For Mac OS X,
-# The python loader component is linked against libpyuno.dylib,
-# which hasn't been delivered yet but dyld needs to know where it is
-# so regcomp can load the component.
 $(DLLDEST)$/pyuno_services.rdb : makefile.mk $(DLLDEST)$/$(DLLPRE)$(TARGET)$(DLLPOST)
-    -rm -f $@ $(DLLDEST)$/pyuno_services.tmp $(DLLDEST)$/pyuno_services.rdb
-.IF "$(OS)"=="MACOSX"
-    cd $(DLLDEST) && sh -c "DYLD_LIBRARY_PATH=$(DYLD_LIBRARY_PATH):$(OUT)$/lib;export DYLD_LIBRARY_PATH;regcomp -register -r pyuno_services.tmp $(foreach,i,$(COMPONENTS) -c $(i))"
-.ELSE
+	-rm -f $@ $(DLLDEST)$/pyuno_services.tmp $(DLLDEST)$/pyuno_services.rdb
 .IF "$(GUI)$(COM)"=="WNTGCC"
-    cd $(DLLDEST) && sh -c "export PATH='$(PATH):$(OUT)$/bin'; regcomp -register -r pyuno_services.tmp $(foreach,i,$(COMPONENTS) -c $(i))"
+	cd $(DLLDEST) && sh -c "export PATH='$(PATH):$(OUT)$/bin'; regcomp -register -r pyuno_services.tmp -wop $(foreach,i,$(COMPONENTS) -c $(i))"
 .ELSE
-    cd $(DLLDEST) && regcomp -register -r pyuno_services.tmp $(foreach,i,$(COMPONENTS) -c $(i))
+	cd $(DLLDEST) && $(REGCOMP) -register -r pyuno_services.tmp -wop $(foreach,i,$(COMPONENTS) -c $(i))
 .ENDIF    # "$(GUI)$(COM)"=="WNTGCC" 
-.ENDIF    # $(OS)=="MACOSX"
-    cd $(DLLDEST) && mv pyuno_services.tmp pyuno_services.rdb
+	cd $(DLLDEST) && mv pyuno_services.tmp pyuno_services.rdb
 
