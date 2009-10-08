@@ -1,13 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: PolicyLayerBackend.idl,v $
- * $Revision: 1.4 $
+ * $RCSfile: test_recursion.cxx,v $
+ * $Revision: 1.1.2.1 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -27,37 +27,34 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_configuration_backend_PolicyLayerBackend_idl__
-#define __com_sun_star_configuration_backend_PolicyLayerBackend_idl__
 
-#ifndef __com_sun_star_configuration_backend_XBackend_idl__
-#include <com/sun/star/configuration/backend/XBackend.idl>
-#endif 
+#include "precompiled_cppu.hxx"
+#include "sal/config.h"
 
+#include "cppunit/simpleheader.hxx"
+#include "sal/types.h"
 
-//============================================================================= 
+#include "Rec.hpp"
 
-module com { module sun { module star { module configuration { module backend {
-
-//============================================================================= 
-
-/**
-     provides access to multi layers of configuration data
-*/
-service PolicyLayerBackend
+namespace
 {
-    //------------------------------------------------------------------------- 
-     /**
-      provides access to the layer data.
-      */
-     interface XBackend ;
 
-    //------------------------------------------------------------------------- 
+class Test: public CppUnit::TestFixture {
 
-} ;
+public:
+    void testRecursion();
 
-//============================================================================= 
+    CPPUNIT_TEST_SUITE(Test);
+    CPPUNIT_TEST(testRecursion);
+    CPPUNIT_TEST_SUITE_END();
+};
 
-} ; } ; } ; } ; } ; 
+void Test::testRecursion() {
+    CPPUNIT_ASSERT_EQUAL(static_cast< sal_Int32 >(0), Rec().x.getLength());
+}
 
-#endif
+CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(Test, "tests");
+
+}
+
+NOADDITIONAL;
