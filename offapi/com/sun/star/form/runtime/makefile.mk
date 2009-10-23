@@ -43,10 +43,12 @@ PACKAGE=com$/sun$/star$/form$/runtime
 
 IDLFILES=\
     FeatureState.idl\
-    FormFeature.idl \
-    FormOperations.idl \
-    XFeatureInvalidation.idl \
-    XFormOperations.idl \
+	FormFeature.idl \
+	FormOperations.idl \
+	FormController.idl \
+	XFeatureInvalidation.idl \
+	XFormController.idl \
+	XFormOperations.idl \
 
 # ------------------------------------------------------------------
 
