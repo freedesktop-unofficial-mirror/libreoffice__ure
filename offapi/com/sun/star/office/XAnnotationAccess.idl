@@ -1,14 +1,13 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
- * Copyright IBM Corporation 2009.
- * Copyright 2009 by Sun Microsystems, Inc.
+ * 
+ * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: DocumentMSPasswordRequest.idl,v $
- * $Revision: 1.0 $
+ * $RCSfile: XGalleryItem.idl,v $
+ * $Revision: 1.4 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -28,36 +27,45 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_task_DocumentMSPasswordRequest_idl__
-#define __com_sun_star_task_DocumentMSPasswordRequest_idl__
 
-#ifndef __com_sun_star_task_PasswordRequest_idl__
-#include <com/sun/star/task/PasswordRequest.idl>
+#ifndef __com_sun_star_office_XAnnotationAccess_idl__
+#define __com_sun_star_office_XAnnotationAccess_idl__
+
+#ifndef __com_sun_star_office_XAnnotationEnumeration_idl__ 
+#include <com/sun/star/office/XAnnotationEnumeration.idl>
 #endif
 
+#ifndef __com_sun_star_lang_IllegalArgumentException_idl__
+#include <com/sun/star/office/IllegalArgumentException.idl>
+#endif
+
+#ifndef __com_sun_star_office_XAnnotation_idl__
+#include <com/sun/star/office/XAnnotation.idl>
+#endif
 
 //=============================================================================
 
-module com { module sun { module star { module task {
+module com {  module sun {  module star {  module office {
 
 //=============================================================================
-/** this request specifies the mode in which the password for Microsoft Office file format encryption should be asked
 
-    <P>
-    It is supported by <type>InteractionHandler</type> service, and can
-    be used to interact for a document password. Continuations for using with
-    the mentioned service are Abort and Approve.
-    </P>
-
-    @since OOo 3.2
-*/
-published exception DocumentMSPasswordRequest: PasswordRequest
-{
-    //-------------------------------------------------------------------------
-    /** the name of the document
+/** This interface gives access to the annotation for a document content.
+ */
+interface XAnnotationAccess
+{    
+    /** creates a new annotation and inserts it into the document content.
     */
-    string Name;
+    XAnnotation createAndInsertAnnotation();
 
+    /** removes the annotation from this document content.
+    */
+    void removeAnnotation( [in] XAnnotation annotation ) raises ( com::sun::star::lang::IllegalArgumentException );
+
+    /** @returns		 
+            a new enumeration object for this annotation container.
+            It returns NULL if there are no objects in this container.
+     */
+    XAnnotationEnumeration createAnnotationEnumeration(); 
 };
 
 //=============================================================================
