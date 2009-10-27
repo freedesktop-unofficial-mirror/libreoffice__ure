@@ -38,21 +38,22 @@ COMP1TYPELIST = remotebridge
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 # ------------------------------------------------------------------
 
 SLOFILES= \
-        $(SLO)$/remote_bridge.obj \
-        $(SLO)$/bridge_connection.obj\
-        $(SLO)$/bridge_provider.obj 
+		$(SLO)$/remote_bridge.obj \
+		$(SLO)$/bridge_connection.obj\
+		$(SLO)$/bridge_provider.obj 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = remotebridge.map
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) \
-        $(RMCXTLIB)
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) \
+		$(RMCXTLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)
@@ -61,6 +62,7 @@ SHL1DEF=		$(MISC)$/$(SHL1TARGET).def
 SHL1RPATH=      URELIB
 
 DEF1NAME=		$(SHL1TARGET)
+.ENDIF 		# L10N_framework
 
 # --- Targets ------------------------------------------------------
 .INCLUDE :	target.mk
