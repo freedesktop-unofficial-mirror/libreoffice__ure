@@ -39,6 +39,7 @@ COMP1TYPELIST = dynamicloader
 # --- Settings -----------------------------------------------------
 
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 
 # ------------------------------------------------------------------
@@ -48,15 +49,15 @@ NO_OFFUH=TRUE
 CPPUMAKERFLAGS += -C
 
 SLOFILES= \
-    $(SLO)$/dynamicloader.obj
+	$(SLO)$/dynamicloader.obj
 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = $(SOLARENV)$/src$/component.map
 
 SHL1STDLIBS=\
-        $(CPPUHELPERLIB) 	\
-        $(CPPULIB)			\
-        $(SALLIB)
+		$(CPPUHELPERLIB) 	\
+		$(CPPULIB)			\
+		$(SALLIB)
 
 SHL1IMPLIB=	i$(TARGET)
 SHL1LIBS=$(SLB)$/$(TARGET).lib
@@ -65,6 +66,7 @@ SHL1DEF=$(MISC)$/$(SHL1TARGET).def
 
 DEF1NAME=	$(SHL1TARGET)
 
+.ENDIF 		# L10N_framework
 
 # --- Targets ------------------------------------------------------
 

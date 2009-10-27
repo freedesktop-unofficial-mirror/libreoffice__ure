@@ -37,6 +37,7 @@ ENABLE_EXCEPTIONS=TRUE
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 # --- Files --------------------------------------------------------
 UNOUCRDEP=$(SOLARBINDIR)$/udkapi.rdb
 UNOUCRRDB=$(SOLARBINDIR)$/udkapi.rdb
@@ -45,45 +46,45 @@ UNOUCRRDB=$(SOLARBINDIR)$/udkapi.rdb
 UNOUCROUT=$(OUT)$/inc
 
 UNOTYPES =	com.sun.star.test.XSimpleTest \
-        com.sun.star.beans.XPropertySet \
-        com.sun.star.io.UnexpectedEOFException	\
-        com.sun.star.io.WrongFormatException	\
-        com.sun.star.io.XActiveDataControl	\
-        com.sun.star.io.XActiveDataSink	\
-        com.sun.star.io.XActiveDataSource	\
-        com.sun.star.io.XConnectable	\
-        com.sun.star.io.XMarkableStream	\
-        com.sun.star.io.XObjectInputStream	\
-        com.sun.star.io.XObjectOutputStream	\
-        com.sun.star.lang.IllegalArgumentException	\
-        com.sun.star.lang.XComponent	\
-        com.sun.star.lang.XMultiServiceFactory	\
-        com.sun.star.lang.XServiceInfo	\
-        com.sun.star.lang.XSingleServiceFactory	\
-        com.sun.star.lang.XSingleComponentFactory	\
-        com.sun.star.lang.XMultiComponentFactory	\
-        com.sun.star.uno.XComponentContext	\
-        com.sun.star.lang.XTypeProvider	\
-        com.sun.star.registry.XImplementationRegistration	\
-        com.sun.star.registry.XRegistryKey	\
-        com.sun.star.test.XSimpleTest	\
-        com.sun.star.uno.TypeClass	\
-        com.sun.star.uno.XAggregation	\
-        com.sun.star.uno.XWeak
+		com.sun.star.beans.XPropertySet \
+		com.sun.star.io.UnexpectedEOFException	\
+		com.sun.star.io.WrongFormatException	\
+		com.sun.star.io.XActiveDataControl	\
+		com.sun.star.io.XActiveDataSink	\
+		com.sun.star.io.XActiveDataSource	\
+		com.sun.star.io.XConnectable	\
+		com.sun.star.io.XMarkableStream	\
+		com.sun.star.io.XObjectInputStream	\
+		com.sun.star.io.XObjectOutputStream	\
+		com.sun.star.lang.IllegalArgumentException	\
+		com.sun.star.lang.XComponent	\
+		com.sun.star.lang.XMultiServiceFactory	\
+		com.sun.star.lang.XServiceInfo	\
+		com.sun.star.lang.XSingleServiceFactory	\
+		com.sun.star.lang.XSingleComponentFactory	\
+		com.sun.star.lang.XMultiComponentFactory	\
+		com.sun.star.uno.XComponentContext	\
+		com.sun.star.lang.XTypeProvider	\
+		com.sun.star.registry.XImplementationRegistration	\
+		com.sun.star.registry.XRegistryKey	\
+		com.sun.star.test.XSimpleTest	\
+		com.sun.star.uno.TypeClass	\
+		com.sun.star.uno.XAggregation	\
+		com.sun.star.uno.XWeak
 
 SLOFILES=	 \
-        $(SLO)$/testfactreg.obj \
-        $(SLO)$/pipetest.obj \
-        $(SLO)$/datatest.obj \
-        $(SLO)$/marktest.obj \
-        $(SLO)$/pumptest.obj
+		$(SLO)$/testfactreg.obj \
+		$(SLO)$/pipetest.obj \
+		$(SLO)$/datatest.obj \
+		$(SLO)$/marktest.obj \
+		$(SLO)$/pumptest.obj
 
 SHL1TARGET= $(TARGET)
 
 SHL1STDLIBS= \
-        $(SALLIB) 	 \
-        $(CPPULIB) \
-        $(CPPUHELPERLIB)
+		$(SALLIB) 	 \
+		$(CPPULIB) \
+		$(CPPUHELPERLIB)
 
 SHL1LIBS=		$(SLB)$/$(TARGET).lib
 
@@ -97,5 +98,6 @@ DEF1EXPORTFILE=	exports.dxp
 
 
 # --- Targets ------------------------------------------------------
+.ENDIF 		# L10N_framework
 
 .INCLUDE :	target.mk
