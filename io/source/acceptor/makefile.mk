@@ -40,6 +40,7 @@ COMPRDB=$(SOLARBINDIR)$/udkapi.rdb
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 # ------------------------------------------------------------------
 
@@ -50,18 +51,18 @@ INCPRE+= $(UNOUCROUT)
 
 
 SLOFILES= \
-        $(SLO)$/acceptor.obj \
-        $(SLO)$/acc_pipe.obj \
-        $(SLO)$/acc_socket.obj
+		$(SLO)$/acceptor.obj \
+		$(SLO)$/acc_pipe.obj \
+		$(SLO)$/acc_socket.obj
 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = acceptor.map
 SHL1RPATH=URELIB
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) 
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) 
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)
@@ -71,4 +72,6 @@ SHL1DEF=		$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=		$(SHL1TARGET)
 
 # --- Targets ------------------------------------------------------
+.ENDIF 		# L10N_framework
+
 .INCLUDE :	target.mk

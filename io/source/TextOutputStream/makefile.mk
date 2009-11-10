@@ -37,19 +37,20 @@ ENABLE_EXCEPTIONS=TRUE
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 # ------------------------------------------------------------------
 
 SLOFILES= \
-    $(SLO)$/TextOutputStream.obj
+	$(SLO)$/TextOutputStream.obj
 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = toutstrm.map
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) 
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) 
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)
@@ -60,5 +61,6 @@ SHL1RPATH=      URELIB
 DEF1NAME=		$(SHL1TARGET)
 
 # --- Targets ------------------------------------------------------
+.ENDIF 		# L10N_framework
 
 .INCLUDE :	target.mk
