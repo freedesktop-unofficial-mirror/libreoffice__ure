@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -114,7 +114,7 @@ published service Content
     interface com::sun::star::lang::XComponent;
 
     //-------------------------------------------------------------------------
-    /**	enables the caller to let the content execute commands.
+    /** enables the caller to let the content execute commands.
 
         <p>It is strongly recommended that any implementation supports the
         improved <type>XCommandProcessor2</type> interface.</p>
@@ -137,7 +137,7 @@ published service Content
                 [parameter type and name]
 
         -----------------------------------------------------------------------
-        Requiered commands:
+        Mandatory commands:
         -----------------------------------------------------------------------
 
         // This command obtains an interface which allows to query
@@ -212,13 +212,13 @@ published service Content
         // Mode         : ALL or FOLDERS or DOCUMENTS. The implementation
         //                of the open command MUST support all these modes!
         // Priority     : can be set, but implementation may ignore the value
-        // Sink		   	: empty( ignored )
+        // Sink         : empty( ignored )
         // Properties   : The properties for that the result set shall
         //                contain the property values. The order of the
         //                sequence is the same as the order of result set
         //                columns. First element of sequence will be row
         //                number one, second will be row number two, ...
-        // SortingInfo 	: contains sort criteria, if result set shall
+        // SortingInfo      : contains sort criteria, if result set shall
         //                be sorted, otherwise it can be left empty.
         //
         // The exceution must be aborted by the implementation of this command
@@ -236,12 +236,12 @@ published service Content
         //
         // Mode         : DOCUMENT or DOCUMENT_SHARE_DENY_NONE or
         //                DOCUMENT_SHARE_DENY_WRITE. Support for DOCUMENT
-         //                is mandatory, all others are optional.
+        //                is mandatory, all others are optional.
         // Priority     : can be set, but implementation may ignore the value
-        // Sink		   	: a sink, where the implementation can put the
+        // Sink         : a sink, where the implementation can put the
         //                document data into.
         // Properties   : empty ( ignored )
-        // SortingInfo 	: empty ( ignored )
+        // SortingInfo      : empty ( ignored )
         //
         // The exceution must be aborted by the implementation of this command
         // (by throwing a <type>CommandAbortedException</type>), if an
@@ -366,6 +366,27 @@ published service Content
             <B>transfer</B>
                 <type>TransferInfo</type> aTransferInfo
 
+        // This command obtains an exlusive write lock for the resource. The
+        // lock is active until command "unlock" is executed or the OOo
+        // session that obtained the lock ends or until the lock is released by
+        // a third party (e.g. a system administrator).
+        void
+            <B>lock</B>
+                void
+        Exceptions: <type>InteractiveLockingLockedException</type>
+                    <type>InteractiveLockingLockExpiredException</type>
+
+        // This command removes a lock obtained by executing the command "lock"
+        // from the resource.
+        void
+            <B>unlock</B>
+                void
+        Exceptions: <type>InteractiveLockingNotLockedException</type>
+                    <type>InteractiveLockingLockExpiredException</type>
+
+        // Note that <type>InteractiveLockingLockExpiredException</type> might
+        // be raised by any command that requires a previously obtained lock.
+
         =======================================================================
         Properties:
         =======================================================================
@@ -385,11 +406,11 @@ published service Content
         string ContentType
 
         // indicates, whether a content can contain other contents.
-        boolean	IsFolder
+        boolean IsFolder
 
         // indicates, whether a content is a document. This means, the
         // content can dump itself into a data sink.
-        boolean	IsDocument
+        boolean IsDocument
 
         // contains the title of an object (e.g. the subject of a message).
         string Title;
@@ -603,7 +624,7 @@ published service Content
     [optional] interface com::sun::star::ucb::XCommandProcessor2;
 
     //-------------------------------------------------------------------------
-    /**	notifies changes of property values to listeners registered	for
+    /** notifies changes of property values to listeners registered for
         those properties.
 
         <p>This interface is required.
@@ -611,11 +632,11 @@ published service Content
     interface com::sun::star::beans::XPropertiesChangeNotifier;
 
     //-------------------------------------------------------------------------
-    /**	can be used to add new properties to the content and to remove
+    /** can be used to add new properties to the content and to remove
         properties from the content dynamically.
 
         <p>Note that the dynamic properties must be kept persistent. The
-        service <type>Store</type> (UCB persistence	service) may be used to
+        service <type>Store</type> (UCB persistence service) may be used to
         implement this.
 
         <p><b>Important:</b> The implementation of
@@ -667,7 +688,7 @@ published service Content
     [optional] interface com::sun::star::ucb::XCommandInfoChangeNotifier;
 
     //-------------------------------------------------------------------------
-    /**	creates new contents (i.e. creates a new folder in another folder
+    /** creates new contents (i.e. creates a new folder in another folder
         somewhere in the local file system).
 
         <p>A content is "new", if it does not physically exist before creating
@@ -679,7 +700,7 @@ published service Content
     [optional] interface com::sun::star::ucb::XContentCreator;
 
     //-------------------------------------------------------------------------
-    /**	provides access to the parent content of this content.
+    /** provides access to the parent content of this content.
 
         <p>The object returned by the implementation of the method
         <member scope="com::sun::star::container">XChild::getParent()</member>
