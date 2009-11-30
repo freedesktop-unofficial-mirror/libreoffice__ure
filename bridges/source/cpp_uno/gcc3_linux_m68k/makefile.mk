@@ -52,17 +52,16 @@ CFLAGS += -DLEAK_STATIC_DATA
 CFLAGSCXX += -fno-omit-frame-pointer 
 
 NOOPTFILES= \
-    $(SLO)$/cpp2uno.obj \
-    $(SLO)$/except.obj \
-    $(SLO)$/uno2cpp.obj
+	$(SLO)$/cpp2uno.obj \
+	$(SLO)$/except.obj \
+	$(SLO)$/uno2cpp.obj
 
 CFLAGSNOOPT=-O0
 
 SLOFILES= \
-    $(SLO)$/cpp2uno.obj \
-    $(SLO)$/except.obj \
-    $(SLO)$/uno2cpp.obj \
-    $(SLO)$/m68khelper.obj
+	$(SLO)$/cpp2uno.obj \
+	$(SLO)$/except.obj \
+	$(SLO)$/uno2cpp.obj
 
 SHL1TARGET= $(TARGET)
 
@@ -75,14 +74,11 @@ SHL1OBJS = $(SLOFILES)
 SHL1LIBS = $(SLB)$/cpp_uno_shared.lib
 
 SHL1STDLIBS= \
-    $(CPPULIB)			\
-    $(SALLIB)
+	$(CPPULIB)			\
+	$(SALLIB)
 
 .ENDIF
 
 # --- Targets ------------------------------------------------------
 
 .INCLUDE :  target.mk
-
-$(SLO)$/%.obj: %.s
-       $(CXX) -c -o $(SLO)$/$(@:b).o $< -fPIC ; touch $@
