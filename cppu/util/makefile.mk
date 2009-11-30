@@ -49,10 +49,10 @@ UNIXVERSIONNAMES=UDK
 # --- Files --------------------------------------------------------
 
 SHL1LIBS= \
-    $(SLB)$/cppu_typelib.lib	\
-    $(SLB)$/cppu_uno.lib		\
-    $(SLB)$/cppu_threadpool.lib	\
-    $(SLB)$/cppu_cppu.lib
+	$(SLB)$/cppu_typelib.lib	\
+	$(SLB)$/cppu_uno.lib		\
+	$(SLB)$/cppu_threadpool.lib	\
+	$(SLB)$/cppu_cppu.lib
 
 .IF "$(GUI)" == "WNT" || "$(GUI)"=="OS2"
 SHL1TARGET=$(TARGET)$(UDK_MAJOR)
@@ -60,7 +60,7 @@ SHL1TARGET=$(TARGET)$(UDK_MAJOR)
 SHL1TARGET= uno_$(TARGET)
 .ENDIF
 
-SHL1STDLIBS = $(SALLIB) $(SALHELPERLIB)
+SHL1STDLIBS = $(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=i$(TARGET)
@@ -85,12 +85,12 @@ SHL2VERSIONMAP:=$(SHL2TARGET).map
 .ENDIF			# "$(GUI)$(COM)"=="WNTGCC"
 SHL2DEF     := $(MISC)$/$(SHL2TARGET).def
 SHL2IMPLIB  := i$(SHL2TARGET)
-SHL2STDLIBS := $(CPPULIB) $(SALHELPERLIB) $(SALLIB)
+SHL2STDLIBS := $(CPPULIB) $(SALLIB)
 SHL2RPATH   := URELIB
 SHL2OBJS    := \
-    $(SLO)$/helper_purpenv_Environment.obj 	\
-    $(SLO)$/helper_purpenv_Mapping.obj      \
-    $(SLO)$/helper_purpenv_Proxy.obj
+	$(SLO)$/helper_purpenv_Environment.obj 	\
+	$(SLO)$/helper_purpenv_Mapping.obj      \
+	$(SLO)$/helper_purpenv_Proxy.obj
 
 
 # --- Targets ------------------------------------------------------
@@ -99,7 +99,7 @@ SHL2OBJS    := \
 
 
 ALLTAR:   $(SHL2TARGETN)
-    $(MAKE) $(MAKECMDGOALS) -f extra.mk
+	$(MAKE) $(MAKECMDGOALS) -f extra.mk
 
 
 .INCLUDE :	target.mk
