@@ -51,33 +51,33 @@ NO_OFFUH=TRUE
 CPPUMAKERFLAGS =
 
 UNOTYPES = \
-    com.sun.star.uno.TypeClass					\
-    com.sun.star.uno.XAggregation					\
-    com.sun.star.uno.XWeak						\
-    com.sun.star.uno.XComponentContext				\
-    com.sun.star.lang.XTypeProvider					\
-    com.sun.star.lang.XInitialization				\
-    com.sun.star.lang.XComponent					\
-    com.sun.star.lang.XMultiComponentFactory			\
-    com.sun.star.lang.XMultiServiceFactory			\
-    com.sun.star.lang.XSingleComponentFactory			\
-    com.sun.star.container.XSet					\
-    com.sun.star.container.XHierarchicalNameAccess			\
-    com.sun.star.loader.XImplementationLoader			\
-    com.sun.star.registry.XSimpleRegistry				\
-    com.sun.star.registry.XRegistryKey				\
-    com.sun.star.reflection.XTypeDescriptionEnumerationAccess	\
-    com.sun.star.reflection.XConstantTypeDescription		\
-    com.sun.star.reflection.XConstantsTypeDescription		\
-    com.sun.star.reflection.XIndirectTypeDescription		\
-    com.sun.star.reflection.XEnumTypeDescription			\
-    com.sun.star.reflection.XInterfaceTypeDescription2		\
-    com.sun.star.reflection.XInterfaceMethodTypeDescription		\
-    com.sun.star.reflection.XInterfaceAttributeTypeDescription2	\
-    com.sun.star.reflection.XCompoundTypeDescription		\
-    com.sun.star.reflection.XServiceTypeDescription2		\
-    com.sun.star.reflection.XSingletonTypeDescription2		\
-    com.sun.star.reflection.XStructTypeDescription
+	com.sun.star.uno.TypeClass					\
+	com.sun.star.uno.XAggregation					\
+	com.sun.star.uno.XWeak						\
+	com.sun.star.uno.XComponentContext				\
+	com.sun.star.lang.XTypeProvider					\
+	com.sun.star.lang.XInitialization				\
+	com.sun.star.lang.XComponent					\
+	com.sun.star.lang.XMultiComponentFactory			\
+	com.sun.star.lang.XMultiServiceFactory			\
+	com.sun.star.lang.XSingleComponentFactory			\
+	com.sun.star.container.XSet					\
+	com.sun.star.container.XHierarchicalNameAccess			\
+	com.sun.star.loader.XImplementationLoader			\
+	com.sun.star.registry.XSimpleRegistry				\
+	com.sun.star.registry.XRegistryKey				\
+	com.sun.star.reflection.XTypeDescriptionEnumerationAccess	\
+	com.sun.star.reflection.XConstantTypeDescription		\
+	com.sun.star.reflection.XConstantsTypeDescription		\
+	com.sun.star.reflection.XIndirectTypeDescription		\
+	com.sun.star.reflection.XEnumTypeDescription			\
+	com.sun.star.reflection.XInterfaceTypeDescription2		\
+	com.sun.star.reflection.XInterfaceMethodTypeDescription		\
+	com.sun.star.reflection.XInterfaceAttributeTypeDescription2	\
+	com.sun.star.reflection.XCompoundTypeDescription		\
+	com.sun.star.reflection.XServiceTypeDescription2		\
+	com.sun.star.reflection.XSingletonTypeDescription2		\
+	com.sun.star.reflection.XStructTypeDescription
 
 CFLAGSCXX +=-AI$(BIN)
 
@@ -91,22 +91,22 @@ CFLAGSCXX += -clr:oldSyntax -LN -wd4339 -wd4715
 .ENDIF
 
 OBJFILES = \
-    $(OBJ)$/climaker_app.obj	\
-    $(OBJ)$/climaker_emit.obj
+	$(OBJ)$/climaker_app.obj	\
+	$(OBJ)$/climaker_emit.obj
 
 APP1TARGET = $(TARGET)
 APP1OBJS = $(OBJFILES)
 
 
 APP1STDLIBS = \
-    $(CPPUHELPERLIB)		\
-    $(CPPULIB)			\
-    $(SALLIB)			\
-    mscoree.lib
+	$(CPPUHELPERLIB)		\
+	$(CPPULIB)			\
+	$(SALLIB)			\
+	mscoree.lib
 
 .IF "$(CCNUMVER)" >= "001399999999"
 APP1STDLIBS += \
-    msvcmrt.lib
+	msvcmrt.lib
 .ENDIF
 
 .ENDIF
@@ -115,6 +115,21 @@ APP1STDLIBS += \
 
 .INCLUDE : $(PRJ)$/util$/target.pmk
 .INCLUDE :  target.mk
+
+CLIMAKER_CONFIG = $(BIN)$/climaker.exe.config
+
+ALLTAR: \
+    $(CLIMAKER_CONFIG)
+    
+
+
+#Create the config file that is used with the policy assembly
+$(CLIMAKER_CONFIG): climaker.exe.config
+    $(COPY) $< $@
+.IF "$(USE_SHELL)"!="4nt"
+    chmod +x $@
+.ENDIF          # "$(USE_SHELL)"!="4nt"
+
 
 .IF "$(BUILD_FOR_CLI)" != ""
 
