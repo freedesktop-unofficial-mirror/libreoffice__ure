@@ -32,6 +32,7 @@ PRJ=..$/..
 
 PRJNAME=io
 TARGET = streams.uno
+
 ENABLE_EXCEPTIONS=TRUE
 NO_BSYMBOLIC=TRUE
 COMP1TYPELIST = stm
@@ -39,6 +40,7 @@ COMPRDB=$(SOLARBINDIR)$/udkapi.rdb
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 # --- Files --------------------------------------------------------
 UNOUCRDEP=$(SOLARBINDIR)$/udkapi.rdb
@@ -48,19 +50,19 @@ INCPRE+= $(UNOUCROUT)
 
 
 SLOFILES = 	$(SLO)$/opipe.obj\
-        $(SLO)$/factreg.obj\
-        $(SLO)$/omark.obj\
-        $(SLO)$/odata.obj \
-        $(SLO)$/streamhelper.obj \
-        $(SLO)$/opump.obj
+		$(SLO)$/factreg.obj\
+		$(SLO)$/omark.obj\
+		$(SLO)$/odata.obj \
+		$(SLO)$/streamhelper.obj \
+		$(SLO)$/opump.obj
 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = stm.map
 
 SHL1STDLIBS= \
-        $(SALLIB) 	 \
-        $(CPPULIB)	 \
-        $(CPPUHELPERLIB) 
+		$(SALLIB) 	 \
+		$(CPPULIB)	 \
+		$(CPPUHELPERLIB) 
 
 
 SHL1DEPN=
@@ -73,5 +75,7 @@ DEF1NAME=		$(SHL1TARGET)
 
 
 # --- Targets ------------------------------------------------------
+.ENDIF 		# L10N_framework
+
 .INCLUDE :	target.mk
 

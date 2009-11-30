@@ -35,9 +35,10 @@ PRJNAME=sal
 TARGET=workben
 LIBTARGET=NO
 TARGETTYPE=CUI
-ENABLE_EXCEPTIONS=TRUE
+#ENABLE_EXCEPTIONS=TRUE
+NO_DEFAULT_STL=YES
 
-TESTAPP=test_osl_getVolInfo
+#TESTAPP=test_osl_getVolInfo
 #TESTAPP=test_osl_joinProcess
 #TESTAPP=getlocaleinfotest
 #TESTAPP=test_osl_joinProcess
@@ -45,6 +46,7 @@ TESTAPP=test_osl_getVolInfo
 #TESTAPP=salstattest
 #TESTAPP=saldyntest
 
+TESTAPP=t_readline
 #TESTAPP=t_cipher
 #TESTAPP=t_digest
 #TESTAPP=t_random
@@ -83,7 +85,7 @@ SHL1STDLIBS+=$(SOLARLIBDIR)$/cppunit.lib
 SHL1STDLIBS=$(LB)$/libsal.so
 SHL1STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
 .ENDIF
-    
+	
 SHL1IMPLIB=i$(SHL1TARGET) 
 SHL1DEF=$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=$(SHL1TARGET) 
@@ -112,7 +114,7 @@ SHL1STDLIBS+=$(SOLARLIBDIR)$/cppunit.lib
 SHL1STDLIBS=$(LB)$/libsal.so
 SHL1STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
 .ENDIF
-    
+	
 SHL1IMPLIB=i$(SHL1TARGET) 
 SHL1DEF=$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=$(SHL1TARGET) 
@@ -121,57 +123,74 @@ DEF1EXPORTFILE=export.exp
 
 .IF "$(TESTAPP)" == "getlocaleinfotest"
 
-    OBJFILES=$(OBJ)$/getlocaleinfotest.obj
+	OBJFILES=$(OBJ)$/getlocaleinfotest.obj
 
-    APP1TARGET=	getlitest
-    APP1OBJS=$(OBJFILES)
+	APP1TARGET=	getlitest
+	APP1OBJS=$(OBJFILES)
 
-    APP1STDLIBS=\
-                $(KERNEL32LIB)
+	APP1STDLIBS=\
+				$(KERNEL32LIB)
 
-    APP1LIBS=\
-            $(LB)$/kernel9x.lib\
-            $(LB)$/isal.lib
+	APP1LIBS=\
+			$(LB)$/kernel9x.lib\
+			$(LB)$/isal.lib
 
-    APP1DEPN=$(LB)$/isal.lib
+	APP1DEPN=$(LB)$/isal.lib
 
 .ENDIF
 
 .IF "$(TESTAPP)" == "salstattest"
 
-    CFLAGS+= -DUSE_SAL_STATIC
+	CFLAGS+= -DUSE_SAL_STATIC
 
-    OBJFILES=	$(OBJ)$/salstattest.obj
+	OBJFILES=	$(OBJ)$/salstattest.obj
 
-    APP1TARGET=	salstattest
-    APP1OBJS=	$(OBJFILES)
-    APP1STDLIBS=\
-                $(LB)$/asal.lib\
-                $(SHELL32LIB)\
-                $(USER32LIB)\
-                $(COMDLG32LIB)\
-                $(ADVAPI32LIB)
+	APP1TARGET=	salstattest
+	APP1OBJS=	$(OBJFILES)
+	APP1STDLIBS=\
+				$(LB)$/asal.lib\
+				$(SHELL32LIB)\
+				$(USER32LIB)\
+				$(COMDLG32LIB)\
+				$(ADVAPI32LIB)
 
-    APP1DEPN=	$(LB)$/asal.lib	
+	APP1DEPN=	$(LB)$/asal.lib	
 
 .ENDIF # salstattest
 
 .IF "$(TESTAPP)" == "saldyntest"
 
-    OBJFILES=	$(OBJ)$/saldyntest.obj
+	OBJFILES=	$(OBJ)$/saldyntest.obj
 
-    APP1TARGET=	saldyntest
-    APP1OBJS=	$(OBJFILES)
-    APP1STDLIBS=\
-                $(LB)$/isal.lib\
-                $(SHELL32LIB)\
-                $(USER32LIB)\
-                $(COMDLG32LIB)\
-                $(ADVAPI32LIB)
+	APP1TARGET=	saldyntest
+	APP1OBJS=	$(OBJFILES)
+	APP1STDLIBS=\
+				$(LB)$/isal.lib\
+				$(SHELL32LIB)\
+				$(USER32LIB)\
+				$(COMDLG32LIB)\
+				$(ADVAPI32LIB)
 
-    APP1DEPN=	$(LB)$/isal.lib
+	APP1DEPN=	$(LB)$/isal.lib
 
 .ENDIF # salstattest
+
+#
+# t_readline
+#
+.IF "$(TESTAPP)" == "t_readline"
+
+CFILES=		t_readline.c
+OBJFILES=	$(OBJ)$/t_readline.obj
+
+APP1TARGET=	t_readline
+APP1OBJS=	$(OBJFILES)
+APP1STDLIBS=$(SALLIB)
+APP1DEPN=	$(SLB)$/sal.lib
+
+APP1RPATH=UREBIN
+
+.ENDIF # t_readline
 
 #
 # t_cipher
