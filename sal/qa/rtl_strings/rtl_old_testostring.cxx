@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -48,7 +48,7 @@
 #include <rtl/string.hxx>
 #endif
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #define TEST_ENSURE(c, m) CPPUNIT_ASSERT_MESSAGE((m), (c))
 
@@ -63,7 +63,7 @@ using namespace rtl;
 // -----------------------------------------------------------------------------
 namespace rtl_OString
 {
-    class oldtests : public CppUnit::TestFixture  
+    class oldtests : public CppUnit::TestFixture
     {
     public:
         void test_OString();
