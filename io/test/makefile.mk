@@ -41,10 +41,11 @@ ENABLE_EXCEPTIONS=TRUE
 # --- Settings -----------------------------------------------------
 
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 # --- Files --------------------------------------------------------
 
 OBJFILES=	$(OBJ)$/testcomponent.obj \
-        $(OBJ)$/testconnection.obj
+		$(OBJ)$/testconnection.obj
 
 UNOUCRDEP=$(SOLARBINDIR)$/udkapi.rdb
 UNOUCRRDB=$(SOLARBINDIR)$/udkapi.rdb
@@ -53,11 +54,11 @@ UNOUCRRDB=$(SOLARBINDIR)$/udkapi.rdb
 UNOUCROUT=$(OUT)$/inc
 
 UNOTYPES =	com.sun.star.connection.XConnector \
-        com.sun.star.connection.XAcceptor  \
-        com.sun.star.registry.XImplementationRegistration \
-        com.sun.star.lang.XComponent \
-        com.sun.star.lang.XSingleServiceFactory \
-        com.sun.star.lang.XMultiServiceFactory \
+		com.sun.star.connection.XAcceptor  \
+		com.sun.star.registry.XImplementationRegistration \
+		com.sun.star.lang.XComponent \
+		com.sun.star.lang.XSingleServiceFactory \
+		com.sun.star.lang.XMultiServiceFactory \
         com.sun.star.test.XSimpleTest            \
         com.sun.star.lang.XSingleComponentFactory \
         com.sun.star.lang.XMultiComponentFactory
@@ -70,25 +71,26 @@ UNOTYPES =	com.sun.star.connection.XConnector \
 APP1TARGET = testcomponent
 APP1OBJS   = $(OBJ)$/testcomponent.obj
 APP1STDLIBS = 	$(SALLIB) \
-        $(CPPULIB)\
-        $(CPPUHELPERLIB)
+		$(CPPULIB)\
+		$(CPPUHELPERLIB)
 
 APP2TARGET = testconnection
 APP2OBJS   = $(OBJ)$/testconnection.obj
 APP2STDLIBS = 	$(SALLIB) \
-        $(CPPULIB) \
-        $(CPPUHELPERLIB)
+		$(CPPULIB) \
+		$(CPPUHELPERLIB)
 
 
 
 # --- Targets ------------------------------------------------------
 
 ALL : 	$(BIN)$/applicat.rdb	\
-    ALLTAR
+	ALLTAR
 
 $(BIN)$/applicat.rdb: $(SOLARBINDIR)$/udkapi.rdb
-    rm -f $@
-    regmerge $@ / $?
+	rm -f $@
+	regmerge $@ / $?
 
+.ENDIF 		# L10N_framework
 
 .INCLUDE :  target.mk
