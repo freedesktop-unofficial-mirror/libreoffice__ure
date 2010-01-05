@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -46,7 +46,7 @@
 
 #include <rtl/instance.hxx>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 // -----------------------------------------------------------------------------
 #define CONST_TEST_STRING "gregorian"
@@ -62,7 +62,7 @@ struct Gregorian : public rtl::StaticWithInit<const ::rtl::OUString, Gregorian> 
 inline void printOUString( ::rtl::OUString const & _suStr )
 {
     rtl::OString aString;
-    
+
     t_print( "OUString: " );
     aString = ::rtl::OUStringToOString( _suStr, RTL_TEXTENCODING_ASCII_US );
     t_print( "'%s'\n", aString.getStr( ) );
@@ -75,7 +75,7 @@ namespace ThreadHelper
     //     QUIET=1,
     //     VERBOSE
     // } eSleepVerboseMode;
-    
+
     void thread_sleep_tenth_sec(sal_Int32 _nTenthSec/*, eSleepVerboseMode nVerbose = VERBOSE*/)
     {
         // if (nVerbose == VERBOSE)
@@ -122,7 +122,7 @@ public:
     sal_Int32 getFails() {return m_nFails;}
 
 protected:
-    
+
     /** guarded value which initialized 0
 
         @see ThreadSafeValue
@@ -145,14 +145,14 @@ protected:
                 ThreadHelper::thread_sleep_tenth_sec(1);
             }
         }
-    
+
 public:
-    
-    virtual void SAL_CALL suspend() 
+
+    virtual void SAL_CALL suspend()
         {
             ::osl::Thread::suspend();
         }
-    
+
     ~OGetThread()
         {
             if (isRunning())
@@ -172,7 +172,7 @@ namespace rtl_DoubleLocking
     class getValue : public CppUnit::TestFixture
     {
     public:
-    
+
         // initialise your test code values here.
         void setUp()
             {
@@ -193,11 +193,11 @@ namespace rtl_DoubleLocking
                     aStr.getLength() != 0
                     );
             }
-        
+
         /** check 2 threads.
 
             ALGORITHM:
-            Here the function should show, that 2 different threads, 
+            Here the function should show, that 2 different threads,
             which only increase a value, should run at the same time with same prio.
             The test fails, if the difference between the two values is more than 5%
             but IMHO this isn't a failure, it's only a feature of the OS.
@@ -208,47 +208,47 @@ namespace rtl_DoubleLocking
                 // initial 5 threads with different priorities
                 OGetThread* pThread = new OGetThread();
                 OGetThread* p2Thread = new OGetThread();
-                
+
                 //Create them and start running at the same time
                 pThread->create();
                 p2Thread->create();
-                
+
                 ThreadHelper::thread_sleep_tenth_sec(50);
-                
+
                 pThread->terminate();
                 p2Thread->terminate();
-                
+
                 sal_Int32 nValueOK = 0;
                 nValueOK = pThread->getOK();
-                
+
                 sal_Int32 nValueOK2 = 0;
                 nValueOK2 = p2Thread->getOK();
-                
+
                 t_print("Value in Thread #1 is %d\n", nValueOK);
                 t_print("Value in Thread #2 is %d\n", nValueOK2);
 
                 sal_Int32 nValueFails = 0;
                 nValueFails = pThread->getFails();
-                
+
                 sal_Int32 nValueFails2 = 0;
                 nValueFails2 = p2Thread->getFails();
 
                 t_print("Fails in Thread #1 is %d\n", nValueFails);
                 t_print("Fails in Thread #2 is %d\n", nValueFails2);
-                
+
                 // ThreadHelper::thread_sleep_tenth_sec(1);
                 pThread->join();
                 p2Thread->join();
-                
+
                 delete pThread;
                 delete p2Thread;
-                
+
                 CPPUNIT_ASSERT_MESSAGE(
                     "getValue() failed, wrong value expected.",
                     nValueOK != 0 && nValueFails == 0 && nValueFails2 == 0
                     );
             }
-        
+
         CPPUNIT_TEST_SUITE(getValue);
         CPPUNIT_TEST(getValue_001);
         CPPUNIT_TEST(getValue_002);
