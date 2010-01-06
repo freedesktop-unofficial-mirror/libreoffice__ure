@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -369,7 +369,7 @@
 #include "com/sun/star/uno/Any.hxx"
 #include "com/sun/star/uno/Type.hxx"
 #include "com/sun/star/uno/TypeClass.hpp"
-#include "cppunit/simpleheader.hxx"
+#include "testshl/simpleheader.hxx"
 #include "rtl/ustring.h"
 #include "rtl/ustring.hxx"
 
@@ -453,13 +453,13 @@ void Test::testBigStruct() {
 #endif
         sizeof (test::codemaker::cppumaker::AlignmentDerivedStruct));
 #endif
-    
+
     com::sun::star::uno::Type t(
         cppu::UnoType< test::codemaker::cppumaker::BigStruct >::get());
     typelib_TypeDescription * td = NULL;
     t.getDescription(&td);
     typelib_typedescription_complete(&td);
-    fprintf(stdout, "#### 1\n");    
+    fprintf(stdout, "#### 1\n");
     CPPUNIT_ASSERT(td != NULL);
     CPPUNIT_ASSERT_EQUAL(typelib_TypeClass_STRUCT, td->eTypeClass);
     typelib_StructTypeDescription * std =
