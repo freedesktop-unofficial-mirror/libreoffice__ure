@@ -40,14 +40,14 @@ TARGET  = JavaTestComponent
 #.INCLUDE : $(PRJ)$/util$/makefile.pmk
 .INCLUDE : settings.mk
 # Files --------------------------------------------------------
-JARFILES = sandbox.jar ridl.jar jurt.jar unoil.jar
+JARFILES = ridl.jar jurt.jar unoil.jar
 
 CUSTOMMANIFESTFILE= manifest
 
 JARTARGET = $(TARGET).jar
 
 JAVAFILES= \
-    TestComponent.java
+	TestComponent.java
 
 
 JAVACLASSFILES = $(foreach,i,$(JAVAFILES) $(CLASSDIR)$/$(PACKAGE)$/$(i:b).class)
