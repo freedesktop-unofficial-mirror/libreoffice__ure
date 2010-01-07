@@ -38,20 +38,21 @@ COMP1TYPELIST = uuresolver
 # --- Settings -----------------------------------------------------
 
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 
 # ------------------------------------------------------------------
 
 SLOFILES= \
-        $(SLO)$/unourl_resolver.obj
+		$(SLO)$/unourl_resolver.obj
 
 SHL1TARGET=	$(TARGET)
 SHL1VERSIONMAP = uuresolver.map
 
 SHL1STDLIBS= \
-        $(SALLIB)		\
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)
+		$(SALLIB)		\
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET)
@@ -60,6 +61,7 @@ SHL1DEF=	$(MISC)$/$(SHL1TARGET).def
 SHL1RPATH=  URELIB
 
 DEF1NAME=	$(SHL1TARGET)
+.ENDIF 		# L10N_framework
 
 # --- Targets ------------------------------------------------------
 

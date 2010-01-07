@@ -48,7 +48,6 @@ CXXFLAGS+= $(LFS_CFLAGS)
 
 .IF "$(GUI)"=="WNT"
 .IF "$(COM)"=="GCC"
-CDEFS+=-UWINVER -DWINVER=0x0500
 CFLAGSCXX+=-Wno-unused-parameter -Wno-return-type
 .ENDIF
 
@@ -60,62 +59,62 @@ LINK=$(WRAPCMD) "$(PSDK_HOME)$/Bin$/Win64$/LINK.EXE"
 .ENDIF
 
 SLOFILES=\
-        $(SLO)$/CheckTokenMembership.obj\
-        $(SLO)$/CommandLineToArgvW.obj\
-        $(SLO)$/CopyFileExA.obj\
-        $(SLO)$/CopyFileExW.obj\
-        $(SLO)$/DrawStateW.obj\
-        $(SLO)$/EnumProcesses.obj\
-        $(SLO)$/GetLogicalDriveStringsW.obj\
-        $(SLO)$/GetLongPathNameA.obj\
-        $(SLO)$/GetLongPathNameW.obj\
-        $(SLO)$/GetModuleFileNameExA.obj\
-        $(SLO)$/GetModuleFileNameExW.obj\
-        $(SLO)$/GetProcessId.obj\
-        $(SLO)$/GetUserDefaultUILanguage.obj\
-        $(SLO)$/GetUserDomainA.obj\
-        $(SLO)$/GetUserDomainW.obj\
-        $(SLO)$/GetDiskFreeSpaceExA.obj\
-        $(SLO)$/GetDiskFreeSpaceExW.obj\
-        $(SLO)$/MoveFileExA.obj\
-        $(SLO)$/MoveFileExW.obj\
-        $(SLO)$/toolhelp.obj\
-        $(SLO)$/DllGetVersion.obj\
-        $(SLO)$/DllMain.obj\
-        $(SLO)$/ResolveThunk.obj\
-        $(SLO)$/ResolveUnicows.obj\
-        $(SLO)$/snprintf.obj\
-        $(SLO)$/snwprintf.obj\
-        $(SLO)$/FindFirstVolumeA.obj\
-        $(SLO)$/FindFirstVolumeW.obj\
-        $(SLO)$/FindNextVolumeA.obj\
-        $(SLO)$/FindNextVolumeW.obj\
-        $(SLO)$/FindVolumeClose.obj\
-        $(SLO)$/FindFirstVolumeMountPointA.obj\
-        $(SLO)$/FindFirstVolumeMountPointW.obj\
-        $(SLO)$/FindNextVolumeMountPointA.obj\
-        $(SLO)$/FindNextVolumeMountPointW.obj\
-        $(SLO)$/FindVolumeMountPointClose.obj\
-        $(SLO)$/GetVolumeNameForVolumeMountPointA.obj\
-        $(SLO)$/GetVolumeNameForVolumeMountPointW.obj\
-        $(SLO)$/DeleteVolumeMountPointA.obj\
-        $(SLO)$/DeleteVolumeMountPointW.obj\
-        $(SLO)$/GetVolumePathNameA.obj\
-        $(SLO)$/GetVolumePathNameW.obj\
-        $(SLO)$/SetVolumeMountPointA.obj\
-        $(SLO)$/SetVolumeMountPointW.obj\
-        $(SLO)$/PathAddBackslashW.obj\
-        $(SLO)$/PathCompactPathExW.obj\
-        $(SLO)$/PathFileExistsW.obj\
-        $(SLO)$/PathFindExtensionW.obj\
-        $(SLO)$/PathFindFileNameW.obj\
-        $(SLO)$/PathIsFileSpecW.obj\
-        $(SLO)$/PathIsUNCW.obj\
-        $(SLO)$/PathRemoveExtensionW.obj\
-        $(SLO)$/PathRemoveFileSpecW.obj\
-        $(SLO)$/PathSetDlgItemPathW.obj\
-        $(SLO)$/PathStripToRootW.obj\
-        $(SLO)$/SHCreateItemFromParsingName.obj
+		$(SLO)$/CheckTokenMembership.obj\
+		$(SLO)$/CommandLineToArgvW.obj\
+		$(SLO)$/CopyFileExA.obj\
+		$(SLO)$/CopyFileExW.obj\
+		$(SLO)$/DrawStateW.obj\
+		$(SLO)$/EnumProcesses.obj\
+		$(SLO)$/GetLogicalDriveStringsW.obj\
+		$(SLO)$/GetLongPathNameA.obj\
+		$(SLO)$/GetLongPathNameW.obj\
+		$(SLO)$/GetModuleFileNameExA.obj\
+		$(SLO)$/GetModuleFileNameExW.obj\
+		$(SLO)$/GetProcessId.obj\
+		$(SLO)$/GetUserDefaultUILanguage.obj\
+		$(SLO)$/GetUserDomainA.obj\
+		$(SLO)$/GetUserDomainW.obj\
+		$(SLO)$/GetDiskFreeSpaceExA.obj\
+		$(SLO)$/GetDiskFreeSpaceExW.obj\
+		$(SLO)$/MoveFileExA.obj\
+		$(SLO)$/MoveFileExW.obj\
+		$(SLO)$/toolhelp.obj\
+		$(SLO)$/DllGetVersion.obj\
+		$(SLO)$/DllMain.obj\
+		$(SLO)$/ResolveThunk.obj\
+		$(SLO)$/ResolveUnicows.obj\
+		$(SLO)$/snprintf.obj\
+		$(SLO)$/snwprintf.obj\
+		$(SLO)$/FindFirstVolumeA.obj\
+		$(SLO)$/FindFirstVolumeW.obj\
+		$(SLO)$/FindNextVolumeA.obj\
+		$(SLO)$/FindNextVolumeW.obj\
+		$(SLO)$/FindVolumeClose.obj\
+		$(SLO)$/FindFirstVolumeMountPointA.obj\
+		$(SLO)$/FindFirstVolumeMountPointW.obj\
+		$(SLO)$/FindNextVolumeMountPointA.obj\
+		$(SLO)$/FindNextVolumeMountPointW.obj\
+		$(SLO)$/FindVolumeMountPointClose.obj\
+		$(SLO)$/GetVolumeNameForVolumeMountPointA.obj\
+		$(SLO)$/GetVolumeNameForVolumeMountPointW.obj\
+		$(SLO)$/DeleteVolumeMountPointA.obj\
+		$(SLO)$/DeleteVolumeMountPointW.obj\
+		$(SLO)$/GetVolumePathNameA.obj\
+		$(SLO)$/GetVolumePathNameW.obj\
+		$(SLO)$/SetVolumeMountPointA.obj\
+		$(SLO)$/SetVolumeMountPointW.obj\
+		$(SLO)$/PathAddBackslashW.obj\
+		$(SLO)$/PathCompactPathExW.obj\
+		$(SLO)$/PathFileExistsW.obj\
+		$(SLO)$/PathFindExtensionW.obj\
+		$(SLO)$/PathFindFileNameW.obj\
+		$(SLO)$/PathIsFileSpecW.obj\
+		$(SLO)$/PathIsUNCW.obj\
+		$(SLO)$/PathRemoveExtensionW.obj\
+		$(SLO)$/PathRemoveFileSpecW.obj\
+		$(SLO)$/PathSetDlgItemPathW.obj\
+		$(SLO)$/PathStripToRootW.obj\
+		$(SLO)$/SHCreateItemFromParsingName.obj
         
 SHL1TARGET=$(TARGET)
 SHL1IMPLIB=$(SHL1TARGET)
@@ -123,16 +122,16 @@ SHL1DEF=$(MISC)/$(SHL1TARGET).def
 DEF1NAME=$(SHL1TARGET)
 .IF "$(COM)"=="GCC"
 DEF1EXPORTFILE=\
-    $(SHL1TARGET)_mingw.dxp\
-    unicows_mingw.dxp
+	$(SHL1TARGET)_mingw.dxp\
+	unicows_mingw.dxp
 .ELSE
 DEF1EXPORTFILE=\
-    $(SHL1TARGET).dxp\
-    unicows.dxp
+	$(SHL1TARGET).dxp\
+	unicows.dxp
 .ENDIF
 DEF1DEPN=\
-        $(DEF1EXPORTFILE)\
-        makefile.mk
+		$(DEF1EXPORTFILE)\
+		makefile.mk
 
 #SHL1VERINFO=$(SHL1TARGET).rc
 SHL1OBJS=$(SLOFILES)
@@ -142,20 +141,22 @@ STDSHL=
 
 .IF "$(COM)"=="GCC"
 SHL1STDLIBS=\
-        -lmingw32 \
-        -lgcc
+		-lmingw32 \
+		$(MINGW_LIBGCC)
+MINGWSSTDOBJ=
+MINGWSSTDENDOBJ=
 .ELSE
 SHL1STDLIBS=\
-        unicows.lib
+		unicows.lib
 .ENDIF
 
 SHL1STDLIBS+=\
-        $(KERNEL32LIB)\
-        $(USER32LIB)\
-        $(ADVAPI32LIB)\
-        $(VERSIONLIB)\
-        $(LIBCMT)\
-        $(SHLWAPILIB)
+		$(KERNEL32LIB)\
+		$(USER32LIB)\
+		$(ADVAPI32LIB)\
+		$(VERSIONLIB)\
+		$(LIBCMT)\
+		$(SHLWAPILIB)
 
 
 .ENDIF
@@ -164,7 +165,7 @@ SHL1STDLIBS+=\
 ALL: ALLTAR $(LB)$/libuwinapi.a
 
 $(LB)$/libuwinapi.a: $(MISC)$/uwinapi.def
-    dlltool --dllname uwinapi.dll --input-def=$(MISC)$/uwinapi.def --kill-at --output-lib=$(LB)$/libuwinapi.a
+	dlltool --dllname uwinapi.dll --input-def=$(MISC)$/uwinapi.def --kill-at --output-lib=$(LB)$/libuwinapi.a
 .ENDIF
 
 .INCLUDE : target.mk

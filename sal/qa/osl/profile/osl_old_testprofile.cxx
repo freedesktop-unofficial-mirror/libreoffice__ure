@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -40,13 +40,13 @@
 #include <stdio.h>
 #include <osl/profile.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 //==================================================================================================
 // -----------------------------------------------------------------------------
 namespace osl_Profile
 {
-    class oldtests : public CppUnit::TestFixture  
+    class oldtests : public CppUnit::TestFixture
     {
     public:
         void test_profile();
@@ -64,8 +64,8 @@ void oldtests::test_profile(void)
 
     rtl_uString_newFromAscii(&ustrProfileName,"//./tmp/soffice.ini");
     rtl_uString_newFromAscii(&ustrProfileName2,"//./tmp/not_existing_path/soffice.ini");
-    
-    
+
+
     // successful write
     if (hProfile = osl_openProfile( ustrProfileName, 0 ))
     {
@@ -74,7 +74,7 @@ void oldtests::test_profile(void)
 
         osl_closeProfile( hProfile );
     }
-    
+
     // unsuccessful write
     if (hProfile = osl_openProfile( ustrProfileName2, 0 ))
     {
