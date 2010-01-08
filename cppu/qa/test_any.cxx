@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -58,7 +58,7 @@
 #include "com/sun/star/uno/Sequence.hxx"
 #include "com/sun/star/uno/Type.hxx"
 #include "com/sun/star/uno/XInterface.hpp"
-#include "cppunit/simpleheader.hxx"
+#include "testshl/simpleheader.hxx"
 #include "osl/diagnose.h"
 #include "osl/interlck.h"
 #include "rtl/string.h"
