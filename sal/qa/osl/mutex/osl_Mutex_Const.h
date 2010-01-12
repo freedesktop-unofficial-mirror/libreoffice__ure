@@ -1,7 +1,7 @@
 /*************************************************************************
 *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,7 +31,7 @@
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
 
-#ifndef _OSL_MUTEX_CONST_H_ 
+#ifndef _OSL_MUTEX_CONST_H_
 #define _OSL_MUTEX_CONST_H_
 
 //------------------------------------------------------------------------
@@ -49,7 +49,7 @@
 #endif
 #include <osl/time.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #ifdef UNX
 #include <unistd.h>
