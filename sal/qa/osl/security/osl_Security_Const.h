@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -52,12 +52,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#if ( defined UNX ) || ( defined OS2 )	
+#if ( defined UNX ) || ( defined OS2 )
 #include <unistd.h>
 #include <pwd.h>
 #endif
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 // LLA: #include <testshl2/cmdlinebits.hxx>
 
 
