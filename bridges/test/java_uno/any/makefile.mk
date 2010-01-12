@@ -79,16 +79,16 @@ CFLAGS += -Ob0
 .ENDIF
 
 SLOFILES= \
-    $(SLO)$/transport.obj
+	$(SLO)$/transport.obj
 
 SHL1TARGET=$(TARGET)
 
 SHL1STDLIBS= \
-    $(CPPUHELPERLIB)		\
-    $(SALHELPERLIB)			\
-    $(JVMACCESSLIB)			\
-    $(CPPULIB)			\
-    $(SALLIB)
+	$(CPPUHELPERLIB)		\
+	$(SALHELPERLIB)			\
+	$(JVMACCESSLIB)			\
+	$(CPPULIB)			\
+	$(SALLIB)
 
 SHL1VERSIONMAP=$(TARGET).map
 SHL1IMPLIB=i$(TARGET)
@@ -104,16 +104,16 @@ $(SLOFILES) : $(MISC)$/gen_files.flag
 $(JAVACLASSFILES) : $(MISC)$/gen_files.flag
 
 ALLTAR : \
-    $(OUT)$/bin$/TestRemote$(SCRIPTEXT) \
-    $(OUT)$/bin$/TestJni$(SCRIPTEXT)
+    $(OUT)$/bin$/TestRemote \
+    $(OUT)$/bin$/TestJni
 
-$(OUT)$/bin$/TestRemote$(SCRIPTEXT) : $(JAVACLASSFILES)
+$(OUT)$/bin$/TestRemote : $(JAVACLASSFILES)
     -rm -f $@
     echo java -classpath ..$/class$/test$(PATH_SEPERATOR)..$/class$(PATH_SEPERATOR)$(EXEC_CLASSPATH) \
         test.java_uno.anytest.TestRemote > $@
     $(GIVE_EXEC_RIGHTS) $@
 
-$(OUT)$/bin$/TestJni$(SCRIPTEXT) : $(JAVACLASSFILES)
+$(OUT)$/bin$/TestJni : $(JAVACLASSFILES)
     -rm -f $@
     echo '$(AUGMENT_LIBRARY_PATH)' java -classpath \
         .$(PATH_SEPERATOR)..$/class$(PATH_SEPERATOR)$(EXEC_CLASSPATH) \
@@ -121,11 +121,11 @@ $(OUT)$/bin$/TestJni$(SCRIPTEXT) : $(JAVACLASSFILES)
     $(GIVE_EXEC_RIGHTS) $@
 
 $(BIN)$/test_java_uno_anytest.rdb : types.idl
-    $(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
-    $(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
+	$(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
+	$(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
 
 $(MISC)$/gen_files.flag : $(BIN)$/test_java_uno_anytest.rdb
-    $(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -X $(SOLARBINDIR)$/udkapi.rdb $?
-    $(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -T com.sun.star.uno.XInterface $(SOLARBINDIR)$/udkapi.rdb
-    $(JAVAMAKER) -nD -BUCR -O $(CLASSDIR) -X $(SOLARBINDIR)$/udkapi.rdb $?
-    $(TOUCH) $@
+	$(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -X $(SOLARBINDIR)$/udkapi.rdb $?
+	$(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -T com.sun.star.uno.XInterface $(SOLARBINDIR)$/udkapi.rdb
+	$(JAVAMAKER) -nD -BUCR -O $(CLASSDIR) -X $(SOLARBINDIR)$/udkapi.rdb $?
+	$(TOUCH) $@

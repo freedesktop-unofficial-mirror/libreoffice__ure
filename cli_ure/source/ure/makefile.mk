@@ -41,13 +41,6 @@ TARGET = ure
 .INCLUDE : $(PRJ)$/util$/target.pmk
 .INCLUDE : target.mk
 
-
-.IF "$(USE_SHELL)"!="4nt"
-ECHOQUOTE='
-.ELSE
-ECHOQUOTE=
-.ENDIF
-
 .IF "$(BUILD_FOR_CLI)" != ""
 
 .INCLUDE : $(BIN)$/cliureversion.mk
@@ -56,58 +49,58 @@ ASSEMBLY_ATTRIBUTES = $(MISC)$/assembly_ure_$(TARGET).cs
 
 POLICY_ASSEMBLY_FILE=$(BIN)$/$(CLI_URE_POLICY_ASSEMBLY).dll
 ALLTAR : \
-    $(BIN)$/cli_ure.dll \
-    $(POLICY_ASSEMBLY_FILE)
+	$(BIN)$/cli_ure.dll \
+	$(POLICY_ASSEMBLY_FILE)
 
 .IF "$(CCNUMVER)" >= "001399999999"
 CSCFLAGS+=-keyfile:"$(BIN)$/cliuno.snk"
 .ENDIF
 
 CSFILES = \
-    uno$/util$/DisposeGuard.cs					\
-    uno$/util$/WeakAdapter.cs					\
-    uno$/util$/WeakBase.cs						\
-    uno$/util$/WeakComponentBase.cs	\
-    $(ASSEMBLY_ATTRIBUTES)
+	uno$/util$/DisposeGuard.cs					\
+	uno$/util$/WeakAdapter.cs					\
+	uno$/util$/WeakBase.cs						\
+	uno$/util$/WeakComponentBase.cs	\
+	$(ASSEMBLY_ATTRIBUTES)
 
 .IF "$(CCNUMVER)" <= "001399999999"
 $(ASSEMBLY_ATTRIBUTES) : assembly.cs makefile.mk $(BIN)$/cliuno.snk $(BIN)$/cliureversion.mk 
     $(GNUCOPY) -p assembly.cs $@
-    echo $(ECHOQUOTE) \
-    [assembly:System.Reflection.AssemblyVersion( "$(CLI_URE_NEW_VERSION)")] \
-    [assembly:System.Reflection.AssemblyKeyFile(@"$(BIN)$/cliuno.snk")]$(ECHOQUOTE) \
+    echo \
+    '[assembly:System.Reflection.AssemblyVersion( "$(CLI_URE_NEW_VERSION)")] \
+    [assembly:System.Reflection.AssemblyKeyFile(@"$(BIN)$/cliuno.snk")]' \
     >> $@
 .ELSE
 $(ASSEMBLY_ATTRIBUTES) : assembly.cs makefile.mk $(BIN)$/cliuno.snk $(BIN)$/cliureversion.mk 
     $(GNUCOPY) -p assembly.cs $@
-    echo $(ECHOQUOTE) \
-    [assembly:System.Reflection.AssemblyVersion( "$(CLI_URE_NEW_VERSION)")]$(ECHOQUOTE) \
+    echo \
+    '[assembly:System.Reflection.AssemblyVersion( "$(CLI_URE_NEW_VERSION)")]' \
     >> $@
 .ENDIF
 
 $(BIN)$/cli_ure.dll : $(CSFILES) $(BIN)$/cli_uretypes.dll $(BIN)$/cliureversion.mk 
-    $(CSC) $(CSCFLAGS) \
-        -target:library \
-        -out:$@ \
-        -reference:$(OUT)$/bin$/cli_uretypes.dll \
-        -reference:System.dll \
-        $(CSFILES)
-    @echo "If code has changed then provide a policy assembly and change the version!"
+	$(CSC) $(CSCFLAGS) \
+		-target:library \
+		-out:$@ \
+		-reference:$(OUT)$/bin$/cli_uretypes.dll \
+		-reference:System.dll \
+		$(CSFILES)
+	@echo "If code has changed then provide a policy assembly and change the version!"
 
 
 #do not forget to deliver cli_ure.config. It is NOT embedded in the policy file.
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_ure.config
-    $(WRAPCMD) AL.exe -out:$@ \
-            -version:$(CLI_URE_POLICY_VERSION) \
-            -keyfile:$(BIN)$/cliuno.snk \
-            -link:$(BIN)$/cli_ure.config
+	$(WRAPCMD) AL.exe -out:$@ \
+			-version:$(CLI_URE_POLICY_VERSION) \
+			-keyfile:$(BIN)$/cliuno.snk \
+			-link:$(BIN)$/cli_ure.config
 
 #Create the config file that is used with the policy assembly
 $(BIN)$/cli_ure.config: cli_ure_config $(BIN)$/cliureversion.mk 
-    $(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
-    $< $@
+	$(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
+	$< $@
 
 
 .ENDIF
-    
+	
 

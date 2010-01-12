@@ -41,24 +41,15 @@ TARGET = cliureversion.mk
 .INCLUDE : $(PRJ)$/util$/target.pmk
 .INCLUDE : target.mk
 
-
-.IF "$(USE_SHELL)"!="4nt"
-ECHOQUOTE='
-.ELSE
-ECHOQUOTE=
-.ENDIF
-
-
-
 ALLTAR : \
-    $(BIN)$/cliureversion.mk 
+	$(BIN)$/cliureversion.mk 
 
 #	INCVERSION
 
 #always deliver a cliureversion.mk. It is needed for the packing process even for all other
 #platforms. Therefore BUILD_FOR_CLI is not used here 
 $(BIN)$/cliureversion.mk: version.txt 
-    $(GNUCOPY) $< $@
+	$(GNUCOPY) $< $@
 
 
 #disabled because of #67482
