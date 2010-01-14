@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -35,7 +35,7 @@
 #include <stdio.h> // C99 snprintf not necessarily in <cstdio>
 #include <string.h> // wntmsci10 does not know <cstring> std::strcmp
 
-#include "cppunit/simpleheader.hxx"
+#include "testshl/simpleheader.hxx"
 #include "sal/types.h"
 
 namespace {
