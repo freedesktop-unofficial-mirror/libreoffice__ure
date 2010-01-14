@@ -1,7 +1,7 @@
 #*************************************************************************
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-# 
+#
 # Copyright 2008 by Sun Microsystems, Inc.
 #
 # OpenOffice.org - a multi-platform office productivity suite
@@ -41,14 +41,15 @@ ENABLE_EXCEPTIONS=TRUE
 
 
 # BEGIN ----------------------------------------------------------------
-# auto generated Target:joblist by codegen.pl 
+# auto generated Target:joblist by codegen.pl
 SHL1OBJS=  \
-    $(SLO)$/cppu_ifcontainer.obj
+	$(SLO)$/cppu_ifcontainer.obj
 SHL1TARGET= cppu_ifcontainer
 SHL1STDLIBS=\
     $(CPPUHELPERLIB) \
     $(SALLIB) \
     $(CPPULIB) \
+    $(TESTSHL2LIB)\
     $(CPPUNITLIB)
 SHL1IMPLIB= i$(SHL1TARGET)
 DEF1NAME    =$(SHL1TARGET)
