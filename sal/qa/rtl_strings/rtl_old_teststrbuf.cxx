@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -53,7 +53,7 @@
 #include <rtl/ustrbuf.hxx>
 #endif
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 using namespace rtl;
 
@@ -68,11 +68,11 @@ using namespace rtl;
 // -----------------------------------------------------------------------------
 namespace rtl_OStringBuffer
 {
-    class oldtests : public CppUnit::TestFixture  
+    class oldtests : public CppUnit::TestFixture
     {
     public:
         void test_OStringBuffer();
-        
+
         CPPUNIT_TEST_SUITE( oldtests );
         CPPUNIT_TEST( test_OStringBuffer );
         CPPUNIT_TEST_SUITE_END( );
@@ -162,11 +162,11 @@ void oldtests::test_OStringBuffer()
 
 namespace rtl_OUStringBuffer
 {
-    class oldtests : public CppUnit::TestFixture  
+    class oldtests : public CppUnit::TestFixture
     {
     public:
         void test_OUStringBuffer();
-        
+
         CPPUNIT_TEST_SUITE( oldtests );
         CPPUNIT_TEST( test_OUStringBuffer );
         CPPUNIT_TEST_SUITE_END( );
@@ -260,7 +260,7 @@ void oldtests::test_OUStringBuffer()
     printf("test_OWStringBuffer OK !!!\n");
     return;
 }
- 
+
 } // namespace rtl_OUStringBuffer
 
 
