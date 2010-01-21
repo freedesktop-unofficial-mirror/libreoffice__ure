@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,7 +31,7 @@
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_sal.hxx"
 
-#include "cppunit/simpleheader.hxx"
+#include "testshl/simpleheader.hxx"
 #include "rtl/strbuf.hxx"
 #include "rtl/string.hxx"
 #include "rtl/ustring.hxx"
@@ -123,7 +123,7 @@ void testConvertToString(TestConvertToString const & rTest)
         CPPUNIT_ASSERT_MESSAGE(aMessage.getStr(), false);
     }
 }
-    
+
 }
 
 void test::oustring::Convert::convertToString()
