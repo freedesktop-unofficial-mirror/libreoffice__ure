@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -36,7 +36,7 @@
 //------------------------------------------------------------------------
 #include <osl_Socket_Const.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <osl/socket.hxx>
 //------------------------------------------------------------------------
 // helper functions
@@ -52,7 +52,7 @@ namespace osl_Socket
     class tests : public CppUnit::TestFixture
     {
     public:
-    
+
         void test_001()
             {
                 // _osl_getFullQualifiedDomainName( );
@@ -60,7 +60,7 @@ namespace osl_Socket
                 rtl::OUString suHostname = osl::SocketAddr::getLocalHostname(&aResult);
                 CPPUNIT_ASSERT_MESSAGE("getLocalHostname failed", aResult == osl_Socket_Ok);
             }
-        
+
         CPPUNIT_TEST_SUITE( tests );
         CPPUNIT_TEST( test_001 );
         CPPUNIT_TEST_SUITE_END();

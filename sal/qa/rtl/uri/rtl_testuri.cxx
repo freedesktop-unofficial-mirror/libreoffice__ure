@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -39,7 +39,7 @@
 #include "rtl/ustring.h"
 #include "rtl/ustring.hxx"
 
-#include "cppunit/simpleheader.hxx"
+#include "testshl/simpleheader.hxx"
 
 #include <cstddef>
 #include <stdio.h>
