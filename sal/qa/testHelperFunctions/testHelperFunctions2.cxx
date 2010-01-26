@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,7 +31,7 @@
 
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_sal.hxx"
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include "stringhelper.hxx"
 
 namespace testOfHelperFunctions
@@ -40,7 +40,7 @@ namespace testOfHelperFunctions
     {
     public:
         void valueequal_001();
-        
+
         CPPUNIT_TEST_SUITE( test_valueequal );
         CPPUNIT_TEST( valueequal_001 );
         CPPUNIT_TEST_SUITE_END( );
@@ -53,7 +53,7 @@ namespace testOfHelperFunctions
         sValue <<= suValue;
         t_print("'%s'\n", sValue.getStr());
     }
- 
+
 } // namespace testOfHelperFunctions
 
 // -----------------------------------------------------------------------------
