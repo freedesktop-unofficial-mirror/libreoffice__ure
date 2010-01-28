@@ -42,24 +42,30 @@ ENABLE_EXCEPTIONS=TRUE
 
 .IF "$(SOLAR_JAVA)"==""
 nojava:
-    @echo "Not building jni-uno bridge because Java is disabled"
+	@echo "Not building jni-uno bridge because Java is disabled"
 .ENDIF
 
 # --- Files --------------------------------------------------------
 
+.IF "$(GUI)$(COM)" == "WNTGCC"
+.IF "$(EXCEPTIONS)" == "sjlj"
+CFLAGS += -DBROKEN_ALLOCA
+.ENDIF
+.ENDIF
+
 SLOFILES= \
-    $(SLO)$/jni_info.obj		\
-    $(SLO)$/jni_data.obj		\
-    $(SLO)$/jni_uno2java.obj	\
-    $(SLO)$/jni_java2uno.obj	\
+	$(SLO)$/jni_info.obj		\
+	$(SLO)$/jni_data.obj		\
+	$(SLO)$/jni_uno2java.obj	\
+	$(SLO)$/jni_java2uno.obj	\
     $(SLO)$/jni_bridge.obj \
     $(SLO)$/nativethreadpool.obj 
 
 SHL1TARGET=$(TARGET)
 
 SHL1STDLIBS= \
-    $(JVMACCESSLIB)			\
-    $(CPPULIB)			\
+	$(JVMACCESSLIB)			\
+	$(CPPULIB)			\
     $(SALLIB) \
     $(SALHELPERLIB)
 
