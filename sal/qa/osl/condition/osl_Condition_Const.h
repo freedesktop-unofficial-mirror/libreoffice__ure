@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,7 +31,7 @@
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
 
-#ifndef _OSL_CONDITION_CONST_H_ 
+#ifndef _OSL_CONDITION_CONST_H_
 #define _OSL_CONDITION_CONST_H_
 
 //------------------------------------------------------------------------
@@ -59,7 +59,7 @@
 #include <unistd.h>
 #endif
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #define OSLTEST_DECLARE_USTRING( str_name, str_value ) \
     ::rtl::OUString a##str_name = rtl::OUString::createFromAscii( str_value )
