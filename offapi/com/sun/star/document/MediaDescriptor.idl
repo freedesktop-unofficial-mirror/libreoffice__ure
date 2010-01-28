@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -84,6 +84,12 @@ module com { module sun { module star { module document {
 published service MediaDescriptor
 {
     //-------------------------------------------------------------------------
+    /** May be set by filters or detection services if user has choosen to
+        abort loading/saving, e.g. while entering a password.
+     */
+    [optional,property] boolean Aborted;
+
+    //-------------------------------------------------------------------------
     /** document is a template
 
         <p>
@@ -136,7 +142,7 @@ published service MediaDescriptor
         </p>
      */
     [optional,property] any ComponentData;
-    
+
     //-------------------------------------------------------------------------
     /** The base URL of the document to be used to resolve relative links.
      */
@@ -439,7 +445,7 @@ published service MediaDescriptor
     /** let the document be opened in repair mode
 
         <p>
-        For loading of corrupted zip packages: Setting this to <TRUE/> let the document 
+        For loading of corrupted zip packages: Setting this to <TRUE/> let the document
         be opened in repair mode, so as much as possible information will be retrieved.
         </p>
 
