@@ -46,11 +46,11 @@ USE_LDUMP2=TRUE
 LDUMP2=LDUMP3
 
 DOCPPFILES= $(INC)$/registry$/registry.hxx \
-            $(INC)$/registry$/registry.h \
-            $(INC)$/registry$/regtype.h \
-            $(INC)$/registry$/reflread.hxx \
-            $(INC)$/registry$/reflwrit.hxx \
-            $(INC)$/registry$/refltype.hxx \
+			$(INC)$/registry$/registry.h \
+			$(INC)$/registry$/regtype.h \
+			$(INC)$/registry$/reflread.hxx \
+			$(INC)$/registry$/reflwrit.hxx \
+			$(INC)$/registry$/refltype.hxx \
 
 LIB1TARGET= $(SLB)$/$(TARGET).lib
 
@@ -59,9 +59,8 @@ LIB1FILES= 	$(SLB)$/$(TARGET)cpp.lib
 SHL1TARGET= $(TARGET)
 SHL1IMPLIB= ireg
 SHL1STDLIBS= \
-    $(SALLIB) \
-    $(SALHELPERLIB) \
-    $(STORELIB)
+	$(SALLIB) \
+	$(STORELIB)
 
 SHL1VERSIONMAP=	$(TARGET).map
 
@@ -77,5 +76,5 @@ SHL1RPATH=URELIB
 .INCLUDE :  target.mk
 
 makedocpp: $(DOCPPFILES)
-     docpp -H -m -f  -u -d $(OUT)$/doc$/$(PRJNAME) $(DOCPPFILES)
+	 docpp -H -m -f  -u -d $(OUT)$/doc$/$(PRJNAME) $(DOCPPFILES)
 

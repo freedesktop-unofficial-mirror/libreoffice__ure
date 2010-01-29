@@ -42,10 +42,10 @@ ENABLE_EXCEPTIONS=TRUE
 .INCLUDE :  settings.mk
 
 OBJFILES=   $(OBJ)$/rdbmaker.obj	\
-            $(OBJ)$/rdboptions.obj	\
-            $(OBJ)$/typeblop.obj	\
-            $(OBJ)$/specialtypemanager.obj	\
-            $(OBJ)$/rdbtype.obj
+			$(OBJ)$/rdboptions.obj	\
+			$(OBJ)$/typeblop.obj	\
+			$(OBJ)$/specialtypemanager.obj	\
+			$(OBJ)$/rdbtype.obj
 
 
 APP1TARGET= $(TARGET)
@@ -53,15 +53,14 @@ APP1TARGET= $(TARGET)
 APP1OBJS=   $(OBJFILES)
 
 APP1STDLIBS=\
-            $(STORELIB)\
             $(SALLIB) \
             $(SALHELPERLIB) \
             $(REGLIB) \
-            $(CPPULIB) \
-            $(CPPUHELPERLIB)
+			$(CPPULIB) \
+			$(CPPUHELPERLIB)
 
 APP1LIBS= \
-        $(LB)$/codemaker.lib
+		$(LB)$/codemaker.lib
 
 APP1RPATH=  NONE
 

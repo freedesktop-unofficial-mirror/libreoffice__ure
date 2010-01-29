@@ -51,16 +51,20 @@ DESTROOT=$(BIN)$/$(PYDIRNAME)
 .IF "$(GUI)" == "UNX"
 PYTHONBINARY=$(BIN)$/python$(EXECPOST).bin
 .ELSE
+.IF "$(COM)" == "GCC"
+PYTHONBINARY=$(DESTROOT)$/bin$/python.bin
+.ELSE
 PYTHONBINARY=$(DESTROOT)$/bin$/python$(EXECPOST)
+.ENDIF
 .ENDIF
 
 FINDLIBFILES_TMP:=$(subst,/,$/ \
-    $(shell @$(FIND) $(SOLARLIBDIR)$/python -type f| $(GREP) -v .pyc |$(GREP) -v .py\~ |$(GREP) -v .orig ))
+	$(shell @$(FIND) $(SOLARLIBDIR)$/python -type f| $(GREP) -v .pyc |$(GREP) -v .py\~ |$(GREP) -v .orig ))
 FINDLIBFILES=$(subst,$(SOLARLIBDIR)$/python, $(FINDLIBFILES_TMP))
 
 FILES=\
-    $(PYTHONBINARY)	\
-    $(foreach,i,$(FINDLIBFILES) $(DESTROOT)$/lib$(i)) 
+	$(PYTHONBINARY)	\
+	$(foreach,i,$(FINDLIBFILES) $(DESTROOT)$/lib$(i)) 
 
 .IF "$(OS)" == "WNT"
 APP1TARGET = python
@@ -73,16 +77,16 @@ OBJFILES = $(OBJ)$/python.obj
 .INCLUDE: target.mk
 
 ALLTAR: \
-    $(BIN)$/$(PYDIRNAME).zip
+	$(BIN)$/$(PYDIRNAME).zip
 
 .IF "$(GUI)" == "UNX"
 ALLTAR : $(BIN)$/python.sh
 $(BIN)$/python.sh : python.sh
-    -rm -f $@
-    cat $? > $@
-    sed 's/%%PYVERSION%%/$(PYVERSION)/g' < $@ > $@.new
-    mv $@.new $@
-    chmod +x $@
+	-rm -f $@
+	cat $? > $@
+	sed 's/%%PYVERSION%%/$(PYVERSION)/g' < $@ > $@.new
+	mv $@.new $@
+	chmod +x $@
 .ENDIF
 
 $(OBJ)$/python.obj: $(OUT)$/inc$/pyversion.hxx
@@ -93,31 +97,35 @@ $(OUT)$/inc$/pyversion.hxx: pyversion.inc
 $(BIN)$/$(PYDIRNAME).zip : $(FILES)
 .IF "$(GUI)" == "UNX"
 .IF "$(OS)" != "MACOSX"
-    cd $(DESTROOT) && find . -name '*$(DLLPOST)' | xargs strip
+	cd $(DESTROOT) && find . -name '*$(DLLPOST)' | xargs strip
 .ENDIF
 .ENDIF
-    -rm -f $@
-    cd $(BIN) && zip -r $(PYDIRNAME).zip $(PYDIRNAME)
+	-rm -f $@
+	cd $(BIN) && zip -r $(PYDIRNAME).zip $(PYDIRNAME)
 
 $(DESTROOT)$/lib$/% : $(SOLARLIBDIR)$/python$/%
-    -$(MKDIRHIER) $(@:d) 
-    -rm -f $@
-    cat $< > $@
+	-$(MKDIRHIER) $(@:d) 
+	-rm -f $@
+	cat $< > $@
 
 .IF "$(GUI)"== "UNX"
 $(BIN)$/python$(EXECPOST).bin : $(SOLARBINDIR)$/python$(EXECPOST)
-    -$(MKDIRHIER) $(@:d)
-    -rm -f $@
-    cat $< > $@
+	-$(MKDIRHIER) $(@:d)
+	-rm -f $@
+	cat $< > $@
 .IF "$(OS)" != "MACOSX"
-    strip $@
+	strip $@
 .ENDIF
-    chmod +x $@
+	chmod +x $@
+.ELSE
+.IF "$(COM)" == "GCC"
+$(DESTROOT)$/bin$/python.bin : $(SOLARBINDIR)$/python$(EXECPOST)
 .ELSE
 $(DESTROOT)$/bin$/python$(EXECPOST) : $(SOLARBINDIR)$/python$(EXECPOST)
-    -$(MKDIRHIER) $(@:d)
-    -rm -f $@
-    cat $< > $@
+.ENDIF
+	-$(MKDIRHIER) $(@:d)
+	-rm -f $@
+	cat $< > $@
 .ENDIF
 
 .ENDIF
