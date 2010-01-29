@@ -38,21 +38,22 @@ COMP1TYPELIST = brdgfctr
 
 # --- Settings -----------------------------------------------------
 .INCLUDE :  settings.mk
+.IF "$(L10N_framework)"==""
 DLLPRE =
 # ------------------------------------------------------------------
 
 SLOFILES= \
-    $(SLO)$/bridgefactory.obj\
-    $(SLO)$/bridgeimpl.obj 
+	$(SLO)$/bridgefactory.obj\
+	$(SLO)$/bridgeimpl.obj 
 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = brdgfctr.map
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) \
-        $(RMCXTLIB)
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) \
+		$(RMCXTLIB)
 
 #SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)
@@ -61,6 +62,7 @@ SHL1DEF=		$(MISC)$/$(SHL1TARGET).def
 SHL1RPATH=      URELIB
 
 DEF1NAME=		$(SHL1TARGET)
+.ENDIF 		# L10N_framework
 
 # --- Targets ------------------------------------------------------
 
