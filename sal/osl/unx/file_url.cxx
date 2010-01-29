@@ -462,39 +462,6 @@ namespace /* private */
     /*********************************************
 
      ********************************************/
-    sal_Unicode* ustrcpy(const sal_Unicode* s, sal_Unicode* d)
-    {
-        const sal_Unicode* sc = s;
-        sal_Unicode*       dc = d;
-        
-        while ((*dc++ = *sc++))
-            /**/;
-            
-        return d;
-    }
-    
-    /*********************************************
-
-     ********************************************/
-     
-    sal_Unicode* ustrncpy(const sal_Unicode* s, sal_Unicode* d, unsigned int n)
-    {
-        const sal_Unicode* sc = s;
-        sal_Unicode*       dc = d;
-        unsigned int       i  = n;		
-        
-        while (i--)	
-            *dc++ = *sc++;
-        
-        if (n)
-            *dc = 0;
-            
-        return d;
-    }
-    
-    /*********************************************
-
-     ********************************************/
      
     sal_Unicode* ustrchrcat(const sal_Unicode chr, sal_Unicode* d)
     {
@@ -503,17 +470,6 @@ namespace /* private */
         *p   = 0;		
         return d;	
     }
-
-    /*********************************************
-
-     ********************************************/
-     
-    sal_Unicode* ustrcat(const sal_Unicode* s, sal_Unicode* d)
-    {
-        sal_Unicode* dc = ustrtoend(d);					
-        ustrcpy(s, dc);		
-        return d;
-    }	
 
     /******************************************************
      *
@@ -526,18 +482,6 @@ namespace /* private */
                p--;
            return (*p == Chr);  
     }
-
-    /******************************************************
-     * Ensure that the given string has the specified last 
-     * character if necessary append it
-     ******************************************************/
- 
-    sal_Unicode* _strensurelast(sal_Unicode* pStr, sal_Unicode Chr)
-    {
-        if (!_islastchr(pStr, Chr))
-            ustrchrcat(Chr, pStr);
-        return pStr;
-    }	
 
     /******************************************************
      * Remove the last part of a path, a path that has 
