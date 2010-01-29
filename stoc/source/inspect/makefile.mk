@@ -45,16 +45,16 @@ DLLPRE =
 .INCLUDE :  ..$/cppumaker.mk
 
 SLOFILES= \
-        $(SLO)$/introspection.obj
+		$(SLO)$/introspection.obj
 
 SHL1TARGET=	$(TARGET)
 
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALLIB)
 
-SHL1VERSIONMAP = introspection.map
+SHL1VERSIONMAP = $(SOLARENV)/src/component.map
 SHL1RPATH=URELIB
 
 SHL1DEPN=

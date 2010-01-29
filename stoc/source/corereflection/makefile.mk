@@ -45,12 +45,12 @@ DLLPRE =
 .INCLUDE :  ..$/cppumaker.mk
 
 SLOFILES=	\
-        $(SLO)$/crefl.obj	\
-        $(SLO)$/crbase.obj	\
-        $(SLO)$/crarray.obj	\
-        $(SLO)$/crcomp.obj	\
-        $(SLO)$/criface.obj	\
-        $(SLO)$/crenum.obj
+		$(SLO)$/crefl.obj	\
+		$(SLO)$/crbase.obj	\
+		$(SLO)$/crarray.obj	\
+		$(SLO)$/crcomp.obj	\
+		$(SLO)$/criface.obj	\
+		$(SLO)$/crenum.obj
 
 # internal compiler error with Forte 6 update 1 (x86)
 # to be reconsidered after compiler upgrade
@@ -59,11 +59,11 @@ NOOPTFILES += $(SLO)$/criface.obj
 .ENDIF
 
 SHL1TARGET=	$(TARGET)
-SHL1VERSIONMAP = corefl.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET)

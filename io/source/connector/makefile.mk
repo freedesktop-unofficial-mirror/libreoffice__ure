@@ -51,18 +51,18 @@ INCPRE+= $(UNOUCROUT)
 
 
 SLOFILES= \
-    $(SLO)$/connector.obj\
-    $(SLO)$/ctr_pipe.obj\
-    $(SLO)$/ctr_socket.obj
+	$(SLO)$/connector.obj\
+	$(SLO)$/ctr_pipe.obj\
+	$(SLO)$/ctr_socket.obj
 
 SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = connectr.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 SHL1RPATH=URELIB
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) 
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) 
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)

@@ -41,15 +41,15 @@ ENABLE_EXCEPTIONS=TRUE
 DLLPRE =
 
 SLOFILES= \
-    $(SLO)$/TextInputStream.obj
+	$(SLO)$/TextInputStream.obj
 
 SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = tinstrm.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) 
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) 
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)

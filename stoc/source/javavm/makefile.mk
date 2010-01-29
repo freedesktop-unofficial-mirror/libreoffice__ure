@@ -53,19 +53,19 @@ CDEFS += -D__SGI_STL_BOOL_H
 .INCLUDE :  ..$/cppumaker.mk
 
 SLOFILES= \
-        $(SLO)$/javavm.obj		\
-        $(SLO)$/jvmargs.obj	\
-        $(SLO)$/interact.obj 
+		$(SLO)$/javavm.obj		\
+		$(SLO)$/jvmargs.obj	\
+		$(SLO)$/interact.obj 
 
 SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = jen.map
+SHL1VERSIONMAP = $(SOLARENV)/src/component.map
 SHL1STDLIBS= \
-        $(CPPUHELPERLIB) 	\
-        $(CPPULIB)	    	\
-        $(SALLIB) \
+		$(CPPUHELPERLIB) 	\
+		$(CPPULIB)	    	\
+		$(SALLIB) \
         $(JVMACCESSLIB) \
         $(SALHELPERLIB) \
-    $(JVMFWKLIB)
+	$(JVMFWKLIB)
 
 .IF "$(GUI)"=="WNT"
 SHL1STDLIBS += $(ADVAPI32LIB)
@@ -81,7 +81,7 @@ DEF1NAME=		$(SHL1TARGET)
 
 .ELSE		# SOLAR_JAVA
 all:
-    @echo Nothing to do: SOLAR_JAVA not set
+	@echo Nothing to do: SOLAR_JAVA not set
 .ENDIF
 
 # --- Targets ------------------------------------------------------

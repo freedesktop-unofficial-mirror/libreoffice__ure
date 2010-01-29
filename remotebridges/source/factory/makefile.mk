@@ -43,17 +43,17 @@ DLLPRE =
 # ------------------------------------------------------------------
 
 SLOFILES= \
-    $(SLO)$/bridgefactory.obj\
-    $(SLO)$/bridgeimpl.obj 
+	$(SLO)$/bridgefactory.obj\
+	$(SLO)$/bridgeimpl.obj 
 
 SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = brdgfctr.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) \
-        $(RMCXTLIB)
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) \
+		$(RMCXTLIB)
 
 #SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)

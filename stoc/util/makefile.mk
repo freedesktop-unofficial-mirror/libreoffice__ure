@@ -45,23 +45,23 @@ SHL1TARGET=	$(TARGET)
 
 LIB1TARGET=	$(SLB)$/$(TARGET).lib
 LIB1FILES=	$(SLB)$/bootstrap.lib \
-        $(SLB)$/security.lib \
-        $(SLB)$/servicemgr.lib \
-        $(SLB)$/simplereg.lib \
-        $(SLB)$/nestedreg.lib \
-        $(SLB)$/implreg.lib \
-        $(SLB)$/shlibloader.lib \
-        $(SLB)$/regtypeprov.lib \
-        $(SLB)$/typemgr.lib
+		$(SLB)$/security.lib \
+		$(SLB)$/servicemgr.lib \
+		$(SLB)$/simplereg.lib \
+		$(SLB)$/nestedreg.lib \
+		$(SLB)$/implreg.lib \
+		$(SLB)$/shlibloader.lib \
+		$(SLB)$/regtypeprov.lib \
+		$(SLB)$/typemgr.lib
 
-SHL1VERSIONMAP = bootstrap.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-        $(CPPULIB)		\
+		$(CPPULIB)		\
                 $(SALHELPERLIB)         \
-        $(CPPUHELPERLIB)	\
+		$(CPPUHELPERLIB)	\
                 $(SALLIB)		\
-        $(REGLIB)
+		$(REGLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET)
@@ -75,15 +75,15 @@ SHL2TARGET=	stocservices.uno
 
 LIB2TARGET=	$(SLB)$/stocservices.uno.lib
 LIB2FILES=	\
-        $(SLB)$/stocservices.lib \
-        $(SLB)$/typeconverter.lib \
-        $(SLB)$/uriproc.lib 
+		$(SLB)$/stocservices.lib \
+		$(SLB)$/typeconverter.lib \
+		$(SLB)$/uriproc.lib 
 
-SHL2VERSIONMAP = stocservices.map
+SHL2VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL2STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
                 $(SALLIB)		
 
 SHL2DEPN=

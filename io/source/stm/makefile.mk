@@ -50,19 +50,19 @@ INCPRE+= $(UNOUCROUT)
 
 
 SLOFILES = 	$(SLO)$/opipe.obj\
-        $(SLO)$/factreg.obj\
-        $(SLO)$/omark.obj\
-        $(SLO)$/odata.obj \
-        $(SLO)$/streamhelper.obj \
-        $(SLO)$/opump.obj
+		$(SLO)$/factreg.obj\
+		$(SLO)$/omark.obj\
+		$(SLO)$/odata.obj \
+		$(SLO)$/streamhelper.obj \
+		$(SLO)$/opump.obj
 
 SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = stm.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-        $(SALLIB) 	 \
-        $(CPPULIB)	 \
-        $(CPPUHELPERLIB) 
+		$(SALLIB) 	 \
+		$(CPPULIB)	 \
+		$(CPPUHELPERLIB) 
 
 
 SHL1DEPN=

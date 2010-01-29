@@ -43,17 +43,17 @@ DLLPRE =
 # ------------------------------------------------------------------
 
 SLOFILES= \
-        $(SLO)$/remote_bridge.obj \
-        $(SLO)$/bridge_connection.obj\
-        $(SLO)$/bridge_provider.obj 
+		$(SLO)$/remote_bridge.obj \
+		$(SLO)$/bridge_connection.obj\
+		$(SLO)$/bridge_provider.obj 
 SHL1TARGET= $(TARGET)
-SHL1VERSIONMAP = remotebridge.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) \
-        $(RMCXTLIB)
+		$(SALLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) \
+		$(RMCXTLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(TARGET)

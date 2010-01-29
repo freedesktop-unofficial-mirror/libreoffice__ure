@@ -44,15 +44,15 @@ DLLPRE =
 # ------------------------------------------------------------------
 
 SLOFILES= \
-        $(SLO)$/unourl_resolver.obj
+		$(SLO)$/unourl_resolver.obj
 
 SHL1TARGET=	$(TARGET)
-SHL1VERSIONMAP = uuresolver.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-        $(SALLIB)		\
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)
+		$(SALLIB)		\
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET)

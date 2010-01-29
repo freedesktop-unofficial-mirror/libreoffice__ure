@@ -46,15 +46,15 @@ DLLPRE =
 .INCLUDE :  ..$/cppumaker.mk
 
 SLOFILES= \
-        $(SLO)$/proxyfac.obj
+		$(SLO)$/proxyfac.obj
 
 SHL1TARGET=$(TARGET)
-SHL1VERSIONMAP = proxyfac.map
+SHL1VERSIONMAP = $(SOLARENV)/src/unloadablecomponent.map
 
 SHL1STDLIBS= \
-    $(CPPULIB)		\
-    $(CPPUHELPERLIB)	\
-    $(SALLIB)
+	$(CPPULIB)		\
+	$(CPPUHELPERLIB)	\
+	$(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=i$(TARGET)

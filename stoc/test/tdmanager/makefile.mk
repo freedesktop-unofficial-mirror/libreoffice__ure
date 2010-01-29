@@ -44,15 +44,10 @@ SLOFILES = $(SLO)$/testtdmanager.obj
 
 SHL1TARGET = testtdmanager.uno
 SHL1OBJS = $(SLOFILES)
+SHL1VERSIONMAP = $(SOLARENV)/src/component.map
 SHL1STDLIBS = $(CPPULIB) $(CPPUHELPERLIB) $(SALLIB)
 SHL1IMPLIB = itesttdmanager
 DEF1NAME = $(SHL1TARGET)
-
-.IF "$(COMNAME)" == "gcc3"
-SHL1VERSIONMAP = testtdmanager.gcc3.map
-.ELSE
-SHL1VERSIONMAP = testtdmanager.map
-.ENDIF
 
 .INCLUDE: target.mk
 
@@ -79,6 +74,6 @@ $(SLOFILES): $(RDB_FILES)
 
 test .PHONY: $(SHL1TARGETN) $(RDB_FILES)
     uno -c test.tdmanager.impl -l $(subst,$/,/ $(SHL1TARGETN)) \
-    -ro $(subst,$/,/ $(SOLARBINDIR)$/udkapi_doc.rdb) \
+	-ro $(subst,$/,/ $(SOLARBINDIR)$/udkapi_doc.rdb) \
         -- $(subst,$/,/ $(SOLARBINDIR)$/types_doc.rdb) \
            $(subst,$/,/ $(RDB_FILES))

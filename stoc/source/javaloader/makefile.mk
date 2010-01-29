@@ -51,12 +51,12 @@ SLOFILES= 	$(SLO)$/javaloader.obj
 SHL1TARGET= $(TARGET)
 
 SHL1STDLIBS=\
-        $(CPPUHELPERLIB) 	\
-        $(CPPULIB)			\
-        $(SALLIB) \
+		$(CPPUHELPERLIB) 	\
+		$(CPPULIB)			\
+		$(SALLIB) \
         $(JVMACCESSLIB)
 
-SHL1VERSIONMAP = javaloader.map
+SHL1VERSIONMAP = $(SOLARENV)/src/component.map
 SHL1DEPN=		
 SHL1IMPLIB=		i$(TARGET)
 SHL1LIBS= 		$(SLB)$/$(TARGET).lib 
@@ -67,7 +67,7 @@ DEF1NAME=		$(SHL1TARGET)
 
 .ELSE	# SOLAR_JAVA
 all:
-    @echo Nothing to do: SOLAR_JAVA not set
+	@echo Nothing to do: SOLAR_JAVA not set
 .ENDIF
 
 # --- Targets ------------------------------------------------------
