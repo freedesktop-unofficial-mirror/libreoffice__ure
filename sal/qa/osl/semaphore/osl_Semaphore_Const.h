@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2008 by Sun Microsystems, Inc.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -31,7 +31,7 @@
 //------------------------------------------------------------------------
 //------------------------------------------------------------------------
 
-#ifndef _OSL_SEMAPHORE_CONST_H_ 
+#ifndef _OSL_SEMAPHORE_CONST_H_
 #define _OSL_SEMAPHORE_CONST_H_
 
 //------------------------------------------------------------------------
@@ -51,14 +51,14 @@
 #endif
 #include <osl/time.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #ifdef UNX
 #include <unistd.h>
 #endif
 
 //------------------------------------------------------------------------
-// most return value -1 denote a fail of operation. 
+// most return value -1 denote a fail of operation.
 //------------------------------------------------------------------------
 #define OSL_PIPE_FAIL   -1
 
