@@ -29,7 +29,7 @@
  ************************************************************************/
 #ifndef __com_sun_star_view_PrintOptions_idl__ 
 #define __com_sun_star_view_PrintOptions_idl__ 
- 
+
  
 //============================================================================= 
  
@@ -84,7 +84,14 @@ published service PrintOptions
         @attention	Using of this property with TRUE as value is highly reommended.
                 Otherwhise following actions (as e.g. closing the corresponding model) can fail.
      */
-    [optional, property] boolean Wait; 
+    [optional, property] boolean Wait;
+    
+    //------------------------------------------------------------------------- 
+    /** determines the duplex mode for the print job. 
+        
+        @see <type>DuplexMode</type> for more information about supported values
+     */
+    [optional, property] short DuplexMode; 
 }; 
  
 //============================================================================= 
