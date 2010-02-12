@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.6 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -47,22 +43,22 @@ CXXFLAGS+= $(LFS_CFLAGS)
 #
 # test clipboard paste
 #
-    # --- Resources ----------------------------------------------------
-    RCFILES=  cbptest.rc
+	# --- Resources ----------------------------------------------------
+	RCFILES=  cbptest.rc
 
-    OBJFILES= $(OBJ)$/cbptest.obj
+	OBJFILES= $(OBJ)$/cbptest.obj
 
-    APP1TARGET=	$(TARGET)
-    APP1OBJS=	$(OBJFILES)
-    APP1NOSAL=  TRUE
-    APP1NOSVRES= $(RES)$/$(TARGET).res
+	APP1TARGET=	$(TARGET)
+	APP1OBJS=	$(OBJFILES)
+	APP1NOSAL=  TRUE
+	APP1NOSVRES= $(RES)$/$(TARGET).res
 
-    APP1STDLIBS+=$(OLE32LIB) $(USER32LIB) $(KERNEL32LIB)
-    
-    APP1LIBS=$(LB)$/ole9x.lib \
-             $(LB)$/tools32.lib 
+	APP1STDLIBS+=$(OLE32LIB) $(USER32LIB) $(KERNEL32LIB)
+	
+	APP1LIBS=$(LB)$/ole9x.lib \
+			 $(LB)$/tools32.lib 
 
-    APP1DEPN=   makefile.mk $(APP1NOSVRES)
+	APP1DEPN=   makefile.mk $(APP1NOSVRES)
 
 # --- Targets ------------------------------------------------------
 

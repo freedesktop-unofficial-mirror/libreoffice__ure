@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.16 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -85,7 +81,7 @@ SHL1STDLIBS+=$(SOLARLIBDIR)$/cppunit.lib
 SHL1STDLIBS=$(LB)$/libsal.so
 SHL1STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
 .ENDIF
-    
+	
 SHL1IMPLIB=i$(SHL1TARGET) 
 SHL1DEF=$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=$(SHL1TARGET) 
@@ -114,7 +110,7 @@ SHL1STDLIBS+=$(SOLARLIBDIR)$/cppunit.lib
 SHL1STDLIBS=$(LB)$/libsal.so
 SHL1STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
 .ENDIF
-    
+	
 SHL1IMPLIB=i$(SHL1TARGET) 
 SHL1DEF=$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=$(SHL1TARGET) 
@@ -123,55 +119,55 @@ DEF1EXPORTFILE=export.exp
 
 .IF "$(TESTAPP)" == "getlocaleinfotest"
 
-    OBJFILES=$(OBJ)$/getlocaleinfotest.obj
+	OBJFILES=$(OBJ)$/getlocaleinfotest.obj
 
-    APP1TARGET=	getlitest
-    APP1OBJS=$(OBJFILES)
+	APP1TARGET=	getlitest
+	APP1OBJS=$(OBJFILES)
 
-    APP1STDLIBS=\
-                $(KERNEL32LIB)
+	APP1STDLIBS=\
+				$(KERNEL32LIB)
 
-    APP1LIBS=\
-            $(LB)$/kernel9x.lib\
-            $(LB)$/isal.lib
+	APP1LIBS=\
+			$(LB)$/kernel9x.lib\
+			$(LB)$/isal.lib
 
-    APP1DEPN=$(LB)$/isal.lib
+	APP1DEPN=$(LB)$/isal.lib
 
 .ENDIF
 
 .IF "$(TESTAPP)" == "salstattest"
 
-    CFLAGS+= -DUSE_SAL_STATIC
+	CFLAGS+= -DUSE_SAL_STATIC
 
-    OBJFILES=	$(OBJ)$/salstattest.obj
+	OBJFILES=	$(OBJ)$/salstattest.obj
 
-    APP1TARGET=	salstattest
-    APP1OBJS=	$(OBJFILES)
-    APP1STDLIBS=\
-                $(LB)$/asal.lib\
-                $(SHELL32LIB)\
-                $(USER32LIB)\
-                $(COMDLG32LIB)\
-                $(ADVAPI32LIB)
+	APP1TARGET=	salstattest
+	APP1OBJS=	$(OBJFILES)
+	APP1STDLIBS=\
+				$(LB)$/asal.lib\
+				$(SHELL32LIB)\
+				$(USER32LIB)\
+				$(COMDLG32LIB)\
+				$(ADVAPI32LIB)
 
-    APP1DEPN=	$(LB)$/asal.lib	
+	APP1DEPN=	$(LB)$/asal.lib	
 
 .ENDIF # salstattest
 
 .IF "$(TESTAPP)" == "saldyntest"
 
-    OBJFILES=	$(OBJ)$/saldyntest.obj
+	OBJFILES=	$(OBJ)$/saldyntest.obj
 
-    APP1TARGET=	saldyntest
-    APP1OBJS=	$(OBJFILES)
-    APP1STDLIBS=\
-                $(LB)$/isal.lib\
-                $(SHELL32LIB)\
-                $(USER32LIB)\
-                $(COMDLG32LIB)\
-                $(ADVAPI32LIB)
+	APP1TARGET=	saldyntest
+	APP1OBJS=	$(OBJFILES)
+	APP1STDLIBS=\
+				$(LB)$/isal.lib\
+				$(SHELL32LIB)\
+				$(USER32LIB)\
+				$(COMDLG32LIB)\
+				$(ADVAPI32LIB)
 
-    APP1DEPN=	$(LB)$/isal.lib
+	APP1DEPN=	$(LB)$/isal.lib
 
 .ENDIF # salstattest
 

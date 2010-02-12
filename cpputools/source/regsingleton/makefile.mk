@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -46,32 +42,32 @@ NO_OFFUH=TRUE
 CPPUMAKERFLAGS+= -C
 
 UNOTYPES= \
-     com.sun.star.uno.TypeClass \
-     com.sun.star.uno.XAggregation \
-     com.sun.star.uno.XWeak \
-     com.sun.star.uno.XComponentContext \
-     com.sun.star.lang.XTypeProvider \
-     com.sun.star.lang.XComponent \
-     com.sun.star.lang.XSingleServiceFactory \
-     com.sun.star.lang.XSingleComponentFactory \
-     com.sun.star.lang.XMultiServiceFactory \
-     com.sun.star.lang.XMultiComponentFactory \
-     com.sun.star.container.XHierarchicalNameAccess \
-    com.sun.star.registry.XSimpleRegistry \
-    com.sun.star.registry.XRegistryKey
+ 	com.sun.star.uno.TypeClass \
+ 	com.sun.star.uno.XAggregation \
+ 	com.sun.star.uno.XWeak \
+ 	com.sun.star.uno.XComponentContext \
+ 	com.sun.star.lang.XTypeProvider \
+ 	com.sun.star.lang.XComponent \
+ 	com.sun.star.lang.XSingleServiceFactory \
+ 	com.sun.star.lang.XSingleComponentFactory \
+ 	com.sun.star.lang.XMultiServiceFactory \
+ 	com.sun.star.lang.XMultiComponentFactory \
+ 	com.sun.star.container.XHierarchicalNameAccess \
+	com.sun.star.registry.XSimpleRegistry \
+	com.sun.star.registry.XRegistryKey
 
 # --- Files --------------------------------------------------------
 
 DEPOBJFILES= \
-    $(OBJ)$/regsingleton.obj 
+	$(OBJ)$/regsingleton.obj 
 
 APP1TARGET=$(TARGET)
 APP1OBJS=$(DEPOBJFILES)  
 
 APP1STDLIBS= \
-    $(SALLIB)		\
-    $(CPPULIB)		\
-    $(CPPUHELPERLIB)
+	$(SALLIB)		\
+	$(CPPULIB)		\
+	$(CPPUHELPERLIB)
 
 .IF "$(debug)" != ""
 .IF "$(COM)" == "MSC"

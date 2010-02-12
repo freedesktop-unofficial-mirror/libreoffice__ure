@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -55,10 +51,10 @@ APP1STDLIBS+= -lstdc++
 .ENDIF
 
 APP1STDLIBS+=	\
-            $(CPPULIB)	\
-            $(CPPUHELPERLIB)	\
-            $(VOSLIB)	\
-            $(SALLIB)
+			$(CPPULIB)	\
+			$(CPPUHELPERLIB)	\
+			$(VOSLIB)	\
+			$(SALLIB)
 
 APP1DEF=	$(MISC)$/$(APP1TARGET).def
 
