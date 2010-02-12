@@ -42,26 +42,28 @@ PACKAGE=com$/sun$/star$/awt$/grid
 
 # ------------------------------------------------------------------------
 IDLFILES=\
-    GridColumnEvent.idl\
-    GridControlEvent.idl\
-    GridDataEvent.idl\
-    SelectionEventType.idl\
-    GridSelectionEvent.idl\
-    XGridControlListener.idl\
-    XGridSelectionListener.idl\
-    XGridSelection.idl\
-    XGridColumn.idl\
-     XGridColumnListener.idl\
-    XGridDataListener.idl\
-    XGridCell.idl\
-    XGridCellRenderer.idl\
-    DefaultGridDataModel.idl\
-    XGridDataModel.idl\
-    XGridColumnModel.idl\
-    ScrollBarMode.idl\
-    XGridControl.idl\
-    UnoControlGrid.idl\
-    UnoControlGridModel.idl
+	GridColumnEvent.idl\
+	GridControlEvent.idl\
+	GridDataEvent.idl\
+	SelectionEventType.idl\
+	GridSelectionEvent.idl\
+	XGridControlListener.idl\
+	XGridSelectionListener.idl\
+	XGridSelection.idl\
+	XGridColumn.idl\
+ 	XGridColumnListener.idl\
+	XGridDataListener.idl\
+	XGridCell.idl\
+	XGridCellRenderer.idl\
+	DefaultGridDataModel.idl\
+	XGridDataModel.idl\
+	XGridColumnModel.idl\
+	ScrollBarMode.idl\
+	XGridControl.idl\
+	UnoControlGrid.idl\
+	UnoControlGridModel.idl\
+	GridInvalidDataException.idl\
+	GridInvalidModelException.idl
 # ------------------------------------------------------------------
 
 .INCLUDE :  target.mk
