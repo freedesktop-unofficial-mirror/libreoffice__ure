@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.32 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -48,9 +44,9 @@ UNIXVERSIONNAMES=UDK
 # --- Files --------------------------------------------------------
 
 SLOFILES=	\
-    $(SLO)$/condition.obj \
-    $(SLO)$/dynload.obj \
-    $(SLO)$/simplereferenceobject.obj
+	$(SLO)$/condition.obj \
+	$(SLO)$/dynload.obj \
+	$(SLO)$/simplereferenceobject.obj
 
 # SCO: the linker does know about weak symbols, but we can't ignore multiple defined symbols
 .IF "$(OS)"=="SCO"

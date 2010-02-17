@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.13 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,33 +38,33 @@ PACKAGE=com$/sun$/star$/configuration
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AdministrationProvider.idl \
-    DefaultProvider.idl \
-    CannotLoadConfigurationException.idl \
+	AdministrationProvider.idl \
+	DefaultProvider.idl \
+	CannotLoadConfigurationException.idl \
     CorruptedConfigurationException.idl \
     CorruptedUIConfigurationException.idl \
-    InvalidBootstrapFileException.idl \
-    MissingBootstrapFileException.idl \
-    InstallationIncompleteException.idl \
-    ConfigurationAccess.idl\
-    ConfigurationProvider.idl\
-    ConfigurationUpdateAccess.idl\
-    ConfigurationRegistry.idl\
-    HierarchyElement.idl\
-    AccessRootElement.idl\
-    UpdateRootElement.idl\
-    GroupElement.idl\
-    SetElement.idl\
-    HierarchyAccess.idl\
-    GroupAccess.idl\
-    GroupUpdate.idl\
-    SetAccess.idl\
-    SetUpdate.idl\
-    SimpleSetAccess.idl\
-    SimpleSetUpdate.idl\
-    PropertyHierarchy.idl\
-    XTemplateContainer.idl\
-    XTemplateInstance.idl\
+	InvalidBootstrapFileException.idl \
+	MissingBootstrapFileException.idl \
+	InstallationIncompleteException.idl \
+	ConfigurationAccess.idl\
+	ConfigurationProvider.idl\
+	ConfigurationUpdateAccess.idl\
+	ConfigurationRegistry.idl\
+	HierarchyElement.idl\
+	AccessRootElement.idl\
+	UpdateRootElement.idl\
+	GroupElement.idl\
+	SetElement.idl\
+	HierarchyAccess.idl\
+	GroupAccess.idl\
+	GroupUpdate.idl\
+	SetAccess.idl\
+	SetUpdate.idl\
+	SimpleSetAccess.idl\
+	SimpleSetUpdate.idl\
+	PropertyHierarchy.idl\
+	XTemplateContainer.idl\
+	XTemplateInstance.idl\
 
 # ------------------------------------------------------------------
 

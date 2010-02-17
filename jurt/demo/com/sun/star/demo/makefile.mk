@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -47,8 +43,8 @@ JARFILES = unoil.jar ridl.jar
 GENJAVACLASSFILES = 
 
 JAVACLASSFILES= \
-    $(CLASSDIR)$/$(PACKAGE)$/DemoServer.class	\
-    $(CLASSDIR)$/$(PACKAGE)$/TestOffice.class
+	$(CLASSDIR)$/$(PACKAGE)$/DemoServer.class	\
+	$(CLASSDIR)$/$(PACKAGE)$/TestOffice.class
 
 TYPES={$(subst,.class, $(subst,$/,.  $(subst,$(CLASSDIR)$/,-T  $(GENJAVACLASSFILES))))}
 GENJAVAFILES = {$(subst,.class,.java $(subst,$/class, $(GENJAVACLASSFILES)))}
