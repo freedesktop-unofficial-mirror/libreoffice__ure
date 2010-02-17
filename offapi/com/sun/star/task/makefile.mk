@@ -1,7 +1,7 @@
 #*************************************************************************
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-# 
+#
 # Copyright 2008 by Sun Microsystems, Inc.
 # Copyright IBM Corporation 2009.
 #
@@ -59,6 +59,7 @@ IDLFILES=\
 	MasterPasswordRequest.idl\
 	NoMasterException.idl\
 	PasswordContainer.idl\
+	PasswordContainerInteractionHandler.idl\
 	PasswordRequest.idl\
 	PasswordRequestMode.idl\
 	UnsupportedOverwriteRequest.idl\
@@ -81,7 +82,7 @@ IDLFILES=\
 	XAbortChannel.idl\
 	XInteractionRequestStringResolver.idl\
 	InteractionRequestStringResolver.idl\
-    XUrlContainer.idl
+	XUrlContainer.idl
 
 # ------------------------------------------------------------------
 
