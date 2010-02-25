@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -90,7 +86,7 @@ $(BIN)$/$(TARGET).uno.jar: $(JAVACLASSFILES) relay.manifest
 
 $(BIN)$/$(TARGET).rdb .ERRREMOVE: $(MISC)$/$(TARGET)$/types.rdb \
         $(BIN)$/$(TARGET).uno.jar
-    cp $(MISC)$/$(TARGET)$/types.rdb $@
+	cp $(MISC)$/$(TARGET)$/types.rdb $@
     $(REGMERGE) $@ / $(SOLARBINDIR)$/types.rdb
     $(REGCOMP) -register -r $@ -c acceptor.uno$(DLLPOST) \
         -c bridgefac.uno$(DLLPOST) -c connector.uno$(DLLPOST) \

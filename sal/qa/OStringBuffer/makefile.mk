@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.13 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -52,20 +48,11 @@ CXXFLAGS+= $(LFS_CFLAGS)
 #----------------------------------- OStringBuffer -----------------------------------
 
 SHL1OBJS= \
-    $(SLO)$/rtl_OStringBuffer.obj \
-    $(SLO)$/rtl_String_Utils.obj
+	$(SLO)$/rtl_OStringBuffer.obj \
+	$(SLO)$/rtl_String_Utils.obj
 
 SHL1TARGET= rtl_OStringBuffer
-SHL1STDLIBS=\
-   $(SALLIB) \
-   $(CPPUNITLIB)
-
-# .IF "$(GUI)" == "WNT"
-# SHL1STDLIBS+=	$(SOLARLIBDIR)$/cppunit.lib
-# .ENDIF
-# .IF "$(GUI)" == "UNX"
-# SHL1STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
-# .ENDIF
+SHL1STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
 
 SHL1IMPLIB= i$(SHL1TARGET)
 # SHL1DEF=    $(MISC)$/$(SHL1TARGET).def

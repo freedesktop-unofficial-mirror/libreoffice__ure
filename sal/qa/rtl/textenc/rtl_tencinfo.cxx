@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_tencinfo.cxx,v $
- * $Revision: 1.6 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -36,21 +33,21 @@
 #include <osl/thread.h>
 #include <rtl/tencinfo.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 // -----------------------------------------------------------------------------
 
 namespace rtl_tencinfo
 {
-    class getBestMime : public CppUnit::TestFixture  
+    class getBestMime : public CppUnit::TestFixture
     {
     public:
         void setUp()
             {
             }
-        
+
         void check( const sal_Char* _pRTL_TEXTENCODING, rtl_TextEncoding _aCurrentEncode )
-            {               
+            {
                 const sal_Char *pCharSet = rtl_getBestMimeCharsetFromTextEncoding( _aCurrentEncode );
                 if (pCharSet == 0)
                 {
@@ -59,9 +56,9 @@ namespace rtl_tencinfo
                 else
                 {
                     t_print(T_VERBOSE,     "'%s' is charset: '%s'\n", _pRTL_TEXTENCODING, pCharSet);
-        
+
                     rtl_TextEncoding eTextEnc = rtl_getTextEncodingFromMimeCharset( pCharSet );
-                    if (_aCurrentEncode != eTextEnc && 
+                    if (_aCurrentEncode != eTextEnc &&
                         eTextEnc != RTL_TEXTENCODING_DONTKNOW)
                     {
                         t_print("rtl_getBestMimeCharsetFromTextEncoding(%s) is charset: %s\n", _pRTL_TEXTENCODING, pCharSet);
@@ -72,9 +69,9 @@ namespace rtl_tencinfo
                     // sError += ") returns null";
                     // CPPUNIT_ASSERT_MESSAGE(sError.getStr(), eTextEnc != RTL_TEXTENCODING_DONTKNOW);
                     // CPPUNIT_ASSERT_MESSAGE("Does not realize itself", _aCurrentEncode == eTextEnc );
-                }                
+                }
             }
-        
+
 // the defines for the follows test could be found in file inc/rtl/textenc.h
 
         // ----------------------------------------
@@ -533,7 +530,7 @@ namespace rtl_tencinfo
 //                check( "RTL_TEXTENCODING_UCS4", RTL_TEXTENCODING_UCS4 );
 //                check( "RTL_TEXTENCODING_UCS2", RTL_TEXTENCODING_UCS2 );
 //                check( "RTL_TEXTENCODING_UNICODE", RTL_TEXTENCODING_UNICODE /* RTL_TEXTENCODING_UCS2 */ );
-        
+
         CPPUNIT_TEST_SUITE( getBestMime );
 
         CPPUNIT_TEST( MimeCharsetFromTextEncoding_MS_1252 );
@@ -628,18 +625,18 @@ namespace rtl_tencinfo
 
         CPPUNIT_TEST_SUITE_END( );
     };
-    
+
     // -----------------------------------------------------------------------------
 
-    class getBestUnix : public CppUnit::TestFixture  
+    class getBestUnix : public CppUnit::TestFixture
     {
     public:
         void setUp()
             {
             }
-        
+
         void check( const sal_Char* _pRTL_TEXTENCODING, rtl_TextEncoding _aCurrentEncode )
-            {               
+            {
                 const sal_Char *pCharSet = rtl_getBestUnixCharsetFromTextEncoding( _aCurrentEncode );
                 if (pCharSet == 0)
                 {
@@ -648,9 +645,9 @@ namespace rtl_tencinfo
                 else
                 {
                     t_print(T_VERBOSE, "'%s' is charset: '%s'\n", _pRTL_TEXTENCODING, pCharSet);
-                    
+
                     rtl_TextEncoding eTextEnc = rtl_getTextEncodingFromUnixCharset( pCharSet );
-                    if (_aCurrentEncode != eTextEnc && 
+                    if (_aCurrentEncode != eTextEnc &&
                         eTextEnc != RTL_TEXTENCODING_DONTKNOW)
                     {
                         t_print("rtl_getBestUnixCharsetFromTextEncoding(%s) is charset: %s\n", _pRTL_TEXTENCODING, pCharSet);
@@ -663,7 +660,7 @@ namespace rtl_tencinfo
                     // CPPUNIT_ASSERT_MESSAGE("Does not realize itself", _aCurrentEncode == eTextEnc );
                 }
             }
-        
+
 
         // ----------------------------------------
         void UnixCharsetFromTextEncoding_MS_1252()
@@ -1206,19 +1203,19 @@ namespace rtl_tencinfo
 
         CPPUNIT_TEST_SUITE_END( );
     };
-    
+
  // -----------------------------------------------------------------------------
 
 
-    class getBestWindows : public CppUnit::TestFixture  
+    class getBestWindows : public CppUnit::TestFixture
     {
     public:
         void setUp()
             {
             }
-        
+
         void check( const sal_Char* _pRTL_TEXTENCODING, rtl_TextEncoding _aCurrentEncode )
-            {               
+            {
                 const sal_uInt8 nCharSet = rtl_getBestWindowsCharsetFromTextEncoding( _aCurrentEncode );
                 if (nCharSet == 1)
                 {
@@ -1227,23 +1224,23 @@ namespace rtl_tencinfo
                 else
                 {
                     t_print(T_VERBOSE, "'%s' is charset: '%d'\n", _pRTL_TEXTENCODING, nCharSet);
-                    
+
                     rtl_TextEncoding eTextEnc = rtl_getTextEncodingFromWindowsCharset( nCharSet );
-                    if (_aCurrentEncode != eTextEnc && 
+                    if (_aCurrentEncode != eTextEnc &&
                         eTextEnc != RTL_TEXTENCODING_DONTKNOW)
                     {
                         t_print("rtl_getBestUnixCharsetFromTextEncoding(%s) is charset: %d\n", _pRTL_TEXTENCODING, nCharSet);
-                        t_print("rtl_getTextEncodingFromWindowsCharset() differ: %s %d -> %d\n\n", _pRTL_TEXTENCODING, _aCurrentEncode, eTextEnc );                        
+                        t_print("rtl_getTextEncodingFromWindowsCharset() differ: %s %d -> %d\n\n", _pRTL_TEXTENCODING, _aCurrentEncode, eTextEnc );
                     }
                     // rtl::OString sError = "getTextEncodingFromWindowsCharset(";
                     // sError += rtl::OString::valueOf(nCharSet);
                     // sError += ") returns nul.";
-                    
+
                     // CPPUNIT_ASSERT_MESSAGE(sError.getStr(), eTextEnc != RTL_TEXTENCODING_DONTKNOW);
                     // CPPUNIT_ASSERT_MESSAGE("Does not realize itself", _aCurrentEncode == eTextEnc );
                 }
             }
-        
+
         // ----------------------------------------
         void WindowsCharsetFromTextEncoding_MS_1252()
             {
@@ -1690,7 +1687,7 @@ namespace rtl_tencinfo
                 check( "RTL_TEXTENCODING_JAVA_UTF8", RTL_TEXTENCODING_JAVA_UTF8 );
             }
         // ----------------------------------------
-        
+
         CPPUNIT_TEST_SUITE( getBestWindows );
         CPPUNIT_TEST( WindowsCharsetFromTextEncoding_MS_1252 );
         CPPUNIT_TEST( WindowsCharsetFromTextEncoding_APPLE_ROMAN );
@@ -1794,8 +1791,8 @@ namespace rtl_tencinfo
 
         void tearDown()
             {
-            }    
-    
+            }
+
         // not implemented encoding test
         void getTextEncodingInfo_001()
             {
@@ -1806,7 +1803,7 @@ namespace rtl_tencinfo
                 // implemented
                 sal_Bool bRes11 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_CYRILLIC, &aInfo1 );
                 CPPUNIT_ASSERT_MESSAGE("should return sal_False.", bRes1 == sal_False && bRes11 == sal_False );
-                
+
                 aInfo2.StructSize = 5;
                 sal_Bool bRes2 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_ARABIC, &aInfo2 );
                 sal_Bool bRes21 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_CYRILLIC, &aInfo2 );
@@ -1815,9 +1812,9 @@ namespace rtl_tencinfo
                 aInfo3.StructSize = 6;
                 sal_Bool bRes3 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_ARABIC, &aInfo3 );
                 sal_Bool bRes31 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_CYRILLIC, &aInfo3 );
-                CPPUNIT_ASSERT_MESSAGE("StructSize<6 should return sal_True", bRes3 == sal_True && bRes31 == sal_True ); 
+                CPPUNIT_ASSERT_MESSAGE("StructSize<6 should return sal_True", bRes3 == sal_True && bRes31 == sal_True );
 //&& aInfo2.MinimumCharSize >=1 );
-                
+
                 aInfo4.StructSize = 8;
                 sal_Bool bRes4 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_ARABIC, &aInfo4 );
                 sal_Bool bRes41 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_CYRILLIC, &aInfo4);
@@ -1826,8 +1823,8 @@ namespace rtl_tencinfo
 
         aInfo5.StructSize = sizeof aInfo5;
                 sal_Bool bRes5 = rtl_getTextEncodingInfo( RTL_TEXTENCODING_APPLE_ARABIC, &aInfo5 );
-                CPPUNIT_ASSERT_MESSAGE("StructSize<6 should return sal_True", bRes5 == sal_False && aInfo5.Flags == 0);          	
-            
+                CPPUNIT_ASSERT_MESSAGE("StructSize<6 should return sal_True", bRes5 == sal_False && aInfo5.Flags == 0);
+
             }
         CPPUNIT_TEST_SUITE(getTextEncodingInfo);
         CPPUNIT_TEST(getTextEncodingInfo_001);

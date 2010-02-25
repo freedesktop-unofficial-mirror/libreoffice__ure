@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.16 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,57 +38,57 @@ PACKAGE=com$/sun$/star$/presentation
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    HeaderShape.idl\
-    FooterShape.idl\
-    DateTimeShape.idl\
-    SlideNumberShape.idl\
-    AnimationEffect.idl\
-    AnimationSpeed.idl\
-    ChartShape.idl\
-    ClickAction.idl\
-    CustomPresentation.idl\
-    CustomPresentationAccess.idl\
-    DocumentSettings.idl\
-    DrawPage.idl\
-    FadeEffect.idl\
-    GraphicObjectShape.idl\
-    HandoutShape.idl\
-    HandoutView.idl\
-    NotesShape.idl\
-    NotesView.idl\
-    OLE2Shape.idl\
-    OutlinerShape.idl\
-    OutlineView.idl\
-    PageShape.idl\
-    Presentation.idl\
-    Presentation2.idl\
-    PresentationDocument.idl\
-    PresentationRange.idl\
-    PresentationView.idl\
-    PreviewView.idl\
-    Shape.idl\
-    SlidesView.idl\
-    SubtitleShape.idl\
-    TitleTextShape.idl\
-    XCustomPresentationSupplier.idl\
-    XHandoutMasterSupplier.idl\
-    XPresentation.idl\
-    XPresentationPage.idl\
-    XPresentationSupplier.idl\
-    EffectNodeType.idl\
-    EffectPresetClass.idl\
-    ParagraphTarget.idl\
-    ShapeAnimationSubType.idl\
-    TextAnimationType.idl\
-    EffectCommands.idl\
-    XShapeEventListener.idl\
-    XSlideShow.idl\
-    XSlideShowController.idl\
-    XSlideShowListener.idl\
-    XSlideShowView.idl\
-    XPresentation2.idl\
-    XTransition.idl\
-    XTransitionFactory.idl
+	HeaderShape.idl\
+	FooterShape.idl\
+	DateTimeShape.idl\
+	SlideNumberShape.idl\
+	AnimationEffect.idl\
+	AnimationSpeed.idl\
+	ChartShape.idl\
+	ClickAction.idl\
+	CustomPresentation.idl\
+	CustomPresentationAccess.idl\
+	DocumentSettings.idl\
+	DrawPage.idl\
+	FadeEffect.idl\
+	GraphicObjectShape.idl\
+	HandoutShape.idl\
+	HandoutView.idl\
+	NotesShape.idl\
+	NotesView.idl\
+	OLE2Shape.idl\
+	OutlinerShape.idl\
+	OutlineView.idl\
+	PageShape.idl\
+	Presentation.idl\
+	Presentation2.idl\
+	PresentationDocument.idl\
+	PresentationRange.idl\
+	PresentationView.idl\
+	PreviewView.idl\
+	Shape.idl\
+	SlidesView.idl\
+	SubtitleShape.idl\
+	TitleTextShape.idl\
+	XCustomPresentationSupplier.idl\
+	XHandoutMasterSupplier.idl\
+	XPresentation.idl\
+	XPresentationPage.idl\
+	XPresentationSupplier.idl\
+	EffectNodeType.idl\
+	EffectPresetClass.idl\
+	ParagraphTarget.idl\
+	ShapeAnimationSubType.idl\
+	TextAnimationType.idl\
+	EffectCommands.idl\
+	XShapeEventListener.idl\
+	XSlideShow.idl\
+	XSlideShowController.idl\
+	XSlideShowListener.idl\
+	XSlideShowView.idl\
+	XPresentation2.idl\
+	XTransition.idl\
+	XTransitionFactory.idl
 
 # ------------------------------------------------------------------
 
