@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: osl_old_test_file.cxx,v $
- * $Revision: 1.5 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -51,14 +48,14 @@
 #define TEST_VOLUME "c:/"
 #endif
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
-namespace osl_test_file 
+namespace osl_test_file
 {
 
 // -----------------------------------------------------------------------------
 
-class oldtestfile : public CppUnit::TestFixture  
+class oldtestfile : public CppUnit::TestFixture
 {
 public:
     void test_file_001();
@@ -115,7 +112,7 @@ void oldtestfile::test_file_001()
 #ifdef WIN32
     return;
 #endif
-    
+
     OUString base1( RTL_CONSTASCII_USTRINGPARAM( "file:///" TEST_VOLUME "bla" ) );
     int i;
     for( i = 0 ; aSource1[i] ; i +=2 )
@@ -136,7 +133,7 @@ void oldtestfile::test_file_001()
     OUString err1( RTL_CONSTASCII_USTRINGPARAM( "../.." ) );
     OUString target;
     CPPUNIT_ASSERT_MESSAGE("failure #11",  osl_File_E_None != osl_getAbsoluteFileURL( base1.pData , err1.pData , &target.pData ) );
-    
+
 }
 
 void oldtestfile::test_file_002()
@@ -144,7 +141,7 @@ void oldtestfile::test_file_002()
 #ifdef WIN32
     return;
 #endif
-    
+
     OUString base2( RTL_CONSTASCII_USTRINGPARAM( "file:///" TEST_VOLUME "bla/blubs/schnubbel" ) );
     int i;
     for(  i = 0 ; aSource2[i] ; i +=2 )
@@ -168,7 +165,7 @@ void oldtestfile::test_file_003()
 #ifdef WIN32
     return;
 #endif
-    
+
     // links !
 #ifdef UNX
     int i;
@@ -178,7 +175,7 @@ void oldtestfile::test_file_003()
         char buf2[PATH_MAX];
         strcpy( buf2 , buf );
         strcat( buf2, "/a" );
-        
+
         if( 0 == mkdir( buf2 , S_IRWXG | S_IRWXO | S_IRWXU ) )
         {
             strcat( buf2, "/b" );
@@ -244,7 +241,7 @@ void oldtestfile::test_file_004()
 #ifdef WIN32
     return;
 #endif
-    
+
     OUString base4( RTL_CONSTASCII_USTRINGPARAM( "file:///" TEST_VOLUME "bla/" ) );
     int i;
     for( i = 0 ; aSource1[i] ; i +=2 )
@@ -265,7 +262,7 @@ void oldtestfile::test_file_004()
 
 //	fprintf( stderr, "test_file done\n" );
 }
- 
+
 } // namespace osl_test_file
 
 // -----------------------------------------------------------------------------
