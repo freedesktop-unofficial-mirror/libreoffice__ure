@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -68,10 +64,10 @@ SLOFILES= $(SLO)$/defbootstrap_lib.obj
 SHL1TARGET=$(TARGET)
 
 SHL1STDLIBS= \
-        $(PERLLIB)			\
-        $(CPPUHELPERLIB)	\
-        $(CPPULIB)			\
-        $(SALLIB)
+		$(PERLLIB)			\
+		$(CPPUHELPERLIB)	\
+		$(CPPULIB)			\
+		$(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=i$(TARGET)
@@ -92,16 +88,16 @@ UNODLL=$(DLLDEST)$/UNO.so
 
 .IF "$(depend)" == ""
 ALL: \
-    ALLTAR				\
-    $(UNODLL)			\
-    $(BIN)$/UNO.pm
+	ALLTAR				\
+	$(UNODLL)			\
+	$(BIN)$/UNO.pm
 .ENDIF
 
 $(BIN)$/UNO.pm: UNO.pm
-    cp UNO.pm $@
+	cp UNO.pm $@
 
 $(UNODLL): $(SHL1TARGETN)
-    cp $(SHL1TARGETN) $@
+	cp $(SHL1TARGETN) $@
 
 .INCLUDE :	target.mk
 

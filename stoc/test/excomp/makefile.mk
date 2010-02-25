@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -56,38 +52,38 @@ INCPRE+=	$(OUT)$/inc
 UNOTYPES=$($(TARGET1)_XML2CMPTYPES)
 UNOTYPES+=$($(TARGET2)_XML2CMPTYPES)
 UNOTYPES+=  com.sun.star.registry.XImplementationRegistration \
-            com.sun.star.lang.XComponent
+			com.sun.star.lang.XComponent
 
 # --- Application excomp ------------------------------------------------
 APP1TARGET= $(TARGET)
 APP1OBJS=   $(OBJ)$/excomp.obj 
 
 APP1STDLIBS= \
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) 	\
-        $(SALHELPERLIB) 	\
-        $(SALLIB)
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) 	\
+		$(SALHELPERLIB) 	\
+		$(SALLIB)
 
 # ---- objects ----
 SLOFILES= \
-        $(SLO)$/excomp1.obj	\
-          $(SLO)$/$(COMP1TYPELIST)_description.obj	\
-        $(SLO)$/excomp2.obj	\
-          $(SLO)$/$(COMP2TYPELIST)_description.obj
+		$(SLO)$/excomp1.obj	\
+      	$(SLO)$/$(COMP1TYPELIST)_description.obj	\
+		$(SLO)$/excomp2.obj	\
+      	$(SLO)$/$(COMP2TYPELIST)_description.obj
 
 # ---- excomp1 ------
 SHL1TARGET=	$(TARGET1)
 
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALHELPERLIB)		\
-        $(SALLIB)	
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALHELPERLIB)		\
+		$(SALLIB)	
 
 SHL1DEPN=
 SHL1LIBS=
 SHL1OBJS=  	$(SLO)$/excomp1.obj	\
-              $(SLO)$/$(COMP1TYPELIST)_description.obj
+	      	$(SLO)$/$(COMP1TYPELIST)_description.obj
 SHL1IMPLIB=	i$(TARGET1)
 SHL1DEF=	$(MISC)$/$(SHL1TARGET).def
 
@@ -98,15 +94,15 @@ DEF1EXPORTFILE=	exports.dxp
 SHL2TARGET=	$(TARGET2)
 
 SHL2STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALHELPERLIB)		\
-        $(SALLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALHELPERLIB)		\
+		$(SALLIB)
 
 SHL2DEPN=
 SHL2LIBS=
 SHL2OBJS=  	$(SLO)$/excomp2.obj	\
-              $(SLO)$/$(COMP2TYPELIST)_description.obj	
+	      	$(SLO)$/$(COMP2TYPELIST)_description.obj	
 SHL2IMPLIB=	i$(TARGET2)
 SHL2DEF=	$(MISC)$/$(SHL2TARGET).def
 
@@ -119,7 +115,7 @@ ALLIDLFILES:= example$/XTest.idl example$/ExampleComponent1.idl example$/Example
 
 .IF "$(depend)" == ""
 ALL : 		$(BIN)$/excomp.rdb	\
-        ALLTAR 
+		ALLTAR 
 .ELSE
 ALL: 		ALLDEP
 .ENDIF
@@ -127,8 +123,8 @@ ALL: 		ALLDEP
 .INCLUDE :	target.mk
 
 $(BIN)$/excomp.rdb: $(ALLIDLFILES)
-    idlc -I$(PRJ) -I$(SOLARIDLDIR) -O$(MISC)$/excomp $?
-    regmerge $@ /UCR $(MISC)$/excomp$/{$(?:f:s/.idl/.urd/)}
-    regmerge $@ / $(SOLARBINDIR)$/udkapi.rdb
-    touch $@
+	idlc -I$(PRJ) -I$(SOLARIDLDIR) -O$(MISC)$/excomp $?
+	regmerge $@ /UCR $(MISC)$/excomp$/{$(?:f:s/.idl/.urd/)}
+	regmerge $@ / $(SOLARBINDIR)$/udkapi.rdb
+	touch $@
 

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.16 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,56 +38,56 @@ PACKAGE=com$/sun$/star$/io
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    FilePermission.idl\
-    BufferSizeExceededException.idl\
-    MarkableInputStream.idl\
-    MarkableOutputStream.idl\
-    DataInputStream.idl\
-    DataOutputStream.idl\
-    DataTransferEvent.idl\
-    IOException.idl\
-    NotConnectedException.idl\
-    AlreadyConnectedException.idl\
-    ObjectInputStream.idl\
-    ObjectOutputStream.idl\
-    Pipe.idl\
-    Pump.idl\
-    SequenceInputStream.idl\
+	FilePermission.idl\
+	BufferSizeExceededException.idl\
+	MarkableInputStream.idl\
+	MarkableOutputStream.idl\
+	DataInputStream.idl\
+	DataOutputStream.idl\
+	DataTransferEvent.idl\
+	IOException.idl\
+	NotConnectedException.idl\
+	AlreadyConnectedException.idl\
+	ObjectInputStream.idl\
+	ObjectOutputStream.idl\
+	Pipe.idl\
+	Pump.idl\
+	SequenceInputStream.idl\
     SequenceOutputStream.idl\
-    UnexpectedEOFException.idl\
-    WrongFormatException.idl\
-    XActiveDataControl.idl\
-    XActiveDataSink.idl\
-    XActiveDataSource.idl\
-    XActiveDataStreamer.idl\
-    XConnectable.idl\
-    XDataExporter.idl\
-    XDataImporter.idl\
-    XDataInputStream.idl\
-    XDataOutputStream.idl\
-    XDataTransferEventListener.idl\
-    XInputStream.idl\
-    XStream.idl\
-    XMarkableStream.idl\
-    XObjectInputStream.idl\
-    XObjectOutputStream.idl\
-    XOutputStream.idl\
-    XPersist.idl\
-    XPersistObject.idl\
-    XStreamListener.idl\
-    XSeekable.idl\
-    XSeekableInputStream.idl\
-    XSequenceOutputStream.idl\
-    TextInputStream.idl\
-    TextOutputStream.idl\
-    XTextInputStream.idl\
-    XTextOutputStream.idl\
-    XTruncate.idl\
-    XXMLExtractor.idl\
-    XInputStreamProvider.idl\
-    UnknownHostException.idl\
-    SocketException.idl\
-    NoRouteToHostException.idl\
+	UnexpectedEOFException.idl\
+	WrongFormatException.idl\
+	XActiveDataControl.idl\
+	XActiveDataSink.idl\
+	XActiveDataSource.idl\
+	XActiveDataStreamer.idl\
+	XConnectable.idl\
+	XDataExporter.idl\
+	XDataImporter.idl\
+	XDataInputStream.idl\
+	XDataOutputStream.idl\
+	XDataTransferEventListener.idl\
+	XInputStream.idl\
+	XStream.idl\
+	XMarkableStream.idl\
+	XObjectInputStream.idl\
+	XObjectOutputStream.idl\
+	XOutputStream.idl\
+	XPersist.idl\
+	XPersistObject.idl\
+	XStreamListener.idl\
+	XSeekable.idl\
+	XSeekableInputStream.idl\
+	XSequenceOutputStream.idl\
+	TextInputStream.idl\
+	TextOutputStream.idl\
+	XTextInputStream.idl\
+	XTextOutputStream.idl\
+	XTruncate.idl\
+	XXMLExtractor.idl\
+	XInputStreamProvider.idl\
+	UnknownHostException.idl\
+	SocketException.idl\
+	NoRouteToHostException.idl\
     ConnectException.idl \
     XAsyncOutputMonitor.idl\
     XTempFile.idl\

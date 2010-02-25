@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -46,10 +42,10 @@ SLOFILES = $(SLO)$/officeclient.obj
 SHL1TARGET= officeclientsample
 
 SHL1STDLIBS= \
-        $(SALLIB)	\
-        $(VOSLIB)	\
-        $(CPPULIB) 	\
-        $(CPPUHELPERLIB) 
+		$(SALLIB)	\
+		$(VOSLIB)	\
+		$(CPPULIB) 	\
+		$(CPPUHELPERLIB) 
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(SHL1TARGET)

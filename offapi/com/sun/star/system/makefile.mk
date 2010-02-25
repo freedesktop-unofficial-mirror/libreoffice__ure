@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,20 +38,20 @@ PACKAGE=com$/sun$/star$/system
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    SystemShellExecute.idl\
-    SystemShellExecuteException.idl\
-    SystemShellExecuteFlags.idl\
-    XSystemShellExecute.idl\
-    SimpleMailClientFlags.idl\
-    XSimpleMailMessage.idl\
-    XSimpleMailClient.idl\
-    XSimpleMailClientSupplier.idl\
-    SimpleCommandMail.idl \
-    SimpleSystemMail.idl\
-    ProxySettings.idl\
-    SOffice52ProxySettings.idl\
-    SystemProxySettings.idl\
-    XProxySettings.idl
+	SystemShellExecute.idl\
+	SystemShellExecuteException.idl\
+	SystemShellExecuteFlags.idl\
+	XSystemShellExecute.idl\
+	SimpleMailClientFlags.idl\
+	XSimpleMailMessage.idl\
+	XSimpleMailClient.idl\
+	XSimpleMailClientSupplier.idl\
+	SimpleCommandMail.idl \
+	SimpleSystemMail.idl\
+	ProxySettings.idl\
+	SOffice52ProxySettings.idl\
+	SystemProxySettings.idl\
+	XProxySettings.idl
 
 # ------------------------------------------------------------------
 
