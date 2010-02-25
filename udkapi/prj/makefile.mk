@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -39,27 +35,27 @@ OUT!:=$(PRJ)$/out
 # ------------------------------------------------------------------
 
 INCLUDES= \
-    com$/sun$/star$/container$/makefile.mk \
-    com$/sun$/star$/io$/makefile.mk \
-    com$/sun$/star$/reflection$/makefile.mk \
-    com$/sun$/star$/beans$/makefile.mk \
-    com$/sun$/star$/lang$/makefile.mk \
-    com$/sun$/star$/uno$/makefile.mk \
-    com$/sun$/star$/uno$/util$/logging$/makefile.mk \
-    com$/sun$/star$/corba$/makefile.mk			\
-    com$/sun$/star$/corba$/iop$/makefile.mk 	\
-    com$/sun$/star$/corba$/giop$/makefile.mk 	\
-    com$/sun$/star$/corba$/iiop$/makefile.mk 	\
-    com$/sun$/star$/script$/makefile.mk \
-    com$/sun$/star$/test$/makefile.mk \
-    com$/sun$/star$/registry$/makefile.mk \
-    com$/sun$/star$/loader$/makefile.mk \
-    com$/sun$/star$/bridge$/makefile.mk 
+	com$/sun$/star$/container$/makefile.mk \
+	com$/sun$/star$/io$/makefile.mk \
+	com$/sun$/star$/reflection$/makefile.mk \
+	com$/sun$/star$/beans$/makefile.mk \
+	com$/sun$/star$/lang$/makefile.mk \
+	com$/sun$/star$/uno$/makefile.mk \
+	com$/sun$/star$/uno$/util$/logging$/makefile.mk \
+	com$/sun$/star$/corba$/makefile.mk			\
+	com$/sun$/star$/corba$/iop$/makefile.mk 	\
+	com$/sun$/star$/corba$/giop$/makefile.mk 	\
+	com$/sun$/star$/corba$/iiop$/makefile.mk 	\
+	com$/sun$/star$/script$/makefile.mk \
+	com$/sun$/star$/test$/makefile.mk \
+	com$/sun$/star$/registry$/makefile.mk \
+	com$/sun$/star$/loader$/makefile.mk \
+	com$/sun$/star$/bridge$/makefile.mk 
 
 .INCLUDE: $(INCLUDES)
 
 out$/$(PRJNAME).rdb:: $(ALLIDLFILES)
-    unoidl @$(mktmp -I$(PRJ) -Burd -OHout $(ALLIDLFILES:+"\n"))
-    regmerge @$(mktmp  $@ /UCR out$/{$(?:f:s/.idl/.urd/:+"\n")} )
-    touch $@
+	unoidl @$(mktmp -I$(PRJ) -Burd -OHout $(ALLIDLFILES:+"\n"))
+	regmerge @$(mktmp  $@ /UCR out$/{$(?:f:s/.idl/.urd/:+"\n")} )
+	touch $@
 

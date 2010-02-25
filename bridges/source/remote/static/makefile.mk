@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,19 +39,19 @@ USE_DEFFILE=TRUE
 # ------------------------------------------------------------------
 
 SLOFILES= 	\
-        $(SLO)$/proxy.obj \
-        $(SLO)$/stub.obj \
-        $(SLO)$/remote.obj \
-        $(SLO)$/mapping.obj \
-        $(SLO)$/helper.obj \
-        $(SLO)$/remote_types.obj
+		$(SLO)$/proxy.obj \
+		$(SLO)$/stub.obj \
+		$(SLO)$/remote.obj \
+		$(SLO)$/mapping.obj \
+		$(SLO)$/helper.obj \
+		$(SLO)$/remote_types.obj
 
 # Forte6 update 1 on Solaris Intel dies with internal compiler error
 # on stub.cxx if optimization is on. Switch it off for now.
 # To be reevaluated on compiler upgrade
 .IF "$(OS)$(CPU)"=="SOLARISI"
 NOOPTFILES=\
-        $(SLO)$/stub.obj
+		$(SLO)$/stub.obj
 .ENDIF        
 
 # --- Targets ------------------------------------------------------

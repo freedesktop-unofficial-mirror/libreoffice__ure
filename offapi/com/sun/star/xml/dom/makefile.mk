@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,27 +38,27 @@ PACKAGE=com$/sun$/star$/xml$/dom
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    DOMException.idl \
-    DOMExceptionType.idl \
-    NodeType.idl \
+	DOMException.idl \
+	DOMExceptionType.idl \
+	NodeType.idl \
     XNode.idl \
-    XAttr.idl \
-    XCharacterData.idl \
-    XText.idl \
-    XCDATASection.idl \
-    XComment.idl \
-    XDOMImplementation.idl \
-    XDocument.idl \
-    XDocumentBuilder.idl \
-    XDocumentFragment.idl \
-    XDocumentType.idl \
-    XElement.idl \
-    XEntity.idl \
-    XEntityReference.idl \
-    XNamedNodeMap.idl \
-    XNodeList.idl \
-    XNotation.idl \
-    XProcessingInstruction.idl \
+	XAttr.idl \
+	XCharacterData.idl \
+	XText.idl \
+	XCDATASection.idl \
+	XComment.idl \
+	XDOMImplementation.idl \
+	XDocument.idl \
+	XDocumentBuilder.idl \
+	XDocumentFragment.idl \
+	XDocumentType.idl \
+	XElement.idl \
+	XEntity.idl \
+	XEntityReference.idl \
+	XNamedNodeMap.idl \
+	XNodeList.idl \
+	XNotation.idl \
+	XProcessingInstruction.idl \
     SAXDocumentBuilder.idl \
     XSAXDocumentBuilder.idl \
     SAXDocumentBuilderState.idl
