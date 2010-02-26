@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.19 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -51,9 +47,9 @@ SLOFILES= 	$(SLO)$/javaloader.obj
 SHL1TARGET= $(TARGET)
 
 SHL1STDLIBS=\
-        $(CPPUHELPERLIB) 	\
-        $(CPPULIB)			\
-        $(SALLIB) \
+		$(CPPUHELPERLIB) 	\
+		$(CPPULIB)			\
+		$(SALLIB) \
         $(JVMACCESSLIB)
 
 SHL1VERSIONMAP = javaloader.map
@@ -67,7 +63,7 @@ DEF1NAME=		$(SHL1TARGET)
 
 .ELSE	# SOLAR_JAVA
 all:
-    @echo Nothing to do: SOLAR_JAVA not set
+	@echo Nothing to do: SOLAR_JAVA not set
 .ENDIF
 
 # --- Targets ------------------------------------------------------

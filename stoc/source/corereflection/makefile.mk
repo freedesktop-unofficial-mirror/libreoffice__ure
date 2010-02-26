@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.14 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -45,12 +41,12 @@ DLLPRE =
 .INCLUDE :  ..$/cppumaker.mk
 
 SLOFILES=	\
-        $(SLO)$/crefl.obj	\
-        $(SLO)$/crbase.obj	\
-        $(SLO)$/crarray.obj	\
-        $(SLO)$/crcomp.obj	\
-        $(SLO)$/criface.obj	\
-        $(SLO)$/crenum.obj
+		$(SLO)$/crefl.obj	\
+		$(SLO)$/crbase.obj	\
+		$(SLO)$/crarray.obj	\
+		$(SLO)$/crcomp.obj	\
+		$(SLO)$/criface.obj	\
+		$(SLO)$/crenum.obj
 
 # internal compiler error with Forte 6 update 1 (x86)
 # to be reconsidered after compiler upgrade
@@ -61,9 +57,9 @@ NOOPTFILES += $(SLO)$/criface.obj
 SHL1TARGET=	$(TARGET)
 SHL1VERSIONMAP = corefl.map
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET)

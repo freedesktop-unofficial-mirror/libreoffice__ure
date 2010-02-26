@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -53,8 +49,8 @@ UNOUCROUT=$(OUT)$/inc$/$(TARGET)
 INCPRE+=$(UNOUCROUT)
 
 UNOTYPESTYPES := \
-        com.sun.star.lang.IllegalArgumentException \
-        com.sun.star.uno.DeploymentException
+		com.sun.star.lang.IllegalArgumentException \
+		com.sun.star.uno.DeploymentException
 
 SLOFILES=$(SLO)$/starter.obj $(SLO)$/thrower.obj
 
@@ -78,7 +74,7 @@ OBJFILES=$(OBJ)$/inter.obj
 APP1TARGET=inter
 APP1OBJS=$(OBJ)$/inter.obj
 APP1STDLIBS+=\
-        $(SALLIB)
+		$(SALLIB)
 
 .INCLUDE :  target.mk
 

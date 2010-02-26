@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.18 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,7 +39,7 @@ LIBTARGET=NO
 
 .IF "$(SOLAR_JAVA)"==""
 nojava:
-    @echo "Not building javaunohelper because Java is disabled"
+	@echo "Not building javaunohelper because Java is disabled"
 .ENDIF
 
 # ------------------------------------------------------------------
@@ -57,30 +53,30 @@ NO_OFFUH=TRUE
 CPPUMAKERFLAGS+=-C
 
 UNOTYPES= \
-        com.sun.star.beans.NamedValue \
-        com.sun.star.container.XHierarchicalNameAccess		\
-        com.sun.star.loader.XImplementationLoader		\
-        com.sun.star.registry.XRegistryKey			\
-        com.sun.star.registry.XSimpleRegistry			\
-        com.sun.star.beans.XPropertySet				\
-         com.sun.star.lang.DisposedException			\
-        com.sun.star.lang.IllegalArgumentException		\
-        com.sun.star.lang.XTypeProvider				\
-        com.sun.star.lang.XServiceInfo				\
-        com.sun.star.lang.XMultiServiceFactory			\
-        com.sun.star.lang.XMultiComponentFactory		\
-        com.sun.star.lang.XSingleServiceFactory			\
-        com.sun.star.lang.XSingleComponentFactory   		\
-        com.sun.star.uno.TypeClass				\
-        com.sun.star.uno.XWeak					\
-        com.sun.star.uno.XAggregation				\
-            com.sun.star.uno.XComponentContext          		\
-        com.sun.star.lang.XInitialization           		\
-        com.sun.star.lang.XComponent
+		com.sun.star.beans.NamedValue \
+		com.sun.star.container.XHierarchicalNameAccess		\
+		com.sun.star.loader.XImplementationLoader		\
+		com.sun.star.registry.XRegistryKey			\
+		com.sun.star.registry.XSimpleRegistry			\
+		com.sun.star.beans.XPropertySet				\
+ 		com.sun.star.lang.DisposedException			\
+		com.sun.star.lang.IllegalArgumentException		\
+		com.sun.star.lang.XTypeProvider				\
+		com.sun.star.lang.XServiceInfo				\
+		com.sun.star.lang.XMultiServiceFactory			\
+		com.sun.star.lang.XMultiComponentFactory		\
+		com.sun.star.lang.XSingleServiceFactory			\
+		com.sun.star.lang.XSingleComponentFactory   		\
+		com.sun.star.uno.TypeClass				\
+		com.sun.star.uno.XWeak					\
+		com.sun.star.uno.XAggregation				\
+	        com.sun.star.uno.XComponentContext          		\
+		com.sun.star.lang.XInitialization           		\
+		com.sun.star.lang.XComponent
 
 SLOFILES= \
-        $(SLO)$/javaunohelper.obj				\
-        $(SLO)$/bootstrap.obj					\
+		$(SLO)$/javaunohelper.obj				\
+		$(SLO)$/bootstrap.obj					\
         $(SLO)$/preload.obj \
         $(SLO)$/vm.obj
 
@@ -88,18 +84,18 @@ SLOFILES= \
 
 LIB1TARGET=$(SLB)$/$(SHL1TARGET).lib
 LIB1OBJFILES=\
-        $(SLO)$/javaunohelper.obj				\
+		$(SLO)$/javaunohelper.obj				\
         $(SLO)$/bootstrap.obj \
         $(SLO)$/vm.obj
 
 SHL1TARGET=juhx
 
 SHL1STDLIBS= \
-        $(JVMACCESSLIB)		\
-        $(SALHELPERLIB)		\
-        $(SALLIB)		\
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)
+		$(JVMACCESSLIB)		\
+		$(SALHELPERLIB)		\
+		$(SALLIB)		\
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)
 
 SHL1VERSIONMAP = javaunohelper.map
 
@@ -115,12 +111,12 @@ DEF1NAME=$(SHL1TARGET)
 
 LIB2TARGET=$(SLB)$/$(SHL2TARGET).lib
 LIB2OBJFILES=\
-        $(SLO)$/preload.obj
+		$(SLO)$/preload.obj
 
 SHL2TARGET=juh
 
 SHL2STDLIBS= \
-        $(SALLIB)
+		$(SALLIB)
 
 SHL2VERSIONMAP = javaunohelper.map
 

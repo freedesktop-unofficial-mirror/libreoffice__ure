@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,7 +38,7 @@ ENABLE_EXCEPTIONS=TRUE
 
 .IF "$(SOLAR_JAVA)"==""
 nojava:
-    @echo "Not building jni-uno bridge because Java is disabled"
+	@echo "Not building jni-uno bridge because Java is disabled"
 .ENDIF
 
 # --- Files --------------------------------------------------------
@@ -54,18 +50,18 @@ CFLAGS += -DBROKEN_ALLOCA
 .ENDIF
 
 SLOFILES= \
-    $(SLO)$/jni_info.obj		\
-    $(SLO)$/jni_data.obj		\
-    $(SLO)$/jni_uno2java.obj	\
-    $(SLO)$/jni_java2uno.obj	\
+	$(SLO)$/jni_info.obj		\
+	$(SLO)$/jni_data.obj		\
+	$(SLO)$/jni_uno2java.obj	\
+	$(SLO)$/jni_java2uno.obj	\
     $(SLO)$/jni_bridge.obj \
     $(SLO)$/nativethreadpool.obj 
 
 SHL1TARGET=$(TARGET)
 
 SHL1STDLIBS= \
-    $(JVMACCESSLIB)			\
-    $(CPPULIB)			\
+	$(JVMACCESSLIB)			\
+	$(CPPULIB)			\
     $(SALLIB) \
     $(SALHELPERLIB)
 
