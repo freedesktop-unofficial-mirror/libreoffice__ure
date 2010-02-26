@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.18 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,44 +38,44 @@ PACKAGE=com$/sun$/star$/reflection
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    CoreReflection.idl\
-    FieldAccessMode.idl\
+	CoreReflection.idl\
+	FieldAccessMode.idl\
     InvalidTypeNameException.idl\
-    InvocationTargetException.idl\
-    MethodMode.idl\
+	InvocationTargetException.idl\
+	MethodMode.idl\
     NoSuchTypeNameException.idl\
-    ParamInfo.idl\
-    ParamMode.idl\
-    ProxyFactory.idl\
-    TypeDescriptionManager.idl\
-    TypeDescriptionProvider.idl\
+	ParamInfo.idl\
+	ParamMode.idl\
+	ProxyFactory.idl\
+	TypeDescriptionManager.idl\
+	TypeDescriptionProvider.idl\
     TypeDescriptionSearchDepth.idl\
-    XArrayTypeDescription.idl\
-    XCompoundTypeDescription.idl\
+	XArrayTypeDescription.idl\
+	XCompoundTypeDescription.idl\
     XConstantTypeDescription.idl\
     XConstantsTypeDescription.idl\
-    XUnionTypeDescription.idl\
-    XEnumTypeDescription.idl\
-    XIdlArray.idl\
-    XIdlClass.idl\
-    XIdlClassProvider.idl\
-    XIdlField.idl\
-    XIdlField2.idl\
-    XIdlMember.idl\
-    XIdlMethod.idl\
-    XIdlReflection.idl\
-    XIndirectTypeDescription.idl\
-    XInterfaceAttributeTypeDescription.idl\
+	XUnionTypeDescription.idl\
+	XEnumTypeDescription.idl\
+	XIdlArray.idl\
+	XIdlClass.idl\
+	XIdlClassProvider.idl\
+	XIdlField.idl\
+	XIdlField2.idl\
+	XIdlMember.idl\
+	XIdlMethod.idl\
+	XIdlReflection.idl\
+	XIndirectTypeDescription.idl\
+	XInterfaceAttributeTypeDescription.idl\
     XInterfaceAttributeTypeDescription2.idl \
-    XInterfaceMemberTypeDescription.idl\
-    XInterfaceMethodTypeDescription.idl\
-    XInterfaceTypeDescription.idl\
+	XInterfaceMemberTypeDescription.idl\
+	XInterfaceMethodTypeDescription.idl\
+	XInterfaceTypeDescription.idl\
     XInterfaceTypeDescription2.idl \
-    XMethodParameter.idl\
+	XMethodParameter.idl\
     XModuleTypeDescription.idl\
     XParameter.idl \
     XPropertyTypeDescription.idl\
-    XProxyFactory.idl\
+	XProxyFactory.idl\
     XPublished.idl \
     XServiceConstructorDescription.idl \
     XServiceTypeDescription.idl\

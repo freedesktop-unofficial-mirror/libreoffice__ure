@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.18 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,10 +38,10 @@ ENABLE_EXCEPTIONS=TRUE
 .INCLUDE :  settings.mk
 
 OBJFILES=   $(OBJ)$/rdbmaker.obj	\
-            $(OBJ)$/rdboptions.obj	\
-            $(OBJ)$/typeblop.obj	\
-            $(OBJ)$/specialtypemanager.obj	\
-            $(OBJ)$/rdbtype.obj
+			$(OBJ)$/rdboptions.obj	\
+			$(OBJ)$/typeblop.obj	\
+			$(OBJ)$/specialtypemanager.obj	\
+			$(OBJ)$/rdbtype.obj
 
 
 APP1TARGET= $(TARGET)
@@ -56,11 +52,11 @@ APP1STDLIBS=\
             $(SALLIB) \
             $(SALHELPERLIB) \
             $(REGLIB) \
-            $(CPPULIB) \
-            $(CPPUHELPERLIB)
+			$(CPPULIB) \
+			$(CPPUHELPERLIB)
 
 APP1LIBS= \
-        $(LB)$/codemaker.lib
+		$(LB)$/codemaker.lib
 
 APP1RPATH=  NONE
 
