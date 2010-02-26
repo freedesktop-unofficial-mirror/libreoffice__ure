@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8.10.2 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -46,30 +42,30 @@ ENABLE_EXCEPTIONS := TRUE
 CDEFS += -DDLL_VERSION=$(EMQ)"$(DLLPOSTFIX)$(EMQ)"
 
 CXXFILES= \
-               testregcpp.cxx	\
-               testmerge.cxx		
+	       	testregcpp.cxx	\
+	       	testmerge.cxx		
 
 
 LIB1TARGET= $(SLB)$/$(TARGET).lib
 
 LIB1OBJFILES= \
-                $(SLO)$/testregcpp.obj	\
-                $(SLO)$/testmerge.obj
+				$(SLO)$/testregcpp.obj	\
+				$(SLO)$/testmerge.obj
 
 
 SHL1TARGET= rgt$(DLLPOSTFIX)
 SHL1IMPLIB= rgt
 SHL1STDLIBS=	\
-                $(SALLIB) \
-                $(SALHELPERLIB)	\
+				$(SALLIB) \
+				$(SALHELPERLIB)	\
                 $(REGLIB) \
-                $(STDLIBCPP)
+				$(STDLIBCPP)
 
 SHL1LIBS=	$(LIB1TARGET)
 SHL1DEPN=	$(LIB1TARGET)
 SHL1DEF=	$(MISC)$/$(SHL1TARGET).def
 DEF1NAME=	$(SHL1TARGET)
-             
+			 
 DEF1DEPN	=$(MISC)$/rgt$(DLLPOSTFIX).flt $(SLOFILES)
 DEFLIB1NAME =$(TARGET)
 DEF1DES 	=Registry Runtime - TestDll
@@ -85,10 +81,10 @@ DEF1DES 	=Registry Runtime - TestDll
 
 
 $(MISC)$/rgt$(DLLPOSTFIX).flt:
-    @echo ------------------------------
-    @echo Making: $@
-    @echo WEP>$@
-    @echo LIBMAIN>>$@
-    @echo LibMain>>$@
+	@echo ------------------------------
+	@echo Making: $@
+	@echo WEP>$@
+	@echo LIBMAIN>>$@
+	@echo LibMain>>$@
 
 

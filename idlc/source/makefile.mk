@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.17 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -51,56 +47,56 @@ STL_OS2_BUILDING=1
 # --- Files --------------------------------------------------------
 
 CXXFILES=   \
-            wrap_scanner.cxx \
-            wrap_parser.cxx	\
-            idlcmain.cxx	\
-            idlc.cxx	\
-            idlccompile.cxx	\
-            idlcproduce.cxx	\
-            errorhandler.cxx	\
-            options.cxx	\
-            fehelper.cxx	\
-            astdeclaration.cxx \
-            astscope.cxx \
-            aststack.cxx \
-            astdump.cxx \
-            astinterface.cxx \
-            aststruct.cxx \
+			wrap_scanner.cxx \
+			wrap_parser.cxx	\
+			idlcmain.cxx	\
+			idlc.cxx	\
+			idlccompile.cxx	\
+			idlcproduce.cxx	\
+			errorhandler.cxx	\
+			options.cxx	\
+			fehelper.cxx	\
+			astdeclaration.cxx \
+			astscope.cxx \
+			aststack.cxx \
+			astdump.cxx \
+			astinterface.cxx \
+			aststruct.cxx \
             aststructinstance.cxx \
-            astoperation.cxx \
-            astconstant.cxx \
-            astenum.cxx \
-            astarray.cxx \
-            astunion.cxx \
-            astexpression.cxx \
+			astoperation.cxx \
+			astconstant.cxx \
+			astenum.cxx \
+			astarray.cxx \
+			astunion.cxx \
+			astexpression.cxx \
             astservice.cxx
 
 YACCTARGET=$(MISC)$/parser.cxx
 YACCFILES=parser.y
 
 OBJFILES=   \
-            $(OBJ)$/wrap_scanner.obj	\
-            $(OBJ)$/wrap_parser.obj	\
-            $(OBJ)$/idlcmain.obj	\
-            $(OBJ)$/idlc.obj	\
-            $(OBJ)$/idlccompile.obj	\
-            $(OBJ)$/idlcproduce.obj	\
-            $(OBJ)$/errorhandler.obj	\
-            $(OBJ)$/options.obj	\
-            $(OBJ)$/fehelper.obj	\
-            $(OBJ)$/astdeclaration.obj	\
-            $(OBJ)$/astscope.obj	\
-            $(OBJ)$/aststack.obj	\
-            $(OBJ)$/astdump.obj	\
-            $(OBJ)$/astinterface.obj	\
-            $(OBJ)$/aststruct.obj	\
+			$(OBJ)$/wrap_scanner.obj	\
+			$(OBJ)$/wrap_parser.obj	\
+			$(OBJ)$/idlcmain.obj	\
+			$(OBJ)$/idlc.obj	\
+			$(OBJ)$/idlccompile.obj	\
+			$(OBJ)$/idlcproduce.obj	\
+			$(OBJ)$/errorhandler.obj	\
+			$(OBJ)$/options.obj	\
+			$(OBJ)$/fehelper.obj	\
+			$(OBJ)$/astdeclaration.obj	\
+			$(OBJ)$/astscope.obj	\
+			$(OBJ)$/aststack.obj	\
+			$(OBJ)$/astdump.obj	\
+			$(OBJ)$/astinterface.obj	\
+			$(OBJ)$/aststruct.obj	\
             $(OBJ)$/aststructinstance.obj \
-            $(OBJ)$/astoperation.obj	\
-            $(OBJ)$/astconstant.obj	\
-            $(OBJ)$/astenum.obj	\
-            $(OBJ)$/astarray.obj	\
-            $(OBJ)$/astunion.obj	\
-            $(OBJ)$/astexpression.obj \
+			$(OBJ)$/astoperation.obj	\
+			$(OBJ)$/astconstant.obj	\
+			$(OBJ)$/astenum.obj	\
+			$(OBJ)$/astarray.obj	\
+			$(OBJ)$/astunion.obj	\
+			$(OBJ)$/astexpression.obj \
             $(OBJ)$/astservice.obj
 
 APP1TARGET= $(TARGET)
@@ -125,13 +121,13 @@ YACCFLAGS+=-v
 
 $(MISC)$/stripped_scanner.ll : scanner.ll
 .IF "$(GUI)"=="UNX" || "$(USE_SHELL)" != "4nt"
-    tr -d "\015" < scanner.ll > $(MISC)$/stripped_scanner.ll
+	tr -d "\015" < scanner.ll > $(MISC)$/stripped_scanner.ll
 .ELSE
-    cat scanner.ll > $(MISC)$/stripped_scanner.ll
+	cat scanner.ll > $(MISC)$/stripped_scanner.ll
 .ENDIF
 
 $(MISC)$/scanner.cxx:	$(MISC)$/stripped_scanner.ll
-    flex -o$(MISC)$/scanner.cxx $(MISC)$/stripped_scanner.ll
+	flex -o$(MISC)$/scanner.cxx $(MISC)$/stripped_scanner.ll
 
 $(OBJ)$/wrap_parser.obj: $(MISC)$/parser.cxx
 $(OBJ)$/wrap_scanner.obj: $(MISC)$/scanner.cxx

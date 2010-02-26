@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.10 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -41,35 +37,35 @@ PACKAGE=com$/sun$/star$/setup
 # ------------------------------------------------------------------
 
 IDLFILES=\
-    UpdateType.idl			\
-    ActionType.idl			\
-    BaseAction.idl			\
-    CopyFileAction.idl		\
-    DeleteDirAction.idl		\
-    DeleteFileAction.idl		\
-    DeleteFolderAction.idl		\
-    DeleteFolderItemAction.idl	\
-    DownloadAction.idl		\
-    FontAction.idl	     		\
-    InstallEnvironment.idl		\
-    InstallResponse.idl		\
-    InstallType.idl			\
-    MakeDirAction.idl		\
-    MakeFolderAction.idl		\
-    MakeFolderItemAction.idl	\
-    MakeShortcutAction.idl		\
-    MirrorEntry.idl			\
-    ModuleInfo.idl			\
-    ModuleState.idl			\
-    OSType.idl			\
-    ProductRegistration.idl		\
-    ProfileItemAction.idl		\
-    Setup.idl			\
-    SizeInfo.idl			\
-    UnzipAction.idl			\
-    VersionIdentifier.idl		\
-    WindowsRegistryAction.idl	\
-    XSetup.idl
+	UpdateType.idl			\
+	ActionType.idl			\
+	BaseAction.idl			\
+	CopyFileAction.idl		\
+	DeleteDirAction.idl		\
+	DeleteFileAction.idl		\
+	DeleteFolderAction.idl		\
+	DeleteFolderItemAction.idl	\
+	DownloadAction.idl		\
+	FontAction.idl	     		\
+	InstallEnvironment.idl		\
+	InstallResponse.idl		\
+	InstallType.idl			\
+	MakeDirAction.idl		\
+	MakeFolderAction.idl		\
+	MakeFolderItemAction.idl	\
+	MakeShortcutAction.idl		\
+	MirrorEntry.idl			\
+	ModuleInfo.idl			\
+	ModuleState.idl			\
+	OSType.idl			\
+	ProductRegistration.idl		\
+	ProfileItemAction.idl		\
+	Setup.idl			\
+	SizeInfo.idl			\
+	UnzipAction.idl			\
+	VersionIdentifier.idl		\
+	WindowsRegistryAction.idl	\
+	XSetup.idl
 
 # ------------------------------------------------------------------
 

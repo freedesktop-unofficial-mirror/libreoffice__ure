@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.37 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -182,14 +178,14 @@ TARGETDEPS+=$(ALWAYSDBGTARGET)
 # - ALWAYSDBG - files always compiled with debugging
 # --------------------------------------------------
 $(ALWAYSDBGTARGET):
-    @echo --- ALWAYSDBGFILES ---
-    @dmake $(MFLAGS) $(MAKEFILE) debug=true $(ALWAYSDBGFILES) ALWAYSDBG_FLAG=TRUE $(CALLMACROS)
-    @echo --- ALWAYSDBGFILES OVER ---
+	@echo --- ALWAYSDBGFILES ---
+	@dmake $(MFLAGS) $(MAKEFILE) debug=true $(ALWAYSDBGFILES) ALWAYSDBG_FLAG=TRUE $(CALLMACROS)
+	@echo --- ALWAYSDBGFILES OVER ---
 
 $(ALWAYSDBGFILES):
-    @echo --- ALWAYSDBG ---
-    @dmake $(MFLAGS) $(MAKEFILE) debug=true ALWAYSDBG_FLAG=TRUE $(CALLMACROS) $@
-    @echo --- ALWAYSDBG OVER ---
+	@echo --- ALWAYSDBG ---
+	@dmake $(MFLAGS) $(MAKEFILE) debug=true ALWAYSDBG_FLAG=TRUE $(CALLMACROS) $@
+	@echo --- ALWAYSDBG OVER ---
 
 .ENDIF
 .ENDIF
@@ -198,5 +194,5 @@ $(ALWAYSDBGFILES):
 ALLTAR : $(BOOTSTRAPMK)
 
 $(BOOTSTRAPMK) : $(APP1TARGETN)
-    $(AUGMENT_LIBRARY_PATH) $< > $@
+	$(AUGMENT_LIBRARY_PATH) $< > $@
 

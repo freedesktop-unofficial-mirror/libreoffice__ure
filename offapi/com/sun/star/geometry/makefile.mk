@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.6 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,20 +38,20 @@ PACKAGE=com$/sun$/star$/geometry
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AffineMatrix2D.idl			\
-    AffineMatrix3D.idl			\
-    EllipticalArc.idl			\
-    Matrix2D.idl				\
-    XMapping2D.idl				\
-    IntegerBezierSegment2D.idl 	\
-    RealBezierSegment2D.idl 	\
-    RealPoint2D.idl				\
-    RealRectangle2D.idl			\
-    RealRectangle3D.idl			\
-    RealSize2D.idl				\
-    IntegerPoint2D.idl			\
-    IntegerRectangle2D.idl		\
-    IntegerSize2D.idl
+	AffineMatrix2D.idl			\
+	AffineMatrix3D.idl			\
+	EllipticalArc.idl			\
+	Matrix2D.idl				\
+	XMapping2D.idl				\
+	IntegerBezierSegment2D.idl 	\
+	RealBezierSegment2D.idl 	\
+	RealPoint2D.idl				\
+	RealRectangle2D.idl			\
+	RealRectangle3D.idl			\
+	RealSize2D.idl				\
+	IntegerPoint2D.idl			\
+	IntegerRectangle2D.idl		\
+	IntegerSize2D.idl
 
 # ------------------------------------------------------------------
 
