@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.17 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,76 +38,76 @@ PACKAGE=com$/sun$/star$/embed
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    Actions.idl\
-    Aspects.idl\
-    BaseStorage.idl\
-    ElementModes.idl\
-    EmbedStates.idl\
-    EmbedVerbs.idl\
-    EmbedMapUnits.idl\
-    EmbedMisc.idl\
-    EmbedUpdateModes.idl\
-    EmbeddedObjectDescriptor.idl\
-    EntryInitModes.idl\
-    DocumentCloser.idl\
-    FileSystemStorage.idl\
-    FileSystemStorageFactory.idl\
-    InsertedObjectInfo.idl\
-    InstanceLocker.idl\
-    Storage.idl\
-    StorageStream.idl\
-    StorageFactory.idl\
-    VerbAttributes.idl\
-    VisualRepresentation.idl\
-    VerbDescriptor.idl\
-    XActionsApproval.idl\
-    XPersistanceHolder.idl\
-    XEmbeddedObject.idl\
-    XVisualObject.idl\
-    XCommonEmbedPersist.idl\
-    XEmbedPersist.idl\
-    XLinkageSupport.idl\
-    XClassifiedObject.idl\
-    XInplaceObject.idl\
-    XEmbeddedClient.idl\
-    XEmbedObjectClipboardCreator.idl\
-    XEmbedObjectCreator.idl\
-    XEmbedObjectFactory.idl\
-    XLinkCreator.idl\
-    XLinkFactory.idl\
-    XEncryptionProtectedSource.idl\
-    XInplaceClient.idl\
-    XInsertObjectDialog.idl\
-    XWindowSupplier.idl\
-    XTransactedObject.idl\
-    XTransactionBroadcaster.idl\
-    XTransactionListener.idl\
-    XRelationshipAccess.idl\
-    XStateChangeBroadcaster.idl\
-    XStateChangeListener.idl\
-    XTransferableSupplier.idl\
-    XComponentSupplier.idl\
-    XStorage.idl\
-    XStorageRawAccess.idl\
-    XExtendedStorageStream.idl\
-    XHierarchicalStorageAccess.idl\
-    XHatchWindowController.idl\
-    XHatchWindowFactory.idl\
-    XHatchWindow.idl\
-    XPackageStructureCreator.idl\
-    XOptimizedStorage.idl\
-    UnreachableStateException.idl\
-    UseBackupException.idl\
-    StateChangeInProgressException.idl\
-    WrongStateException.idl\
-    NoVisualAreaSizeException.idl\
-    ObjectSaveVetoException.idl\
-    InvalidStorageException.idl\
-    LinkageMisuseException.idl\
-    NeedsRunningStateException.idl\
-    StorageWrappedTargetException.idl\
-    OLESimpleStorage.idl\
-    XOLESimpleStorage.idl
+	Actions.idl\
+	Aspects.idl\
+	BaseStorage.idl\
+	ElementModes.idl\
+	EmbedStates.idl\
+	EmbedVerbs.idl\
+	EmbedMapUnits.idl\
+	EmbedMisc.idl\
+	EmbedUpdateModes.idl\
+	EmbeddedObjectDescriptor.idl\
+	EntryInitModes.idl\
+	DocumentCloser.idl\
+	FileSystemStorage.idl\
+	FileSystemStorageFactory.idl\
+	InsertedObjectInfo.idl\
+	InstanceLocker.idl\
+	Storage.idl\
+	StorageStream.idl\
+	StorageFactory.idl\
+	VerbAttributes.idl\
+	VisualRepresentation.idl\
+	VerbDescriptor.idl\
+	XActionsApproval.idl\
+	XPersistanceHolder.idl\
+	XEmbeddedObject.idl\
+	XVisualObject.idl\
+	XCommonEmbedPersist.idl\
+	XEmbedPersist.idl\
+	XLinkageSupport.idl\
+	XClassifiedObject.idl\
+	XInplaceObject.idl\
+	XEmbeddedClient.idl\
+	XEmbedObjectClipboardCreator.idl\
+	XEmbedObjectCreator.idl\
+	XEmbedObjectFactory.idl\
+	XLinkCreator.idl\
+	XLinkFactory.idl\
+	XEncryptionProtectedSource.idl\
+	XInplaceClient.idl\
+	XInsertObjectDialog.idl\
+	XWindowSupplier.idl\
+	XTransactedObject.idl\
+	XTransactionBroadcaster.idl\
+	XTransactionListener.idl\
+	XRelationshipAccess.idl\
+	XStateChangeBroadcaster.idl\
+	XStateChangeListener.idl\
+	XTransferableSupplier.idl\
+	XComponentSupplier.idl\
+	XStorage.idl\
+	XStorageRawAccess.idl\
+	XExtendedStorageStream.idl\
+	XHierarchicalStorageAccess.idl\
+	XHatchWindowController.idl\
+	XHatchWindowFactory.idl\
+	XHatchWindow.idl\
+	XPackageStructureCreator.idl\
+	XOptimizedStorage.idl\
+	UnreachableStateException.idl\
+	UseBackupException.idl\
+	StateChangeInProgressException.idl\
+	WrongStateException.idl\
+	NoVisualAreaSizeException.idl\
+	ObjectSaveVetoException.idl\
+	InvalidStorageException.idl\
+	LinkageMisuseException.idl\
+	NeedsRunningStateException.idl\
+	StorageWrappedTargetException.idl\
+	OLESimpleStorage.idl\
+	XOLESimpleStorage.idl
 
 # ------------------------------------------------------------------
 

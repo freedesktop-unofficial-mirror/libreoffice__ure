@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -52,5 +48,5 @@ JAVAFILES = \
 .INCLUDE :  target.mk
 
 doc:
-    pwd
-    cd $(PRJ) && javadoc -sourcepath /usr/local/java/src:unxlngi3.pro/japi:.:../jlibs  com.sun.star.lib.util com.sun.star.uno com.sun.star.lib.uno.typeinfo com.sun.star.lib.uno.environments.java com.sun.star.lib.uno.environments.remote com.sun.star.lib.uno.protocols.iiop com.sun.star.lib.uno.bridges.java_remote com.sun.star.comp.loader com.sun.star.comp.connections -d unxlngi3.pro/doc 
+	pwd
+	cd $(PRJ) && javadoc -sourcepath /usr/local/java/src:unxlngi3.pro/japi:.:../jlibs  com.sun.star.lib.util com.sun.star.uno com.sun.star.lib.uno.typeinfo com.sun.star.lib.uno.environments.java com.sun.star.lib.uno.environments.remote com.sun.star.lib.uno.protocols.iiop com.sun.star.lib.uno.bridges.java_remote com.sun.star.comp.loader com.sun.star.comp.connections -d unxlngi3.pro/doc 
