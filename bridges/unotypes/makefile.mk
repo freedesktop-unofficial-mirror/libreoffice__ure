@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.6 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -45,21 +41,21 @@ UNOUCRRDB=$(SOLARBINDIR)$/udkapi.rdb
 UNOUCROUT=$(OUT)$/inc
 
 UNOTYPES = \
-    com.sun.star.bridge.XProtocolProperties		\
-    com.sun.star.corba.giop.MessageHeader_1_2	\
-    com.sun.star.corba.giop.MsgType_1_1		\
-    com.sun.star.corba.iop.ServiceContextList	\
-    com.sun.star.corba.iop.ProfileIdGroup		\
-    com.sun.star.corba.iiop.ProfileBody_1_1		\
-    com.sun.star.corba.LogicalThreadID		\
-    com.sun.star.corba.iop.ServiceIdGroup		\
-    com.sun.star.corba.giop.ReplyHeader_1_2		\
-    com.sun.star.corba.giop.RequestHeader_1_2	\
-    com.sun.star.corba.TCKind			\
-    com.sun.star.corba.ObjectKey			\
-    com.sun.star.uno.XInterface			\
-    com.sun.star.lang.DisposedException		\
-    com.sun.star.uno.TypeClass
+	com.sun.star.bridge.XProtocolProperties		\
+	com.sun.star.corba.giop.MessageHeader_1_2	\
+	com.sun.star.corba.giop.MsgType_1_1		\
+	com.sun.star.corba.iop.ServiceContextList	\
+	com.sun.star.corba.iop.ProfileIdGroup		\
+	com.sun.star.corba.iiop.ProfileBody_1_1		\
+	com.sun.star.corba.LogicalThreadID		\
+	com.sun.star.corba.iop.ServiceIdGroup		\
+	com.sun.star.corba.giop.ReplyHeader_1_2		\
+	com.sun.star.corba.giop.RequestHeader_1_2	\
+	com.sun.star.corba.TCKind			\
+	com.sun.star.corba.ObjectKey			\
+	com.sun.star.uno.XInterface			\
+	com.sun.star.lang.DisposedException		\
+	com.sun.star.uno.TypeClass
 
 # --- Targets ------------------------------------------------------
 

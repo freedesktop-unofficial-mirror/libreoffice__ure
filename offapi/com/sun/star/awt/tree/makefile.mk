@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.3 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,21 +39,21 @@ PACKAGE=com$/sun$/star$/awt$/tree
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    MutableTreeDataModel.idl\
-    ExpandVetoException.idl\
-    MutableTreeNode.idl\
-    TreeControl.idl\
-    TreeControlModel.idl\
-    TreeDataModelEvent.idl\
-    TreeExpansionEvent.idl\
-    XMutableTreeDataModel.idl\
-    XMutableTreeNode.idl\
-    XTreeControl.idl\
-    XTreeDataModel.idl\
-    XTreeDataModelListener.idl\
-    XTreeExpansionListener.idl\
-    XTreeNode.idl\
-    XTreeEditListener.idl
+	MutableTreeDataModel.idl\
+	ExpandVetoException.idl\
+	MutableTreeNode.idl\
+	TreeControl.idl\
+	TreeControlModel.idl\
+	TreeDataModelEvent.idl\
+	TreeExpansionEvent.idl\
+	XMutableTreeDataModel.idl\
+	XMutableTreeNode.idl\
+	XTreeControl.idl\
+	XTreeDataModel.idl\
+	XTreeDataModelListener.idl\
+	XTreeExpansionListener.idl\
+	XTreeNode.idl\
+	XTreeEditListener.idl
 
 # ------------------------------------------------------------------
 

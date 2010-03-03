@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -41,31 +37,31 @@ TARGET=store
 # --- Files ---
 
 SLOFILES=	\
-    $(SLO)$/object.obj	\
-    $(SLO)$/lockbyte.obj	\
-    $(SLO)$/storbase.obj	\
-    $(SLO)$/storbios.obj	\
-    $(SLO)$/storcach.obj	\
-    $(SLO)$/stordata.obj	\
-    $(SLO)$/stordir.obj	\
-    $(SLO)$/storlckb.obj	\
-    $(SLO)$/stortree.obj	\
-    $(SLO)$/storpage.obj	\
-    $(SLO)$/store.obj
+	$(SLO)$/object.obj	\
+	$(SLO)$/lockbyte.obj	\
+	$(SLO)$/storbase.obj	\
+	$(SLO)$/storbios.obj	\
+	$(SLO)$/storcach.obj	\
+	$(SLO)$/stordata.obj	\
+	$(SLO)$/stordir.obj	\
+	$(SLO)$/storlckb.obj	\
+	$(SLO)$/stortree.obj	\
+	$(SLO)$/storpage.obj	\
+	$(SLO)$/store.obj
 
 .IF "$(debug)" != ""
 OBJFILES=	\
-    $(OBJ)$/object.obj	\
-    $(OBJ)$/lockbyte.obj	\
-    $(OBJ)$/storbase.obj	\
-    $(OBJ)$/storbios.obj	\
-    $(OBJ)$/storcach.obj	\
-    $(OBJ)$/stordata.obj	\
-    $(OBJ)$/stordir.obj	\
-    $(OBJ)$/storlckb.obj	\
-    $(OBJ)$/stortree.obj	\
-    $(OBJ)$/storpage.obj	\
-    $(OBJ)$/store.obj
+	$(OBJ)$/object.obj	\
+	$(OBJ)$/lockbyte.obj	\
+	$(OBJ)$/storbase.obj	\
+	$(OBJ)$/storbios.obj	\
+	$(OBJ)$/storcach.obj	\
+	$(OBJ)$/stordata.obj	\
+	$(OBJ)$/stordir.obj	\
+	$(OBJ)$/storlckb.obj	\
+	$(OBJ)$/stortree.obj	\
+	$(OBJ)$/storpage.obj	\
+	$(OBJ)$/store.obj
 
 .ENDIF # debug
 
