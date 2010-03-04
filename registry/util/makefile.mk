@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.10 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -46,11 +42,11 @@ USE_LDUMP2=TRUE
 LDUMP2=LDUMP3
 
 DOCPPFILES= $(INC)$/registry$/registry.hxx \
-            $(INC)$/registry$/registry.h \
-            $(INC)$/registry$/regtype.h \
-            $(INC)$/registry$/reflread.hxx \
-            $(INC)$/registry$/reflwrit.hxx \
-            $(INC)$/registry$/refltype.hxx \
+			$(INC)$/registry$/registry.h \
+			$(INC)$/registry$/regtype.h \
+			$(INC)$/registry$/reflread.hxx \
+			$(INC)$/registry$/reflwrit.hxx \
+			$(INC)$/registry$/refltype.hxx \
 
 LIB1TARGET= $(SLB)$/$(TARGET).lib
 
@@ -59,8 +55,8 @@ LIB1FILES= 	$(SLB)$/$(TARGET)cpp.lib
 SHL1TARGET= $(TARGET)
 SHL1IMPLIB= ireg
 SHL1STDLIBS= \
-    $(SALLIB) \
-    $(STORELIB)
+	$(SALLIB) \
+	$(STORELIB)
 
 SHL1VERSIONMAP=	$(TARGET).map
 
@@ -76,5 +72,5 @@ SHL1RPATH=URELIB
 .INCLUDE :  target.mk
 
 makedocpp: $(DOCPPFILES)
-     docpp -H -m -f  -u -d $(OUT)$/doc$/$(PRJNAME) $(DOCPPFILES)
+	 docpp -H -m -f  -u -d $(OUT)$/doc$/$(PRJNAME) $(DOCPPFILES)
 

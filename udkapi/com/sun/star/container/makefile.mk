@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.12 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,43 +38,43 @@ PACKAGE=com$/sun$/star$/container
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    XIdentifierAccess.idl\
-    XIdentifierReplace.idl\
-    XIdentifierContainer.idl\
-    ContainerEvent.idl\
-    ElementExistException.idl\
-    EnumerableMap.idl\
-    NoSuchElementException.idl\
-    XChild.idl\
-    XUniqueIDAccess.idl\
-    XComponentEnumeration.idl\
-    XComponentEnumerationAccess.idl\
-    XContainer.idl\
-    XContainerApproveBroadcaster.idl\
-    XContainerApproveListener.idl\
-    XContainerListener.idl\
-    XContainerQuery.idl\
-    XContentEnumerationAccess.idl\
-    XElementAccess.idl\
-    XEnumerableMap.idl\
-    XEnumeration.idl\
-    XEnumerationAccess.idl\
-    XHierarchicalName.idl\
-    XHierarchicalNameAccess.idl\
-    XHierarchicalNameReplace.idl\
-    XHierarchicalNameContainer.idl\
-    XImplicitIDAccess.idl\
-    XImplicitIDContainer.idl\
-    XImplicitIDReplace.idl\
-    XIndexAccess.idl\
-    XIndexContainer.idl\
-    XIndexReplace.idl\
-    XMap.idl\
-    XNameAccess.idl\
-    XNameContainer.idl\
-    XNamed.idl\
-    XNameReplace.idl\
-    XSet.idl\
+	XIdentifierAccess.idl\
+	XIdentifierReplace.idl\
+	XIdentifierContainer.idl\
+	ContainerEvent.idl\
+	ElementExistException.idl\
+	EnumerableMap.idl\
+	NoSuchElementException.idl\
+	XChild.idl\
+	XUniqueIDAccess.idl\
+	XComponentEnumeration.idl\
+	XComponentEnumerationAccess.idl\
+	XContainer.idl\
+	XContainerApproveBroadcaster.idl\
+	XContainerApproveListener.idl\
+	XContainerListener.idl\
+	XContainerQuery.idl\
+	XContentEnumerationAccess.idl\
+	XElementAccess.idl\
+	XEnumerableMap.idl\
+	XEnumeration.idl\
+	XEnumerationAccess.idl\
+	XHierarchicalName.idl\
+	XHierarchicalNameAccess.idl\
+	XHierarchicalNameReplace.idl\
+	XHierarchicalNameContainer.idl\
+	XImplicitIDAccess.idl\
+	XImplicitIDContainer.idl\
+	XImplicitIDReplace.idl\
+	XIndexAccess.idl\
+	XIndexContainer.idl\
+	XIndexReplace.idl\
+	XMap.idl\
+	XNameAccess.idl\
+	XNameContainer.idl\
+	XNamed.idl\
+	XNameReplace.idl\
+	XSet.idl\
     XStringKeyMap.idl\
 
 # ------------------------------------------------------------------

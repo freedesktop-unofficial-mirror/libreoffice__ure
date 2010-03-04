@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.3 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,29 +38,29 @@ PACKAGE=com$/sun$/star$/report
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-        modules.idl\
-    XReportDefinition.idl	\
-    XReportComponent.idl	\
-    XReportControlModel.idl	\
-    XGroups.idl				\
-    XGroup.idl				\
-    XFormattedField.idl		\
-    XFixedText.idl			\
-    XImageControl.idl		\
-    XSection.idl			\
-    ReportPrintOption.idl	\
-    GroupKeepTogether.idl	\
-    ForceNewPage.idl		\
-    KeepTogether.idl		\
-    XReportEngine.idl		\
-    XFormatCondition.idl	\
-    XReportControlFormat.idl	\
-    XFunction.idl			\
-    XFunctions.idl			\
-    XFunctionsSupplier.idl	\
-    GroupOn.idl				\
-    XShape.idl				\
-    XFixedLine.idl
+    	modules.idl\
+	XReportDefinition.idl	\
+	XReportComponent.idl	\
+	XReportControlModel.idl	\
+	XGroups.idl				\
+	XGroup.idl				\
+	XFormattedField.idl		\
+	XFixedText.idl			\
+	XImageControl.idl		\
+	XSection.idl			\
+	ReportPrintOption.idl	\
+	GroupKeepTogether.idl	\
+	ForceNewPage.idl		\
+	KeepTogether.idl		\
+	XReportEngine.idl		\
+	XFormatCondition.idl	\
+	XReportControlFormat.idl	\
+	XFunction.idl			\
+	XFunctions.idl			\
+	XFunctionsSupplier.idl	\
+	GroupOn.idl				\
+	XShape.idl				\
+	XFixedLine.idl
 
 
 # ------------------------------------------------------------------
