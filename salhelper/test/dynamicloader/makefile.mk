@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -60,19 +56,19 @@ CFLAGS+= -GR
 # RealDynamicLoader
 
 SLOFILES= \
-        $(SLO)$/samplelib.obj
+		$(SLO)$/samplelib.obj
 
 LIB1TARGET=$(SLB)$/$(TARGET1).lib
 LIB1OBJFILES= \
-        $(SLO)$/samplelib.obj
+		$(SLO)$/samplelib.obj
 
 
 SHL1TARGET=	$(TARGET1)
 
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET1)
@@ -94,9 +90,9 @@ APP1TARGET=	$(TARGET)
 APP1OBJS=	$(OBJ)$/loader.obj
 
 APP1STDLIBS= \
-    $(SALLIB) \
-    $(CPPUHELPERLIB) \
-    $(CPPULIB)
+	$(SALLIB) \
+	$(CPPUHELPERLIB) \
+	$(CPPULIB)
 
 #APP1LIBS=	$(LB)$/isalhelper.lib
 
@@ -114,8 +110,8 @@ APP1DEF=	$(MISC)\$(APP1TARGET).def
 
 
 $(MISC)$/$(SHL1TARGET).flt: makefile.mk
-    @echo ------------------------------
-    @echo Making: $@
-    @echo __CT>>$@
+	@echo ------------------------------
+	@echo Making: $@
+	@echo __CT>>$@
 
 

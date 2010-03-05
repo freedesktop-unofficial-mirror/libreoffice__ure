@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.3 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,26 +38,26 @@ PACKAGE=com$/sun$/star$/awt$/grid
 
 # ------------------------------------------------------------------------
 IDLFILES=\
-    GridColumnEvent.idl\
-    GridControlEvent.idl\
-    GridDataEvent.idl\
-    SelectionEventType.idl\
-    GridSelectionEvent.idl\
-    XGridControlListener.idl\
-    XGridSelectionListener.idl\
-    XGridSelection.idl\
-    XGridColumn.idl\
-     XGridColumnListener.idl\
-    XGridDataListener.idl\
-    XGridCell.idl\
-    XGridCellRenderer.idl\
-    DefaultGridDataModel.idl\
-    XGridDataModel.idl\
-    XGridColumnModel.idl\
-    ScrollBarMode.idl\
-    XGridControl.idl\
-    UnoControlGrid.idl\
-    UnoControlGridModel.idl
+	GridColumnEvent.idl\
+	GridControlEvent.idl\
+	GridDataEvent.idl\
+	SelectionEventType.idl\
+	GridSelectionEvent.idl\
+	XGridControlListener.idl\
+	XGridSelectionListener.idl\
+	XGridSelection.idl\
+	XGridColumn.idl\
+ 	XGridColumnListener.idl\
+	XGridDataListener.idl\
+	XGridCell.idl\
+	XGridCellRenderer.idl\
+	DefaultGridDataModel.idl\
+	XGridDataModel.idl\
+	XGridColumnModel.idl\
+	ScrollBarMode.idl\
+	XGridControl.idl\
+	UnoControlGrid.idl\
+	UnoControlGridModel.idl
 # ------------------------------------------------------------------
 
 .INCLUDE :  target.mk

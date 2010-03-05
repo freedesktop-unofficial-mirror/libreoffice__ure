@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,12 +39,12 @@ TARGET  = com_sun_star_lib_uno_adapter
 # --- Files --------------------------------------------------------
 
 JAVAFILES=	\
-    XInputStreamToInputStreamAdapter.java	\
-    XOutputStreamToOutputStreamAdapter.java	\
-    InputStreamToXInputStreamAdapter.java	\
-    OutputStreamToXOutputStreamAdapter.java	\
-    ByteArrayToXInputStreamAdapter.java \
-    XOutputStreamToByteArrayAdapter.java
+	XInputStreamToInputStreamAdapter.java	\
+	XOutputStreamToOutputStreamAdapter.java	\
+	InputStreamToXInputStreamAdapter.java	\
+	OutputStreamToXOutputStreamAdapter.java	\
+	ByteArrayToXInputStreamAdapter.java \
+	XOutputStreamToByteArrayAdapter.java
 
 
 JAVACLASSFILES=	$(foreach,i,$(JAVAFILES) $(CLASSDIR)$/$(PACKAGE)$/$(i:b).class)

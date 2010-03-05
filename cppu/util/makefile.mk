@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.17 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -49,10 +45,10 @@ UNIXVERSIONNAMES=UDK
 # --- Files --------------------------------------------------------
 
 SHL1LIBS= \
-    $(SLB)$/cppu_typelib.lib	\
-    $(SLB)$/cppu_uno.lib		\
-    $(SLB)$/cppu_threadpool.lib	\
-    $(SLB)$/cppu_cppu.lib
+	$(SLB)$/cppu_typelib.lib	\
+	$(SLB)$/cppu_uno.lib		\
+	$(SLB)$/cppu_threadpool.lib	\
+	$(SLB)$/cppu_cppu.lib
 
 .IF "$(GUI)" == "WNT" || "$(GUI)"=="OS2"
 SHL1TARGET=$(TARGET)$(UDK_MAJOR)
@@ -88,9 +84,9 @@ SHL2IMPLIB  := i$(SHL2TARGET)
 SHL2STDLIBS := $(CPPULIB) $(SALLIB)
 SHL2RPATH   := URELIB
 SHL2OBJS    := \
-    $(SLO)$/helper_purpenv_Environment.obj 	\
-    $(SLO)$/helper_purpenv_Mapping.obj      \
-    $(SLO)$/helper_purpenv_Proxy.obj
+	$(SLO)$/helper_purpenv_Environment.obj 	\
+	$(SLO)$/helper_purpenv_Mapping.obj      \
+	$(SLO)$/helper_purpenv_Proxy.obj
 
 
 # --- Targets ------------------------------------------------------
@@ -99,7 +95,7 @@ SHL2OBJS    := \
 
 
 ALLTAR:   $(SHL2TARGETN)
-    $(MAKE) $(MAKECMDGOALS) -f extra.mk
+	$(MAKE) $(MAKECMDGOALS) -f extra.mk
 
 
 .INCLUDE :	target.mk

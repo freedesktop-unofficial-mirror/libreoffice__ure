@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.21 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,21 +39,21 @@ USE_DEFFILE=TRUE
 # ------------------------------------------------------------------
 
 SLOFILES= 	\
-        $(SLO)$/urp_environment.obj \
-        $(SLO)$/urp_marshal.obj \
-        $(SLO)$/urp_unmarshal.obj \
-        $(SLO)$/urp_dispatch.obj \
-        $(SLO)$/urp_job.obj \
-        $(SLO)$/urp_reader.obj \
-        $(SLO)$/urp_writer.obj \
-        $(SLO)$/urp_log.obj \
-        $(SLO)$/urp_bridgeimpl.obj \
-        $(SLO)$/urp_propertyobject.obj \
-        $(SLO)$/urp_threadid.obj
+		$(SLO)$/urp_environment.obj \
+		$(SLO)$/urp_marshal.obj \
+		$(SLO)$/urp_unmarshal.obj \
+		$(SLO)$/urp_dispatch.obj \
+		$(SLO)$/urp_job.obj \
+		$(SLO)$/urp_reader.obj \
+		$(SLO)$/urp_writer.obj \
+		$(SLO)$/urp_log.obj \
+		$(SLO)$/urp_bridgeimpl.obj \
+		$(SLO)$/urp_propertyobject.obj \
+		$(SLO)$/urp_threadid.obj
 
 .IF "$(COM)"=="GCC"
 NOOPTFILES= \
-        $(SLO)$/urp_reader.obj
+		$(SLO)$/urp_reader.obj
 .ENDIF			# "$(COM)"=="GCC"
 
 SHL1TARGET= $(TARGET)
@@ -67,12 +63,12 @@ SHL1VERSIONMAP=..$/..$/bridge_exports.map
 SHL1RPATH=URELIB
 
 SHL1STDLIBS=\
-        $(SALLIB)\
-        $(CPPULIB)
+		$(SALLIB)\
+		$(CPPULIB)
 
 SHL1LIBS=\
-            $(SLB)$/$(TARGET).lib \
-            $(SLB)$/bridges_remote_static.lib
+			$(SLB)$/$(TARGET).lib \
+			$(SLB)$/bridges_remote_static.lib
 
 DEF1NAME=   $(SHL1TARGET)
 
