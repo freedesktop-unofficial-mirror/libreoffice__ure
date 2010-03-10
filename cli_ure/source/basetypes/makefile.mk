@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.11 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -56,23 +52,23 @@ ASSEMBLY_ATTRIBUTES = $(MISC)$/assembly_ure_$(TARGET).cs
 POLICY_ASSEMBLY_FILE=$(BIN)$/$(CLI_BASETYPES_POLICY_ASSEMBLY).dll
 
 ALLTAR : \
-    $(BIN)$/cli_basetypes.dll \
-    $(POLICY_ASSEMBLY_FILE)
-    
+	$(BIN)$/cli_basetypes.dll \
+	$(POLICY_ASSEMBLY_FILE)
+	
 .IF "$(CCNUMVER)" >= "001399999999"
 CSCFLAGS+=-keyfile:"$(BIN)$/cliuno.snk"
 .ENDIF
 
 CSFILES = \
-    uno$/Any.cs			\
-    uno$/BoundAttribute.cs \
-    uno$/ExceptionAttribute.cs	\
-    uno$/ParameterizedTypeAttribute.cs	\
-    uno$/TypeParametersAttribute.cs \
-    uno$/TypeArgumentsAttribute.cs \
-    uno$/OnewayAttribute.cs	\
-    uno$/PolymorphicType.cs \
-    $(ASSEMBLY_ATTRIBUTES)
+	uno$/Any.cs			\
+	uno$/BoundAttribute.cs \
+	uno$/ExceptionAttribute.cs	\
+	uno$/ParameterizedTypeAttribute.cs	\
+	uno$/TypeParametersAttribute.cs \
+	uno$/TypeArgumentsAttribute.cs \
+	uno$/OnewayAttribute.cs	\
+	uno$/PolymorphicType.cs \
+	$(ASSEMBLY_ATTRIBUTES)
 
 .IF "$(CCNUMVER)" <= "001399999999"
 $(ASSEMBLY_ATTRIBUTES) : assembly.cs makefile.mk $(BIN)$/cliuno.snk $(BIN)$/cliureversion.mk 
@@ -90,27 +86,27 @@ $(ASSEMBLY_ATTRIBUTES) : assembly.cs makefile.mk $(BIN)$/cliuno.snk $(BIN)$/cliu
 .ENDIF
 
 $(BIN)$/cli_basetypes.dll : $(CSFILES) $(BIN)$/cliureversion.mk 
-    $(CSC) $(CSCFLAGS) \
-        -target:library \
-        -out:$@ \
-        -reference:System.dll \
-        $(CSFILES)
-    @echo "If code has changed then provide a policy assembly and change the version!"
+	$(CSC) $(CSCFLAGS) \
+		-target:library \
+		-out:$@ \
+		-reference:System.dll \
+		$(CSFILES)
+	@echo "If code has changed then provide a policy assembly and change the version!"
 
 #do not forget to deliver cli_uretypes.config. It is NOT embedded in the policy file.
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_basetypes.config
-    $(WRAPCMD) AL.exe -out:$@ \
-            -version:$(CLI_BASETYPES_POLICY_VERSION) \
-            -keyfile:$(BIN)$/cliuno.snk \
-            -link:$(BIN)$/cli_basetypes.config
+	$(WRAPCMD) AL.exe -out:$@ \
+			-version:$(CLI_BASETYPES_POLICY_VERSION) \
+			-keyfile:$(BIN)$/cliuno.snk \
+			-link:$(BIN)$/cli_basetypes.config
 
 
 #Create the config file that is used with the policy assembly
 $(BIN)$/cli_basetypes.config: cli_basetypes_config $(BIN)$/cliureversion.mk 
-    $(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
-    $< $@
+	$(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
+	$< $@
 
 
 .ENDIF
-    
+	
 
