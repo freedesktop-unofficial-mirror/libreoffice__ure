@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.21 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -56,19 +52,19 @@ ASSEMBLY_ATTRIBUTES = $(MISC)$/assembly_ure_$(TARGET).cs
 
 POLICY_ASSEMBLY_FILE=$(BIN)$/$(CLI_URE_POLICY_ASSEMBLY).dll
 ALLTAR : \
-    $(BIN)$/cli_ure.dll \
-    $(POLICY_ASSEMBLY_FILE)
+	$(BIN)$/cli_ure.dll \
+	$(POLICY_ASSEMBLY_FILE)
 
 .IF "$(CCNUMVER)" >= "001399999999"
 CSCFLAGS+=-keyfile:"$(BIN)$/cliuno.snk"
 .ENDIF
 
 CSFILES = \
-    uno$/util$/DisposeGuard.cs					\
-    uno$/util$/WeakAdapter.cs					\
-    uno$/util$/WeakBase.cs						\
-    uno$/util$/WeakComponentBase.cs	\
-    $(ASSEMBLY_ATTRIBUTES)
+	uno$/util$/DisposeGuard.cs					\
+	uno$/util$/WeakAdapter.cs					\
+	uno$/util$/WeakBase.cs						\
+	uno$/util$/WeakComponentBase.cs	\
+	$(ASSEMBLY_ATTRIBUTES)
 
 .IF "$(CCNUMVER)" <= "001399999999"
 $(ASSEMBLY_ATTRIBUTES) : assembly.cs makefile.mk $(BIN)$/cliuno.snk $(BIN)$/cliureversion.mk 
@@ -86,28 +82,28 @@ $(ASSEMBLY_ATTRIBUTES) : assembly.cs makefile.mk $(BIN)$/cliuno.snk $(BIN)$/cliu
 .ENDIF
 
 $(BIN)$/cli_ure.dll : $(CSFILES) $(BIN)$/cli_uretypes.dll $(BIN)$/cliureversion.mk 
-    $(CSC) $(CSCFLAGS) \
-        -target:library \
-        -out:$@ \
-        -reference:$(OUT)$/bin$/cli_uretypes.dll \
-        -reference:System.dll \
-        $(CSFILES)
-    @echo "If code has changed then provide a policy assembly and change the version!"
+	$(CSC) $(CSCFLAGS) \
+		-target:library \
+		-out:$@ \
+		-reference:$(OUT)$/bin$/cli_uretypes.dll \
+		-reference:System.dll \
+		$(CSFILES)
+	@echo "If code has changed then provide a policy assembly and change the version!"
 
 
 #do not forget to deliver cli_ure.config. It is NOT embedded in the policy file.
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_ure.config
-    $(WRAPCMD) AL.exe -out:$@ \
-            -version:$(CLI_URE_POLICY_VERSION) \
-            -keyfile:$(BIN)$/cliuno.snk \
-            -link:$(BIN)$/cli_ure.config
+	$(WRAPCMD) AL.exe -out:$@ \
+			-version:$(CLI_URE_POLICY_VERSION) \
+			-keyfile:$(BIN)$/cliuno.snk \
+			-link:$(BIN)$/cli_ure.config
 
 #Create the config file that is used with the policy assembly
 $(BIN)$/cli_ure.config: cli_ure_config $(BIN)$/cliureversion.mk 
-    $(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
-    $< $@
+	$(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
+	$< $@
 
 
 .ENDIF
-    
+	
 

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.16 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -49,47 +45,47 @@ IDLFILES=\
     ConversionDirection.idl \
     ConversionPropertyType.idl \
     Dictionary.idl\
-    DictionaryEvent.idl\
-    DictionaryEventFlags.idl\
-    DictionaryList.idl\
-    DictionaryListEvent.idl\
-    DictionaryListEventFlags.idl\
-    DictionaryType.idl\
+	DictionaryEvent.idl\
+	DictionaryEventFlags.idl\
+	DictionaryList.idl\
+	DictionaryListEvent.idl\
+	DictionaryListEventFlags.idl\
+	DictionaryType.idl\
     HangulHanjaConversionDictionary.idl \
-    Hyphenator.idl\
-    LinguProperties.idl\
-    LinguServiceEvent.idl\
-    LinguServiceEventFlags.idl\
-    LinguServiceManager.idl\
-    SpellChecker.idl\
-    SpellFailure.idl\
-    Thesaurus.idl\
-    XAvailableLocales.idl\
+	Hyphenator.idl\
+	LinguProperties.idl\
+	LinguServiceEvent.idl\
+	LinguServiceEventFlags.idl\
+	LinguServiceManager.idl\
+	SpellChecker.idl\
+	SpellFailure.idl\
+	Thesaurus.idl\
+	XAvailableLocales.idl\
     XConversionDictionary.idl \
     XConversionDictionaryList.idl \
     XConversionPropertyType.idl \
-    XDictionary.idl\
-    XDictionary1.idl\
-    XDictionaryEntry.idl\
-    XDictionaryEventListener.idl\
-    XDictionaryList.idl\
-    XDictionaryListEventListener.idl\
-    XHyphenatedWord.idl\
-    XHyphenator.idl\
+	XDictionary.idl\
+	XDictionary1.idl\
+	XDictionaryEntry.idl\
+	XDictionaryEventListener.idl\
+	XDictionaryList.idl\
+	XDictionaryListEventListener.idl\
+	XHyphenatedWord.idl\
+	XHyphenator.idl\
     XLanguageGuessing.idl\
-    XLinguServiceEventBroadcaster.idl\
-    XLinguServiceEventListener.idl\
-    XLinguServiceManager.idl\
-    XMeaning.idl\
-    XPossibleHyphens.idl\
+	XLinguServiceEventBroadcaster.idl\
+	XLinguServiceEventListener.idl\
+	XLinguServiceManager.idl\
+	XMeaning.idl\
+	XPossibleHyphens.idl\
     XSearchableDictionary.idl\
-    XSearchableDictionaryList.idl\
-    XSpellAlternatives.idl\
+	XSearchableDictionaryList.idl\
+	XSpellAlternatives.idl\
     XSetSpellAlternatives.idl\
-    XSpellChecker.idl\
-    XSpellChecker1.idl\
-    XSupportedLanguages.idl\
-    XSupportedLocales.idl\
+	XSpellChecker.idl\
+	XSpellChecker1.idl\
+	XSupportedLanguages.idl\
+	XSupportedLocales.idl\
     XThesaurus.idl\
     SingleProofreadingError.idl\
     ProofreadingResult.idl\

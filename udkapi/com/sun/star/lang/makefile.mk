@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.10 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,44 +38,44 @@ PACKAGE=com$/sun$/star$/lang
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    ArrayIndexOutOfBoundsException.idl\
-    ClassNotFoundException.idl\
-    DisposedException.idl\
-    EventObject.idl\
-    IllegalAccessException.idl\
-    IllegalArgumentException.idl\
-    IndexOutOfBoundsException.idl\
-    InvalidListenerException.idl\
-    ListenerExistException.idl\
-    Locale.idl\
-    MultiServiceFactory.idl\
-    NoSuchFieldException.idl\
-    NoSuchMethodException.idl\
-    NoSupportException.idl\
-    NotInitializedException.idl\
-    NullPointerException.idl\
-    RegistryServiceManager.idl\
-    ServiceManager.idl\
-    ServiceNotRegisteredException.idl\
-    SystemDependent.idl\
-    WrappedTargetException.idl\
-    WrappedTargetRuntimeException.idl\
-    XComponent.idl\
-    XConnectionPoint.idl\
-    XConnectionPointContainer.idl\
-    XEventListener.idl\
-    XInitialization.idl\
-    XLocalizable.idl\
-    XMultiServiceFactory.idl\
-    XMultiComponentFactory.idl\
-    XServiceDisplayName.idl\
-    XServiceInfo.idl\
-    XServiceName.idl\
-    XSingleServiceFactory.idl\
-    XSingleComponentFactory.idl\
-    XTypeProvider.idl\
-    XUnoTunnel.idl\
-    XMain.idl\
+	ArrayIndexOutOfBoundsException.idl\
+	ClassNotFoundException.idl\
+	DisposedException.idl\
+	EventObject.idl\
+	IllegalAccessException.idl\
+	IllegalArgumentException.idl\
+	IndexOutOfBoundsException.idl\
+	InvalidListenerException.idl\
+	ListenerExistException.idl\
+	Locale.idl\
+	MultiServiceFactory.idl\
+	NoSuchFieldException.idl\
+	NoSuchMethodException.idl\
+	NoSupportException.idl\
+	NotInitializedException.idl\
+	NullPointerException.idl\
+	RegistryServiceManager.idl\
+	ServiceManager.idl\
+	ServiceNotRegisteredException.idl\
+	SystemDependent.idl\
+	WrappedTargetException.idl\
+	WrappedTargetRuntimeException.idl\
+	XComponent.idl\
+	XConnectionPoint.idl\
+	XConnectionPointContainer.idl\
+	XEventListener.idl\
+	XInitialization.idl\
+	XLocalizable.idl\
+	XMultiServiceFactory.idl\
+	XMultiComponentFactory.idl\
+	XServiceDisplayName.idl\
+	XServiceInfo.idl\
+	XServiceName.idl\
+	XSingleServiceFactory.idl\
+	XSingleComponentFactory.idl\
+	XTypeProvider.idl\
+	XUnoTunnel.idl\
+	XMain.idl\
 
 # ------------------------------------------------------------------
 

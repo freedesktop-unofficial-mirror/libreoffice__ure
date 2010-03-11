@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.14 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,49 +38,49 @@ PACKAGE=com$/sun$/star$/script
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AllEventObject.idl\
-    AllListenerAdapter.idl\
-    BasicErrorException.idl\
-    CannotConvertException.idl\
-    CannotCreateAdapterException.idl\
-    ContextInformation.idl\
-    Converter.idl\
-    Engine.idl\
-    FailReason.idl\
-    FinishEngineEvent.idl\
-    FinishReason.idl\
-    InterruptEngineEvent.idl\
-    InterruptReason.idl\
-    Invocation.idl\
-    InvocationAdapterFactory.idl\
-    JavaScript.idl\
-    ScriptEvent.idl\
-    ScriptEventDescriptor.idl\
-    ArrayWrapper.idl\
-    XAllListener.idl\
-    XAllListenerAdapterService.idl\
-    XDebugging.idl\
-    XEngine.idl\
-    XEngineListener.idl\
-    XEventAttacher.idl\
-    XEventAttacherManager.idl\
-    XInvocationAdapterFactory.idl\
-    XInvocationAdapterFactory2.idl\
-    XInvocation.idl\
-    XInvocation2.idl\
-    InvocationInfo.idl\
-    MemberType.idl\
-    XLibraryAccess.idl\
-    XScriptListener.idl\
-    XTypeConverter.idl\
-    XStarBasicAccess.idl\
-    XStarBasicModuleInfo.idl\
-    XStarBasicDialogInfo.idl\
-    XStarBasicLibraryInfo.idl\
-    XScriptEventsSupplier.idl\
-    XScriptEventsAttacher.idl\
-    XDefaultMethod.idl\
-    XDefaultProperty.idl\
+	AllEventObject.idl\
+	AllListenerAdapter.idl\
+	BasicErrorException.idl\
+	CannotConvertException.idl\
+	CannotCreateAdapterException.idl\
+	ContextInformation.idl\
+	Converter.idl\
+	Engine.idl\
+	FailReason.idl\
+	FinishEngineEvent.idl\
+	FinishReason.idl\
+	InterruptEngineEvent.idl\
+	InterruptReason.idl\
+	Invocation.idl\
+	InvocationAdapterFactory.idl\
+	JavaScript.idl\
+	ScriptEvent.idl\
+	ScriptEventDescriptor.idl\
+	ArrayWrapper.idl\
+	XAllListener.idl\
+	XAllListenerAdapterService.idl\
+	XDebugging.idl\
+	XEngine.idl\
+	XEngineListener.idl\
+	XEventAttacher.idl\
+	XEventAttacherManager.idl\
+	XInvocationAdapterFactory.idl\
+	XInvocationAdapterFactory2.idl\
+	XInvocation.idl\
+	XInvocation2.idl\
+	InvocationInfo.idl\
+	MemberType.idl\
+	XLibraryAccess.idl\
+	XScriptListener.idl\
+	XTypeConverter.idl\
+	XStarBasicAccess.idl\
+	XStarBasicModuleInfo.idl\
+	XStarBasicDialogInfo.idl\
+	XStarBasicLibraryInfo.idl\
+	XScriptEventsSupplier.idl\
+	XScriptEventsAttacher.idl\
+	XDefaultMethod.idl\
+	XDefaultProperty.idl\
 
 # ------------------------------------------------------------------
 

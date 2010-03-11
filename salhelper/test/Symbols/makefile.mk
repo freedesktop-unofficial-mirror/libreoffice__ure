@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -65,7 +61,7 @@ LIB1OBJFILES=	$(SLOFILES)
 SHL1TARGET=	$(TARGET1)
 
 SHL1STDLIBS= \
-    $(SALLIB)
+	$(SALLIB)
 
 SHL1DEPN=
 SHL1IMPLIB=	i$(TARGET1)
@@ -86,8 +82,8 @@ APP1TARGET=	$(TARGET)
 APP1OBJS=	$(OBJFILES)
 
 APP1STDLIBS= \
-    $(SALHELPERLIB)	\
-    $(SALLIB)
+	$(SALHELPERLIB)	\
+	$(SALLIB)
 
 APP1DEF=	$(MISC)\$(APP1TARGET).def
 
@@ -96,6 +92,6 @@ APP1DEF=	$(MISC)\$(APP1TARGET).def
 .INCLUDE : target.mk
 
 $(MISC)$/$(SHL1TARGET).flt: makefile.mk
-    @echo ------------------------------
-    @echo Making: $@
-    @echo __CT>>$@
+	@echo ------------------------------
+	@echo Making: $@
+	@echo __CT>>$@
