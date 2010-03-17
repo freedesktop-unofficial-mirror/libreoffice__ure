@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_old_testowstring.cxx,v $
- * $Revision: 1.9 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -61,7 +58,7 @@
 
 #include <rtl/locale.hxx>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #define TEST_ENSURE(c, m) CPPUNIT_ASSERT_MESSAGE((m), (c))
 // #if OSL_DEBUG_LEVEL > 0
@@ -75,7 +72,7 @@ using namespace rtl;
 // -----------------------------------------------------------------------------
 namespace rtl_OUString
 {
-    class oldtests : public CppUnit::TestFixture  
+    class oldtests : public CppUnit::TestFixture
     {
     public:
         void test_OUString();
@@ -148,7 +145,7 @@ void oldtests::test_OUString()
 #endif
 
 // LLA: locale tests removed    	::rtl::OLocale locale = ::rtl::OLocale::getDefault();
-// LLA: locale tests removed 
+// LLA: locale tests removed
 // LLA: locale tests removed 	OUString s61(OUString::createFromAscii("HaLLo"));
 // LLA: locale tests removed 	s61 = s61.toLowerCase(locale);
 // LLA: locale tests removed 	TEST_ENSURE( s61 == OUString::createFromAscii("hallo"), "test_OWString error 17a");
@@ -156,25 +153,25 @@ void oldtests::test_OUString()
 // LLA: locale tests removed 	TEST_ENSURE( s61 == OUString::createFromAscii("HALLO"), "test_OWString error 17b");
 // LLA: locale tests removed 	s61 = s61.toLowerCase();
 // LLA: locale tests removed 	TEST_ENSURE( s61 == OUString::createFromAscii("hallo"), "test_OWString error 17c");
-// LLA: locale tests removed 
+// LLA: locale tests removed
 // LLA: locale tests removed 	::rtl::OLocale::setDefault( OUString::createFromAscii( "de" ), OUString::createFromAscii( "DE" ), OUString() );
 // LLA: locale tests removed 	locale = OLocale::getDefault();
-// LLA: locale tests removed 
+// LLA: locale tests removed
 // LLA: locale tests removed 	// AB, 24.3.2000, removed NAMESPACE_RTL(OLocale)::getENGLISH() and error 18
-// LLA: locale tests removed 
+// LLA: locale tests removed
 // LLA: locale tests removed  	OUString s7(OUString::createFromAscii("HaLLo"));
 // LLA: locale tests removed 	s7 = s7.toLowerCase(locale);
 // LLA: locale tests removed 	TEST_ENSURE( s7 == OUString::createFromAscii("hallo"), "test_OWString error 19");
 // LLA: locale tests removed 	s7 = s7.toUpperCase(locale);
 // LLA: locale tests removed 	TEST_ENSURE( s7 == OUString::createFromAscii("HALLO"), "test_OWString error 20");
-// LLA: locale tests removed 
+// LLA: locale tests removed
 // LLA: locale tests removed 	OUString s8(OUString::createFromAscii("HaLLo ICH BIn eIn "));
 // LLA: locale tests removed 	s8 += OUString::valueOf( (sal_Unicode)0xDF );
 // LLA: locale tests removed 	locale = OLocale::registerLocale( OUString::createFromAscii("tr"), OUString::createFromAscii("TR"), OUString());
 // LLA: locale tests removed 	s8 = s8.toLowerCase(locale);
 // LLA: locale tests removed 	s8 = s8.toUpperCase(locale);
 // LLA: locale tests removed 	TEST_ENSURE( s8 == OUString::createFromAscii("HALLO ICH BIN EIN SS"), "test_OWString error 21");
-// LLA: locale tests removed 
+// LLA: locale tests removed
 // LLA: locale tests removed 	s7 = OUString::createFromAscii("Hallo ich bIn ein I");
 // LLA: locale tests removed 	s7 = s8.toUpperCase(locale);
 // LLA: locale tests removed 	TEST_ENSURE( s7 != OUString::createFromAscii("HALLO ICH BIN EIN I"), "test_OWString error 21.b");
@@ -199,60 +196,60 @@ void oldtests::test_OUString()
     TEST_ENSURE( s7 != OUString::createFromAscii("blabla"), "test_OWString error 28");
     TEST_ENSURE( OUString::createFromAscii("blabla") != s7, "test_OWString error 29");
 
-    s8 = OUString::createFromAscii("Hallo");	
-    TEST_ENSURE( s7 <= s8, "test_OWString error 30");	
-    TEST_ENSURE( s7 >= s8, "test_OwString error 31");	
+    s8 = OUString::createFromAscii("Hallo");
+    TEST_ENSURE( s7 <= s8, "test_OWString error 30");
+    TEST_ENSURE( s7 >= s8, "test_OwString error 31");
 
     s8 = s8.replace((sal_Unicode)'l', (sal_Unicode)'r');
-    TEST_ENSURE( s8 == OUString::createFromAscii("Harro"), "test_OWString error 32");	
-// LLA: len() unknown	TEST_ENSURE( s8.len() == 5, "test_OWString error 33");	
-    
+    TEST_ENSURE( s8 == OUString::createFromAscii("Harro"), "test_OWString error 32");
+// LLA: len() unknown	TEST_ENSURE( s8.len() == 5, "test_OWString error 33");
+
     //       "Ich bin ein String mit einem A und C und vielen m, m, m, m"
     //		  |	   |	|	 |	  |	   |	|	 |	  |	   |	|	 |
     //index	  0	   5	10	 15	  20   25	30	 35	  40   45	50	 55
     s8 = OUString::createFromAscii("Ich bin ein String mit einem A und C und vielen m, m, m, m");
-// LLA: no matching 	TEST_ENSURE( s8.search((sal_Unicode)'I') == 0, "test_OWString error 34");	
-// LLA: no matching 	TEST_ENSURE( s8.search((sal_Unicode)'A') == 29, "test_OWString error 35");	
+// LLA: no matching 	TEST_ENSURE( s8.search((sal_Unicode)'I') == 0, "test_OWString error 34");
+// LLA: no matching 	TEST_ENSURE( s8.search((sal_Unicode)'A') == 29, "test_OWString error 35");
 // LLA: no matching 	s7 = OUString::createFromAscii("A und C");
-// LLA: no matching 	TEST_ENSURE( s8.search(s7) == 29, "test_OWString error 36");	
-// LLA: no matching 	TEST_ENSURE( s8.search(OUString::createFromAscii("mit einem A")) == 19, "test_OWString error 37");	
-// LLA: no matching 
+// LLA: no matching 	TEST_ENSURE( s8.search(s7) == 29, "test_OWString error 36");
+// LLA: no matching 	TEST_ENSURE( s8.search(OUString::createFromAscii("mit einem A")) == 19, "test_OWString error 37");
+// LLA: no matching
 // LLA: no matching 	s8 = OUString::createFromAscii("||token1|token2|token3||token4|token5||" );
-// LLA: no matching 	TEST_ENSURE( s8.getTokenCount('|') == 10, "test_OWString error 38a");	
-// LLA: no matching 	TEST_ENSURE( s8.getToken(10,'|') == OUString(), "test_OWString error 39a");	
-// LLA: no matching 
+// LLA: no matching 	TEST_ENSURE( s8.getTokenCount('|') == 10, "test_OWString error 38a");
+// LLA: no matching 	TEST_ENSURE( s8.getToken(10,'|') == OUString(), "test_OWString error 39a");
+// LLA: no matching
 // LLA: no matching 	s8 = OUString::createFromAscii("token1");
-// LLA: no matching 	TEST_ENSURE( s8.getTokenCount('|') == 1, "test_OWString error 38b");	
-// LLA: no matching 	TEST_ENSURE( s8.getToken(0,'|') == OUString::createFromAscii("token1"), "test_OWString error 39b");	
-// LLA: no matching 	TEST_ENSURE( s8.getToken(-1,'|') == OUString(), "test_OWString error 39c");	
-// LLA: no matching 	TEST_ENSURE( s8.getToken(1,'|') == OUString(), "test_OWString error 39d");	
-// LLA: no matching 	
+// LLA: no matching 	TEST_ENSURE( s8.getTokenCount('|') == 1, "test_OWString error 38b");
+// LLA: no matching 	TEST_ENSURE( s8.getToken(0,'|') == OUString::createFromAscii("token1"), "test_OWString error 39b");
+// LLA: no matching 	TEST_ENSURE( s8.getToken(-1,'|') == OUString(), "test_OWString error 39c");
+// LLA: no matching 	TEST_ENSURE( s8.getToken(1,'|') == OUString(), "test_OWString error 39d");
+// LLA: no matching
 // LLA: no matching 	s8 = OUString::createFromAscii("|hallo1|hallo2|hallo3|hallo4|hallo5|hallo6|hallo7|hallo8|");
-// LLA: no matching 	TEST_ENSURE( s8.getTokenCount((sal_Unicode)'|') == 10, "test_OWString error 38");	
-// LLA: no matching 	TEST_ENSURE( s8.getToken(3, (sal_Unicode)'|') == OUString::createFromAscii("hallo3"), "test_OWString error 39");	
+// LLA: no matching 	TEST_ENSURE( s8.getTokenCount((sal_Unicode)'|') == 10, "test_OWString error 38");
+// LLA: no matching 	TEST_ENSURE( s8.getToken(3, (sal_Unicode)'|') == OUString::createFromAscii("hallo3"), "test_OWString error 39");
 
 // LLA: removed due to the fact, this is not a clean test!
 
 // LLA: 	s7 = OUString();
 // LLA: 	s7 += s8;
-// LLA: 	TEST_ENSURE( s7 == s8, "test_OWString error 40");	
-// LLA: 
-// LLA: 	s7 = s8.replaceAt(8, 6, OUString::createFromAscii("mmmmmmmmmm"));	
-// LLA: 	TEST_ENSURE( s7.getLength() == 61, "test_OWString error 41");	
-// LLA: 
-// LLA: 	s8 = s7.replaceAt(8, 11, OUString());	
-// LLA: 	TEST_ENSURE( s8.getLength() == 50, "test_OWString error 42");	
-// LLA: 
-// LLA: 	s7 = s8.replaceAt(8, 0, OUString::createFromAscii("hallo2|"));	
-// LLA: 	TEST_ENSURE( s7.getLength() == 57, "test_OWString error 43");	
-// LLA: 
+// LLA: 	TEST_ENSURE( s7 == s8, "test_OWString error 40");
+// LLA:
+// LLA: 	s7 = s8.replaceAt(8, 6, OUString::createFromAscii("mmmmmmmmmm"));
+// LLA: 	TEST_ENSURE( s7.getLength() == 61, "test_OWString error 41");
+// LLA:
+// LLA: 	s8 = s7.replaceAt(8, 11, OUString());
+// LLA: 	TEST_ENSURE( s8.getLength() == 50, "test_OWString error 42");
+// LLA:
+// LLA: 	s7 = s8.replaceAt(8, 0, OUString::createFromAscii("hallo2|"));
+// LLA: 	TEST_ENSURE( s7.getLength() == 57, "test_OWString error 43");
+// LLA:
 // LLA: 	sal_Int32 pos = 0;
 // LLA: 	while ((pos = s7.indexOf(OUString::createFromAscii("|"))) >= 0)
 // LLA: 	{
 // LLA: 		s8 = s7.replaceAt(pos, 1, OUString::createFromAscii("**"));
 // LLA: 		s7 = s8;
-// LLA: 	}	
-// LLA: 	TEST_ENSURE( s7.getLength() == 66, "test_OWString error 44");	
+// LLA: 	}
+// LLA: 	TEST_ENSURE( s7.getLength() == 66, "test_OWString error 44");
 
     TEST_ENSURE( OUString::createFromAscii("aaa" ).compareTo( OUString::createFromAscii("bbb" ) ) < 0, "test_OWString error 46" );
     TEST_ENSURE( OUString::createFromAscii("aaa" ).compareTo( OUString::createFromAscii("aaa" ) ) == 0, "test_OWString error 46" );

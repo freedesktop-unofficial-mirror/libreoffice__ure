@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.17 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,7 +38,7 @@ DLLPRE =
 
 #-------------------------------------------------------------------
 
-.IF "$(OS)$(CPU)$(COMEX)" == "SOLARISS4"
+.IF "$(OS)$(COMEX)" == "SOLARIS4"
 # no -Bdirect for SunWS CC
 DIRECT = $(LINKFLAGSDEFS)
 .ENDIF
@@ -62,11 +58,11 @@ CFLAGS+=-I$(SOLARINCDIR)$/python
 SHL1TARGET=	$(TARGET)
 
 SHL1STDLIBS= \
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALLIB)		\
-        $(PYUNOLIB)		\
-        $(PYTHONLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALLIB)		\
+		$(PYUNOLIB)		\
+		$(PYTHONLIB)
 
 SHL1VERSIONMAP=$(SOLARENV)$/src$/component.map
 SHL1DEPN=
@@ -88,29 +84,29 @@ SLOFILES=       $(SLO)$/pyuno_loader.obj
 
 
 COMPONENTS= \
-    stocservices.uno	\
-    invocation.uno		\
-    introspection.uno	\
-    invocadapt.uno		\
-    proxyfac.uno 		\
-    reflection.uno	\
-    .$/pythonloader.uno
+	stocservices.uno	\
+	invocation.uno		\
+	introspection.uno	\
+	invocadapt.uno		\
+	proxyfac.uno 		\
+	reflection.uno	\
+	.$/pythonloader.uno
 
 # --- Targets ------------------------------------------------------
 
 ALL : ALLTAR \
-    $(DLLDEST)$/pythonloader.py	\
-    $(DLLDEST)$/pyuno_services.rdb
+	$(DLLDEST)$/pythonloader.py	\
+	$(DLLDEST)$/pyuno_services.rdb
 .ENDIF # L10N_framework
 
 .INCLUDE :  target.mk
 .IF "$(L10N_framework)"==""
 $(DLLDEST)$/%.py: %.py
-    cp $? $@
+	cp $? $@
 
 $(DLLDEST)$/pyuno_services.rdb : makefile.mk $(DLLDEST)$/$(DLLPRE)$(TARGET)$(DLLPOST)
-    -rm -f $@ $(DLLDEST)$/pyuno_services.tmp $(DLLDEST)$/pyuno_services.rdb
-    cd $(DLLDEST) && $(REGCOMP) -register -r pyuno_services.tmp -wop $(foreach,i,$(COMPONENTS) -c $(i))
-    cd $(DLLDEST) && mv pyuno_services.tmp pyuno_services.rdb
+	-rm -f $@ $(DLLDEST)$/pyuno_services.tmp $(DLLDEST)$/pyuno_services.rdb
+	cd $(DLLDEST) && $(REGCOMP) -register -r pyuno_services.tmp -wop $(foreach,i,$(COMPONENTS) -c $(i))
+	cd $(DLLDEST) && mv pyuno_services.tmp pyuno_services.rdb
 .ENDIF # L10N_framework
 

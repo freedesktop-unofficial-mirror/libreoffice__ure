@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.13 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -45,17 +41,9 @@ CXXFLAGS+= $(LFS_CFLAGS)
 
 # --- BEGIN --------------------------------------------------------
 SHL1OBJS=  \
-    $(SLO)$/osl_File.obj
+	$(SLO)$/osl_File.obj
 SHL1TARGET= osl_File
-SHL1STDLIBS=\
-    $(SALLIB) \
-    $(CPPUNITLIB)
-# .IF "$(GUI)" == "WNT"
-# SHL1STDLIBS+=	$(SOLARLIBDIR)$/cppunit.lib
-# .ENDIF
-# .IF "$(GUI)" == "UNX"
-# SHL1STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
-# .ENDIF
+SHL1STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
 
 SHL1IMPLIB= i$(SHL1TARGET)
 
@@ -66,13 +54,7 @@ SHL1VERSIONMAP = $(PRJ)$/qa$/export.map
 
 SHL2OBJS=$(SLO)$/test_cpy_wrt_file.obj
 SHL2TARGET=tcwf
-SHL2STDLIBS=$(SALLIB)
-.IF "$(GUI)" == "WNT" || "$(GUI)" == "OS2"
-SHL2STDLIBS+=$(SOLARLIBDIR)$/cppunit.lib
-.ENDIF
-.IF "$(GUI)" == "UNX"
-SHL2STDLIBS+=$(SOLARLIBDIR)$/libcppunit$(DLLPOSTFIX).a
-.ENDIF
+SHL2STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
 SHL2IMPLIB=i$(SHL2TARGET)
 SHL2DEF=$(MISC)$/$(SHL2TARGET).def
 SHL2VERSIONMAP = $(PRJ)$/qa$/export.map
@@ -83,11 +65,9 @@ DEF2NAME    =$(SHL2TARGET)
 
 # --- BEGIN --------------------------------------------------------
 SHL3OBJS=  \
-    $(SLO)$/osl_old_test_file.obj
+	$(SLO)$/osl_old_test_file.obj
 SHL3TARGET= osl_old_test_file
-SHL3STDLIBS=\
-    $(SALLIB) \
-    $(CPPUNITLIB)
+SHL3STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
 
 SHL3IMPLIB= i$(SHL3TARGET)
 

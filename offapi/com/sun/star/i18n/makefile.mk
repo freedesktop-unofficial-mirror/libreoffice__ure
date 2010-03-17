@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.26 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,89 +38,89 @@ PACKAGE=com$/sun$/star$/i18n
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AmPmValue.idl \
-    Boundary.idl \
-    BreakIterator.idl \
-    BreakType.idl \
-    CTLScriptType.idl \
-    Calendar.idl \
-    CalendarDisplayCode.idl \
-    CalendarDisplayIndex.idl \
-    CalendarFieldIndex.idl \
-    CalendarItem.idl \
-    ChapterCollator.idl \
-    CharType.idl \
-    CharacterClassification.idl \
-    CharacterIteratorMode.idl \
-    Collator.idl \
-    CollatorOptions.idl \
-    Currency.idl \
-    Currency2.idl \
-    DirectionProperty.idl \
-    ForbiddenCharacters.idl \
-    FormatElement.idl \
-    Implementation.idl \
-    IndexEntrySupplier.idl \
-    InputSequenceChecker.idl \
-    InputSequenceCheckMode.idl \
-    KCharacterType.idl \
-    KNumberFormatType.idl \
-    KNumberFormatUsage.idl \
-    KParseTokens.idl \
-    KParseType.idl \
-    LanguageCountryInfo.idl \
-    LineBreakHyphenationOptions.idl  \
-    LineBreakResults.idl \
-    LineBreakUserOptions.idl  \
-    LocaleCalendar.idl \
-    LocaleData.idl \
-    LocaleDataItem.idl \
-    LocaleItem.idl \
-    Months.idl \
-    MultipleCharsOutputException.idl \
-    NativeNumberMode.idl \
-    NativeNumberSupplier.idl \
-    NativeNumberXmlAttributes.idl \
-    NumberFormatCode.idl \
-    NumberFormatIndex.idl \
-    NumberFormatMapper.idl \
-    ParseResult.idl \
-    ScriptDirection.idl \
-    ScriptType.idl \
+	AmPmValue.idl \
+	Boundary.idl \
+	BreakIterator.idl \
+	BreakType.idl \
+	CTLScriptType.idl \
+	Calendar.idl \
+	CalendarDisplayCode.idl \
+	CalendarDisplayIndex.idl \
+	CalendarFieldIndex.idl \
+	CalendarItem.idl \
+	ChapterCollator.idl \
+	CharType.idl \
+	CharacterClassification.idl \
+	CharacterIteratorMode.idl \
+	Collator.idl \
+	CollatorOptions.idl \
+	Currency.idl \
+	Currency2.idl \
+	DirectionProperty.idl \
+	ForbiddenCharacters.idl \
+	FormatElement.idl \
+	Implementation.idl \
+	IndexEntrySupplier.idl \
+	InputSequenceChecker.idl \
+	InputSequenceCheckMode.idl \
+	KCharacterType.idl \
+	KNumberFormatType.idl \
+	KNumberFormatUsage.idl \
+	KParseTokens.idl \
+	KParseType.idl \
+	LanguageCountryInfo.idl \
+	LineBreakHyphenationOptions.idl  \
+	LineBreakResults.idl \
+	LineBreakUserOptions.idl  \
+	LocaleCalendar.idl \
+	LocaleData.idl \
+	LocaleDataItem.idl \
+	LocaleItem.idl \
+	Months.idl \
+	MultipleCharsOutputException.idl \
+	NativeNumberMode.idl \
+	NativeNumberSupplier.idl \
+	NativeNumberXmlAttributes.idl \
+	NumberFormatCode.idl \
+	NumberFormatIndex.idl \
+	NumberFormatMapper.idl \
+	ParseResult.idl \
+	ScriptDirection.idl \
+	ScriptType.idl \
     TextConversion.idl \
     TextConversionOption.idl \
     TextConversionResult.idl \
     TextConversionType.idl \
-    Transliteration.idl \
-    TransliterationModules.idl \
-    TransliterationModulesNew.idl \
-    TransliterationType.idl \
-    UnicodeScript.idl \
-    UnicodeType.idl \
-    Weekdays.idl \
-    WordType.idl \
-    XBreakIterator.idl \
-    XCalendar.idl \
-    XCharacterClassification.idl \
-    XCollator.idl \
-    XExtendedCalendar.idl \
-    XExtendedIndexEntrySupplier.idl \
-    XExtendedTransliteration.idl \
-    XForbiddenCharacters.idl \
-    XIndexEntrySupplier.idl \
-    XInputSequenceChecker.idl \
-    XExtendedInputSequenceChecker.idl \
-    XLocaleData.idl \
-    XLocaleData2.idl \
-    XNativeNumberSupplier.idl \
-    XNumberFormatCode.idl \
+	Transliteration.idl \
+	TransliterationModules.idl \
+	TransliterationModulesNew.idl \
+	TransliterationType.idl \
+	UnicodeScript.idl \
+	UnicodeType.idl \
+	Weekdays.idl \
+	WordType.idl \
+	XBreakIterator.idl \
+	XCalendar.idl \
+	XCharacterClassification.idl \
+	XCollator.idl \
+	XExtendedCalendar.idl \
+	XExtendedIndexEntrySupplier.idl \
+	XExtendedTransliteration.idl \
+	XForbiddenCharacters.idl \
+	XIndexEntrySupplier.idl \
+	XInputSequenceChecker.idl \
+	XExtendedInputSequenceChecker.idl \
+	XLocaleData.idl \
+	XLocaleData2.idl \
+	XNativeNumberSupplier.idl \
+	XNumberFormatCode.idl \
     XTextConversion.idl \
-    XExtendedTextConversion.idl \
-    XScriptTypeDetector.idl \
-    XTransliteration.idl \
-    reservedWords.idl \
-    XOrdinalSuffix.idl \
-    OrdinalSuffix.idl
+	XExtendedTextConversion.idl \
+	XScriptTypeDetector.idl \
+	XTransliteration.idl \
+	reservedWords.idl \
+	XOrdinalSuffix.idl \
+	OrdinalSuffix.idl
 
 # ------------------------------------------------------------------
 

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.15 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -46,27 +42,27 @@ NO_OFFUH=TRUE
 CPPUMAKERFLAGS+= -C
 
 UNOTYPES= \
-     com.sun.star.uno.TypeClass \
-     com.sun.star.uno.XAggregation \
-     com.sun.star.uno.XWeak \
-     com.sun.star.uno.XComponentContext \
-     com.sun.star.lang.XTypeProvider \
-    com.sun.star.lang.XMain \
-     com.sun.star.lang.XInitialization \
-     com.sun.star.lang.XComponent \
-     com.sun.star.lang.XSingleServiceFactory \
-     com.sun.star.lang.XSingleComponentFactory \
-     com.sun.star.lang.XMultiServiceFactory \
-     com.sun.star.lang.XMultiComponentFactory \
-     com.sun.star.container.XSet \
-     com.sun.star.container.XHierarchicalNameAccess \
-    com.sun.star.loader.XImplementationLoader \
-    com.sun.star.registry.XSimpleRegistry \
-    com.sun.star.registry.XRegistryKey \
-    com.sun.star.connection.XAcceptor \
-    com.sun.star.connection.XConnection \
-    com.sun.star.bridge.XBridgeFactory \
-    com.sun.star.bridge.XBridge
+ 	com.sun.star.uno.TypeClass \
+ 	com.sun.star.uno.XAggregation \
+ 	com.sun.star.uno.XWeak \
+ 	com.sun.star.uno.XComponentContext \
+ 	com.sun.star.lang.XTypeProvider \
+	com.sun.star.lang.XMain \
+ 	com.sun.star.lang.XInitialization \
+ 	com.sun.star.lang.XComponent \
+ 	com.sun.star.lang.XSingleServiceFactory \
+ 	com.sun.star.lang.XSingleComponentFactory \
+ 	com.sun.star.lang.XMultiServiceFactory \
+ 	com.sun.star.lang.XMultiComponentFactory \
+ 	com.sun.star.container.XSet \
+ 	com.sun.star.container.XHierarchicalNameAccess \
+	com.sun.star.loader.XImplementationLoader \
+	com.sun.star.registry.XSimpleRegistry \
+	com.sun.star.registry.XRegistryKey \
+	com.sun.star.connection.XAcceptor \
+	com.sun.star.connection.XConnection \
+	com.sun.star.bridge.XBridgeFactory \
+	com.sun.star.bridge.XBridge
 
 # --- Files --------------------------------------------------------
 
@@ -82,10 +78,10 @@ APP1RPATH=UREBIN
 # included via APP1STDLIB, unxlngi6 libgcc_s.so.1 and wntmsci10 msvcr71.dll and
 # msvcp71.dll are magic---TODO):
 APP1STDLIBS= \
-    $(SALLIB)		\
+	$(SALLIB)		\
     $(SALHELPERLIB) \
-    $(CPPULIB)		\
-    $(CPPUHELPERLIB)\
+	$(CPPULIB)		\
+	$(CPPUHELPERLIB)\
     $(LIBXML2LIB)
 .IF "$(OS)" == "WNT"
 APP1STDLIBS += $(UNICOWSLIB)

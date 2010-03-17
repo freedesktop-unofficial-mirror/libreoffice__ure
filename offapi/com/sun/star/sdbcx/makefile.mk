@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -41,58 +37,58 @@ PACKAGE=com$/sun$/star$/sdbcx
 
 # ------------------------------------------------------------------------
 IDLFILES=\
-    CheckOption.idl \
-    CompareBookmark.idl \
-    Column.idl \
-    ColumnDescriptor.idl \
-    Container.idl \
-    DatabaseDefinition.idl \
-    Descriptor.idl \
-    Driver.idl \
-    Group.idl \
-    GroupDescriptor.idl \
-    Index.idl \
-    IndexColumn.idl \
-    IndexColumnDescriptor.idl \
-    IndexDescriptor.idl \
-    Key.idl \
-    KeyColumn.idl \
-    KeyDescriptor.idl \
-    KeyColumnDescriptor.idl \
-    KeyDescriptor.idl \
-    KeyType.idl \
-    PreparedStatement.idl \
-    Privilege.idl \
-    PrivilegeObject.idl \
-    ReferenceColumn.idl \
-    ResultSet.idl \
-    Statement.idl \
-    Table.idl \
-    TableDescriptor.idl \
-    User.idl \
-    UserDescriptor.idl \
-    View.idl \
-    ViewDescriptor.idl \
-    XAlterTable.idl \
-    XAlterView.idl \
-    XAppend.idl \
-    XAuthorizable.idl \
-    XColumnsSupplier.idl \
-    XCreateCatalog.idl \
-    XDeleteRows.idl \
-    XDataDefinitionSupplier.idl \
-    XDataDescriptorFactory.idl \
-    XDrop.idl \
-    XDropCatalog.idl \
-    XGroupsSupplier.idl \
-    XIndexesSupplier.idl \
-    XKeysSupplier.idl \
-    XRename.idl \
-    XRowLocate.idl \
-    XTablesSupplier.idl \
-    XUser.idl \
-    XUsersSupplier.idl \
-    XViewsSupplier.idl \
+	CheckOption.idl \
+	CompareBookmark.idl \
+	Column.idl \
+	ColumnDescriptor.idl \
+	Container.idl \
+	DatabaseDefinition.idl \
+	Descriptor.idl \
+	Driver.idl \
+	Group.idl \
+	GroupDescriptor.idl \
+	Index.idl \
+	IndexColumn.idl \
+	IndexColumnDescriptor.idl \
+	IndexDescriptor.idl \
+	Key.idl \
+	KeyColumn.idl \
+	KeyDescriptor.idl \
+	KeyColumnDescriptor.idl \
+	KeyDescriptor.idl \
+	KeyType.idl \
+	PreparedStatement.idl \
+	Privilege.idl \
+	PrivilegeObject.idl \
+	ReferenceColumn.idl \
+	ResultSet.idl \
+	Statement.idl \
+	Table.idl \
+	TableDescriptor.idl \
+	User.idl \
+	UserDescriptor.idl \
+	View.idl \
+	ViewDescriptor.idl \
+	XAlterTable.idl \
+	XAlterView.idl \
+	XAppend.idl \
+	XAuthorizable.idl \
+	XColumnsSupplier.idl \
+	XCreateCatalog.idl \
+	XDeleteRows.idl \
+	XDataDefinitionSupplier.idl \
+	XDataDescriptorFactory.idl \
+	XDrop.idl \
+	XDropCatalog.idl \
+	XGroupsSupplier.idl \
+	XIndexesSupplier.idl \
+	XKeysSupplier.idl \
+	XRename.idl \
+	XRowLocate.idl \
+	XTablesSupplier.idl \
+	XUser.idl \
+	XUsersSupplier.idl \
+	XViewsSupplier.idl \
 
 # ------------------------------------------------------------------
 .INCLUDE :  target.mk

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.12 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,38 +38,39 @@ PACKAGE=com$/sun$/star$/view
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    DocumentZoomType.idl\
-    OfficeDocumentView.idl\
-    PaperFormat.idl\
-    PaperOrientation.idl\
-    PrintableState.idl\
-    PrintableStateEvent.idl\
-    PrinterDescriptor.idl\
-    PrintOptions.idl\
-    PrintSettings.idl\
-    RenderDescriptor.idl\
-    RenderOptions.idl\
-    ViewSettings.idl\
-    XControlAccess.idl\
-    XFormLayerAccess.idl\
-    XLineCursor.idl\
-    XPrintable.idl\
-    XPrintableBroadcaster.idl\
-    XPrintableListener.idl\
-    XPrintPreview.idl\
-    XPrintSettingsSupplier.idl\
-    XRenderable.idl\
-    XScreenCursor.idl\
-    XSelectionChangeListener.idl\
-    XSelectionSupplier.idl\
-    XViewCursor.idl\
-    XViewSettingsSupplier.idl\
-    PrintJobEvent.idl\
-    XPrintJob.idl\
-    XPrintJobBroadcaster.idl\
-    XPrintJobListener.idl\
-    XMultiSelectionSupplier.idl\
-    SelectionType.idl
+	DocumentZoomType.idl\
+	OfficeDocumentView.idl\
+	PaperFormat.idl\
+	PaperOrientation.idl\
+	PrintableState.idl\
+	PrintableStateEvent.idl\
+	PrinterDescriptor.idl\
+	PrintOptions.idl\
+	PrintSettings.idl\
+	RenderDescriptor.idl\
+	RenderOptions.idl\
+	ViewSettings.idl\
+	XControlAccess.idl\
+	XFormLayerAccess.idl\
+	XLineCursor.idl\
+	XPrintable.idl\
+	XPrintableBroadcaster.idl\
+	XPrintableListener.idl\
+	XPrintPreview.idl\
+	XPrintSettingsSupplier.idl\
+	XRenderable.idl\
+	XScreenCursor.idl\
+	XSelectionChangeListener.idl\
+	XSelectionSupplier.idl\
+	XViewCursor.idl\
+	XViewSettingsSupplier.idl\
+	PrintJobEvent.idl\
+	XPrintJob.idl\
+	XPrintJobBroadcaster.idl\
+	XPrintJobListener.idl\
+	XMultiSelectionSupplier.idl\
+	SelectionType.idl\
+	DuplexMode.idl
 
 # ------------------------------------------------------------------
 

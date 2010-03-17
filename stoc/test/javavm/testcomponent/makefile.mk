@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -40,14 +36,14 @@ TARGET  = JavaTestComponent
 #.INCLUDE : $(PRJ)$/util$/makefile.pmk
 .INCLUDE : settings.mk
 # Files --------------------------------------------------------
-JARFILES = sandbox.jar ridl.jar jurt.jar unoil.jar
+JARFILES = ridl.jar jurt.jar unoil.jar
 
 CUSTOMMANIFESTFILE= manifest
 
 JARTARGET = $(TARGET).jar
 
 JAVAFILES= \
-    TestComponent.java
+	TestComponent.java
 
 
 JAVACLASSFILES = $(foreach,i,$(JAVAFILES) $(CLASSDIR)$/$(PACKAGE)$/$(i:b).class)

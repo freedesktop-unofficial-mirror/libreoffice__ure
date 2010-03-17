@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -54,7 +50,7 @@ INCPRE += -I$(MISC)$/$(TARGET)$/inc
 
 SHL1TARGET = $(TARGET)
 SHL1OBJS = $(SLO)$/test_propertysetmixin.obj
-SHL1STDLIBS = $(CPPULIB) $(CPPUHELPERLIB) $(CPPUNITLIB) $(SALLIB)
+SHL1STDLIBS = $(CPPULIB) $(CPPUHELPERLIB) $(CPPUNITLIB) $(SALLIB) $(TESTSHL2LIB)
 SHL1IMPLIB = i$(SHL1TARGET)
 DEF1NAME = $(SHL1TARGET)
 
@@ -103,7 +99,7 @@ $(MISC)$/$(TARGET)$/uno.rdb .ERRREMOVE: $(MISC)$/$(TARGET)$/types.rdb \
         -c \
    $(subst,$/,/ $(FILEURLPREFIX)$(PWD)$/$(MISC)$/$(TARGET)$/$(TARGET).uno.jar) \
         -classpath $(CLASSPATH) \
-    -env:URE_INTERNAL_JAVA_DIR=$(MY_URE_INTERNAL_JAVA_DIR)
+	-env:URE_INTERNAL_JAVA_DIR=$(MY_URE_INTERNAL_JAVA_DIR)
 
 $(MISC)$/$(TARGET)$/bootstrap.rdb .ERRREMOVE:
     - $(MKDIR) $(@:d)
@@ -133,10 +129,10 @@ $(MISC)$/$(TARGET)$/$(TARGET).uno.jar: $(JAVACLASSFILES) \
 test .PHONY: $(SHL1TARGETN) $(MISC)$/$(TARGET)$/uno.rdb
 .IF "$(GUI)" == "WNT"
     set CLASSPATH=$(CLASSPATH) && \
-    set URE_INTERNAL_JAVA_DIR=$(MY_URE_INTERNAL_JAVA_DIR) && \
-    testshl2 $(SHL1TARGETN) -forward "$(MISC)$/$(TARGET)$/uno.rdb#$(SOLARBINDIR)"
+	set URE_INTERNAL_JAVA_DIR=$(MY_URE_INTERNAL_JAVA_DIR) && \
+	testshl2 $(SHL1TARGETN) -forward "$(MISC)$/$(TARGET)$/uno.rdb#$(SOLARBINDIR)"
 .ELSE
     setenv CLASSPATH $(CLASSPATH) && \
-    setenv URE_INTERNAL_JAVA_DIR $(MY_URE_INTERNAL_JAVA_DIR) && \
-    testshl2 $(SHL1TARGETN) -forward "$(MISC)$/$(TARGET)$/uno.rdb#$(SOLARLIBDIR)"
+	setenv URE_INTERNAL_JAVA_DIR $(MY_URE_INTERNAL_JAVA_DIR) && \
+	testshl2 $(SHL1TARGETN) -forward "$(MISC)$/$(TARGET)$/uno.rdb#$(SOLARLIBDIR)"
 .ENDIF

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.4 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,36 +38,36 @@ PACKAGE=com$/sun$/star$/drawing$/framework
 # ------------------------------------------------------------------------
 
 IDLFILES=									\
-    AnchorBindingMode.idl					\
-    BasicPaneFactory.idl					\
-    BasicToolBarFactory.idl					\
-    BasicViewFactory.idl					\
-    Configuration.idl						\
-    ConfigurationChangeEvent.idl			\
-    ConfigurationController.idl				\
-    ModuleController.idl					\
-    ResourceActivationMode.idl				\
-    ResourceId.idl							\
-    TabBarButton.idl						\
-    XConfiguration.idl						\
-    XConfigurationChangeListener.idl		\
-    XConfigurationChangeRequest.idl			\
-    XConfigurationController.idl			\
-    XConfigurationControllerBroadcaster.idl	\
-    XConfigurationControllerRequestQueue.idl\
-    XControllerManager.idl					\
-    XModuleController.idl					\
-    XPane.idl								\
-    XPane2.idl								\
-    XPaneBorderPainter.idl					\
-    XRelocatableResource.idl				\
-    XResource.idl							\
-    XResourceId.idl							\
-    XResourceFactory.idl					\
-    XResourceFactoryManager.idl				\
-    XTabBar.idl								\
-    XToolBar.idl							\
-    XView.idl
+	AnchorBindingMode.idl					\
+	BasicPaneFactory.idl					\
+	BasicToolBarFactory.idl					\
+	BasicViewFactory.idl					\
+	Configuration.idl						\
+	ConfigurationChangeEvent.idl			\
+	ConfigurationController.idl				\
+	ModuleController.idl					\
+	ResourceActivationMode.idl				\
+	ResourceId.idl							\
+	TabBarButton.idl						\
+	XConfiguration.idl						\
+	XConfigurationChangeListener.idl		\
+	XConfigurationChangeRequest.idl			\
+	XConfigurationController.idl			\
+	XConfigurationControllerBroadcaster.idl	\
+	XConfigurationControllerRequestQueue.idl\
+	XControllerManager.idl					\
+	XModuleController.idl					\
+	XPane.idl								\
+	XPane2.idl								\
+	XPaneBorderPainter.idl					\
+	XRelocatableResource.idl				\
+	XResource.idl							\
+	XResourceId.idl							\
+	XResourceFactory.idl					\
+	XResourceFactoryManager.idl				\
+	XTabBar.idl								\
+	XToolBar.idl							\
+	XView.idl
 
 # ------------------------------------------------------------------
 

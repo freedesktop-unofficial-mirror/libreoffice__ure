@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8.8.1 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -41,7 +37,7 @@ CLIMAKER*=$(WRAPCMD) $(BIN)$/climaker
 
 #----- compile .java files -----------------------------------------
 
-JARFILES = sandbox.jar ridl.jar unoil.jar jurt.jar juh.jar java_uno.jar OOoRunner.jar
+JARFILES = ridl.jar unoil.jar jurt.jar juh.jar java_uno.jar OOoRunner.jar
 JAVAFILES       = ClimakerTestCase.java
 JAVACLASSFILES	= $(foreach,i,$(JAVAFILES) $(CLASSDIR)$/$(PACKAGE)$/$(i:b).class)
 
@@ -72,17 +68,17 @@ CSFILES = climaker.cs testobjects.cs
 
 
 $(EXETARGET): $(CSFILES) $(OUTDIR)$/cli_test_types.dll
-    $(GNUCOPY) -p $(BIN)$/cli_cppuhelper.dll $(OUTDIR)$/cli_cppuhelper.dll
-    $(GNUCOPY) -p $(BIN)$/cli_uretypes.dll $(OUTDIR)$/cli_uretypes.dll
-    $(GNUCOPY) -p $(BIN)$/cli_basetypes.dll $(OUTDIR)$/cli_basetypes.dll
-    $(GNUCOPY) -p $(BIN)$/cli_ure.dll $(OUTDIR)$/cli_ure.dll
-    $(GNUCOPY) -p $(BIN)$/climaker.exe $(OUTDIR)
-    $(CSC) $(CSCFLAGS) -target:exe -out:$(EXETARGET) \
-        -reference:$(BIN)$/cli_ure.dll \
-         -reference:$(BIN)$/cli_uretypes.dll \
-         -reference:$(BIN)$/cli_basetypes.dll \
-        -reference:$(OUTDIR)$/cli_test_types.dll \
-        $(CSFILES)
+	$(GNUCOPY) -p $(BIN)$/cli_cppuhelper.dll $(OUTDIR)$/cli_cppuhelper.dll
+	$(GNUCOPY) -p $(BIN)$/cli_uretypes.dll $(OUTDIR)$/cli_uretypes.dll
+	$(GNUCOPY) -p $(BIN)$/cli_basetypes.dll $(OUTDIR)$/cli_basetypes.dll
+	$(GNUCOPY) -p $(BIN)$/cli_ure.dll $(OUTDIR)$/cli_ure.dll
+	$(GNUCOPY) -p $(BIN)$/climaker.exe $(OUTDIR)
+	$(CSC) $(CSCFLAGS) -target:exe -out:$(EXETARGET) \
+		-reference:$(BIN)$/cli_ure.dll \
+ 		-reference:$(BIN)$/cli_uretypes.dll \
+ 		-reference:$(BIN)$/cli_basetypes.dll \
+		-reference:$(OUTDIR)$/cli_test_types.dll \
+		$(CSFILES)
 
 
 
@@ -105,9 +101,9 @@ $(OUTDIR)$/types.rdb: $(OUTDIR)$/types.urd
 
 $(OUTDIR)$/cli_test_types.dll: $(OUTDIR)$/types.rdb $(BIN)$/climaker.exe $(BIN)$/cli_uretypes.dll
     $(CLIMAKER) $(CLIMAKERFLAGS) --out $@  \
-        -r $(BIN)$/cli_uretypes.dll \
-        -X $(SOLARBINDIR)$/types.rdb \
-        $(OUTDIR)$/types.rdb
+		-r $(BIN)$/cli_uretypes.dll \
+		-X $(SOLARBINDIR)$/types.rdb \
+		$(OUTDIR)$/types.rdb
 
 
 

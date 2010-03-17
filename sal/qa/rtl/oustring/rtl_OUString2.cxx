@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_OUString2.cxx,v $
- * $Revision: 1.16 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -38,14 +35,14 @@
 
 #include <algorithm> // STL
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include "stringhelper.hxx"
 #include "valueequal.hxx"
 
 inline void printOUString( ::rtl::OUString const & _suStr )
 {
     rtl::OString aString;
-    
+
     t_print( "OUString: " );
     aString = ::rtl::OUStringToOString( _suStr, RTL_TEXTENCODING_ASCII_US );
     t_print( "'%s'\n", aString.getStr( ) );
@@ -53,10 +50,10 @@ inline void printOUString( ::rtl::OUString const & _suStr )
 
 namespace rtl_OUString
 {
-    
+
     class ctors_rtl_uString : public CppUnit::TestFixture
     {
-        
+
     public:
         /// test of OUString(rtl_uString*)
         void ctors_001()
@@ -65,7 +62,7 @@ namespace rtl_OUString
 
                 rtl::OUString aStrToTest(pStr->pData);
                 delete pStr;
-                
+
                 // maybe here should we do something with current memory
                 char* pBuffer = (char*) malloc(2 * 8);
                 memset(pBuffer, 0, 2 * 8);
@@ -74,11 +71,11 @@ namespace rtl_OUString
                 sal_Bool bResult = aStrToTest.equals(rtl::OUString::createFromAscii("a String"));
                 CPPUNIT_ASSERT_MESSAGE("String must not be empty",  bResult == sal_True);
             }
-    
-        // Change the following lines only, if you add, remove or rename 
-        // member functions of the current class, 
+
+        // Change the following lines only, if you add, remove or rename
+        // member functions of the current class,
         // because these macros are need by auto register mechanism.
-        
+
         CPPUNIT_TEST_SUITE(ctors_rtl_uString);
         CPPUNIT_TEST(ctors_001);
         CPPUNIT_TEST_SUITE_END();
@@ -100,7 +97,7 @@ class valueOf : public CppUnit::TestFixture
             bool bEqualResult = is_float_equal(_nValue, nValueATOF);
             CPPUNIT_ASSERT_MESSAGE("Values are not equal.", bEqualResult == true);
         }
-    
+
     void valueOf_float_test(float _nValue)
         {
             valueOf_float_test_impl(_nValue);
@@ -157,7 +154,7 @@ public:
     }
 
 private:
-    
+
     void valueOf_double_test_impl(double _nValue)
         {
             rtl::OUString suValue;
@@ -167,21 +164,21 @@ private:
             t_print(T_VERBOSE, "nDouble := %.20f  sValue := %s\n", _nValue, sValue.getStr());
 
             double nValueATOF = atof( sValue.getStr() );
-            
+
             bool bEqualResult = is_double_equal(_nValue, nValueATOF);
             CPPUNIT_ASSERT_MESSAGE("Values are not equal.", bEqualResult == true);
         }
-    
+
     void valueOf_double_test(double _nValue)
         {
             valueOf_double_test_impl(_nValue);
-            
+
             // test also the negative part.
             double nNegativeValue = -_nValue;
             valueOf_double_test_impl(nNegativeValue);
         }
 public:
-    
+
     // valueOf double
     void valueOf_double_test_001()
         {
@@ -225,8 +222,8 @@ public:
         }
 
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(valueOf);
@@ -258,8 +255,8 @@ sal_Int16 SAL_CALL checkPrecisionSize()
     // sal_Int16 nSize = sizeof(T);
     volatile T nCalcValue = 1.0;
 
-    
-    // (i + 1) is the current precision 
+
+    // (i + 1) is the current precision
     // numerical series
     // 1.1
     // 10.1
@@ -291,7 +288,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
     // 1.001
     // ...
     // 1.000...001
-    
+
     for (j=0;j<50;j++)
     {
         nCalcValue /= 10;
@@ -299,7 +296,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
         volatile T dSub = nValue - static_cast<T>(1.0);
         // ---- 0.02 ----- 0.01 ---- 0 --- -0.99 ---- -0.98 ----
         // volatile T dSubAbsolut = fabs(dSub);
-        // ---- 0.02 ----- 0.01 ---- 0 (cut)	
+        // ---- 0.02 ----- 0.01 ---- 0 (cut)
         if ( dSub == 0)
             break;
     }
@@ -318,7 +315,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 t_print("warning: presision differs more than 1!\n");
             }
         }
-        
+
     return i;
 }
 
@@ -332,15 +329,15 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 sal_Int16 nPrecision;
                 nPrecision = checkPrecisionSize<float>();
                 t_print("precision of float: %d sizeof()=%d \n", nPrecision, sizeof(float));
-                
+
                 nPrecision = checkPrecisionSize<double>();
                 t_print("precision of double: %d sizeof()=%d \n", nPrecision, sizeof(double));
-                
+
                 nPrecision = checkPrecisionSize<long double>();
                 t_print("precision of long double: %d sizeof()=%d \n", nPrecision, sizeof(long double));
-                
+
             }
-        
+
     };
 
     class toInt: public CppUnit::TestFixture {
@@ -370,13 +367,13 @@ sal_Int16 SAL_CALL checkPrecisionSize()
         CPPUNIT_TEST(test);
         CPPUNIT_TEST_SUITE_END();
     };
-    
+
 // -----------------------------------------------------------------------------
 // - toDouble (tests)
 // -----------------------------------------------------------------------------
     class toDouble : public CppUnit::TestFixture
     {
-    public:              
+    public:
         void toDouble_test_impl(rtl::OString const& _sValue)
             {
                 //t_print("the original str is %s\n", _sValue.getStr());
@@ -389,7 +386,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 bool bEqualResult = is_double_equal(nValueToDouble, nValueATOF);
                 CPPUNIT_ASSERT_MESSAGE("Values are not equal.", bEqualResult == true);
             }
-        
+
         void toDouble_test(rtl::OString const& _sValue)
             {
                 toDouble_test_impl(_sValue);
@@ -399,7 +396,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 sNegativValue += _sValue;
                 toDouble_test_impl(sNegativValue);
             }
-        
+
         // insert your test code here.
         void toDouble_selftest()
             {
@@ -413,7 +410,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 CPPUNIT_ASSERT (is_double_equal(1.0, 1.00000001) == false);
                 CPPUNIT_ASSERT (is_double_equal(1.0, 1.000000001) == false);
                 CPPUNIT_ASSERT (is_double_equal(1.0, 1.0000000001) == false);
-                CPPUNIT_ASSERT (is_double_equal(1.0, 1.00000000001) == false);                
+                CPPUNIT_ASSERT (is_double_equal(1.0, 1.00000000001) == false);
                 CPPUNIT_ASSERT (is_double_equal(1.0, 1.000000000001) == false);
                 CPPUNIT_ASSERT (is_double_equal(1.0, 1.0000000000001) == false);
                 // we check til 15 values after comma
@@ -422,7 +419,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 CPPUNIT_ASSERT (is_double_equal(1.0, 1.0000000000000001) == true);
                 t_print("Selftest done.\n");
             }
-        
+
         void toDouble_test_3()
             {
                 rtl::OString sValue("3");
@@ -444,7 +441,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 rtl::OString sValue("3.141592653589793238462643383279502884197169399375");
                 toDouble_test(sValue);
             }
-        
+
         void toDouble_test_1()
             {
                 rtl::OString sValue("1");
@@ -485,14 +482,14 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 rtl::OString sValue("1e308");
                 toDouble_test(sValue);
             }
-        
-        // Change the following lines only, if you add, remove or rename 
-        // member functions of the current class, 
+
+        // Change the following lines only, if you add, remove or rename
+        // member functions of the current class,
         // because these macros are need by auto register mechanism.
-        
+
         CPPUNIT_TEST_SUITE(toDouble);
         CPPUNIT_TEST(toDouble_selftest);
-        
+
         CPPUNIT_TEST(toDouble_test_3);
         CPPUNIT_TEST(toDouble_test_3_5);
         CPPUNIT_TEST(toDouble_test_3_0625);
@@ -513,7 +510,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
 // -----------------------------------------------------------------------------
     class toFloat : public CppUnit::TestFixture
     {
-    public:       
+    public:
         void toFloat_test_impl(rtl::OString const& _sValue)
             {
                 //t_print("the original str is %s\n", _sValue.getStr());
@@ -526,7 +523,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 bool bEqualResult = is_float_equal(nValueToFloat, nValueATOF);
                 CPPUNIT_ASSERT_MESSAGE("Values are not equal.", bEqualResult == true);
             }
-        
+
         void toFloat_test(rtl::OString const& _sValue)
             {
                 toFloat_test_impl(_sValue);
@@ -536,7 +533,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 sNegativValue += _sValue;
                 toFloat_test_impl(sNegativValue);
             }
-        
+
         // insert your test code here.
         void toFloat_selftest()
             {
@@ -549,10 +546,10 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 CPPUNIT_ASSERT (is_float_equal(1.0f, 1.0000001f) == true);
                 CPPUNIT_ASSERT (is_float_equal(1.0f, 1.00000001f) == true);
                 CPPUNIT_ASSERT (is_float_equal(1.0f, 1.000000001f) == true);
-                                
+
                 t_print("Selftest done.\n");
             }
-        
+
         void toFloat_test_3()
             {
                 rtl::OString sValue("3");
@@ -579,7 +576,7 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 rtl::OString sValue("3.141592653589793238462643383279502884197169399375");
                 toFloat_test(sValue);
             }
-        
+
         void toFloat_test_1()
             {
                 rtl::OString sValue("1");
@@ -625,14 +622,14 @@ sal_Int16 SAL_CALL checkPrecisionSize()
                 rtl::OString sValue("1e308");
                 toFloat_test(sValue);
             }
-        
-        // Change the following lines only, if you add, remove or rename 
-        // member functions of the current class, 
+
+        // Change the following lines only, if you add, remove or rename
+        // member functions of the current class,
         // because these macros are need by auto register mechanism.
-        
+
         CPPUNIT_TEST_SUITE(toFloat);
         CPPUNIT_TEST(toFloat_selftest);
-        
+
         CPPUNIT_TEST(toFloat_test_3);
         CPPUNIT_TEST(toFloat_test_3_5);
         CPPUNIT_TEST(toFloat_test_3_0625);
@@ -666,7 +663,7 @@ public:
             sal_Int32 nPos = _suStr.lastIndexOf(_suSearchStr);
             CPPUNIT_ASSERT_MESSAGE("expected position is wrong", nPos == _nExpectedResultPos);
         }
-    
+
     void lastIndexOf_salunicode(rtl::OUString const& _suStr, sal_Unicode _cuSearchChar, sal_Int32 _nExpectedResultPos)
         {
             // Algorithm
@@ -676,7 +673,7 @@ public:
             sal_Int32 nPos = _suStr.lastIndexOf(_cuSearchChar);
             CPPUNIT_ASSERT_MESSAGE("expected position is wrong", nPos == _nExpectedResultPos);
         }
-    
+
     void lastIndexOf_oustring_offset(rtl::OUString const& _suStr, rtl::OUString const& _suSearchStr, sal_Int32 _nExpectedResultPos, sal_Int32 _nStartOffset)
         {
             sal_Int32 nPos = _suStr.lastIndexOf(_suSearchStr, _nStartOffset);
@@ -698,7 +695,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring_offset(aStr, aSearchStr, 0, aStr.getLength());
         }
-    
+
     void lastIndexOf_test_oustring_offset_002()
         {
             // search for sun, start at pos = 3, found (pos==0)
@@ -706,7 +703,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring_offset(aStr, aSearchStr, 0, 3);
         }
-    
+
     void lastIndexOf_test_oustring_offset_003()
         {
             // search for sun, start at pos = 2, found (pos==-1)
@@ -714,7 +711,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring_offset(aStr, aSearchStr, -1, 2);
         }
-    
+
     void lastIndexOf_test_oustring_offset_004()
         {
             // search for sun, start at the end, found (pos==0)
@@ -722,7 +719,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring_offset(aStr, aSearchStr, -1, -1);
         }
-    
+
     void lastIndexOf_test_oustring_001()
         {
             // search for sun, found (pos==0)
@@ -730,7 +727,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring(aStr, aSearchStr, 0);
         }
-    
+
     void lastIndexOf_test_oustring_002()
         {
             // search for sun, found (pos==4)
@@ -738,7 +735,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring(aStr, aSearchStr, 4);
         }
-    
+
     void lastIndexOf_test_oustring_003()
         {
             // search for sun, found (pos==8)
@@ -746,7 +743,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring(aStr, aSearchStr, 8);
         }
-    
+
     void lastIndexOf_test_oustring_004()
         {
             // search for sun, found (pos==8)
@@ -754,7 +751,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring(aStr, aSearchStr, 8);
         }
-    
+
     void lastIndexOf_test_oustring_005()
         {
             // search for sun, found (pos==4)
@@ -762,7 +759,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring(aStr, aSearchStr, 4);
         }
-    
+
     void lastIndexOf_test_oustring_006()
         {
             // search for sun, found (pos==-1)
@@ -770,7 +767,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("sun");
             lastIndexOf_oustring(aStr, aSearchStr, -1);
         }
-    
+
     void lastIndexOf_test_oustring_007()
         {
             // search for earth, not found (-1)
@@ -778,7 +775,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("earth");
             lastIndexOf_oustring(aStr, aSearchStr, -1);
         }
-    
+
     void lastIndexOf_test_oustring_008()
         {
             // search for earth, not found (-1)
@@ -786,7 +783,7 @@ public:
             rtl::OUString aSearchStr = rtl::OUString::createFromAscii("earth");
             lastIndexOf_oustring(aStr, aSearchStr, -1);
         }
-    
+
     void lastIndexOf_test_oustring_009()
         {
             // search for earth, not found (-1)
@@ -795,7 +792,7 @@ public:
             lastIndexOf_oustring(aStr, aSearchStr, -1);
 
         }
-    
+
     void lastIndexOf_test_salunicode_001()
         {
             // search for 's', found (19)
@@ -833,11 +830,11 @@ public:
             sal_Unicode cuChar = L't';
             lastIndexOf_salunicode_offset(aStr, cuChar, 0, 1);
         }
-    
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
-    
+
     CPPUNIT_TEST_SUITE(lastIndexOf);
     CPPUNIT_TEST(lastIndexOf_test_oustring_001);
     CPPUNIT_TEST(lastIndexOf_test_oustring_002);
@@ -875,7 +872,7 @@ public:
     void getToken_000()
         {
             rtl::OUString suTokenStr;
-            
+
             sal_Int32 nIndex = 0;
             do
             {
@@ -889,7 +886,7 @@ public:
     void getToken_001()
         {
             rtl::OUString suTokenStr = rtl::OUString::createFromAscii("a;b");
-            
+
             sal_Int32 nIndex = 0;
 
             rtl::OUString suToken = suTokenStr.getToken( 0, ';', nIndex );
@@ -903,7 +900,7 @@ public:
     void getToken_002()
         {
             rtl::OUString suTokenStr = rtl::OUString::createFromAscii("a;b.c");
-            
+
             sal_Int32 nIndex = 0;
 
             rtl::OUString suToken = suTokenStr.getToken( 0, ';', nIndex );
@@ -920,7 +917,7 @@ public:
     void getToken_003()
         {
             rtl::OUString suTokenStr = rtl::OUString::createFromAscii("a;;b");
-            
+
             sal_Int32 nIndex = 0;
 
             rtl::OUString suToken = suTokenStr.getToken( 0, ';', nIndex );
@@ -937,7 +934,7 @@ public:
     void getToken_004()
         {
             rtl::OUString suTokenStr = rtl::OUString::createFromAscii("longer.then.ever.");
-            
+
             sal_Int32 nIndex = 0;
 
             rtl::OUString suToken = suTokenStr.getToken( 0, '.', nIndex );
@@ -1039,12 +1036,12 @@ public:
 
         pStrs = new rtl::OUString[nSequence];
         pValues = new sal_uIntPtr[nSequence];
-        for (i = 0; i < nSequence; i++) 
+        for (i = 0; i < nSequence; i++)
         {
             pStrs[i] = rtl::OUString::valueOf( sqrt( static_cast<double>(i) ) ).intern();
             pValues[i] = reinterpret_cast<sal_uIntPtr>( pStrs[i].pData );
         }
-        for (i = 0; i < nSequence; i++) 
+        for (i = 0; i < nSequence; i++)
         {
             rtl::OUString aNew = rtl::OUString::valueOf( sqrt( static_cast<double>(i) ) ).intern();
             CPPUNIT_ASSERT_MESSAGE("double intern failed",
@@ -1052,14 +1049,14 @@ public:
         }
 
         // Free strings to check for leaks
-        for (i = 0; i < nSequence; i++) 
+        for (i = 0; i < nSequence; i++)
         {
             // Overwrite - hopefully this re-uses the memory
             pStrs[i] = rtl::OUString();
             pStrs[i] = rtl::OUString::valueOf( sqrt( static_cast<double>(i) ) );
         }
 
-        for (i = 0; i < nSequence; i++) 
+        for (i = 0; i < nSequence; i++)
         {
             rtl::OUString aIntern;
             sal_uIntPtr nValue;
