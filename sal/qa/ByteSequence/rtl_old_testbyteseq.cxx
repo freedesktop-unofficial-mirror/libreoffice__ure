@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_old_testbyteseq.cxx,v $
- * $Revision: 1.5 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -42,7 +39,7 @@
 
 using namespace ::rtl;
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 
 namespace rtl_testbyteseq
@@ -50,7 +47,7 @@ namespace rtl_testbyteseq
 
 // -----------------------------------------------------------------------------
 
-class oldbyteseq : public CppUnit::TestFixture  
+class oldbyteseq : public CppUnit::TestFixture
 {
 public:
     void test_bytesequence_001();
@@ -70,17 +67,17 @@ void oldbyteseq::test_bytesequence_001()
     {
         ByteSequence seq;
         OSL_ENSURE( ! seq.getLength() , "" );
-        
+
         ByteSequence seq2( a , 5 );
-        
+
         OSL_ENSURE( !( seq == seq2) , "" );
-        
+
         seq = seq2;
         OSL_ENSURE( seq == seq2 , "" );
-    
+
         seq[0] = 2;
         OSL_ENSURE( !(seq == seq2) , "" );
-        
+
         seq = ByteSequence( a , 5 );
         OSL_ENSURE( seq == seq2 , "" );
 
@@ -114,16 +111,16 @@ void oldbyteseq::test_bytesequence_001()
 
         rtl_byte_sequence_construct( &pSeq , 5 );
         OSL_ENSURE( ! rtl_byte_sequence_equals( pSeq , pSeq2 ) , "" );
-        
-        
+
+
 
         rtl_byte_sequence_release( pSeq2 );
         rtl_byte_sequence_release( pSeq );
     }
-    
-                
+
+
     printf( "test bytesequence OK\n" );
-    
+
 }
 
 } // namespace osl_test_file

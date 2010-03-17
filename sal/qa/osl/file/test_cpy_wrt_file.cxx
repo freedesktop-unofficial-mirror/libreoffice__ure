@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: test_cpy_wrt_file.cxx,v $
- * $Revision: 1.7 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -30,16 +27,16 @@
 
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_sal.hxx"
- 
-#include <cppunit/simpleheader.hxx>
+
+#include <testshl/simpleheader.hxx>
 #include <osl/file.hxx>
 #include <osl/thread.h>
 #include <rtl/ustring.hxx>
-       
+
 using namespace osl;
 using namespace rtl;
-        
-//########################################        
+
+//########################################
 #ifdef UNX
 #   define COPY_SOURCE_PATH "/home/tr109510/ucbhelper.cxx"
 #   define COPY_DEST_PATH "/mnt/mercury08/ucbhelper.cxx"
@@ -49,59 +46,59 @@ using namespace rtl;
 #endif
 
 class test_osl_copyFile : public CppUnit::TestFixture
-{            
-public:            
+{
+public:
     void cp_file()
-    {             	
+    {
         rtl::OUString src_url;
         FileBase::getFileURLFromSystemPath(rtl::OUString::createFromAscii(COPY_SOURCE_PATH), src_url);
-        
-        rtl::OUString dest_url;	
+
+        rtl::OUString dest_url;
         FileBase::getFileURLFromSystemPath(rtl::OUString::createFromAscii(COPY_DEST_PATH), dest_url);
 
         FileBase::RC err = File::copy(src_url, dest_url);
-        CPPUNIT_ASSERT_MESSAGE("Copy didn't recognized disk full", err != FileBase::E_None);					
+        CPPUNIT_ASSERT_MESSAGE("Copy didn't recognized disk full", err != FileBase::E_None);
     }
-                     
+
     CPPUNIT_TEST_SUITE(test_osl_copyFile);
-    CPPUNIT_TEST(cp_file);    
+    CPPUNIT_TEST(cp_file);
     CPPUNIT_TEST_SUITE_END();
 };
 
-//########################################  
+//########################################
 #ifdef UNX
 #   define WRITE_DEST_PATH "/mnt/mercury08/muell.tmp"
 #else /* if WNT */
 #   define WRITE_DEST_PATH "d:\\tmp_data.tmp"
 #endif
-      
+
 class test_osl_writeFile : public CppUnit::TestFixture
-{            
-public:            
+{
+public:
     void wrt_file()
-    {             
-        rtl::OUString dest_url;       
-        FileBase::getFileURLFromSystemPath(rtl::OUString::createFromAscii(WRITE_DEST_PATH), dest_url);                  
-        
+    {
+        rtl::OUString dest_url;
+        FileBase::getFileURLFromSystemPath(rtl::OUString::createFromAscii(WRITE_DEST_PATH), dest_url);
+
         File tmp_file(dest_url);
         rtl::OUString suErrorMsg = rtl::OUString::createFromAscii("File creation failed: ")+ dest_url;
         FileBase::RC err = tmp_file.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Create);
-        
+
         CPPUNIT_ASSERT_MESSAGE( suErrorMsg, err == FileBase::E_None || err == FileBase::E_EXIST );
-        
+
         char buffer[50000];
         sal_uInt64 written = 0;
-        err = tmp_file.write((void*)buffer, sizeof(buffer), written);			
-        
+        err = tmp_file.write((void*)buffer, sizeof(buffer), written);
+
         err = tmp_file.sync();
-            
+
         CPPUNIT_ASSERT_MESSAGE("Write didn't recognized disk full", err != FileBase::E_None);
-        
-        tmp_file.close(); 
+
+        tmp_file.close();
     }
-                     
+
     CPPUNIT_TEST_SUITE(test_osl_writeFile);
-    CPPUNIT_TEST(wrt_file);    
+    CPPUNIT_TEST(wrt_file);
     CPPUNIT_TEST_SUITE_END();
 };
 
