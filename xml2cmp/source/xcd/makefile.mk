@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -51,28 +47,28 @@ ENABLE_EXCEPTIONS=TRUE
 
 
 LIBONLYFILES=\
-    $(OBJ)$/cr_html.obj		\
-    $(OBJ)$/cr_index.obj	\
-    $(OBJ)$/cr_metho.obj	\
-    $(OBJ)$/filebuff.obj	\
-    $(OBJ)$/parse.obj		\
-    $(OBJ)$/xmlelem.obj		\
-    $(OBJ)$/xmltree.obj
+	$(OBJ)$/cr_html.obj		\
+	$(OBJ)$/cr_index.obj	\
+	$(OBJ)$/cr_metho.obj	\
+	$(OBJ)$/filebuff.obj	\
+	$(OBJ)$/parse.obj		\
+	$(OBJ)$/xmlelem.obj		\
+	$(OBJ)$/xmltree.obj
 
 
 OBJFILES=\
-    $(OBJ)$/main.obj		\
-    $(LIBONLYFILES)
+	$(OBJ)$/main.obj		\
+	$(LIBONLYFILES)
 
 
 LIB1TARGET=$(LB)$/$(TARGET).lib
 LIB1OBJFILES=\
-    $(OBJFILES)
+	$(OBJFILES)
 
 
 LIB2TARGET=$(LB)$/$(TARGET)l.lib
 LIB2OBJFILES=\
-    $(LIBONLYFILES)
+	$(LIBONLYFILES)
 
 
 

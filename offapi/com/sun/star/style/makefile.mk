@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.16 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,41 +38,41 @@ PACKAGE=com$/sun$/star$/style
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    BreakType.idl\
-    CaseMap.idl\
-    CellStyle.idl\
-    CharacterProperties.idl\
-    CharacterPropertiesAsian.idl\
-    CharacterPropertiesComplex.idl\
-    CharacterStyle.idl\
-    DropCapFormat.idl\
-    GraphicLocation.idl\
-    HorizontalAlignment.idl\
-    LineNumberPosition.idl\
-    LineSpacing.idl\
-    LineSpacingMode.idl\
-    NumberingAlignment.idl\
-    NumberingLevel.idl\
-    NumberingRule.idl\
-    NumberingType.idl\
-    PageProperties.idl\
-    PageStyle.idl\
-    PageStyleLayout.idl\
-    ParagraphAdjust.idl\
-    ParagraphProperties.idl\
-    ParagraphPropertiesAsian.idl\
-    ParagraphPropertiesComplex.idl\
-    ParagraphStyle.idl\
-    ParagraphStyleCategory.idl\
-    Style.idl\
-    StyleFamilies.idl\
-    StyleFamily.idl\
-    TabAlign.idl\
-    TabStop.idl\
-    VerticalAlignment.idl\
-    XDefaultsSupplier.idl\
-    XStyle.idl\
-    XStyleFamiliesSupplier.idl\
+	BreakType.idl\
+	CaseMap.idl\
+	CellStyle.idl\
+	CharacterProperties.idl\
+	CharacterPropertiesAsian.idl\
+	CharacterPropertiesComplex.idl\
+	CharacterStyle.idl\
+	DropCapFormat.idl\
+	GraphicLocation.idl\
+	HorizontalAlignment.idl\
+	LineNumberPosition.idl\
+	LineSpacing.idl\
+	LineSpacingMode.idl\
+	NumberingAlignment.idl\
+	NumberingLevel.idl\
+	NumberingRule.idl\
+	NumberingType.idl\
+	PageProperties.idl\
+	PageStyle.idl\
+	PageStyleLayout.idl\
+	ParagraphAdjust.idl\
+	ParagraphProperties.idl\
+	ParagraphPropertiesAsian.idl\
+	ParagraphPropertiesComplex.idl\
+	ParagraphStyle.idl\
+	ParagraphStyleCategory.idl\
+	Style.idl\
+	StyleFamilies.idl\
+	StyleFamily.idl\
+	TabAlign.idl\
+	TabStop.idl\
+	VerticalAlignment.idl\
+	XDefaultsSupplier.idl\
+	XStyle.idl\
+	XStyleFamiliesSupplier.idl\
     XStyleLoader.idl\
     XStyleCondition.idl\
     XAutoStylesSupplier.idl\

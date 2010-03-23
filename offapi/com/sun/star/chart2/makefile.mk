@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -44,70 +40,70 @@ PRJNAME=offapi
 
 IDLFILES= \
     AxisType.idl \
-    AxisOrientation.idl \
-    Break.idl \
-    CoordinateSystemTypeID.idl \
-    CurveStyle.idl \
-    DataPointGeometry3D.idl \
-    DataPointLabel.idl \
-    ExplicitIncrementData.idl \
-    ExplicitScaleData.idl \
-    ExplicitSubIncrement.idl \
-    FillBitmap.idl \
-    IncrementData.idl \
-    InterpretedData.idl \
-    LegendExpansion.idl \
-    LegendPosition.idl \
-    LegendSymbolStyle.idl \
-    LightSource.idl \
-    PieChartOffsetMode.idl \
-    RelativePosition.idl \
-    RelativeSize.idl \
-    ScaleData.idl \
-    StackingDirection.idl \
-    SubIncrement.idl \
-    Symbol.idl \
-    SymbolStyle.idl \
-    TickmarkStyle.idl \
-    TransparencyStyle.idl \
-    ViewLegendEntry.idl \
-    XAxis.idl \
-    XCoordinateSystem.idl \
-    XCoordinateSystemContainer.idl \
-    XChartDocument.idl \
-    XChartShape.idl \
-    XChartShapeContainer.idl \
-    XChartType.idl \
-    XChartTypeContainer.idl \
-    XChartTypeManager.idl \
-    XChartTypeTemplate.idl \
-    XColorScheme.idl \
-    XDataInterpreter.idl \
-    XDataSeries.idl \
-    XDataSeriesContainer.idl \
-    XDefaultSizeTransmitter.idl \
-    XDiagram.idl \
-    XDiagramProvider.idl \
-    XFastPropertyState.idl \
-    XFormattedString.idl \
-    XInternalDataProvider.idl \
-    XLabeled.idl \
-    XLegend.idl \
-    XLegendEntry.idl \
-    XLegendSymbolProvider.idl \
-    XPlotter.idl \
-    XRegressionCurve.idl \
-    XRegressionCurveCalculator.idl \
-    XRegressionCurveContainer.idl \
-    XScaling.idl \
-    XStyleSupplier.idl \
-    XTarget.idl \
-    XTitle.idl \
-    XTitled.idl \
-    XTransformation.idl \
-    XUndoManager.idl \
-    XUndoSupplier.idl \
-    XUndoHelper.idl
+	AxisOrientation.idl \
+	Break.idl \
+	CoordinateSystemTypeID.idl \
+	CurveStyle.idl \
+	DataPointGeometry3D.idl \
+	DataPointLabel.idl \
+	ExplicitIncrementData.idl \
+	ExplicitScaleData.idl \
+	ExplicitSubIncrement.idl \
+	FillBitmap.idl \
+	IncrementData.idl \
+	InterpretedData.idl \
+	LegendExpansion.idl \
+	LegendPosition.idl \
+	LegendSymbolStyle.idl \
+	LightSource.idl \
+	PieChartOffsetMode.idl \
+	RelativePosition.idl \
+	RelativeSize.idl \
+	ScaleData.idl \
+	StackingDirection.idl \
+	SubIncrement.idl \
+	Symbol.idl \
+	SymbolStyle.idl \
+	TickmarkStyle.idl \
+	TransparencyStyle.idl \
+	ViewLegendEntry.idl \
+	XAxis.idl \
+	XCoordinateSystem.idl \
+	XCoordinateSystemContainer.idl \
+	XChartDocument.idl \
+	XChartShape.idl \
+	XChartShapeContainer.idl \
+	XChartType.idl \
+	XChartTypeContainer.idl \
+	XChartTypeManager.idl \
+	XChartTypeTemplate.idl \
+	XColorScheme.idl \
+	XDataInterpreter.idl \
+	XDataSeries.idl \
+	XDataSeriesContainer.idl \
+	XDefaultSizeTransmitter.idl \
+	XDiagram.idl \
+	XDiagramProvider.idl \
+	XFastPropertyState.idl \
+	XFormattedString.idl \
+	XInternalDataProvider.idl \
+	XLabeled.idl \
+	XLegend.idl \
+	XLegendEntry.idl \
+	XLegendSymbolProvider.idl \
+	XPlotter.idl \
+	XRegressionCurve.idl \
+	XRegressionCurveCalculator.idl \
+	XRegressionCurveContainer.idl \
+	XScaling.idl \
+	XStyleSupplier.idl \
+	XTarget.idl \
+	XTitle.idl \
+	XTitled.idl \
+	XTransformation.idl \
+	XUndoManager.idl \
+	XUndoSupplier.idl \
+	XUndoHelper.idl
 
 # --- Targets ------------------------------------------------------
 

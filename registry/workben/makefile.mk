@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8.10.2 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -51,8 +47,8 @@ RGTLIB = -lrgt$(DLLPOSTFIX)
 
 
 CXXFILES= 	regtest.cxx   	\
-            test.cxx		\
-            regspeed.cxx
+			test.cxx		\
+			regspeed.cxx
 
 
 APP1TARGET= $(TARGET)
@@ -78,13 +74,13 @@ APP2LINKFLAGS=-R\''$$ORIGIN/../lib:$$ORIGIN'\'
 .ENDIF # "$(OS)"=="UNX"
     
 APP2STDLIBS=\
-            $(RGTLIB)
+			$(RGTLIB)
 
 APP3TARGET= regspeed
 APP3OBJS=   $(OBJ)$/regspeed.obj
 
 APP3STDLIBS=\
-            $(SALLIB)	\
+			$(SALLIB)	\
             $(REGLIB) 	 
 
 .INCLUDE :  target.mk

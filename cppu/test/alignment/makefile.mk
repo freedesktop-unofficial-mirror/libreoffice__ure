@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -58,8 +54,8 @@ merge_rdb=$(SOLARBINDIR)$/applicat.rdb
 .ENDIF
 
 DEPOBJFILES= \
-    $(OBJ)$/pass1.obj	\
-    $(OBJ)$/pass2.obj
+	$(OBJ)$/pass1.obj	\
+	$(OBJ)$/pass2.obj
 
 APP1OBJS = $(OBJ)$/pass1.obj
 APP1STDLIBS += $(CPPUHELPERLIB) $(CPPULIB) $(REGLIB) $(SALHELPERLIB) $(SALLIB)
@@ -80,9 +76,9 @@ ALL: ALLDEP
 .INCLUDE :  target.mk
 
 $(MISC)$/pass2.cxx: $(APP1TARGETN)
-    regmerge $(UNOUCRRDB) / $(merge_rdb)
-    cppumaker @$(mktmp $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) $(foreach,c,$(shell @$(APP1TARGETN) -env:UNO_TYPES={$(subst,\,\\ $(UNOUCRRDB))} $(subst,\,\\ $(MISC)$/pass2.cxx) dump_types) -T$c) $(UNOUCRRDB))
+	regmerge $(UNOUCRRDB) / $(merge_rdb)
+	cppumaker @$(mktmp $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) $(foreach,c,$(shell @$(APP1TARGETN) -env:UNO_TYPES={$(subst,\,\\ $(UNOUCRRDB))} $(subst,\,\\ $(MISC)$/pass2.cxx) dump_types) -T$c) $(UNOUCRRDB))
 
 execute_pass2: $(APP2TARGETN)
-    $(APP2TARGETN)
+	$(APP2TARGETN)
 

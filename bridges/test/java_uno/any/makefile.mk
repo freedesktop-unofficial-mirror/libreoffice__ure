@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.11 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -79,16 +75,16 @@ CFLAGS += -Ob0
 .ENDIF
 
 SLOFILES= \
-    $(SLO)$/transport.obj
+	$(SLO)$/transport.obj
 
 SHL1TARGET=$(TARGET)
 
 SHL1STDLIBS= \
-    $(CPPUHELPERLIB)		\
-    $(SALHELPERLIB)			\
-    $(JVMACCESSLIB)			\
-    $(CPPULIB)			\
-    $(SALLIB)
+	$(CPPUHELPERLIB)		\
+	$(SALHELPERLIB)			\
+	$(JVMACCESSLIB)			\
+	$(CPPULIB)			\
+	$(SALLIB)
 
 SHL1VERSIONMAP=$(TARGET).map
 SHL1IMPLIB=i$(TARGET)
@@ -121,11 +117,11 @@ $(OUT)$/bin$/TestJni$(SCRIPTEXT) : $(JAVACLASSFILES)
     $(GIVE_EXEC_RIGHTS) $@
 
 $(BIN)$/test_java_uno_anytest.rdb : types.idl
-    $(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
-    $(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
+	$(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
+	$(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
 
 $(MISC)$/gen_files.flag : $(BIN)$/test_java_uno_anytest.rdb
-    $(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -X $(SOLARBINDIR)$/udkapi.rdb $?
-    $(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -T com.sun.star.uno.XInterface $(SOLARBINDIR)$/udkapi.rdb
-    $(JAVAMAKER) -nD -BUCR -O $(CLASSDIR) -X $(SOLARBINDIR)$/udkapi.rdb $?
-    $(TOUCH) $@
+	$(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -X $(SOLARBINDIR)$/udkapi.rdb $?
+	$(CPPUMAKER) -C -BUCR -O $(OUT)$/inc$/test -T com.sun.star.uno.XInterface $(SOLARBINDIR)$/udkapi.rdb
+	$(JAVAMAKER) -nD -BUCR -O $(CLASSDIR) -X $(SOLARBINDIR)$/udkapi.rdb $?
+	$(TOUCH) $@

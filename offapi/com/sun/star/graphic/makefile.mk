@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8.10.1 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,23 +39,23 @@ PRJNAME=offapi
 #-------------------------------------------------------------------
 
 IDLFILES= \
-    Graphic.idl \
-    GraphicColorMode.idl \
-    GraphicDescriptor.idl \
-    GraphicProvider.idl \
-    GraphicRendererVCL.idl \
-    GraphicType.idl \
-    MediaProperties.idl \
-    XPrimitive2D.idl \
-    XPrimitive3D.idl \
-    XPrimitiveFactory2D.idl \
-    XGraphic.idl \
-    XGraphicProvider.idl \
-    XGraphicRenderer.idl \
-    XGraphicObject.idl \
-    GraphicObject.idl \
-    XGraphicTransformer.idl
-    
+	Graphic.idl \
+	GraphicColorMode.idl \
+	GraphicDescriptor.idl \
+	GraphicProvider.idl \
+	GraphicRendererVCL.idl \
+	GraphicType.idl \
+	MediaProperties.idl \
+	XPrimitive2D.idl \
+	XPrimitive3D.idl \
+	XPrimitiveFactory2D.idl \
+	XGraphic.idl \
+	XGraphicProvider.idl \
+	XGraphicRenderer.idl \
+	XGraphicObject.idl \
+	GraphicObject.idl \
+	XGraphicTransformer.idl
+	
 # --- Targets ------------------------------------------------------
 
 .INCLUDE :  target.mk

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,30 +39,30 @@ PACKAGE=com$/sun$/star$/datatransfer$/dnd
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    DNDConstants.idl \
-    DragGestureEvent.idl \
-    DragSourceEvent.idl \
-    DragSourceDragEvent.idl \
-    DragSourceDropEvent.idl \
-    DropTargetDragEvent.idl \
-    DropTargetDragEnterEvent.idl \
-    DropTargetDropEvent.idl \
-    DropTargetEvent.idl \
-    InvalidDNDOperationException.idl \
-    OleDragSource.idl	\
-    OleDropTarget.idl \
-    X11DragSource.idl \
-    X11DropTarget.idl \
-    XAutoscroll.idl\
-    XDragGestureListener.idl \
-    XDragGestureRecognizer.idl \
-    XDragSource.idl \
-    XDragSourceContext.idl \
-    XDragSourceListener.idl \
-    XDropTarget.idl \
-    XDropTargetDragContext.idl \
-    XDropTargetDropContext.idl \
-    XDropTargetListener.idl \
+	DNDConstants.idl \
+	DragGestureEvent.idl \
+	DragSourceEvent.idl \
+	DragSourceDragEvent.idl \
+	DragSourceDropEvent.idl \
+	DropTargetDragEvent.idl \
+	DropTargetDragEnterEvent.idl \
+	DropTargetDropEvent.idl \
+	DropTargetEvent.idl \
+	InvalidDNDOperationException.idl \
+	OleDragSource.idl	\
+	OleDropTarget.idl \
+	X11DragSource.idl \
+	X11DropTarget.idl \
+	XAutoscroll.idl\
+	XDragGestureListener.idl \
+	XDragGestureRecognizer.idl \
+	XDragSource.idl \
+	XDragSourceContext.idl \
+	XDragSourceListener.idl \
+	XDropTarget.idl \
+	XDropTargetDragContext.idl \
+	XDropTargetDropContext.idl \
+	XDropTargetListener.idl \
 
 # ------------------------------------------------------------------
 

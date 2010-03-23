@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -43,15 +39,15 @@ TARGET  = com_sun_star_lib_uno_helper_test
 JARFILES = jurt.jar ridl.jar juh.jar
 
 JAVACLASSFILES=	\
-    $(CLASSDIR)$/$(PACKAGE)$/WeakBase_Test.class \
-    $(CLASSDIR)$/$(PACKAGE)$/ComponentBase_Test.class \
-    $(CLASSDIR)$/$(PACKAGE)$/InterfaceContainer_Test.class \
-    $(CLASSDIR)$/$(PACKAGE)$/MultiTypeInterfaceContainer_Test.class \
-    $(CLASSDIR)$/$(PACKAGE)$/ProxyProvider.class \
-    $(CLASSDIR)$/$(PACKAGE)$/AWeakBase.class    \
+	$(CLASSDIR)$/$(PACKAGE)$/WeakBase_Test.class \
+	$(CLASSDIR)$/$(PACKAGE)$/ComponentBase_Test.class \
+	$(CLASSDIR)$/$(PACKAGE)$/InterfaceContainer_Test.class \
+	$(CLASSDIR)$/$(PACKAGE)$/MultiTypeInterfaceContainer_Test.class \
+	$(CLASSDIR)$/$(PACKAGE)$/ProxyProvider.class \
+	$(CLASSDIR)$/$(PACKAGE)$/AWeakBase.class    \
         $(CLASSDIR)$/$(PACKAGE)$/PropertySet_Test.class \
-    $(CLASSDIR)$/$(PACKAGE)$/UnoUrlTest.class	\
-    $(CLASSDIR)$/$(PACKAGE)$/Factory_Test.class
+	$(CLASSDIR)$/$(PACKAGE)$/UnoUrlTest.class	\
+	$(CLASSDIR)$/$(PACKAGE)$/Factory_Test.class
 
 # --- Targets ------------------------------------------------------
 
@@ -63,10 +59,10 @@ CPATH_TMP2 = $(strip $(subst,!,$(PATH_SEPERATOR) $(CPATH_TMP1:s/ /!/)))
 CPATH = $(CPATH_TMP2)$(PATH_SEPERATOR)$(OUT)$/bin$/factory_test.jar$(PATH_SEPERATOR)$(XCLASSPATH)
 
 $(OUT)$/bin$/factory_test.jar : $(CLASSDIR)$/$(PACKAGE)$/Factory_Test.class
-    -rm -f $@
-    @echo RegistrationClassName: com.sun.star.lib.uno.helper.Factory_Test > $(OUT)$/bin$/manifest.mf
-    -jar cvfm $@ $(OUT)$/bin$/manifest.mf -C $(CLASSDIR) $(PACKAGE)$/Factory_Test.class
+	-rm -f $@
+	@echo RegistrationClassName: com.sun.star.lib.uno.helper.Factory_Test > $(OUT)$/bin$/manifest.mf
+	-jar cvfm $@ $(OUT)$/bin$/manifest.mf -C $(CLASSDIR) $(PACKAGE)$/Factory_Test.class
 
 run_factory_test : $(OUT)$/bin$/factory_test.jar
-    -$(GNUCOPY) $(SOLARBINDIR)$/udkapi.rdb $(OUT)$/bin$/factory_test.rdb
-    -java -classpath $(CPATH) com.sun.star.lib.uno.helper.Factory_Test $(OUT)$/bin$/factory_test.jar $(OUT)$/bin$/factory_test.rdb
+	-$(GNUCOPY) $(SOLARBINDIR)$/udkapi.rdb $(OUT)$/bin$/factory_test.rdb
+	-java -classpath $(CPATH) com.sun.star.lib.uno.helper.Factory_Test $(OUT)$/bin$/factory_test.jar $(OUT)$/bin$/factory_test.rdb
