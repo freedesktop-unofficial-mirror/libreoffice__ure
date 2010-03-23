@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.14 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -57,84 +53,84 @@ INCPRE+=$(UNOUCROUT)
 CFLAGS += -I..$/source$/remote$/urp
 
 UNOTYPES = \
-        com.sun.star.uno.XWeak\
-        com.sun.star.uno.XNamingService\
-        com.sun.star.uno.XAggregation \
-        com.sun.star.uno.TypeClass\
-        com.sun.star.io.XInputStream\
-        com.sun.star.io.XOutputStream\
-        com.sun.star.lang.XInitialization \
-        com.sun.star.lang.XSingleServiceFactory \
-        com.sun.star.lang.XMultiServiceFactory \
-        com.sun.star.lang.XTypeProvider \
-        com.sun.star.registry.XSimpleRegistry \
-        com.sun.star.loader.XImplementationLoader \
-        com.sun.star.registry.XImplementationRegistration \
-        com.sun.star.corba.giop.TargetAddress \
-        com.sun.star.corba.giop.TargetAddressGroup \
-        com.sun.star.lang.XComponent \
-        com.sun.star.bridge.XBridgeFactory\
-        com.sun.star.connection.XAcceptor\
-        com.sun.star.connection.XConnector\
-        com.sun.star.beans.Property\
-        com.sun.star.corba.giop.RequestHeader_1_2\
-             com.sun.star.container.XSet\
-        com.sun.star.lang.XServiceInfo\
-        test.XTestFactory \
-        com.sun.star.test.performance.XPerformanceTest \
-        com.sun.star.lang.XMain \
-        com.sun.star.lang.XMultiComponentFactory \
-        com.sun.star.lang.XSingleComponentFactory
+		com.sun.star.uno.XWeak\
+		com.sun.star.uno.XNamingService\
+		com.sun.star.uno.XAggregation \
+		com.sun.star.uno.TypeClass\
+		com.sun.star.io.XInputStream\
+		com.sun.star.io.XOutputStream\
+		com.sun.star.lang.XInitialization \
+		com.sun.star.lang.XSingleServiceFactory \
+		com.sun.star.lang.XMultiServiceFactory \
+		com.sun.star.lang.XTypeProvider \
+		com.sun.star.registry.XSimpleRegistry \
+		com.sun.star.loader.XImplementationLoader \
+		com.sun.star.registry.XImplementationRegistration \
+		com.sun.star.corba.giop.TargetAddress \
+		com.sun.star.corba.giop.TargetAddressGroup \
+		com.sun.star.lang.XComponent \
+		com.sun.star.bridge.XBridgeFactory\
+		com.sun.star.connection.XAcceptor\
+		com.sun.star.connection.XConnector\
+		com.sun.star.beans.Property\
+		com.sun.star.corba.giop.RequestHeader_1_2\
+     		com.sun.star.container.XSet\
+		com.sun.star.lang.XServiceInfo\
+		test.XTestFactory \
+		com.sun.star.test.performance.XPerformanceTest \
+		com.sun.star.lang.XMain \
+		com.sun.star.lang.XMultiComponentFactory \
+		com.sun.star.lang.XSingleComponentFactory
 
 JARFILES = jurt.jar unoil.jar
 
 OBJFILES=	\
-            $(OBJ)$/testserver.obj \
-            $(OBJ)$/testclient.obj \
-            $(OBJ)$/testcomp.obj  \
-            $(OBJ)$/testsameprocess.obj 
+			$(OBJ)$/testserver.obj \
+			$(OBJ)$/testclient.obj \
+			$(OBJ)$/testcomp.obj  \
+			$(OBJ)$/testsameprocess.obj 
 
 
 APP2TARGET=	testserver
 APP2OBJS=	$(OBJ)$/testserver.obj \
-        $(OBJ)$/testcomp.obj 
+		$(OBJ)$/testcomp.obj 
 
 .IF "$(OS)" == "LINUX"
 APP2STDLIBS+= -lstdc++
 .ENDIF
 
 APP2STDLIBS+=	\
-            $(CPPULIB)	\
-            $(CPPUHELPERLIB)	\
-            $(SALLIB)
+			$(CPPULIB)	\
+			$(CPPUHELPERLIB)	\
+			$(SALLIB)
 
 APP3TARGET=	testclient
 APP3OBJS=	$(OBJ)$/testclient.obj \
-        $(OBJ)$/testcomp.obj
+		$(OBJ)$/testcomp.obj
 
 .IF "$(OS)" == "LINUX"
 APP3STDLIBS+= -lstdc++
 .ENDIF
 
 APP3STDLIBS+=	\
-            $(CPPULIB)	\
-            $(CPPUHELPERLIB)	\
-            $(SALLIB)
+			$(CPPULIB)	\
+			$(CPPUHELPERLIB)	\
+			$(SALLIB)
 
 #----------------------------------
 
 APP4TARGET=	testsameprocess
 APP4OBJS=	$(OBJ)$/testsameprocess.obj \
-        $(OBJ)$/testcomp.obj
+		$(OBJ)$/testcomp.obj
 
 .IF "$(OS)" == "LINUX"
 APP4STDLIBS+= -lstdc++
 .ENDIF
 
 APP4STDLIBS+=	\
-            $(CPPULIB)	\
-            $(CPPUHELPERLIB)	\
-            $(SALLIB)
+			$(CPPULIB)	\
+			$(CPPUHELPERLIB)	\
+			$(SALLIB)
 
 APP4DEF=	$(MISC)$/$(APP4TARGET).def
 
@@ -161,19 +157,19 @@ APP4DEF=	$(MISC)$/$(APP4TARGET).def
 .INCLUDE :  target.mk
 
 ALLTAR : 	$(BIN)$/test.rdb	\
-    $(BIN)$/server.rdb	\
-    $(BIN)$/client.rdb	
+	$(BIN)$/server.rdb	\
+	$(BIN)$/client.rdb	
 
 $(BIN)$/test.rdb: $(ALLIDLFILES)
-    $(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
-    $(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
-    touch $@
+	$(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
+	$(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
+	touch $@
 
 $(BIN)$/client.rdb: $(BIN)$/test.rdb
-    rm -f $(BIN)$/client.rdb
-    $(REGMERGE) $@ / $(BIN)$/test.rdb $(SOLARBINDIR)$/udkapi.rdb
+	rm -f $(BIN)$/client.rdb
+	$(REGMERGE) $@ / $(BIN)$/test.rdb $(SOLARBINDIR)$/udkapi.rdb
 
 $(BIN)$/server.rdb: $(BIN)$/test.rdb
-    rm -f $(BIN)$/client.rdb
-    $(REGMERGE) $@ / $(BIN)$/test.rdb $(SOLARBINDIR)$/udkapi.rdb
+	rm -f $(BIN)$/client.rdb
+	$(REGMERGE) $@ / $(BIN)$/test.rdb $(SOLARBINDIR)$/udkapi.rdb
 

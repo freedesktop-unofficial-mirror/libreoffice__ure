@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -41,16 +37,16 @@ TARGET=cppu_uno
 # --- Files --------------------------------------------------------
 
 SLOFILES= \
-    $(SLO)$/data.obj     \
-    $(SLO)$/sequence.obj \
-    $(SLO)$/any.obj      \
-    $(SLO)$/lbmap.obj    \
-    $(SLO)$/lbenv.obj    \
-    $(SLO)$/IdentityMapping.obj \
-    $(SLO)$/EnvDcp.obj \
-    $(SLO)$/cascade_mapping.obj \
-    $(SLO)$/EnvStack.obj \
-    $(SLO)$/env_subst.obj \
+	$(SLO)$/data.obj     \
+	$(SLO)$/sequence.obj \
+	$(SLO)$/any.obj      \
+	$(SLO)$/lbmap.obj    \
+	$(SLO)$/lbenv.obj    \
+	$(SLO)$/IdentityMapping.obj \
+	$(SLO)$/EnvDcp.obj \
+	$(SLO)$/cascade_mapping.obj \
+	$(SLO)$/EnvStack.obj \
+	$(SLO)$/env_subst.obj \
         $(SLO)$/loadmodule.obj
 
 # --- Targets ------------------------------------------------------
