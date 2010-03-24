@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.6 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -45,15 +41,15 @@ ENABLE_EXCEPTIONS=TRUE
 
 
 CXXFILES=	corbamaker.cxx	\
-        corbaoptions.cxx	\
-        corbatype.cxx
+		corbaoptions.cxx	\
+		corbatype.cxx
 
 
 APP1TARGET= $(TARGET)
 
 APP1OBJS= $(OBJ)$/corbamaker.obj	\
-      $(OBJ)$/corbaoptions.obj	\
-      $(OBJ)$/corbatype.obj			
+	  $(OBJ)$/corbaoptions.obj	\
+	  $(OBJ)$/corbatype.obj			
 
 APP1STDLIBS= \
             $(SALLIB) \
@@ -61,6 +57,6 @@ APP1STDLIBS= \
             $(REGLIB)
 
 APP1LIBS= \
-    $(LB)$/codemaker.lib
+	$(LB)$/codemaker.lib
 
 .INCLUDE :  target.mk

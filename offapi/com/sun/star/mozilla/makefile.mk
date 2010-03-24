@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,26 +38,26 @@ PACKAGE=com$/sun$/star$/mozilla
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    MenuMultipleChange.idl \
-    MenuSingleChange.idl \
-    MenuProxy.idl \
-    MenuProxyListener.idl \
-    XMenuProxy.idl \
-    XMenuProxyListener.idl \
-    XPluginInstance.idl \
-    XPluginInstanceNotifySink.idl \
-    XPluginInstancePeer.idl \
-    XPluginInstanceSyncPeer.idl \
-    XPluginWindowPeer.idl \
-    XCloseSessionListener.idl \
-    XRemoteServiceManagerProvider.idl	\
-    MozillaBootstrap.idl \
-    MozillaProductType.idl	\
-    XMozillaBootstrap.idl \
-    XProfileDiscover.idl	\
-    XProfileManager.idl	\
-    XProxyRunner.idl	\
-    XCodeProxy.idl
+	MenuMultipleChange.idl \
+	MenuSingleChange.idl \
+	MenuProxy.idl \
+	MenuProxyListener.idl \
+	XMenuProxy.idl \
+	XMenuProxyListener.idl \
+	XPluginInstance.idl \
+	XPluginInstanceNotifySink.idl \
+	XPluginInstancePeer.idl \
+	XPluginInstanceSyncPeer.idl \
+	XPluginWindowPeer.idl \
+	XCloseSessionListener.idl \
+	XRemoteServiceManagerProvider.idl	\
+	MozillaBootstrap.idl \
+	MozillaProductType.idl	\
+	XMozillaBootstrap.idl \
+	XProfileDiscover.idl	\
+	XProfileManager.idl	\
+	XProxyRunner.idl	\
+	XCodeProxy.idl
 
 
 

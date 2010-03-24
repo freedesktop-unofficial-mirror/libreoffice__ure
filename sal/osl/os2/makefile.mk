@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -74,15 +70,15 @@ SLOFILES=   $(SLO)$/conditn.obj  \
             $(SLO)$/security.obj \
             $(SLO)$/profile.obj  \
             $(SLO)$/tempfile.obj  \
-        $(SLO)$/process_impl.obj\
-        $(SLO)$/uunxapi.obj\
-        $(SLO)$/file.obj     \
-        $(SLO)$/file_url.obj \
-        $(SLO)$/file_error_transl.obj \
-        $(SLO)$/file_path_helper.obj \
-        $(SLO)$/debug.obj \
-        $(SLO)$/except.obj \
-        $(SLO)$/salinit.obj
+		$(SLO)$/process_impl.obj\
+		$(SLO)$/uunxapi.obj\
+		$(SLO)$/file.obj     \
+		$(SLO)$/file_url.obj \
+		$(SLO)$/file_error_transl.obj \
+		$(SLO)$/file_path_helper.obj \
+		$(SLO)$/debug.obj \
+		$(SLO)$/except.obj \
+		$(SLO)$/salinit.obj
 
 OBJFILES=   $(OBJ)$/conditn.obj  \
             $(OBJ)$/diagnose.obj \
@@ -102,15 +98,15 @@ OBJFILES=   $(OBJ)$/conditn.obj  \
             $(OBJ)$/security.obj \
             $(OBJ)$/profile.obj  \
             $(OBJ)$/tempfile.obj  \
-        $(OBJ)$/process_impl.obj\
-        $(OBJ)$/uunxapi.obj\
-        $(OBJ)$/file.obj     \
-        $(OBJ)$/file_url.obj \
-        $(OBJ)$/file_error_transl.obj \
-        $(OBJ)$/file_path_helper.obj \
-        $(OBJ)$/debug.obj \
-        $(OBJ)$/except.obj \
-        $(SLO)$/salinit.obj
+		$(OBJ)$/process_impl.obj\
+		$(OBJ)$/uunxapi.obj\
+		$(OBJ)$/file.obj     \
+		$(OBJ)$/file_url.obj \
+		$(OBJ)$/file_error_transl.obj \
+		$(OBJ)$/file_path_helper.obj \
+		$(OBJ)$/debug.obj \
+		$(OBJ)$/except.obj \
+		$(SLO)$/salinit.obj
 
 .ENDIF
 
