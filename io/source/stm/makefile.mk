@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.13 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -50,19 +46,19 @@ INCPRE+= $(UNOUCROUT)
 
 
 SLOFILES = 	$(SLO)$/opipe.obj\
-        $(SLO)$/factreg.obj\
-        $(SLO)$/omark.obj\
-        $(SLO)$/odata.obj \
-        $(SLO)$/streamhelper.obj \
-        $(SLO)$/opump.obj
+		$(SLO)$/factreg.obj\
+		$(SLO)$/omark.obj\
+		$(SLO)$/odata.obj \
+		$(SLO)$/streamhelper.obj \
+		$(SLO)$/opump.obj
 
 SHL1TARGET= $(TARGET)
 SHL1VERSIONMAP = stm.map
 
 SHL1STDLIBS= \
-        $(SALLIB) 	 \
-        $(CPPULIB)	 \
-        $(CPPUHELPERLIB) 
+		$(SALLIB) 	 \
+		$(CPPULIB)	 \
+		$(CPPUHELPERLIB) 
 
 
 SHL1DEPN=

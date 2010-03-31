@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.6 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,37 +38,37 @@ PACKAGE=com$/sun$/star$/animations
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AnimationAdditiveMode.idl\
-    AnimationCalcMode.idl\
-    AnimationColorSpace.idl\
-    AnimationEndSync.idl\
-    AnimationFill.idl\
-    AnimationNodeType.idl\
-    AnimationRestart.idl\
-    AnimationTransformType.idl\
-    AnimationValueType.idl\
-    Event.idl\
-    EventTrigger.idl\
-    TargetProperties.idl \
-    TimeFilterPair.idl\
-    Timing.idl\
-    TransitionSubType.idl\
-    TransitionType.idl\
-    ValuePair.idl\
-    XAnimate.idl\
-    XAnimateColor.idl\
-    XAnimateMotion.idl\
-    XAnimateSet.idl\
-    XAnimateTransform.idl\
-    XAnimationNode.idl\
-    XAnimationNodeSupplier.idl\
-    XAudio.idl\
-    XIterateContainer.idl\
-    XTargetPropertiesCreator.idl \
-    XTimeContainer.idl\
-    XTransitionFilter.idl\
-    XCommand.idl\
-    XAnimationListener.idl
+	AnimationAdditiveMode.idl\
+	AnimationCalcMode.idl\
+	AnimationColorSpace.idl\
+	AnimationEndSync.idl\
+	AnimationFill.idl\
+	AnimationNodeType.idl\
+	AnimationRestart.idl\
+	AnimationTransformType.idl\
+	AnimationValueType.idl\
+	Event.idl\
+	EventTrigger.idl\
+	TargetProperties.idl \
+	TimeFilterPair.idl\
+	Timing.idl\
+	TransitionSubType.idl\
+	TransitionType.idl\
+	ValuePair.idl\
+	XAnimate.idl\
+	XAnimateColor.idl\
+	XAnimateMotion.idl\
+	XAnimateSet.idl\
+	XAnimateTransform.idl\
+	XAnimationNode.idl\
+	XAnimationNodeSupplier.idl\
+	XAudio.idl\
+	XIterateContainer.idl\
+	XTargetPropertiesCreator.idl \
+	XTimeContainer.idl\
+	XTransitionFilter.idl\
+	XCommand.idl\
+	XAnimationListener.idl
 
 # ------------------------------------------------------------------
 

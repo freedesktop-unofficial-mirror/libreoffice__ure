@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.13 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,78 +38,79 @@ PACKAGE=com$/sun$/star$/chart
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    AccessibleChartElement.idl\
-    AccessibleChartDocumentView.idl\
-    AreaDiagram.idl\
-    BarDiagram.idl\
-    BubbleDiagram.idl\
-    Chart3DBarProperties.idl\
-    ChartArea.idl\
-    ChartAxis.idl\
-    ChartAxisArrangeOrderType.idl\
-    ChartAxisAssign.idl\
-    ChartAxisMarks.idl\
-    ChartAxisPosition.idl\
-    ChartAxisLabelPosition.idl\
-    ChartAxisMarkPosition.idl\
-    ChartAxisXSupplier.idl\
-    ChartAxisYSupplier.idl\
-    ChartAxisZSupplier.idl\
-    ChartData.idl\
-    ChartDataArray.idl\
-    ChartDataCaption.idl\
-    ChartDataChangeEvent.idl\
-    ChartDataChangeType.idl\
-    ChartDataPoint.idl\
-    ChartDataPointProperties.idl\
-    ChartDataRow.idl\
-    ChartDataRowProperties.idl\
-    ChartDataRowSource.idl\
-    ChartDataValue.idl\
-    ChartDocument.idl\
-    ChartErrorCategory.idl\
-    ChartErrorIndicatorType.idl\
-    ChartGrid.idl\
-    ChartLegend.idl\
-    ChartLegendPosition.idl\
-    ChartLine.idl\
-    ChartPieSegmentProperties.idl\
-    ChartRegressionCurveType.idl\
-    ChartSeriesAddress.idl\
-    ChartSolidType.idl\
-    ChartStatistics.idl\
-    ChartSymbolType.idl\
-    ChartTableAddressSupplier.idl\
-    ChartTitle.idl\
-    ChartTwoAxisXSupplier.idl\
-    ChartTwoAxisYSupplier.idl\
-    DataLabelPlacement.idl\
-    Diagram.idl\
-    Dim3DDiagram.idl\
-    DonutDiagram.idl\
-    FilledNetDiagram.idl\
-    LineDiagram.idl\
-    MissingValueTreatment.idl\
-    NetDiagram.idl\
-    PieDiagram.idl\
-    StackableDiagram.idl\
-    StockDiagram.idl\
-    X3DDefaultSetter.idl\
-    X3DDisplay.idl\
-    XAxisXSupplier.idl\
-    XAxisYSupplier.idl\
-    XAxisZSupplier.idl\
-    XChartData.idl\
-    XChartDataArray.idl\
-    XChartDataChangeEventListener.idl\
-    XChartDocument.idl\
-    XDiagram.idl\
-    XStatisticDisplay.idl\
-    XTwoAxisXSupplier.idl\
-    XTwoAxisYSupplier.idl\
-    XSecondAxisTitleSupplier.idl\
-    XYDiagram.idl\
-    ErrorBarStyle.idl
+	AccessibleChartElement.idl\
+	AccessibleChartDocumentView.idl\
+	AreaDiagram.idl\
+	BarDiagram.idl\
+	BubbleDiagram.idl\
+	Chart3DBarProperties.idl\
+	ChartArea.idl\
+	ChartAxis.idl\
+	ChartAxisArrangeOrderType.idl\
+	ChartAxisAssign.idl\
+	ChartAxisMarks.idl\
+	ChartAxisPosition.idl\
+	ChartAxisLabelPosition.idl\
+	ChartAxisMarkPosition.idl\
+	ChartAxisXSupplier.idl\
+	ChartAxisYSupplier.idl\
+	ChartAxisZSupplier.idl\
+	ChartData.idl\
+	ChartDataArray.idl\
+	ChartDataCaption.idl\
+	ChartDataChangeEvent.idl\
+	ChartDataChangeType.idl\
+	ChartDataPoint.idl\
+	ChartDataPointProperties.idl\
+	ChartDataRow.idl\
+	ChartDataRowProperties.idl\
+	ChartDataRowSource.idl\
+	ChartDataValue.idl\
+	ChartDocument.idl\
+	ChartErrorCategory.idl\
+	ChartErrorIndicatorType.idl\
+	ChartGrid.idl\
+	ChartLegend.idl\
+	ChartLegendPosition.idl\
+	ChartLine.idl\
+	ChartPieSegmentProperties.idl\
+	ChartRegressionCurveType.idl\
+	ChartSeriesAddress.idl\
+	ChartSolidType.idl\
+	ChartStatistics.idl\
+	ChartSymbolType.idl\
+	ChartTableAddressSupplier.idl\
+	ChartTitle.idl\
+	ChartTwoAxisXSupplier.idl\
+	ChartTwoAxisYSupplier.idl\
+	DataLabelPlacement.idl\
+	Diagram.idl\
+	Dim3DDiagram.idl\
+	DonutDiagram.idl\
+	FilledNetDiagram.idl\
+	LineDiagram.idl\
+	MissingValueTreatment.idl\
+	NetDiagram.idl\
+	PieDiagram.idl\
+	StackableDiagram.idl\
+	StockDiagram.idl\
+	X3DDefaultSetter.idl\
+	X3DDisplay.idl\
+	XAxisXSupplier.idl\
+	XAxisYSupplier.idl\
+	XAxisZSupplier.idl\
+	XChartData.idl\
+	XChartDataArray.idl\
+	XChartDataChangeEventListener.idl\
+	XChartDocument.idl\
+	XComplexDescriptionAccess.idl\
+	XDiagram.idl\
+	XStatisticDisplay.idl\
+	XTwoAxisXSupplier.idl\
+	XTwoAxisYSupplier.idl\
+	XSecondAxisTitleSupplier.idl\
+	XYDiagram.idl\
+	ErrorBarStyle.idl
 
 # ------------------------------------------------------------------
 
