@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -52,23 +48,23 @@ INCPRE+=	$(OUT)$/inc$
 # --- Application 6 - testjavavm ------------------------------------
 
 UNOTYPES= com.sun.star.lang.XMultiComponentFactory \
-    com.sun.star.uno.XWeak	\
-    com.sun.star.java.XJavaVM	\
-    com.sun.star.java.XJavaThreadRegister_11	\
-    com.sun.star.registry.XSimpleRegistry \
-    com.sun.star.lang.XComponent \
-    com.sun.star.registry.XImplementationRegistration \
-    com.sun.star.lang.XSingleServiceFactory \
-    com.sun.star.uno.TypeClass \
-    com.sun.star.lang.XMultiServiceFactory
+	com.sun.star.uno.XWeak	\
+	com.sun.star.java.XJavaVM	\
+	com.sun.star.java.XJavaThreadRegister_11	\
+	com.sun.star.registry.XSimpleRegistry \
+	com.sun.star.lang.XComponent \
+	com.sun.star.registry.XImplementationRegistration \
+	com.sun.star.lang.XSingleServiceFactory \
+	com.sun.star.uno.TypeClass \
+	com.sun.star.lang.XMultiServiceFactory
 
 APP6TARGET= 	$(TARGET6)
 APP6OBJS  = 	$(OBJ)$/testjavavm.obj 
 APP6STDLIBS= \
-        $(CPPULIB) 		\
-        $(CPPUHELPERLIB) 	\
-        $(SALHELPERLIB) 	\
-        $(SALLIB)	
+		$(CPPULIB) 		\
+		$(CPPUHELPERLIB) 	\
+		$(SALHELPERLIB) 	\
+		$(SALLIB)	
 #		$(UNOLIB)
 
 # --- Target ------------------------------------------------

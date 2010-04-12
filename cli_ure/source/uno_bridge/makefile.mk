@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -65,24 +61,24 @@ LINKFLAGS += -NOENTRY -NODEFAULTLIB:nochkclr.obj -INCLUDE:__DllMainCRTStartup@12
 # --- Files --------------------------------------------------------
 
 SLOFILES = \
-    $(SLO)$/cli_environment.obj	\
-    $(SLO)$/cli_bridge.obj		\
-    $(SLO)$/cli_data.obj		\
-    $(SLO)$/cli_proxy.obj		\
-    $(SLO)$/cli_uno.obj
+	$(SLO)$/cli_environment.obj	\
+	$(SLO)$/cli_bridge.obj		\
+	$(SLO)$/cli_data.obj		\
+	$(SLO)$/cli_proxy.obj		\
+	$(SLO)$/cli_uno.obj
 
 SHL1OBJS = $(SLOFILES)
 
 SHL1TARGET = $(TARGET)
 
 SHL1STDLIBS = \
-    $(CPPULIB)			\
-    $(SALLIB)			\
-    mscoree.lib
+	$(CPPULIB)			\
+	$(SALLIB)			\
+	mscoree.lib
 
 .IF "$(CCNUMVER)" >= "001399999999"
 SHL1STDLIBS += \
-    msvcmrt.lib
+	msvcmrt.lib
 .ENDIF
 
 SHL1VERSIONMAP = bridge_exports.map
