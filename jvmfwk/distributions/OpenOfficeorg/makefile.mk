@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9.28.1 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -37,27 +33,27 @@ TARGET = vendors_ooo
 
 .IF "$(SOLAR_JAVA)"==""
 nojava:
-    @echo "Not building jvmfwk  because Java is disabled"
+	@echo "Not building jvmfwk  because Java is disabled"
 .ENDIF
 
 .IF "$(SOLAR_JAVA)"!=""
 $(BIN)$/javavendors.xml: javavendors_unx.xml javavendors_wnt.xml javavendors_macosx.xml javavendors_linux.xml
 .IF "$(GUI)"=="UNX"
 .IF "$(OS)"=="FREEBSD"
-    -$(COPY) javavendors_freebsd.xml $(BIN)$/javavendors.xml
+	-$(COPY) javavendors_freebsd.xml $(BIN)$/javavendors.xml
 .ELIF "$(OS)"=="MACOSX"
-    -$(COPY) javavendors_macosx.xml $(BIN)$/javavendors.xml
+	-$(COPY) javavendors_macosx.xml $(BIN)$/javavendors.xml
 .ELIF "$(OS)"=="LINUX"
-    -$(COPY) javavendors_linux.xml $(BIN)$/javavendors.xml
+	-$(COPY) javavendors_linux.xml $(BIN)$/javavendors.xml
 .ELSE
-    -$(COPY) javavendors_unx.xml $(BIN)$/javavendors.xml
+	-$(COPY) javavendors_unx.xml $(BIN)$/javavendors.xml
 .ENDIF
 .ELIF "$(GUI)"=="WNT"
-    -$(COPY) javavendors_wnt.xml $(BIN)$/javavendors.xml	
+	-$(COPY) javavendors_wnt.xml $(BIN)$/javavendors.xml	
 .ELIF "$(GUI)"=="OS2"
-    -$(COPY) javavendors_os2.xml $(BIN)$/javavendors.xml	
+	-$(COPY) javavendors_os2.xml $(BIN)$/javavendors.xml	
 .ELSE
-    @echo Unsupported platform.
+	@echo Unsupported platform.
 .ENDIF
 
 .ENDIF          # "$(SOLAR_JAVA)"!=""

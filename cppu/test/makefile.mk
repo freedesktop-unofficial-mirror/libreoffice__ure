@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.34 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -48,31 +44,31 @@ UNOUCROUT=$(OUT)$/inc$/test
 INCPRE+=$(OUT)$/inc$/test
 
 OBJFILES= \
-        $(OBJ)$/testcppu.obj	\
-        $(OBJ)$/test_di.obj	\
-        $(OBJ)$/test_Cincludes.obj
+		$(OBJ)$/testcppu.obj	\
+		$(OBJ)$/test_di.obj	\
+		$(OBJ)$/test_Cincludes.obj
 #		$(OBJ)$/test_cuno.obj	\
 #		$(OBJ)$/test_sec.obj	\
 
 APP1TARGET=	testcppu
 APP1OBJS=	\
-        $(OBJ)$/testcppu.obj	\
-        $(OBJ)$/test_di.obj
+		$(OBJ)$/testcppu.obj	\
+		$(OBJ)$/test_di.obj
 #		$(OBJ)$/test_cuno.obj
 #		$(OBJ)$/test_sec.obj
 
 APP1STDLIBS+=	\
-        $(CPPULIB)		\
-        $(CPPUHELPERLIB)	\
-        $(SALHELPERLIB)		\
-        $(SALLIB)
+		$(CPPULIB)		\
+		$(CPPUHELPERLIB)	\
+		$(SALHELPERLIB)		\
+		$(SALLIB)
 
 APP1DEF=$(MISC)$/$(APP1TARGET).def
 
 ALLIDLFILES:= \
-        cpputest.idl 		\
-        language_binding.idl	\
-        alignment.idl
+		cpputest.idl 		\
+		language_binding.idl	\
+		alignment.idl
 
 
 APP2TARGET  := Mapping.test
@@ -112,49 +108,49 @@ CFLAGS += -DEXTRA_MAPPING
 CPPUMAKERFLAGS = -L
 
 TYPES:=		-Ttest.XLanguageBindingTest \
-        -Ttest.XSimpleInterface \
-        -Ttest.Test1 \
-        -Ttest.Test2 \
-        -Ttest.TdTest1 \
-        -Ttest.Test3 \
-        -Ttest.Base \
-        -Ttest.Base1 \
-        -Ttest.Base2 \
-        -Tcom.sun.star.lang.XMultiServiceFactory \
-        -Tcom.sun.star.lang.XSingleServiceFactory \
-        -Tcom.sun.star.lang.XInitialization \
-        -Tcom.sun.star.lang.XServiceInfo \
-        -Tcom.sun.star.lang.XEventListener \
-        -Tcom.sun.star.lang.XTypeProvider \
-        -Tcom.sun.star.lang.DisposedException \
-        -Tcom.sun.star.registry.XSimpleRegistry \
-        -Tcom.sun.star.registry.XRegistryKey \
-        -Tcom.sun.star.loader.XImplementationLoader \
-        -Tcom.sun.star.registry.XImplementationRegistration \
-        -Tcom.sun.star.lang.XComponent \
-        -Tcom.sun.star.uno.XComponentContext \
-        -Tcom.sun.star.container.XSet \
-        -Tcom.sun.star.container.XNameContainer \
-        -Tcom.sun.star.uno.TypeClass \
-        -Tcom.sun.star.uno.XReference \
-        -Tcom.sun.star.uno.XAdapter \
-        -Tcom.sun.star.uno.XAggregation \
-        -Tcom.sun.star.uno.XWeak \
-        -Tcom.sun.star.beans.XPropertySet \
-        -Tcom.sun.star.reflection.XIdlClassProvider \
-        -Tcom.sun.star.container.XHierarchicalNameAccess \
-        -Tcom.sun.star.uno.XCurrentContext
+		-Ttest.XSimpleInterface \
+		-Ttest.Test1 \
+		-Ttest.Test2 \
+		-Ttest.TdTest1 \
+		-Ttest.Test3 \
+		-Ttest.Base \
+		-Ttest.Base1 \
+		-Ttest.Base2 \
+		-Tcom.sun.star.lang.XMultiServiceFactory \
+		-Tcom.sun.star.lang.XSingleServiceFactory \
+		-Tcom.sun.star.lang.XInitialization \
+		-Tcom.sun.star.lang.XServiceInfo \
+		-Tcom.sun.star.lang.XEventListener \
+		-Tcom.sun.star.lang.XTypeProvider \
+		-Tcom.sun.star.lang.DisposedException \
+		-Tcom.sun.star.registry.XSimpleRegistry \
+		-Tcom.sun.star.registry.XRegistryKey \
+		-Tcom.sun.star.loader.XImplementationLoader \
+		-Tcom.sun.star.registry.XImplementationRegistration \
+		-Tcom.sun.star.lang.XComponent \
+		-Tcom.sun.star.uno.XComponentContext \
+		-Tcom.sun.star.container.XSet \
+		-Tcom.sun.star.container.XNameContainer \
+		-Tcom.sun.star.uno.TypeClass \
+		-Tcom.sun.star.uno.XReference \
+		-Tcom.sun.star.uno.XAdapter \
+		-Tcom.sun.star.uno.XAggregation \
+		-Tcom.sun.star.uno.XWeak \
+		-Tcom.sun.star.beans.XPropertySet \
+		-Tcom.sun.star.reflection.XIdlClassProvider \
+		-Tcom.sun.star.container.XHierarchicalNameAccess \
+		-Tcom.sun.star.uno.XCurrentContext
 
 $(BIN)$/testcppu.rdb: $(ALLIDLFILES)
-    idlc -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
-    regmerge $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
-    regmerge $@ / $(UNOUCRRDB)
-    touch $@
+	idlc -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $?
+	regmerge $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
+	regmerge $@ / $(UNOUCRRDB)
+	touch $@
 
 # 	regcomp -register -r $@ -c javaloader.dll
 # 	regcomp -register -r $@ -c jen.dll
 
 unoheader: $(BIN)$/testcppu.rdb
-    cppumaker $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) $(TYPES) $(BIN)$/testcppu.rdb
+	cppumaker $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) $(TYPES) $(BIN)$/testcppu.rdb
 #	cunomaker -BUCR -O$(UNOUCROUT) $(TYPES) $(BIN)$/testcppu.rdb
 

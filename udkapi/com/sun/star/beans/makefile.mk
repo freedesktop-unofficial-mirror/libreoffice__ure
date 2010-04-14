@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.14 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -46,58 +42,58 @@ IDLFILES=\
     Defaulted.idl\
     GetDirectPropertyTolerantResult.idl\
     GetPropertyTolerantResult.idl\
-    IllegalTypeException.idl\
-    Introspection.idl\
-    IntrospectionException.idl\
-    MethodConcept.idl\
-    NamedValue.idl\
-    NotRemoveableException.idl\
+	IllegalTypeException.idl\
+	Introspection.idl\
+	IntrospectionException.idl\
+	MethodConcept.idl\
+	NamedValue.idl\
+	NotRemoveableException.idl\
     Optional.idl\
     Pair.idl\
-    Property.idl\
-    PropertyAttribute.idl\
-    PropertyBag.idl\
-    PropertyChangeEvent.idl\
-    PropertyConcept.idl\
-    PropertyExistException.idl\
-    PropertySet.idl\
-    PropertySetInfoChange.idl\
-    PropertySetInfoChangeEvent.idl\
-    PropertyState.idl\
-    PropertyStateChangeEvent.idl\
-    PropertyValue.idl\
-    PropertyValues.idl\
-    PropertyVetoException.idl\
+	Property.idl\
+	PropertyAttribute.idl\
+	PropertyBag.idl\
+	PropertyChangeEvent.idl\
+	PropertyConcept.idl\
+	PropertyExistException.idl\
+	PropertySet.idl\
+	PropertySetInfoChange.idl\
+	PropertySetInfoChangeEvent.idl\
+	PropertyState.idl\
+	PropertyStateChangeEvent.idl\
+	PropertyValue.idl\
+	PropertyValues.idl\
+	PropertyVetoException.idl\
     SetPropertyTolerantFailed.idl\
-    StringPair.idl\
+	StringPair.idl\
     TolerantPropertySetResultType.idl\
     UnknownPropertyException.idl\
-    XExactName.idl\
-    XFastPropertySet.idl\
-    XHierarchicalPropertySet.idl\
-    XHierarchicalPropertySetInfo.idl\
-    XIntrospection.idl\
-    XIntrospectionAccess.idl\
-    XIntroTest.idl\
-    XMaterialHolder.idl\
-    XMultiPropertySet.idl\
-    XMultiPropertyStates.idl\
-    XMultiHierarchicalPropertySet.idl\
-    XPropertiesChangeListener.idl\
-    XPropertiesChangeNotifier.idl\
-    XProperty.idl\
-    XPropertyAccess.idl\
-    XPropertyChangeListener.idl\
-    XPropertyContainer.idl\
-    XPropertySet.idl\
-    XPropertySetInfo.idl\
-    XPropertySetInfoChangeListener.idl\
-    XPropertySetInfoChangeNotifier.idl\
-    XPropertyState.idl\
-    XPropertyStateChangeListener.idl\
-    XPropertyWithState.idl\
+	XExactName.idl\
+	XFastPropertySet.idl\
+	XHierarchicalPropertySet.idl\
+	XHierarchicalPropertySetInfo.idl\
+	XIntrospection.idl\
+	XIntrospectionAccess.idl\
+	XIntroTest.idl\
+	XMaterialHolder.idl\
+	XMultiPropertySet.idl\
+	XMultiPropertyStates.idl\
+	XMultiHierarchicalPropertySet.idl\
+	XPropertiesChangeListener.idl\
+	XPropertiesChangeNotifier.idl\
+	XProperty.idl\
+	XPropertyAccess.idl\
+	XPropertyChangeListener.idl\
+	XPropertyContainer.idl\
+	XPropertySet.idl\
+	XPropertySetInfo.idl\
+	XPropertySetInfoChangeListener.idl\
+	XPropertySetInfoChangeNotifier.idl\
+	XPropertyState.idl\
+	XPropertyStateChangeListener.idl\
+	XPropertyWithState.idl\
     XTolerantMultiPropertySet.idl\
-    XVetoableChangeListener.idl\
+	XVetoableChangeListener.idl\
 
 # ------------------------------------------------------------------
 
