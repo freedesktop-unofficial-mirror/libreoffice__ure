@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.17 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -45,31 +41,31 @@ TARGET=udkapi
 # ------------------------------------------------------------------
 
 UNOIDLDBFILES= \
-    $(UCR)$/css.db \
-    $(UCR)$/cssutil.db \
-    $(UCR)$/cssbeans.db \
-    $(UCR)$/cssbridge.db \
-    $(UCR)$/cssboleautomation.db \
-    $(UCR)$/cssconnection.db\
-    $(UCR)$/csscontainer.db \
-    $(UCR)$/cssio.db \
-    $(UCR)$/cssjava.db \
-    $(UCR)$/csslang.db \
-    $(UCR)$/csssec.db \
-    $(UCR)$/cssloader.db \
-    $(UCR)$/cssreflection.db \
-    $(UCR)$/cssregistry.db \
-    $(UCR)$/cssscript.db \
-    $(UCR)$/csstest.db \
-    $(UCR)$/cssperftest.db \
-    $(UCR)$/cssbridgetest.db \
-    $(UCR)$/cssuno.db \
-    $(UCR)$/cssulog.db \
-    $(UCR)$/csscorba.db \
-    $(UCR)$/cssiop.db \
-    $(UCR)$/cssiiop.db \
-    $(UCR)$/cssgiop.db \
-    $(UCR)$/csstask.db \
+	$(UCR)$/css.db \
+	$(UCR)$/cssutil.db \
+	$(UCR)$/cssbeans.db \
+	$(UCR)$/cssbridge.db \
+	$(UCR)$/cssboleautomation.db \
+	$(UCR)$/cssconnection.db\
+	$(UCR)$/csscontainer.db \
+	$(UCR)$/cssio.db \
+	$(UCR)$/cssjava.db \
+	$(UCR)$/csslang.db \
+	$(UCR)$/csssec.db \
+	$(UCR)$/cssloader.db \
+	$(UCR)$/cssreflection.db \
+	$(UCR)$/cssregistry.db \
+	$(UCR)$/cssscript.db \
+	$(UCR)$/csstest.db \
+	$(UCR)$/cssperftest.db \
+	$(UCR)$/cssbridgetest.db \
+	$(UCR)$/cssuno.db \
+	$(UCR)$/cssulog.db \
+	$(UCR)$/csscorba.db \
+	$(UCR)$/cssiop.db \
+	$(UCR)$/cssiiop.db \
+	$(UCR)$/cssgiop.db \
+	$(UCR)$/csstask.db \
     $(UCR)$/cssuri.db
 
 # --- Targets ------------------------------------------------------

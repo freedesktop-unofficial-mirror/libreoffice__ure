@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.12 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -51,14 +47,14 @@ DLLPRE =
 .IF "$(SOLAR_JAVA)"!=""
 
 SLOFILES= \
-    $(SLO)$/sunversion.obj \
-    $(SLO)$/sunjavaplugin.obj \
-    $(SLO)$/vendorbase.obj \
-    $(SLO)$/util.obj \
-    $(SLO)$/sunjre.obj \
-    $(SLO)$/gnujre.obj \
-    $(SLO)$/vendorlist.obj \
-    $(SLO)$/otherjre.obj 
+	$(SLO)$/sunversion.obj \
+	$(SLO)$/sunjavaplugin.obj \
+	$(SLO)$/vendorbase.obj \
+	$(SLO)$/util.obj \
+	$(SLO)$/sunjre.obj \
+	$(SLO)$/gnujre.obj \
+	$(SLO)$/vendorlist.obj \
+	$(SLO)$/otherjre.obj 
 
 LIB1OBJFILES= $(SLOFILES)
 
@@ -70,11 +66,11 @@ SHL1TARGET=	$(UNOCOMPONENT1)
 
 
 SHL1STDLIBS= \
-        $(CPPULIB) \
-        $(CPPUHELPER) \
-        $(SALLIB) \
-        $(SALHELPERLIB)
-        
+		$(CPPULIB) \
+		$(CPPUHELPER) \
+		$(SALLIB) \
+		$(SALHELPERLIB)
+		
 
 .IF "$(GUI)" == "WNT"
 .IF "$(COM)"!="GCC"
@@ -113,9 +109,9 @@ BOOTSTRAPFILE=$(BIN)$/sunjavapluginrc
 
 
 $(BOOTSTRAPFILE): sunjavapluginrc
-    -$(COPY) $< $@
+	-$(COPY) $< $@
 
 
 ALLTAR: \
-    $(BOOTSTRAPFILE)
+	$(BOOTSTRAPFILE)
 

@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.5 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -52,17 +48,17 @@ CFLAGS += -DLEAK_STATIC_DATA
 CFLAGSCXX += -fno-omit-frame-pointer 
 
 NOOPTFILES= \
-    $(SLO)$/cpp2uno.obj \
-    $(SLO)$/except.obj \
-    $(SLO)$/uno2cpp.obj
+	$(SLO)$/cpp2uno.obj \
+	$(SLO)$/except.obj \
+	$(SLO)$/uno2cpp.obj
 
 CFLAGSNOOPT=-O0
 
 SLOFILES= \
-    $(SLO)$/cpp2uno.obj \
-    $(SLO)$/except.obj \
-    $(SLO)$/uno2cpp.obj \
-    $(SLO)$/armhelper.obj
+	$(SLO)$/cpp2uno.obj \
+	$(SLO)$/except.obj \
+	$(SLO)$/uno2cpp.obj \
+	$(SLO)$/armhelper.obj
 
 SHL1TARGET= $(TARGET)
 
@@ -75,8 +71,8 @@ SHL1OBJS = $(SLOFILES)
 SHL1LIBS = $(SLB)$/cpp_uno_shared.lib
 
 SHL1STDLIBS= \
-    $(CPPULIB)			\
-    $(SALLIB)
+	$(CPPULIB)			\
+	$(SALLIB)
 
 .ENDIF
 
