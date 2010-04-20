@@ -42,10 +42,10 @@ PACKAGE=com$/sun$/star$/text$/textfield
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-    URL.idl\
+	URL.idl\
     Annotation.idl\
     Author.idl\
-    Bibliography.idl\
+	Bibliography.idl\
     Chapter.idl\
     CharacterCount.idl\
     CombinedCharacters.idl\
@@ -57,7 +57,7 @@ IDLFILES=\
     DatabaseSetNumber.idl\
     DateTime.idl\
     DDE.idl\
-    DropDown.idl\
+	DropDown.idl\
     EmbeddedObjectCount.idl\
     ExtendedUser.idl\
     FileName.idl\
@@ -67,9 +67,10 @@ IDLFILES=\
     HiddenParagraph.idl\
     HiddenText.idl\
     Input.idl\
-    InputUser.idl\
+	InputUser.idl\
     JumpEdit.idl\
     Macro.idl\
+    MetadataField.idl\
     PageCount.idl\
     PageNumber.idl\
     ParagraphCount.idl\
