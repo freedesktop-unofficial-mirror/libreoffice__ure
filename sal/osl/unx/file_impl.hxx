@@ -6,8 +6,8 @@
  *
  * OpenOffice.org - a multi-platform office productivity suite
  *
- * $RCSfile: util.c,v $
- * $Revision: 1.5 $
+ * $RCSfile: $
+ * $Revision: $
  *
  * This file is part of OpenOffice.org.
  *
@@ -28,13 +28,21 @@
  *
  ************************************************************************/
 
-#include "osl/util.h"
-
-
-
-extern sal_Bool SAL_CALL osl_getEthernetAddress( sal_uInt8 *pAddr )
+#ifdef __cplusplus
+extern "C" {
+#endif
+typedef struct
 {
-    pAddr = pAddr; /* avoid warnings */
-    return sal_False;   
-}
+    rtl_uString* ustrFilePath;       /* holds native file name */
+    unsigned char DType;
+    bool bHasType;
+    sal_uInt32 RefCount;
+} oslDirectoryItemImpl;
 
+    oslDirectoryItemImpl* oslDirectoryItemImpl_CreateNew( rtl_uString* _ustrFilePath, bool _bHasDType, unsigned char _DType=0 );
+    void oslDirectoryItemImpl_Destroy( oslDirectoryItemImpl* pItem );
+    void oslDirectoryItemImpl_acquire( oslDirectoryItemImpl* pItem );
+    void oslDirectoryItemImpl_release( oslDirectoryItemImpl* pItem );
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
