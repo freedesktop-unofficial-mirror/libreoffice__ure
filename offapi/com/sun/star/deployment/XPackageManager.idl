@@ -65,9 +65,11 @@ module com { module sun { module star { module deployment {
     /singletons/com.sun.star.deployment.thePackageManagerFactory
     </code>.
     </p>
-    
+
     @see thePackageManagerFactory
     @since OOo 2.0.0
+    @deprecated
+         Use <type>XExtensionManager</type>.
 */
 interface XPackageManager
 {
