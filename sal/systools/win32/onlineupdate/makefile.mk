@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.7 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -55,8 +51,8 @@ LINK=$(WRAPCMD) "$(PSDK_HOME)$/Bin$/Win64$/LINK.EXE"
 .ENDIF
 
 SLOFILES=\
-        $(SLO)$/onlinecheck.obj
-        
+		$(SLO)$/onlinecheck.obj
+		
 
 SHL1TARGET=$(TARGET)
 SHL1IMPLIB=$(SHL1TARGET)
@@ -65,8 +61,8 @@ DEF1NAME=$(SHL1TARGET)
 DEF1EXPORTFILE=$(SHL1TARGET).dxp
 
 DEF1DEPN=\
-        $(DEF1EXPORTFILE)\
-        makefile.mk
+		$(DEF1EXPORTFILE)\
+		makefile.mk
 
 SHL1OBJS=$(SLOFILES)
 
@@ -74,12 +70,12 @@ SHL1OBJS=$(SLOFILES)
 #STDSHL=
 
 SHL1STDLIBS=\
-        $(UNICOWSLIB)\
-        $(KERNEL32LIB)\
-        $(LIBCMT)\
-        $(WININETLIB)
+		$(UNICOWSLIB)\
+		$(KERNEL32LIB)\
+		$(LIBCMT)\
+		$(WININETLIB)
 
-        
+		
 .ENDIF
 
 .INCLUDE : target.mk

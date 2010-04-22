@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.21 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -59,7 +55,7 @@ MY_SCRIPTCAT=tr -d "\015" <
 APP2OBJS = $(OBJ)$/testbootstrap.obj
 
 OBJFILES= \
-    $(APP2OBJS) 
+	$(APP2OBJS) 
 
 APP2TARGET = testbootstrap
 APP2STDLIBS = $(SALLIB)
@@ -76,56 +72,56 @@ APP4STDLIBS = $(SALLIB)
 # --- Targets ------------------------------------------------------
 .IF "$(depend)" == ""
 ALL : ALLTAR \
-      $(BIN)$/$(BOOTSTRAPSCRIPT) \
-      $(BIN)$/$(BOOTSTRAPINI)    \
-      $(BIN)$/bootstraptest.ini  \
-      $(BIN)$/$(APP2TARGET).bin  \
-      $(BIN)$/$(APP2TARGET).Bin  \
-      $(BIN)$/$(APP2TARGET).Exe  \
-      $(BIN)$/bootstrap.pl  
+	  $(BIN)$/$(BOOTSTRAPSCRIPT) \
+	  $(BIN)$/$(BOOTSTRAPINI)    \
+	  $(BIN)$/bootstraptest.ini  \
+	  $(BIN)$/$(APP2TARGET).bin  \
+	  $(BIN)$/$(APP2TARGET).Bin  \
+	  $(BIN)$/$(APP2TARGET).Exe  \
+	  $(BIN)$/bootstrap.pl  
 
 
 .IF "$(GUI)"=="UNX"
 ALL:  $(BIN)$/$(APP2TARGET).exe \
-      $(BIN)$/inirc \
-      $(BIN)$/defaultrc
+	  $(BIN)$/inirc \
+	  $(BIN)$/defaultrc
 
 $(BIN)$/$(APP2TARGET).exe : $(APP2TARGETN)
-    cp $(APP2TARGETN) $@
+	cp $(APP2TARGETN) $@
 
 $(BIN)$/inirc:
-        echo "CUSTOMINIVALUE=auxaux"   > $@
-        echo "INHERITED_OVERWRITTEN_VALUE=inherited_overwritten_value" >> $@
+		echo "CUSTOMINIVALUE=auxaux"   > $@
+		echo "INHERITED_OVERWRITTEN_VALUE=inherited_overwritten_value" >> $@
 
 $(BIN)$/defaultrc:
-        echo "Default=defaultValue" > $@
+		echo "Default=defaultValue" > $@
 
 .ELSE
 
 ALL:  $(BIN)$/ini.ini		\
-      $(BIN)$/default.ini
+	  $(BIN)$/default.ini
 
 $(BIN)$/ini.ini:
-        echo CUSTOMINIVALUE=auxaux     > $@
-        echo INHERITED_OVERWRITTEN_VALUE=inherited_overwritten_value   >> $@
+		echo CUSTOMINIVALUE=auxaux     > $@
+		echo INHERITED_OVERWRITTEN_VALUE=inherited_overwritten_value   >> $@
 
 
 $(BIN)$/default.ini:
-        echo Default=defaultValue > $@
+		echo Default=defaultValue > $@
 
 .ENDIF
 
 $(BIN)$/bootstrap.pl:
-    cp bootstrap.pl $@
+	cp bootstrap.pl $@
 
 $(BIN)$/$(APP2TARGET).bin : $(APP2TARGETN)
-    cp $(APP2TARGETN) $@
+	cp $(APP2TARGETN) $@
 
 $(BIN)$/$(APP2TARGET).Bin : $(APP2TARGETN)
-    cp $(APP2TARGETN) $@
+	cp $(APP2TARGETN) $@
 
 $(BIN)$/$(APP2TARGET).Exe : $(APP2TARGETN)
-    cp $(APP2TARGETN) $@
+	cp $(APP2TARGETN) $@
 
 .ELSE
 ALL: 	ALLDEP
@@ -135,22 +131,22 @@ ALL: 	ALLDEP
 
 
 $(BIN)$/$(BOOTSTRAPSCRIPT) : $(BOOTSTRAPSCRIPT)
-    $(MY_SCRIPTCAT) $(BOOTSTRAPSCRIPT) > $@
+	$(MY_SCRIPTCAT) $(BOOTSTRAPSCRIPT) > $@
 .IF "$(GUI)"!="WNT"
-    chmod ug+x $@
+	chmod ug+x $@
 .ENDIF
 
 $(BIN)$/$(BOOTSTRAPINI) : $(APP2TARGET).ini
-    $(MY_SCRIPTCAT) $(APP2TARGET).ini > $@	
+	$(MY_SCRIPTCAT) $(APP2TARGET).ini > $@	
 
 $(BIN)$/bootstraptest.ini : bootstraptest.ini
-    $(MY_SCRIPTCAT) bootstraptest.ini > $@	
+	$(MY_SCRIPTCAT) bootstraptest.ini > $@	
 
 
 # --- SO2-Filter-Datei ---
 $(MISC)$/tsl$(DLLPOSTFIX).flt:
-    @echo ------------------------------
-    @echo Making: $@
-    @echo WEP>$@
-    @echo LIBMAIN>>$@
-    @echo LibMain>>$@
+	@echo ------------------------------
+	@echo Making: $@
+	@echo WEP>$@
+	@echo LIBMAIN>>$@
+	@echo LibMain>>$@

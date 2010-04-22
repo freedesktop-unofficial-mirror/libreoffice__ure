@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_Uri.cxx,v $
- * $Revision: 1.7 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -38,7 +35,7 @@
 #include <osl/thread.h>
 #include <osl/file.hxx>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 // -----------------------------------------------------------------------------
 
@@ -55,7 +52,7 @@ namespace Stringtest
         sStrBuf.append( cHex[nlow] );
         return sStrBuf.makeStringAndClear();
     }
-    
+
     rtl::OString escapeString(rtl::OString const& _sStr)
     {
         rtl::OStringBuffer sStrBuf;
@@ -75,10 +72,10 @@ namespace Stringtest
         }
         return sStrBuf.makeStringAndClear();
     }
-    
+
     // -----------------------------------------------------------------------------
 
-    class Convert : public CppUnit::TestFixture  
+    class Convert : public CppUnit::TestFixture
     {
         rtl::OUString m_aStr;
     public:
@@ -95,12 +92,12 @@ namespace Stringtest
                 rtl::OUString suStr = rtl::OStringToOUString(_suStr, RTL_TEXTENCODING_UTF8);
                 return suStr;
             }
-        
+
         rtl::OString convertToOString(rtl::OUString const& _suStr)
             {
                 return rtl::OUStringToOString(_suStr, osl_getThreadTextEncoding()/*RTL_TEXTENCODING_ASCII_US*/);
             }
-        
+
         void showContent(rtl::OUString const& _suStr)
             {
                 rtl::OString sStr = convertToOString(_suStr);
@@ -127,7 +124,7 @@ namespace Stringtest
                 suStr = rtl::Uri::encode(_suStr, rtl_UriCharClassUnoParamValue, _eMechanism, RTL_TEXTENCODING_UTF8);
                 showContent(suStr);
             }
-        
+
         void toUTF8(rtl::OUString const& _suStr)
             {
                 t_print("rtl_UriEncodeIgnoreEscapes \n");
@@ -140,13 +137,13 @@ namespace Stringtest
                 toUTF8_mech(_suStr, rtl_UriEncodeCheckEscapes);
                 t_print("\n");
             }
-        
+
         void test_FromUTF8_001()
             {
                 // string --> ustring
                 rtl::OString sStrUTF8("h%C3%A4llo");
                 rtl::OUString suStrUTF8 = rtl::OStringToOUString(sStrUTF8, RTL_TEXTENCODING_ASCII_US);
-                
+
                 // UTF8 --> real ustring
                 rtl::OUString suStr_UriDecodeToIuri      = rtl::Uri::decode(suStrUTF8, rtl_UriDecodeToIuri, RTL_TEXTENCODING_UTF8);
                 showContent(suStr_UriDecodeToIuri);
@@ -154,24 +151,24 @@ namespace Stringtest
                 // string --> ustring
                 rtl::OString sStr("h\xE4llo");
                 rtl::OUString suString = rtl::OStringToOUString(sStr, RTL_TEXTENCODING_ISO_8859_15);
-                
+
                 CPPUNIT_ASSERT_MESSAGE("Strings must be equal", suString.equals(suStr_UriDecodeToIuri) == sal_True);
 
                 // ustring --> ustring (UTF8)
                 rtl::OUString suStr2 = rtl::Uri::encode(suStr_UriDecodeToIuri, rtl_UriCharClassUnoParamValue, rtl_UriEncodeKeepEscapes, RTL_TEXTENCODING_UTF8);
                 showContent(suStr2);
-                
+
                 CPPUNIT_ASSERT_MESSAGE("Strings must be equal", suStr2.equals(suStrUTF8) == sal_True);
                 // suStr should be equal to suStr2
             }
-        
+
         // "%C3%84qypten";
         // testshl2 ../../../unxlngi4.pro/lib/libConvert.so "-onlyerrors"
         // # Type: 'Directory' file name '%E6%89%8B%E6%9C%BA%E5%8F%B7%E7%A0%81'
         // # Type: 'Directory' file name '%E6%9C%AA%E5%91%BD%E5%90%8Dzhgb18030'
         // # Type: 'Regular file' file name '%E5%B7%A5%E4%BD%9C'
         // # Type: 'Regular file' file name '%E4%BA%8C%E6%89%8B%E6%88%BF%E4%B9%B0%E5%8D%96%E5%90%88%E5%90%8C%E8%8D%89%E7%A8%BF.doc'
-        // ls 
+        // ls
         rtl::OString getFileTypeName(osl::FileStatus const& _aStatus)
             {
                 rtl::OString sType;
@@ -219,10 +216,10 @@ namespace Stringtest
                 {
                     sType = "ERROR: osl_FileStatus_Mask_Type not set for FileStatus!";
                 }
-                return sType;   
+                return sType;
             }
-        
-                
+
+
         void test_UTF8_files()
             {
 #ifdef UNX
@@ -242,10 +239,10 @@ namespace Stringtest
                             aStatus.isValid(osl_FileStatus_Mask_FileName | osl_FileStatus_Mask_Attributes))
                         {
                             rtl::OString sType = getFileTypeName(aStatus);
-                            
+
                             rtl::OUString suFilename = aStatus.getFileName();
                             // rtl::OUString suFullFileURL;
-                            
+
                             rtl::OUString suStrUTF8 = rtl::Uri::encode(suFilename, rtl_UriCharClassUnoParamValue, rtl_UriEncodeKeepEscapes, RTL_TEXTENCODING_UTF8);
                             rtl::OString sStrUTF8 = convertToOString(suStrUTF8);
                             t_print("Type: '%s' file name '%s'\n", sType.getStr(), sStrUTF8.getStr());
@@ -260,7 +257,7 @@ namespace Stringtest
                     t_print("can't open dir:'%s'\n", sStr.getStr());
                 }
             }
-        
+
         void test_FromUTF8()
             {
                 rtl::OString sStr("h%C3%A4llo");
@@ -273,23 +270,23 @@ namespace Stringtest
                 rtl::OUString suStr_UriDecodeNone        = rtl::Uri::decode(suStr, rtl_UriDecodeNone, RTL_TEXTENCODING_UTF8);
                 showContent(suStr_UriDecodeNone);
                 toUTF8(suStr_UriDecodeNone);
-                
+
                 rtl::OUString suStr_UriDecodeToIuri      = rtl::Uri::decode(suStr, rtl_UriDecodeToIuri, RTL_TEXTENCODING_UTF8);
                 showContent(suStr_UriDecodeToIuri);
                 toUTF8(suStr_UriDecodeToIuri);
-                
+
                 rtl::OUString suStr_UriDecodeWithCharset = rtl::Uri::decode(suStr, rtl_UriDecodeWithCharset, RTL_TEXTENCODING_UTF8);
                 showContent(suStr_UriDecodeWithCharset);
                 toUTF8(suStr_UriDecodeWithCharset);
             }
-        
+
         CPPUNIT_TEST_SUITE( Convert );
         CPPUNIT_TEST( test_FromUTF8_001 );
 //        CPPUNIT_TEST( test_UTF8_files );
 //      CPPUNIT_TEST( test_FromUTF8 );
         CPPUNIT_TEST_SUITE_END( );
     };
-    
+
 }
 
 

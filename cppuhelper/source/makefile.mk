@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.54 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -59,65 +55,65 @@ INCPRE+=$(OUT)$/inc$/$(TARGET) $(OUT)$/inc$/private
 CPPUMAKERFLAGS= -C
 
 UNOTYPES= \
-        com.sun.star.beans.PropertyAttribute \
-        com.sun.star.beans.PropertyValue \
-        com.sun.star.beans.XFastPropertySet \
-        com.sun.star.beans.XMultiPropertySet \
-        com.sun.star.beans.XPropertyAccess \
-        com.sun.star.beans.XPropertySet \
-        com.sun.star.bridge.UnoUrlResolver \
-        com.sun.star.bridge.XUnoUrlResolver \
-        com.sun.star.connection.SocketPermission \
-        com.sun.star.container.XElementAccess \
-        com.sun.star.container.XEnumerationAccess \
-        com.sun.star.container.XHierarchicalNameAccess \
-        com.sun.star.container.XNameAccess \
-        com.sun.star.container.XNameContainer \
-        com.sun.star.container.XSet \
-        com.sun.star.io.FilePermission \
-        com.sun.star.io.IOException \
-        com.sun.star.lang.DisposedException \
-        com.sun.star.lang.WrappedTargetRuntimeException \
-        com.sun.star.lang.XComponent \
-        com.sun.star.lang.XEventListener \
-        com.sun.star.lang.XInitialization \
-        com.sun.star.lang.XMultiComponentFactory \
-        com.sun.star.lang.XMultiServiceFactory \
-        com.sun.star.lang.XServiceInfo \
-        com.sun.star.lang.XSingleComponentFactory \
-        com.sun.star.lang.XSingleServiceFactory \
-        com.sun.star.lang.XTypeProvider \
-        com.sun.star.loader.XImplementationLoader \
-        com.sun.star.reflection.XArrayTypeDescription \
-        com.sun.star.reflection.XCompoundTypeDescription \
-        com.sun.star.reflection.XEnumTypeDescription \
-        com.sun.star.reflection.XIdlClass \
-        com.sun.star.reflection.XIdlClassProvider \
-        com.sun.star.reflection.XIdlField2 \
-        com.sun.star.reflection.XIdlReflection \
-        com.sun.star.reflection.XIndirectTypeDescription \
-        com.sun.star.reflection.XInterfaceAttributeTypeDescription \
-        com.sun.star.reflection.XInterfaceAttributeTypeDescription2 \
-        com.sun.star.reflection.XInterfaceMemberTypeDescription \
-        com.sun.star.reflection.XInterfaceMethodTypeDescription \
-        com.sun.star.reflection.XInterfaceTypeDescription2 \
-        com.sun.star.reflection.XMethodParameter \
-        com.sun.star.reflection.XStructTypeDescription \
-        com.sun.star.reflection.XTypeDescription \
-        com.sun.star.reflection.XUnionTypeDescription \
-        com.sun.star.registry.XImplementationRegistration \
-        com.sun.star.registry.XRegistryKey \
-        com.sun.star.registry.XSimpleRegistry \
-        com.sun.star.security.RuntimePermission \
-        com.sun.star.security.XAccessController \
-        com.sun.star.uno.DeploymentException \
-        com.sun.star.uno.RuntimeException \
-        com.sun.star.uno.XAggregation \
-        com.sun.star.uno.XComponentContext \
-        com.sun.star.uno.XCurrentContext \
-        com.sun.star.uno.XUnloadingPreference \
-        com.sun.star.uno.XWeak \
-        com.sun.star.util.XMacroExpander
+		com.sun.star.beans.PropertyAttribute \
+		com.sun.star.beans.PropertyValue \
+		com.sun.star.beans.XFastPropertySet \
+		com.sun.star.beans.XMultiPropertySet \
+		com.sun.star.beans.XPropertyAccess \
+		com.sun.star.beans.XPropertySet \
+		com.sun.star.bridge.UnoUrlResolver \
+		com.sun.star.bridge.XUnoUrlResolver \
+		com.sun.star.connection.SocketPermission \
+		com.sun.star.container.XElementAccess \
+		com.sun.star.container.XEnumerationAccess \
+		com.sun.star.container.XHierarchicalNameAccess \
+		com.sun.star.container.XNameAccess \
+		com.sun.star.container.XNameContainer \
+		com.sun.star.container.XSet \
+		com.sun.star.io.FilePermission \
+		com.sun.star.io.IOException \
+		com.sun.star.lang.DisposedException \
+		com.sun.star.lang.WrappedTargetRuntimeException \
+		com.sun.star.lang.XComponent \
+		com.sun.star.lang.XEventListener \
+		com.sun.star.lang.XInitialization \
+		com.sun.star.lang.XMultiComponentFactory \
+		com.sun.star.lang.XMultiServiceFactory \
+		com.sun.star.lang.XServiceInfo \
+		com.sun.star.lang.XSingleComponentFactory \
+		com.sun.star.lang.XSingleServiceFactory \
+		com.sun.star.lang.XTypeProvider \
+		com.sun.star.loader.XImplementationLoader \
+		com.sun.star.reflection.XArrayTypeDescription \
+		com.sun.star.reflection.XCompoundTypeDescription \
+		com.sun.star.reflection.XEnumTypeDescription \
+		com.sun.star.reflection.XIdlClass \
+		com.sun.star.reflection.XIdlClassProvider \
+		com.sun.star.reflection.XIdlField2 \
+		com.sun.star.reflection.XIdlReflection \
+		com.sun.star.reflection.XIndirectTypeDescription \
+		com.sun.star.reflection.XInterfaceAttributeTypeDescription \
+		com.sun.star.reflection.XInterfaceAttributeTypeDescription2 \
+		com.sun.star.reflection.XInterfaceMemberTypeDescription \
+		com.sun.star.reflection.XInterfaceMethodTypeDescription \
+		com.sun.star.reflection.XInterfaceTypeDescription2 \
+		com.sun.star.reflection.XMethodParameter \
+		com.sun.star.reflection.XStructTypeDescription \
+		com.sun.star.reflection.XTypeDescription \
+		com.sun.star.reflection.XUnionTypeDescription \
+		com.sun.star.registry.XImplementationRegistration \
+		com.sun.star.registry.XRegistryKey \
+		com.sun.star.registry.XSimpleRegistry \
+		com.sun.star.security.RuntimePermission \
+		com.sun.star.security.XAccessController \
+		com.sun.star.uno.DeploymentException \
+		com.sun.star.uno.RuntimeException \
+		com.sun.star.uno.XAggregation \
+		com.sun.star.uno.XComponentContext \
+		com.sun.star.uno.XCurrentContext \
+		com.sun.star.uno.XUnloadingPreference \
+		com.sun.star.uno.XWeak \
+		com.sun.star.util.XMacroExpander
 
 .IF "$(debug)" != ""
 # msvc++: no inlining for debugging
@@ -127,26 +123,26 @@ CFLAGS += -Ob0
 .ENDIF
 
 SLOFILES= \
-        $(SLO)$/typeprovider.obj 	\
-        $(SLO)$/exc_thrower.obj 	\
-        $(SLO)$/servicefactory.obj 	\
-        $(SLO)$/bootstrap.obj 		\
-        $(SLO)$/implbase.obj 		\
-        $(SLO)$/implbase_ex.obj 	\
-        $(SLO)$/propshlp.obj 		\
-        $(SLO)$/weak.obj		\
-        $(SLO)$/interfacecontainer.obj	\
-        $(SLO)$/stdidlclass.obj 	\
-        $(SLO)$/factory.obj		\
-        $(SLO)$/component_context.obj	\
-        $(SLO)$/component.obj		\
-        $(SLO)$/shlib.obj		\
-        $(SLO)$/tdmgr.obj		\
-        $(SLO)$/implementationentry.obj	\
-        $(SLO)$/access_control.obj	\
-        $(SLO)$/macro_expander.obj \
-            $(SLO)$/unourl.obj \
-        $(SLO)$/propertysetmixin.obj \
+		$(SLO)$/typeprovider.obj 	\
+		$(SLO)$/exc_thrower.obj 	\
+		$(SLO)$/servicefactory.obj 	\
+		$(SLO)$/bootstrap.obj 		\
+		$(SLO)$/implbase.obj 		\
+		$(SLO)$/implbase_ex.obj 	\
+		$(SLO)$/propshlp.obj 		\
+		$(SLO)$/weak.obj		\
+		$(SLO)$/interfacecontainer.obj	\
+		$(SLO)$/stdidlclass.obj 	\
+		$(SLO)$/factory.obj		\
+		$(SLO)$/component_context.obj	\
+		$(SLO)$/component.obj		\
+		$(SLO)$/shlib.obj		\
+		$(SLO)$/tdmgr.obj		\
+		$(SLO)$/implementationentry.obj	\
+		$(SLO)$/access_control.obj	\
+		$(SLO)$/macro_expander.obj \
+	        $(SLO)$/unourl.obj \
+		$(SLO)$/propertysetmixin.obj \
         $(SLO)$/findsofficepath.obj
 
 OBJFILES = $(OBJ)$/findsofficepath.obj
@@ -161,9 +157,9 @@ SHL1TARGET=uno_$(TARGET)$(COMID)
 .ENDIF
 
 SHL1STDLIBS= \
-        $(SALLIB)		\
-        $(SALHELPERLIB)	\
-        $(CPPULIB)
+		$(SALLIB)		\
+		$(SALHELPERLIB)	\
+		$(CPPULIB)
 .IF "$(OS)" == "WNT"
 SHL1STDLIBS += $(ADVAPI32LIB)
 .ENDIF

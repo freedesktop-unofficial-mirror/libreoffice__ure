@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.9 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -42,25 +38,25 @@ PACKAGE=com$/sun$/star$/form$/control
 # ------------------------------------------------------------------------
 
 IDLFILES=\
-        CheckBox.idl			\
-        ComboBox.idl			\
-        CommandButton.idl		\
-        CurrencyField.idl		\
-        DateField.idl			\
-        FormattedField.idl		\
-        GridControl.idl			\
-        GroupBox.idl			\
-        ImageButton.idl			\
-        ImageControl.idl		\
-        InteractionGridControl.idl	\
-        ListBox.idl				\
-        NumericField.idl		\
-        PatternField.idl		\
-        RadioButton.idl			\
-        TextField.idl			\
-        TimeField.idl           \
+		CheckBox.idl			\
+		ComboBox.idl			\
+		CommandButton.idl		\
+		CurrencyField.idl		\
+		DateField.idl			\
+		FormattedField.idl		\
+		GridControl.idl			\
+		GroupBox.idl			\
+		ImageButton.idl			\
+		ImageControl.idl		\
+		InteractionGridControl.idl	\
+		ListBox.idl				\
+		NumericField.idl		\
+		PatternField.idl		\
+		RadioButton.idl			\
+		TextField.idl			\
+		TimeField.idl           \
         SubmitButton.idl        \
-        NavigationToolBar.idl
+		NavigationToolBar.idl
 
 # ------------------------------------------------------------------
 

@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: osl_process.cxx,v $
- * $Revision: 1.10 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -31,7 +28,7 @@
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_sal.hxx"
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <osl/process.h>
 #include <osl/file.hxx>
 #include <osl/thread.h>
@@ -70,11 +67,11 @@
 //########################################
 std::string OUString_to_std_string(const rtl::OUString& oustr)
 {
-    rtl::OString ostr = rtl::OUStringToOString(oustr, osl_getThreadTextEncoding());                                
+    rtl::OString ostr = rtl::OUStringToOString(oustr, osl_getThreadTextEncoding());
     return std::string(ostr.getStr());
 }
-        
-//########################################        
+
+//########################################
 using namespace osl;
 using namespace rtl;
 
@@ -82,8 +79,8 @@ using namespace rtl;
 */
 inline void printUString( const ::rtl::OUString & str )
 {
-    rtl::OString aString; 
-    
+    rtl::OString aString;
+
     t_print("#printUString_u# " );
     aString = ::rtl::OUStringToOString( str, RTL_TEXTENCODING_ASCII_US );
     t_print("%s\n", aString.getStr( ) );
@@ -102,21 +99,21 @@ inline ::rtl::OUString getExecutablePath( void )
 }
 
 //rtl::OUString CWD = getExecutablePath();
-        
-//########################################        
+
+//########################################
 class Test_osl_joinProcess : public CppUnit::TestFixture
 {
-    const OUString join_param_; 
+    const OUString join_param_;
     const OUString wait_time_;
     OUString suCWD;
     OUString suExecutableFileURL;
-    
+
     rtl_uString* parameters_[2];
     int          parameters_count_;
-        
+
 public:
-    
-    Test_osl_joinProcess() : 
+
+    Test_osl_joinProcess() :
         join_param_(OUString::createFromAscii("-join")),
         wait_time_(OUString::createFromAscii("1")),
         parameters_count_(2)
@@ -128,16 +125,16 @@ public:
         suExecutableFileURL += rtl::OUString::createFromAscii("/");
         suExecutableFileURL += EXECUTABLE_NAME;
     }
-    
+
     /*-------------------------------------
         Start a process and join with this
         process specify a timeout so that
-        osl_joinProcessWithTimeout returns 
+        osl_joinProcessWithTimeout returns
         osl_Process_E_TimedOut
      -------------------------------------*/
 
     void osl_joinProcessWithTimeout_timeout_failure()
-    {                           
+    {
         oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             suExecutableFileURL.pData,
@@ -149,46 +146,46 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
-        
+
         TimeValue timeout;
         timeout.Seconds = 1;
         timeout.Nanosec = 0;
-        
+
         osl_error = osl_joinProcessWithTimeout(process, &timeout);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcessWithTimeout returned without timeout failure", 
+            "osl_joinProcessWithTimeout returned without timeout failure",
             osl_Process_E_TimedOut == osl_error
-        );        
-        
+        );
+
         osl_error = osl_terminateProcess(process);
-        
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_terminateProcess failed", 
+            "osl_terminateProcess failed",
             osl_error == osl_Process_E_None
         );
-        
-        osl_freeProcessHandle(process);    
+
+        osl_freeProcessHandle(process);
     }
-    
+
     /*-------------------------------------
         Start a process and join with this
         process specify a timeout so that
-        osl_joinProcessWithTimeout returns 
+        osl_joinProcessWithTimeout returns
         osl_Process_E_None
      -------------------------------------*/
 
     void osl_joinProcessWithTimeout_without_timeout_failure()
     {
-        oslProcess process;        
+        oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             suExecutableFileURL.pData,
             parameters_,
@@ -199,36 +196,36 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
-        
+
         TimeValue timeout;
         timeout.Seconds = 10;
         timeout.Nanosec = 0;
-        
+
         osl_error = osl_joinProcessWithTimeout(process, &timeout);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcessWithTimeout returned with failure", 
+            "osl_joinProcessWithTimeout returned with failure",
             osl_Process_E_None == osl_error
-        );        
-                                       
-        osl_freeProcessHandle(process); 
+        );
+
+        osl_freeProcessHandle(process);
     }
-    
+
      /*-------------------------------------
         Start a process and join with this
-        process specify an infinite timeout 
+        process specify an infinite timeout
      -------------------------------------*/
 
     void osl_joinProcessWithTimeout_infinite()
     {
-        oslProcess process;        
+        oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             suExecutableFileURL.pData,
             parameters_,
@@ -239,32 +236,32 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
-                
+
         osl_error = osl_joinProcessWithTimeout(process, NULL);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcessWithTimeout returned with failure", 
+            "osl_joinProcessWithTimeout returned with failure",
             osl_Process_E_None == osl_error
-        );        
-                                        
-        osl_freeProcessHandle(process); 
+        );
+
+        osl_freeProcessHandle(process);
     }
-    
+
      /*-------------------------------------
         Start a process and join with this
         process using osl_joinProcess
      -------------------------------------*/
-     
+
      void osl_joinProcess()
     {
-        oslProcess process;        
+        oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             suExecutableFileURL.pData,
             parameters_,
@@ -275,24 +272,24 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
-                
+
         osl_error = ::osl_joinProcess(process);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcess returned with failure", 
+            "osl_joinProcess returned with failure",
             osl_Process_E_None == osl_error
-        );        
-                                        
-        osl_freeProcessHandle(process); 
+        );
+
+        osl_freeProcessHandle(process);
     }
-             
+
     CPPUNIT_TEST_SUITE(Test_osl_joinProcess);
     CPPUNIT_TEST(osl_joinProcessWithTimeout_timeout_failure);
     CPPUNIT_TEST(osl_joinProcessWithTimeout_without_timeout_failure);
@@ -307,103 +304,103 @@ typedef std::vector<std::string, rtl::Allocator<std::string> >  string_container
 typedef string_container_t::const_iterator string_container_const_iter_t;
 typedef string_container_t::iterator       string_container_iter_t;
 
-//#########################################################    
+//#########################################################
 class exclude : public std::unary_function<std::string, bool>
 {
 public:
     //------------------------------------------------
-    exclude(const string_container_t& exclude_list)        
+    exclude(const string_container_t& exclude_list)
     {
         string_container_const_iter_t iter     = exclude_list.begin();
-        string_container_const_iter_t iter_end = exclude_list.end();        
-        for (/**/; iter != iter_end; ++iter)        
-            exclude_list_.push_back(env_var_name(*iter));        
+        string_container_const_iter_t iter_end = exclude_list.end();
+        for (/**/; iter != iter_end; ++iter)
+            exclude_list_.push_back(env_var_name(*iter));
     }
-    
+
     //------------------------------------------------
     bool operator() (const std::string& env_var) const
-    {                                  
-        return (exclude_list_.end() != 
+    {
+        return (exclude_list_.end() !=
                 std::find(
-                    exclude_list_.begin(), 
-                    exclude_list_.end(), 
+                    exclude_list_.begin(),
+                    exclude_list_.end(),
                     env_var_name(env_var)));
     }
 
 private:
     //-------------------------------------------------
-    // extract the name from an environment variable 
+    // extract the name from an environment variable
     // that is given in the form "NAME=VALUE"
     std::string env_var_name(const std::string& env_var) const
     {
-        std::string::size_type pos_equal_sign = 
+        std::string::size_type pos_equal_sign =
             env_var.find_first_of("=");
-        
+
         if (std::string::npos != pos_equal_sign)
             return std::string(env_var, 0, pos_equal_sign);
-            
+
         return std::string();
     }
-    
-private:    
-    string_container_t exclude_list_;    
+
+private:
+    string_container_t exclude_list_;
 };
 
-#ifdef WNT    
+#ifdef WNT
     void read_parent_environment(string_container_t* env_container)
     {
         LPTSTR env = reinterpret_cast<LPTSTR>(GetEnvironmentStrings());
         LPTSTR p   = env;
-                            
+
         while (size_t l = _tcslen(p))
-        {      
+        {
             env_container->push_back(std::string(p));
-            p += l + 1;    
-        }        
-        FreeEnvironmentStrings(env);       
+            p += l + 1;
+        }
+        FreeEnvironmentStrings(env);
     }
 #else
-    extern char** environ;    
+    extern char** environ;
     void read_parent_environment(string_container_t* env_container)
     {
-        for (int i = 0; NULL != environ[i]; i++)        
-            env_container->push_back(std::string(environ[i]));    
+        for (int i = 0; NULL != environ[i]; i++)
+            env_container->push_back(std::string(environ[i]));
     }
 #endif
 
 //#########################################################
 class Test_osl_executeProcess : public CppUnit::TestFixture
 {
-    const OUString env_param_;     
-    
+    const OUString env_param_;
+
     OUString     temp_file_path_;
     rtl_uString* parameters_[2];
     int          parameters_count_;
     OUString	suCWD;
     OUString	suExecutableFileURL;
-                    
+
 public:
-    
+
     //------------------------------------------------
     // ctor
-    Test_osl_executeProcess() : 
-        env_param_(OUString::createFromAscii("-env")),        
+    Test_osl_executeProcess() :
+        env_param_(OUString::createFromAscii("-env")),
         parameters_count_(2)
-    {                
+    {
         parameters_[0] = env_param_.pData;
         suCWD = getExecutablePath();
         suExecutableFileURL = suCWD;
         suExecutableFileURL += rtl::OUString::createFromAscii("/");
-        suExecutableFileURL += EXECUTABLE_NAME;   
+        suExecutableFileURL += EXECUTABLE_NAME;
     }
-    
+
     //------------------------------------------------
     virtual void setUp()
-    {        
-        temp_file_path_ = create_temp_file();                             
+    {
+        temp_file_path_ = create_temp_file();
         parameters_[1]  = temp_file_path_.pData;
     }
-    
+
     //------------------------------------------------
     OUString create_temp_file()
     {
@@ -414,101 +411,101 @@ public:
         OUString temp_file_path;
         rc = FileBase::getSystemPathFromFileURL(temp_file_url, temp_file_path);
         CPPUNIT_ASSERT_MESSAGE("getSystemPathFromFileURL failed", FileBase::E_None == rc);
-        
+
         return temp_file_path;
     }
-    
-   //------------------------------------------------    
+
+   //------------------------------------------------
     void read_child_environment(string_container_t* env_container)
-    {        
+    {
         OString temp_file_name = OUStringToOString(OUString(
-            parameters_[1]), osl_getThreadTextEncoding());                                
-        std::ifstream file(temp_file_name.getStr());     
-        
+            parameters_[1]), osl_getThreadTextEncoding());
+        std::ifstream file(temp_file_name.getStr());
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "I/O error, cannot open child environment file", 
+            "I/O error, cannot open child environment file",
             file.is_open()
         );
-                   
+
         std::string line;
         while (std::getline(file, line))
-            env_container->push_back(line);                         
+            env_container->push_back(line);
     }
-    
-    //------------------------------------------------    
+
+    //------------------------------------------------
     void dump_env(const string_container_t& env, OUString file_name)
     {
         OString fname = OUStringToOString(file_name, osl_getThreadTextEncoding());
-        std::ofstream file(fname.getStr());        
+        std::ofstream file(fname.getStr());
         std::ostream_iterator<std::string> oi(file, "\n");
-        std::copy(env.begin(), env.end(), oi);		
+        std::copy(env.begin(), env.end(), oi);
     }
-            
+
     //------------------------------------------------
-    // environment of the child process that was 
-    // started. The child process writes his 
+    // environment of the child process that was
+    // started. The child process writes his
     // environment into a file
     bool compare_environments()
-    {                                
-        string_container_t parent_env;        
-        read_parent_environment(&parent_env);                             
-                                
-        string_container_t child_env;                            
-        read_child_environment(&child_env);	
-                                
-        return ((parent_env.size() == child_env.size()) && 
-                (std::equal(child_env.begin(), child_env.end(), parent_env.begin())));		        
-    }
-   
-    //------------------------------------------------
-    // compare the equal environment parts and the 
-    // different part of the child environment
-    bool compare_merged_environments(const string_container_t& different_env_vars)
-    {        
+    {
         string_container_t parent_env;
         read_parent_environment(&parent_env);
-        
-        //remove the environment variables that we have changed
-        //in the child environment from the read parent environment                                                                                                                          
-        parent_env.erase(
-            std::remove_if(parent_env.begin(), parent_env.end(), exclude(different_env_vars)), 
-            parent_env.end());
-        
-        //read the child environment and exclude the variables that
-        //are different                                        
+
         string_container_t child_env;
         read_child_environment(&child_env);
 
-        //partition the child environment into the variables that 
+        return ((parent_env.size() == child_env.size()) &&
+                (std::equal(child_env.begin(), child_env.end(), parent_env.begin())));
+    }
+
+    //------------------------------------------------
+    // compare the equal environment parts and the
+    // different part of the child environment
+    bool compare_merged_environments(const string_container_t& different_env_vars)
+    {
+        string_container_t parent_env;
+        read_parent_environment(&parent_env);
+
+        //remove the environment variables that we have changed
+        //in the child environment from the read parent environment
+        parent_env.erase(
+            std::remove_if(parent_env.begin(), parent_env.end(), exclude(different_env_vars)),
+            parent_env.end());
+
+        //read the child environment and exclude the variables that
+        //are different
+        string_container_t child_env;
+        read_child_environment(&child_env);
+
+        //partition the child environment into the variables that
         //are different to the parent environment (they come first)
         //and the variables that should be equal between parent
         //and child environment
-        string_container_iter_t iter_logical_end = 
+        string_container_iter_t iter_logical_end =
             std::stable_partition(child_env.begin(), child_env.end(), exclude(different_env_vars));
-                                
-        string_container_t different_child_env_vars(child_env.begin(), iter_logical_end);                
+
+        string_container_t different_child_env_vars(child_env.begin(), iter_logical_end);
         child_env.erase(child_env.begin(), iter_logical_end);
-                
+
         bool common_env_size_equals    = (parent_env.size() == child_env.size());
         bool common_env_content_equals = std::equal(child_env.begin(), child_env.end(), parent_env.begin());
-        
-        bool different_env_size_equals    = (different_child_env_vars.size() == different_env_vars.size());                            
-        bool different_env_content_equals = 
+
+        bool different_env_size_equals    = (different_child_env_vars.size() == different_env_vars.size());
+        bool different_env_content_equals =
             std::equal(different_env_vars.begin(), different_env_vars.end(), different_child_env_vars.begin());
-        
-        return (common_env_size_equals && common_env_content_equals && 
-                different_env_size_equals && different_env_content_equals);                 
+
+        return (common_env_size_equals && common_env_content_equals &&
+                different_env_size_equals && different_env_content_equals);
     }
-  
+
     //------------------------------------------------
-    // test that parent and child process have the 
-    // same environment when osl_executeProcess will 
-    // be called with out setting new environment 
+    // test that parent and child process have the
+    // same environment when osl_executeProcess will
+    // be called with out setting new environment
     // variables
    void osl_execProc_parent_equals_child_environment()
-    {                                           
-        oslProcess process;        
+    {
+        oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             suExecutableFileURL.pData,
             parameters_,
@@ -519,50 +516,50 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
 
         osl_error = ::osl_joinProcess(process);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcess returned with failure", 
+            "osl_joinProcess returned with failure",
             osl_Process_E_None == osl_error
-        );    
-        
-        osl_freeProcessHandle(process);                
-        
+        );
+
+        osl_freeProcessHandle(process);
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "Parent an child environment not equal", 
+            "Parent an child environment not equal",
             compare_environments()
         );
     }
-   
-    //------------------------------------------------    
+
+    //------------------------------------------------
     #define ENV1 "PAT=a:\\"
     #define ENV2 "PATHb=b:\\"
     #define ENV3 "Patha=c:\\"
     #define ENV4 "Patha=d:\\"
-    
+
     void osl_execProc_merged_child_environment()
-    {  
+    {
         rtl_uString* child_env[4];
-        OUString env1 = OUString::createFromAscii(ENV1);                
+        OUString env1 = OUString::createFromAscii(ENV1);
         OUString env2 = OUString::createFromAscii(ENV2);
         OUString env3 = OUString::createFromAscii(ENV3);
         OUString env4 = OUString::createFromAscii(ENV4);
-        
+
         child_env[0] = env1.pData;
         child_env[1] = env2.pData;
         child_env[2] = env3.pData;
         child_env[3] = env4.pData;
-                                                                                 
-        oslProcess process; 
+
+        oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             suExecutableFileURL.pData,
             parameters_,
@@ -571,40 +568,40 @@ public:
             NULL,
             suCWD.pData,
             child_env,
-            sizeof(child_env)/sizeof(child_env[0]),            
+            sizeof(child_env)/sizeof(child_env[0]),
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
 
         osl_error = ::osl_joinProcess(process);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcess returned with failure", 
+            "osl_joinProcess returned with failure",
             osl_Process_E_None == osl_error
         );
-                        
-        osl_freeProcessHandle(process);     
-        
+
+        osl_freeProcessHandle(process);
+
         string_container_t different_child_env_vars;
         different_child_env_vars.push_back(ENV1);
         different_child_env_vars.push_back(ENV2);
         different_child_env_vars.push_back(ENV4);
-        
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_execProc_merged_child_environment", 
+            "osl_execProc_merged_child_environment",
             compare_merged_environments(different_child_env_vars)
-        ); 
+        );
     }
-    
+
     void osl_execProc_test_batch()
     {
-        oslProcess process;        
+        oslProcess process;
         rtl::OUString suBatch = suCWD + rtl::OUString::createFromAscii("/") + rtl::OUString::createFromAscii("batch.bat");
         oslProcessError osl_error = osl_executeProcess(
             suBatch.pData,
@@ -616,32 +613,32 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
 
         osl_error = ::osl_joinProcess(process);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcess returned with failure", 
+            "osl_joinProcess returned with failure",
             osl_Process_E_None == osl_error
-        );    
-        
-        osl_freeProcessHandle(process);                                
+        );
+
+        osl_freeProcessHandle(process);
     }
-   
+
     void osl_execProc_exe_name_in_argument_list()
     {
-        rtl_uString* params[3];        
-        
+        rtl_uString* params[3];
+
         params[0] = suExecutableFileURL.pData;
         params[1] = env_param_.pData;
         params[2] = temp_file_path_.pData;
-        oslProcess process;        
+        oslProcess process;
         oslProcessError osl_error = osl_executeProcess(
             NULL,
             params,
@@ -652,25 +649,25 @@ public:
             NULL,
             0,
             &process);
-                    
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
 
         osl_error = ::osl_joinProcess(process);
-                
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_joinProcess returned with failure", 
+            "osl_joinProcess returned with failure",
             osl_Process_E_None == osl_error
-        );    
-        
-        osl_freeProcessHandle(process);                                
+        );
+
+        osl_freeProcessHandle(process);
     }
-    
-    CPPUNIT_TEST_SUITE(Test_osl_executeProcess);    
+
+    CPPUNIT_TEST_SUITE(Test_osl_executeProcess);
     CPPUNIT_TEST(osl_execProc_parent_equals_child_environment);
     CPPUNIT_TEST(osl_execProc_merged_child_environment);
     CPPUNIT_TEST(osl_execProc_test_batch);

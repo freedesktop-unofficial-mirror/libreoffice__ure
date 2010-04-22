@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: ByteSequence.cxx,v $
- * $Revision: 1.13 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -36,7 +33,7 @@
 
 #include <rtl/byteseq.hxx>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 using namespace rtl;
 
@@ -50,7 +47,7 @@ namespace rtl_ByteSequence
 class  ctor : public CppUnit::TestFixture
     {
     public:
-        
+
         void ctor_001()
         {
             ::rtl::ByteSequence aByteSeq1;
@@ -58,11 +55,11 @@ class  ctor : public CppUnit::TestFixture
             CPPUNIT_ASSERT_MESSAGE
             (
                 "Creates an empty sequence",
-                aByteSeq1.getLength() == 0 && 
+                aByteSeq1.getLength() == 0 &&
                 aByteSeq1 == aByteSeq2
             );
         }
-        
+
         void ctor_002()
         {
             ::rtl::ByteSequence aByteSeq;
@@ -70,11 +67,11 @@ class  ctor : public CppUnit::TestFixture
             CPPUNIT_ASSERT_MESSAGE
             (
                 "Creates a copy of given sequence",
-                aByteSeq == aByteSeqtmp 
+                aByteSeq == aByteSeqtmp
             );
-         
+
         }
-        
+
         void ctor_003()
         {
             ::rtl::ByteSequence aByteSeq( &kTestByteSeq1 );
@@ -85,7 +82,7 @@ class  ctor : public CppUnit::TestFixture
                 nNewLen == kTestSeqLen1
         );
         }
-    
+
     void ctor_003_1()
         {
             ::rtl::ByteSequence aByteSeq( &kTestByteSeq2 );
@@ -93,7 +90,7 @@ class  ctor : public CppUnit::TestFixture
             CPPUNIT_ASSERT_MESSAGE
             (
                 "Copy constructor Creates a copy from the C-Handle: reference count > 1 ",
-                nNewLen == kTestSeqLen2 
+                nNewLen == kTestSeqLen2
         );
         }
 
@@ -108,10 +105,10 @@ class  ctor : public CppUnit::TestFixture
                 "Creates a copy of given data bytes",
                 aByteSeq[1] == pElements[1] &&
                 len == nNewLen
-                         
+
             );
         }
-        
+
     void ctor_005()
         {
         sal_Int32 len = 50;
@@ -127,7 +124,7 @@ class  ctor : public CppUnit::TestFixture
             (
                 "Creates sequence of given length and initializes all bytes to 0",
                 nNewLen == len && res
-                
+
             );
         }
 
@@ -151,10 +148,10 @@ class  ctor : public CppUnit::TestFixture
             CPPUNIT_ASSERT_MESSAGE
             (
                 "Creates a sequence from a C-Handle without acquiring the handle, thus taking over ownership",
-                nNewLen == kTestSeqLen3		            
+                nNewLen == kTestSeqLen3
             );
         }
-        
+
         CPPUNIT_TEST_SUITE(ctor);
         CPPUNIT_TEST(ctor_001);
         CPPUNIT_TEST(ctor_002);
@@ -190,10 +187,10 @@ public:
     aByteSeq2 = aByteSeq1;
     sal_Int32 nNewLen = aByteSeq2.getLength();
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Assignment operator: assign longer sequence to another",
-            aByteSeq1 == aByteSeq2 && 
-            nNewLen == len	    
+            aByteSeq1 == aByteSeq2 &&
+            nNewLen == len
         );
     }
 
@@ -206,13 +203,13 @@ public:
     aByteSeq2 = aByteSeq1;
     sal_Int32 nNewLen = aByteSeq2.getLength();
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Assignment operator: assign shorter sequence to another",
-            aByteSeq1 == aByteSeq2 && 
+            aByteSeq1 == aByteSeq2 &&
             nNewLen == len
         );
     }
-    
+
     void assign_003()
     {
         sal_Int32 len = kTestByteCount1 - 1 ;
@@ -222,10 +219,10 @@ public:
     aByteSeq2 = aByteSeq1;
     sal_Int32 nNewLen = aByteSeq2.getLength();
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Assignment operator: assign sequence to another sequence having no data initialized",
-            aByteSeq1 == aByteSeq2 && 
-            nNewLen == kTestByteCount1	    
+            aByteSeq1 == aByteSeq2 &&
+            nNewLen == kTestByteCount1
         );
     }
 
@@ -238,10 +235,10 @@ public:
     aByteSeq2 = aByteSeq1;
     sal_Int32 nNewLen = aByteSeq2.getLength();
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Assignment operator: assign empty sequence to another not empty sequence",
-            aByteSeq1 == aByteSeq2 && 
-        nNewLen == 0	    
+            aByteSeq1 == aByteSeq2 &&
+        nNewLen == 0
         );
     }
 
@@ -275,7 +272,7 @@ public:
     ::rtl::ByteSequence aByteSeq2( pElements, len);
     sal_Bool res = aByteSeq1 == aByteSeq2;
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Equality operator: compare two sequences 1",
             !res
         );
@@ -289,7 +286,7 @@ public:
     ::rtl::ByteSequence aByteSeq2( pElements, len);
     sal_Bool res = aByteSeq1 == aByteSeq2;
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Equality operator: compare two sequences 2",
             res
         );
@@ -304,7 +301,7 @@ public:
     ::rtl::ByteSequence aByteSeq2( pElements, len);
     sal_Bool res = aByteSeq1 == aByteSeq2;
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Equality operator: compare two sequences 2",
             !res
         );
@@ -338,7 +335,7 @@ public:
     ::rtl::ByteSequence aByteSeq2( pElements, len);
     sal_Bool res = aByteSeq1 != aByteSeq2;
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Equality operator: compare two sequences 1",
             res
         );
@@ -352,7 +349,7 @@ public:
     ::rtl::ByteSequence aByteSeq2( pElements, len);
     sal_Bool res = aByteSeq1 != aByteSeq2;
         CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Equality operator: compare two sequences 2",
             !res
         );
@@ -391,7 +388,7 @@ public:
         res = sal_False;
     }
     CPPUNIT_ASSERT_MESSAGE
-        (   
+        (
             "Gets the pointer to byte array: one element sequence",
         res == sal_True
         );
@@ -409,7 +406,7 @@ public:
         res = sal_False;
     }
     CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Gets the pointer to byte array: more elements sequence",
             res == sal_True
         );
@@ -442,9 +439,9 @@ public:
     aByteSeq.realloc( nSize );
     sal_Int32 nNewLen = aByteSeq.getLength();
         CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Reallocates sequence to new length: empty sequence",
-            nNewLen == nSize 
+            nNewLen == nSize
         );
     }
 
@@ -456,12 +453,12 @@ public:
     aByteSeq.realloc( nSize );
     sal_Int32 nNewLen = aByteSeq.getLength();
     CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Reallocates sequence: reference count > 1 && nSize < nElements",
-            nNewLen == nSize 
+            nNewLen == nSize
         );
     }
-    
+
     void realloc_003()
     {
     //reference count > 1
@@ -478,9 +475,9 @@ public:
                 res = sal_False;
         }
     CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Reallocates sequence: reference count > 1 && nSize > nElements",
-            nNewLen == nSize 
+            nNewLen == nSize
         && res == sal_True
         );
     }
@@ -494,12 +491,12 @@ public:
     aByteSeq.realloc( nSize );
     sal_Int32 nNewLen = aByteSeq.getLength();
     CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Reallocates sequence: nSize < nElements",
-            nNewLen == nSize 
+            nNewLen == nSize
         );
     }
-    
+
     void realloc_005()
     {
     sal_Int8 * pElements = kTestByte6;
@@ -509,12 +506,12 @@ public:
     aByteSeq.realloc( nSize );
     sal_Int32 nNewLen = aByteSeq.getLength();
     CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Reallocates sequence: nSize > nElements",
-            nNewLen == nSize 
+            nNewLen == nSize
         );
     }
-    
+
     CPPUNIT_TEST_SUITE(realloc);
     CPPUNIT_TEST(realloc_001);
     CPPUNIT_TEST(realloc_002);
@@ -546,10 +543,10 @@ public:
     sal_Bool res = sal_True;
     if (aByteSeq[0] != kTestByte)
             res = sal_False;
-    
+
         if (aByteSeq[1] != kTestByte1)
             res = sal_False;
-      
+
     if (aByteSeq[2] != kTestByte2)
             res = sal_False;
 
@@ -557,7 +554,7 @@ public:
             res = sal_False;
 
     CPPUNIT_ASSERT_MESSAGE
-        (        
+        (
             "Obtains a reference to byte indexed at given position: empty sequence",
             res == sal_True
         );

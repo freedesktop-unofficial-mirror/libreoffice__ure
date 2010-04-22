@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.16 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -44,51 +40,51 @@ PACKAGE=com$/sun$/star$/table
 IDLFILES=\
     AccessibleCellView.idl      \
     AccessibleTableView.idl	\
-    BorderLine.idl\
-    Cell.idl\
-    CellAddress.idl\
-    CellContentType.idl\
-    CellCursor.idl\
-    CellHoriJustify.idl\
-    CellOrientation.idl\
-    CellProperties.idl\
-    CellRange.idl\
-    CellRangeAddress.idl\
-    CellVertJustify.idl\
-    ShadowFormat.idl\
-    ShadowLocation.idl\
-    TableBorder.idl\
+	BorderLine.idl\
+	Cell.idl\
+	CellAddress.idl\
+	CellContentType.idl\
+	CellCursor.idl\
+	CellHoriJustify.idl\
+	CellOrientation.idl\
+	CellProperties.idl\
+	CellRange.idl\
+	CellRangeAddress.idl\
+	CellVertJustify.idl\
+	ShadowFormat.idl\
+	ShadowLocation.idl\
+	TableBorder.idl\
     TableBorderDistances.idl\
-    TableChart.idl\
-    TableCharts.idl\
-    TableChartsEnumeration.idl\
-    TableColumn.idl\
-    TableColumns.idl\
-    TableColumnsEnumeration.idl\
-    TableOrientation.idl\
-    TableRow.idl\
-    TableRows.idl\
-    TableRowsEnumeration.idl\
-    TableSortDescriptor.idl\
+	TableChart.idl\
+	TableCharts.idl\
+	TableChartsEnumeration.idl\
+	TableColumn.idl\
+	TableColumns.idl\
+	TableColumnsEnumeration.idl\
+	TableOrientation.idl\
+	TableRow.idl\
+	TableRows.idl\
+	TableRowsEnumeration.idl\
+	TableSortDescriptor.idl\
         TableSortDescriptor2.idl\
         TableSortField.idl\
         TableSortFieldType.idl\
-    XAutoFormattable.idl\
-    XCell.idl\
-    XMergeableCell.idl\
-    XMergeableCellRange.idl\
-    XCellCursor.idl\
-    XCellRange.idl\
-    XColumnRowRange.idl\
-    XTableChart.idl\
-    XTableCharts.idl\
-    XTableChartsSupplier.idl\
-    XTableColumns.idl\
-    XTableRows.idl\
-    CellRangeListSource.idl\
-    CellValueBinding.idl\
-    ListPositionCellBinding.idl\
-    XTable.idl
+	XAutoFormattable.idl\
+	XCell.idl\
+	XMergeableCell.idl\
+	XMergeableCellRange.idl\
+	XCellCursor.idl\
+	XCellRange.idl\
+	XColumnRowRange.idl\
+	XTableChart.idl\
+	XTableCharts.idl\
+	XTableChartsSupplier.idl\
+	XTableColumns.idl\
+	XTableRows.idl\
+	CellRangeListSource.idl\
+	CellValueBinding.idl\
+	ListPositionCellBinding.idl\
+	XTable.idl
 
 # ------------------------------------------------------------------
 

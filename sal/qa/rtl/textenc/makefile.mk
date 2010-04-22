@@ -2,13 +2,9 @@
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
 # 
-# Copyright 2008 by Sun Microsystems, Inc.
+# Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
-#
-# $RCSfile: makefile.mk,v $
-#
-# $Revision: 1.8 $
 #
 # This file is part of OpenOffice.org.
 #
@@ -45,11 +41,9 @@ CXXFLAGS+= $(LFS_CFLAGS)
 
 # --- BEGIN --------------------------------------------------------
 SHL1OBJS=  \
-    $(SLO)$/rtl_textcvt.obj
+	$(SLO)$/rtl_textcvt.obj
 SHL1TARGET= rtl_textcvt
-SHL1STDLIBS=\
-    $(SALLIB) \
-    $(CPPUNITLIB)
+SHL1STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
 
 SHL1IMPLIB= i$(SHL1TARGET)
 DEF1NAME    =$(SHL1TARGET)
@@ -63,11 +57,9 @@ SHL1VERSIONMAP = $(PRJ)$/qa$/export.map
 
 # --- BEGIN --------------------------------------------------------
 SHL2OBJS=  \
-    $(SLO)$/rtl_tencinfo.obj
+	$(SLO)$/rtl_tencinfo.obj
 SHL2TARGET= rtl_tencinfo
-SHL2STDLIBS=\
-    $(SALLIB) \
-    $(CPPUNITLIB)
+SHL2STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
 
 SHL2IMPLIB= i$(SHL2TARGET)
 DEF2NAME    =$(SHL2TARGET)
