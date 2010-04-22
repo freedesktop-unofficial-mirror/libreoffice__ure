@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: cppu_ifcontainer.cxx,v $
- * $Revision: 1.3 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -28,7 +25,7 @@
  *
  ************************************************************************/
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #include "com/sun/star/lang/XEventListener.hpp"
 #include "cppuhelper/interfacecontainer.hxx"
@@ -43,7 +40,7 @@ using namespace com::sun::star::lang;
 
 struct equalStr
 {
-    bool operator()( 
+    bool operator()(
         const char * const &rA,
         const char * const &rB) const
         { return !strcmp(rA, rB); }
@@ -119,7 +116,7 @@ namespace cppu_ifcontainer
 
             delete pContainer;
         }
-    
+
         void testEnumerate()
         {
             int i;
@@ -205,7 +202,7 @@ namespace cppu_ifcontainer
             // remove the 1st half of the rest
             for (i = 0; i < nTests / 2; i++)
                 pContainer->removeInterface(pTypes[i], xRefs[i*2]);
-            
+
             // check it is half there
             for (i = 0; i < nTests / 2; i++)
             {
@@ -222,7 +219,7 @@ namespace cppu_ifcontainer
 
         void testOMultiTypeInterfaceContainerHelper()
         {
-            uno::Type pTypes[nTests] = 
+            uno::Type pTypes[nTests] =
             {
                 ::cppu::UnoType< bool >::get(),
                 ::cppu::UnoType< float >::get(),
@@ -241,7 +238,7 @@ namespace cppu_ifcontainer
 
         void testOMultiTypeInterfaceContainerHelperInt32()
         {
-            sal_Int32 pTypes[nTests] = 
+            sal_Int32 pTypes[nTests] =
             {
                 0,
                 -1,
@@ -262,13 +259,13 @@ namespace cppu_ifcontainer
             typedef ::cppu::OMultiTypeInterfaceContainerHelperVar<
                 const char *,hashStr,equalStr> StrContainer;
 
-            const char *pTypes[nTests] = 
+            const char *pTypes[nTests] =
             {
                 "this_is", "such", "fun", "writing", "unit", "tests", "when", "it", "works", "anyway"
             };
             doContainerTest< StrContainer, const char *> (pTypes);
         }
-        
+
         // Automatic registration code
         CPPUNIT_TEST_SUITE(IfTest);
         CPPUNIT_TEST(testCreateDispose);
