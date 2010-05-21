@@ -25,12 +25,53 @@
 #
 #*************************************************************************
 
-UDK_3_0_0 {
-    global:
-        registerAllTestFunction;
+PRJ=..$/..$/..
 
-        _ZN4_STL7num_put*; # STLport
+PRJNAME=bridges
+TARGET=gcc3_uno
+LIBTARGET=no
+ENABLE_EXCEPTIONS=TRUE
 
-    local:
-        *;
-};
+# --- Settings -----------------------------------------------------
+
+.INCLUDE :  settings.mk
+
+# --- Files --------------------------------------------------------
+
+.IF "$(COM)$(OS)$(CPU)" == "GCCLINUXL"
+
+.IF "$(cppu_no_leak)" == ""
+CFLAGS += -DLEAK_STATIC_DATA
+.ENDIF
+
+# In case someone enabled the non-standard -fomit-frame-pointer which does not
+# work with the .cxx sources in this directory:
+CFLAGSCXX += -fno-omit-frame-pointer
+
+CFLAGSNOOPT=-O0
+
+SLOFILES= \
+    $(SLO)$/except.obj		\
+    $(SLO)$/cpp2uno.obj		\
+    $(SLO)$/uno2cpp.obj
+
+SHL1TARGET= $(TARGET)
+
+SHL1DEF=$(MISC)$/$(SHL1TARGET).def
+SHL1IMPLIB=i$(TARGET)
+SHL1VERSIONMAP=..$/..$/bridge_exports.map
+SHL1RPATH=URELIB
+
+SHL1OBJS = $(SLOFILES)
+SHL1LIBS = $(SLB)$/cpp_uno_shared.lib
+
+SHL1STDLIBS= \
+        $(CPPULIB)                      \
+        $(SALLIB)
+
+.ENDIF
+
+# --- Targets ------------------------------------------------------
+
+.INCLUDE :  target.mk
+
