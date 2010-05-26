@@ -31,7 +31,6 @@ PRJNAME=bridges
 TARGET=gcc3_uno
 LIBTARGET=no
 ENABLE_EXCEPTIONS=TRUE
-NO_BSYMBOLIC=TRUE
 
 # --- Settings -----------------------------------------------------
 
@@ -39,26 +38,22 @@ NO_BSYMBOLIC=TRUE
 
 # --- Files --------------------------------------------------------
 
-.IF "$(COM)$(OS)$(CPU)$(COMNAME)" == "GCCLINUXRgcc3"
+.IF "$(COM)$(OS)$(CPU)" == "GCCLINUXL"
 
 .IF "$(cppu_no_leak)" == ""
 CFLAGS += -DLEAK_STATIC_DATA
 .ENDIF
 
-CFLAGSCXX += -fno-omit-frame-pointer 
-
-NOOPTFILES= \
-	$(SLO)$/cpp2uno.obj \
-	$(SLO)$/except.obj \
-	$(SLO)$/uno2cpp.obj
+# In case someone enabled the non-standard -fomit-frame-pointer which does not
+# work with the .cxx sources in this directory:
+CFLAGSCXX += -fno-omit-frame-pointer
 
 CFLAGSNOOPT=-O0
 
 SLOFILES= \
-	$(SLO)$/cpp2uno.obj \
-	$(SLO)$/except.obj \
-	$(SLO)$/uno2cpp.obj \
-	$(SLO)$/armhelper.obj
+	$(SLO)$/except.obj		\
+	$(SLO)$/cpp2uno.obj		\
+	$(SLO)$/uno2cpp.obj
 
 SHL1TARGET= $(TARGET)
 
@@ -71,8 +66,8 @@ SHL1OBJS = $(SLOFILES)
 SHL1LIBS = $(SLB)$/cpp_uno_shared.lib
 
 SHL1STDLIBS= \
-	$(CPPULIB)			\
-	$(SALLIB)
+        $(CPPULIB)                      \
+        $(SALLIB)
 
 .ENDIF
 
@@ -80,5 +75,3 @@ SHL1STDLIBS= \
 
 .INCLUDE :  target.mk
 
-$(SLO)$/%.obj: %.S
-       $(CXX) -c -o $(SLO)$/$(@:b).o $< -fPIC ; touch $@
