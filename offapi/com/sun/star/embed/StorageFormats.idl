@@ -24,55 +24,37 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_embed_XHatchWindowController_idl__
-#define __com_sun_star_embed_XHatchWindowController_idl__
+#ifndef __com_sun_star_embed_StorageFormats_idl__
+#define __com_sun_star_embed_StorageFormats_idl__
 
-#ifndef __com_sun_star_uno_XInterface_idl__
-#include <com/sun/star/uno/XInterface.idl>
-#endif
-
-#ifndef __com_sun_star_awt_Rectangle_idl__
-#include <com/sun/star/awt/Rectangle.idl>
-#endif
 
 //============================================================================
 
- module com {  module sun {  module star {  module embed {
+module com { module sun { module star { module embed {
 
 //============================================================================
+/** The constant set contains IDs of formats that are supported by
+    <type>StorageFactory</type>.
 
-/** specifies the operations for a hatch window.
-
-    <p>
-    A hatch window owner is responsible to handle resize/move requests
-    sent by the window. It is also responsible to validate tracking
-    rectangle size.
-    </p>
- */
-published interface XHatchWindowController: com::sun::star::uno::XInterface
+    @see <type>StorageFactory</type>
+    @since OOo 3.3
+*/
+published constants StorageFormats
 {
     //------------------------------------------------------------------------
-    /** requests window owner to resize/move the window.
-
-        @param aRect
-            the new requested position and size of the window
+    /** specifies package format
      */
-    void requestPositioning( [in] com::sun::star::awt::Rectangle aRect );
+    const long PACKAGE = 1;
 
     //------------------------------------------------------------------------
-    /** returns the closest valid rectangle to the provided one.
-
-        @param aRect
-            a new selected position and size of the tracking rectangle
-
-        @returns
-            the closest valid position and size to the provided one
+    /** specifies zip format
      */
-    com::sun::star::awt::Rectangle calcAdjustedRectangle(
-                    [in] com::sun::star::awt::Rectangle aRect );
+    const long ZIP = 2;
 
-    void activated();
-    void deactivated();
+    //------------------------------------------------------------------------
+    /** specifies Office Open XML format
+     */
+    const long OFOPXML = 3;
 };
 
 //============================================================================
