@@ -1,7 +1,7 @@
 #*************************************************************************
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-# 
+#
 # Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
@@ -23,14 +23,23 @@
 # <http://www.openoffice.org/license.html>
 # for a copy of the LGPLv3 License.
 #
-#*************************************************************************
+#***********************************************************************/
 
-UDK_3_0_0 {
-    global:
-        registerAllTestFunction;
+PRJ = ..
+PRJNAME = sal
+TARGET = cppunittester
 
-        _ZN4_STL7num_put*; # STLport
+ENABLE_EXCEPTIONS = TRUE
 
-    local:
-        *;
-};
+.INCLUDE: settings.mk
+
+CFLAGSCXX += $(CPPUNIT_CFLAGS)
+
+OBJFILES = $(APP1OBJS)
+
+APP1OBJS = $(OBJ)/cppunittester.obj
+APP1RPATH = NONE
+APP1STDLIBS = $(CPPUNITLIB) $(SALLIB)
+APP1TARGET = cppunittester
+
+.INCLUDE: target.mk
