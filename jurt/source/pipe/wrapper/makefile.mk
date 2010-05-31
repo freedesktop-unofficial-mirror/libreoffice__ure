@@ -1,7 +1,7 @@
 #*************************************************************************
 #
 # DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
-# 
+#
 # Copyright 2000, 2010 Oracle and/or its affiliates.
 #
 # OpenOffice.org - a multi-platform office productivity suite
@@ -23,22 +23,30 @@
 # <http://www.openoffice.org/license.html>
 # for a copy of the LGPLv3 License.
 #
-#*************************************************************************
+#***********************************************************************/
 
-PRJ     := ..$/..
-PRJNAME := cppu
-TARGET  := purpose_envs.test.pl
+PRJ = ../../..
+PRJNAME = jurt
+TARGET = wrapper
 
-ENABLE_EXCEPTIONS := TRUE
-NO_BSYMBOLIC      := TRUE
+NO_DEFAULT_STL = TRUE
+UWINAPILIB =
+VISIBILITY_HIDDEN = TRUE
 
+.INCLUDE: settings.mk
 
-.INCLUDE :  settings.mk
+SHL1CODETYPE = C
+SHL1IMPLIB = i$(SHL1TARGET)
+SHL1OBJS = $(SLO)/wrapper.obj
+SHL1RPATH = URELIB
+SHL1TARGET = jpipe
+SHL1USE_EXPORTS = name
+DEF1NAME = $(SHL1TARGET)
 
+SLOFILES = $(SHL1OBJS)
 
-.INCLUDE :  target.mk
+.IF "$(SOLAR_JAVA)" == ""
+nothing .PHONY :
+.END
 
-ALLTAR: $(BIN)$/$(TARGET)
-
-$(BIN)$/$(TARGET): purpose_envs.test.pl
-	@+$(COPY) $^ $@
+.INCLUDE: target.mk
