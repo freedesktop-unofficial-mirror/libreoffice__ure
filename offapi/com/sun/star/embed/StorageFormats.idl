@@ -24,39 +24,42 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-
-#ifndef INCLUDED_CppObject_hxx
-#define INCLUDED_CppObject_hxx
-
-
-#include "com/sun/star/uno/XComponentContext.hpp"
+#ifndef __com_sun_star_embed_StorageFormats_idl__
+#define __com_sun_star_embed_StorageFormats_idl__
 
 
-#include "callee.hxx"
+//============================================================================
 
-namespace cssu = ::com::sun::star::uno;
+module com { module sun { module star { module embed {
 
+//============================================================================
+/** The constant set contains IDs of formats that are supported by
+    <type>StorageFactory</type>.
 
-class CppObject: public cssu::XInterface
+    @see <type>StorageFactory</type>
+    @since OOo 3.3
+*/
+published constants StorageFormats
 {
-public:
-    static cssu::XInterface * s_create (Callee * pCallee);
-    static void               s_release(cssu::XInterface       * pXInterface);
-    static void      s_call   (cssu::XInterface       * pXInterface);
+    //------------------------------------------------------------------------
+    /** specifies package format
+     */
+    const long PACKAGE = 1;
 
-    virtual void SAL_CALL acquire() throw ();
-    virtual void SAL_CALL release() throw ();
+    //------------------------------------------------------------------------
+    /** specifies zip format
+     */
+    const long ZIP = 2;
 
-    virtual cssu::Any SAL_CALL queryInterface(cssu::Type const & rType ) throw (cssu::RuntimeException);
-    
-protected:
-    oslInterlockedCount    m_nRef;
-
-    explicit CppObject(Callee * pCallee) SAL_THROW((cssu::RuntimeException));
-    virtual ~CppObject(void)          SAL_THROW((cssu::RuntimeException));
-
-    Callee * m_pCallee;
+    //------------------------------------------------------------------------
+    /** specifies Office Open XML format
+     */
+    const long OFOPXML = 3;
 };
 
+//============================================================================
+
+}; }; }; };
 
 #endif
+
