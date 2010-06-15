@@ -94,7 +94,8 @@ IDLFILES=\
 	Transliteration.idl \
 	TransliterationModules.idl \
 	TransliterationModulesNew.idl \
-	TransliterationType.idl \
+    TransliterationModulesExtra.idl \
+    TransliterationType.idl \
 	UnicodeScript.idl \
 	UnicodeType.idl \
 	Weekdays.idl \
