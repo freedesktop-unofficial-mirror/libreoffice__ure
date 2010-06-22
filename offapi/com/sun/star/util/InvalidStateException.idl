@@ -1,7 +1,6 @@
 /*************************************************************************
- *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -25,32 +24,27 @@
  *
  ************************************************************************/
 
-#ifndef __com_sun_star_drawing_framework_XView_idl__
-#define __com_sun_star_drawing_framework_XView_idl__
+#ifndef __com_sun_star_util_InvalidStateException_idl__
+#define __com_sun_star_util_InvalidStateException_idl__
 
-#ifndef __com_sun_star_uno_XInterface_idl__
-#include <com/sun/star/uno/XInterface.idl>
-#endif
-#ifndef __com_sun_star_drawing_framework_XResource_idl__
-#include <com/sun/star/drawing/framework/XResource.idl>
-#endif
+#include <com/sun/star/uno/Exception.idl> 
 
-module com { module sun { module star { module drawing { module framework {
+//==================================================================================================================
 
-/** A view in the drawing framework is any object that paints into a pane.
-    <p>Typical examples are the Impress views that show a graphical
-    representation of a document.  But the task pane, which is primarily a
-    container of dialogs, is a view as well.</p>
-    <p>Luckily the drawing framework does not need to know much about what a
-    view is.  It just needs to identify view objects and a typesafe way to
-    reference them.</p>
-    <p>The URL prefix of views is <code>private:resource/view</code></p>
-*/
-interface XView
+module com { module sun { module star { module util { 
+
+//==================================================================================================================
+
+/** is thrown when an object's state does not allow to call requested functionality.
+ */
+exception InvalidStateException : com::sun::star::uno::Exception
 {
-    interface XResource;
 };
 
-}; }; }; }; }; // ::com::sun::star::drawing::framework
+//==================================================================================================================
+
+}; }; }; };
+
+//==================================================================================================================
 
 #endif
