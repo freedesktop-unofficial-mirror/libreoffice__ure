@@ -74,7 +74,12 @@ constants UIElementType
     /** specifies a floating window, which can also be docked.
     */
     const short PROGRESSBAR     = 6;
-    
+
+    //-------------------------------------------------------------------------
+    /** specifies a tool panel
+    */
+    const short TOOLPANEL       = 7;
+
     //-------------------------------------------------------------------------
     /** specifies a window that can be docked.
     */
