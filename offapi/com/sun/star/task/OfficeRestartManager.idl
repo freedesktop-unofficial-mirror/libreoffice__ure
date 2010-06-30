@@ -25,37 +25,29 @@
  *
  ************************************************************************/
 
-#if ! defined INCLUDED_com_sun_star_deployment_LicenseException_idl
-#define INCLUDED_com_sun_star_deployment_LicenseException_idl
+#ifndef __com_sun_star_task_OfficeRestartManager_idl__
+#define __com_sun_star_task_OfficeRestartManager_idl__
 
-#include <com/sun/star/uno/Exception.idl>
+//=============================================================================
 
+module com { module sun { module star { module task { 
 
-module com { module sun { module star { module deployment {
+interface XRestartManager;
 
-/** A LicenseException reflects the necessity of someone aggreeing to a license.
-    
-    @since OOo 2.0.4
+//=============================================================================
+
+/** This singleton is intended to allow to restart the office asynchronously.
+
+    @since OOo 3.3
  */
-exception LicenseException : com::sun::star::uno::Exception
-{
-    /** name of the extension.
+singleton OfficeRestartManager : XRestartManager;
 
-        The display name of the extension.
-        See <member>XPackage::getDisplayName</member>
-     */
-    string ExtensionName;
-    /** contains the text of the license. 
-    */
-    string Text;
-
-    /** contains the value of the attribute
-    /description/registration/simple-license/@accept-by
-    from the description.xml
-    */
-    string AcceptBy;
-};
+//=============================================================================
 
 }; }; }; }; 
 
+//=============================================================================
+
+
 #endif
+
