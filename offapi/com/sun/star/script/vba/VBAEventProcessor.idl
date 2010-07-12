@@ -25,10 +25,10 @@
  *
  ************************************************************************/
  
-#ifndef __com_sun_star_script_vba_SpreadsheetEventProcessor_idl__
-#define __com_sun_star_script_vba_SpreadsheetEventProcessor_idl__
+#ifndef __com_sun_star_script_vba_VBAEventProcessor_idl__
+#define __com_sun_star_script_vba_VBAEventProcessor_idl__
 
-#include <com/sun/star/script/vba/EventProcessor.idl>
+#include <com/sun/star/script/vba/XVBAEventProcessor.idl>
 
 //=============================================================================
 
@@ -36,9 +36,8 @@ module com {  module sun {  module star { module script { module vba {
 
 //=============================================================================
 
-service SpreadsheetEventProcessor
+service VBAEventProcessor : XVBAEventProcessor
 {
-    service EventProcessor;
 };
 
 //=============================================================================
