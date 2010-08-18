@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_Process.cxx,v $
- * $Revision: 1.8 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -36,7 +33,7 @@
 #include <string.h>
 #include <sal/types.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <rtl/ustring.hxx>
 #include <rtl/string.hxx>
 #include <rtl/process.h>
@@ -48,7 +45,7 @@
 using namespace osl;
 using namespace rtl;
 
-/** print a UNI_CODE String. And also print some comments of the string. 
+/** print a UNI_CODE String. And also print some comments of the string.
 */
 inline void printUString( const ::rtl::OUString & str, const sal_Char * msg = NULL )
 {
@@ -89,8 +86,8 @@ public:
 
     void tearDown()
     {
-    }    
-    
+    }
+
     void getAppCommandArg_001()
     {
 #if defined(WNT) || defined(OS2)
@@ -131,33 +128,33 @@ public:
 
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
     //we could get return value only after the process terminated
         osl_joinProcess(hProcess);
         // CPPUNIT_ASSERT_MESSAGE
         // (
-        //     "osl_joinProcess returned with failure", 
+        //     "osl_joinProcess returned with failure",
         //     osl_Process_E_None == osl_error
         // );
     oslProcessInfo* pInfo = new oslProcessInfo;
-    //please pay attention to initial the Size to sizeof(oslProcessInfo), or else 
+    //please pay attention to initial the Size to sizeof(oslProcessInfo), or else
     //you will get unknow error when call osl_getProcessInfo
     pInfo->Size = sizeof(oslProcessInfo);
     osl_error = osl_getProcessInfo( hProcess, osl_Process_EXITCODE, pInfo );
     CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_getProcessInfo returned with failure", 
+            "osl_getProcessInfo returned with failure",
             osl_Process_E_None == osl_error
         );
 
-    t_print("the exit code is %d.\n", pInfo->Code ); 
+    t_print("the exit code is %d.\n", pInfo->Code );
     CPPUNIT_ASSERT_MESSAGE("rtl_getAppCommandArg or rtl_getAppCommandArgCount error.", pInfo->Code == 2);
     delete pInfo;
     }
-   
-    
+
+
     CPPUNIT_TEST_SUITE(getAppCommandArg);
     CPPUNIT_TEST(getAppCommandArg_001);
   //  CPPUNIT_TEST(getAppCommandArg_002);
@@ -203,7 +200,7 @@ void printUuidtoBuffer( sal_uInt8 *pNode, sal_Char * pBuffer )
              nPtr++;
         }
         sprintf( (sal_Char *)(pBuffer + nPtr), "%02x", nValue );
-        nPtr += 2 ; 
+        nPtr += 2 ;
     }
 }
 
@@ -217,15 +214,15 @@ public:
 
     void tearDown()
     {
-    } 
-    //gets a 16-byte fixed size identifier which is guaranteed not to change	during the current process. 
+    }
+    //gets a 16-byte fixed size identifier which is guaranteed not to change	during the current process.
     void getGlobalProcessId_001()
     {
         sal_uInt8 pTargetUUID1[16];
         sal_uInt8 pTargetUUID2[16];
         rtl_getGlobalProcessId( pTargetUUID1 );
         rtl_getGlobalProcessId( pTargetUUID2 );
-    CPPUNIT_ASSERT_MESSAGE("getGlobalProcessId: got two same ProcessIds.", !memcmp( pTargetUUID1 , pTargetUUID2 , 16 ) ); 
+    CPPUNIT_ASSERT_MESSAGE("getGlobalProcessId: got two same ProcessIds.", !memcmp( pTargetUUID1 , pTargetUUID2 , 16 ) );
     }
     //different processes different pids
     void getGlobalProcessId_002()
@@ -241,7 +238,7 @@ public:
         sal_Char pUUID1[32];
           printUuidtoBuffer( pTargetUUID1, pUUID1 );
     printf("# UUID to String is %s\n", pUUID1);
-    
+
     rtl::OUString suCWD = getModulePath();
         oslProcess hProcess = NULL;
        rtl::OUString suFileURL = suCWD;
@@ -253,7 +250,7 @@ public:
             NULL,
             0,
             osl_Process_WAIT,
-            0, 
+            0,
             suCWD.pData,
             NULL,
             0,
@@ -261,24 +258,24 @@ public:
         NULL,
         pChildOutputRead,
         NULL);
-        
+
         CPPUNIT_ASSERT_MESSAGE
         (
-            "osl_createProcess failed", 
+            "osl_createProcess failed",
             osl_error == osl_Process_E_None
         );
     //we could get return value only after the process terminated
         osl_joinProcess(hProcess);
-        
+
         sal_Char pUUID2[33];
         pUUID2[32] = '\0';
     sal_uInt64 nRead = 0;
     osl_readFile( *pChildOutputRead, pUUID2, 32, &nRead );
     t_print("read buffer is %s, nRead is %d \n", pUUID2, nRead );
-    OUString suUUID2 = OUString::createFromAscii( pUUID2 );		
-    CPPUNIT_ASSERT_MESSAGE("getGlobalProcessId: got two same ProcessIds.", suUUID2.equalsAsciiL( pUUID1, 32) == sal_False ); 
+    OUString suUUID2 = OUString::createFromAscii( pUUID2 );
+    CPPUNIT_ASSERT_MESSAGE("getGlobalProcessId: got two same ProcessIds.", suUUID2.equalsAsciiL( pUUID1, 32) == sal_False );
     }
-    
+
     CPPUNIT_TEST_SUITE(getGlobalProcessId);
     CPPUNIT_TEST(getGlobalProcessId_001);
     CPPUNIT_TEST(getGlobalProcessId_002);

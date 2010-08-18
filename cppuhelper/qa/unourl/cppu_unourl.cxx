@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: cppu_unourl.cxx,v $
- * $Revision: 1.3 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -28,7 +25,7 @@
  *
  ************************************************************************/
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 #include "cppuhelper/unourl.hxx"
 #include "rtl/malformeduriexception.hxx"
@@ -144,7 +141,7 @@ namespace cppu_unourl
                 {}
 
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to parse URI correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to parse URI correctly",
                                        aDescriptor.equalsAscii(
                                            aTests[i].pDescriptor));
             }
@@ -191,11 +188,11 @@ namespace cppu_unourl
                 {}
 
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to parse URI correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to parse URI correctly",
                                        aName.equalsAscii(aTests[i].pName));
             }
-        }        
-            
+        }
+
         void testDescriptorKey(void)
         {
             struct Test
@@ -237,7 +234,7 @@ namespace cppu_unourl
                 {}
 
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to detect parameter correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to detect parameter correctly",
                                        bPresent == aTests[i].bPresent);
             }
         }
@@ -306,7 +303,7 @@ namespace cppu_unourl
                 catch (rtl::MalformedUriException &)
                 {}
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to get param correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to get param correctly",
                                        aValue.equalsAscii(aTests[i].pValue));
             }
         }
@@ -386,7 +383,7 @@ namespace cppu_unourl
                 catch (rtl::MalformedUriException &)
                 {}
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to get param correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to get param correctly",
                                        aConnection.equalsAscii(
                                            aTests[i].pConnection));
             }
@@ -420,12 +417,12 @@ namespace cppu_unourl
                 catch (rtl::MalformedUriException &)
                 {}
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to get protocol correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to get protocol correctly",
                                        aProtocol.equalsAscii(
                                            aTests[i].pProtocol));
             }
         }
-        
+
         void testUrlObjectName()
         {
             struct Test
@@ -456,7 +453,7 @@ namespace cppu_unourl
                 catch (rtl::MalformedUriException &)
                 {}
                 CPPUNIT_ASSERT_MESSAGE("Failed to parse URI", bValid);
-                CPPUNIT_ASSERT_MESSAGE("Failed to get protocol correctly", 
+                CPPUNIT_ASSERT_MESSAGE("Failed to get protocol correctly",
                                        aObjectName.equalsAscii(
                                            aTests[i].pObjectName));
             }

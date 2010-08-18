@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: testHelperFunctions.cxx,v $
- * $Revision: 1.6 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -38,7 +35,7 @@
 
 #include "stringhelper.hxx"
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 // void isJaBloed()
 // {
@@ -47,12 +44,12 @@
 
 inline sal_Int64 t_abs64(sal_Int64 _nValue)
 {
-    // std::abs() seems to have some ambiguity problems (so-texas) 
+    // std::abs() seems to have some ambiguity problems (so-texas)
     // return abs(_nValue);
     t_print("t_abs64(%ld)\n", _nValue);
     // CPPUNIT_ASSERT(_nValue < 2147483647);
 
-    if (_nValue < 0) 
+    if (_nValue < 0)
     {
         _nValue = -_nValue;
     }
@@ -115,7 +112,7 @@ namespace testOfHelperFunctions
         t_print("n32 should be -2^31 is: %d\n", n32);
         CPPUNIT_ASSERT_MESSAGE("n32!=2147483648", n32 == -2147483648 );
     }
-    
+
 
     void test_t_abs64::test1_0()
     {
@@ -158,10 +155,10 @@ namespace testOfHelperFunctions
 
         sal_Int64 n3 = 4294967296LL;
         CPPUNIT_ASSERT_MESSAGE("4294967296 is != 0", n3 != 0 );
-        
+
         CPPUNIT_ASSERT_MESSAGE("n=2^31 << 1, n2 = 2^31 * 2, n3 = 2^32, all should equal!", n == n2 && n == n3 );
     }
-    
+
 
     void test_t_abs64::test3()
     {
@@ -196,14 +193,14 @@ namespace testOfHelperFunctions
         t_print64(n);
         CPPUNIT_ASSERT_MESSAGE("n=-2^33", t_abs64(n) > 0 );
     }
-    
+
 
 // -----------------------------------------------------------------------------
     class test_t_print : public CppUnit::TestFixture
     {
     public:
         void t_print_001();
-        
+
         CPPUNIT_TEST_SUITE( test_t_print );
         CPPUNIT_TEST( t_print_001 );
         CPPUNIT_TEST_SUITE_END( );
@@ -222,7 +219,7 @@ namespace testOfHelperFunctions
         sValue <<= suValue;
         t_print("a String '%s'\n", sValue.getStr());
     }
- 
+
 
     class StopWatch
     {
@@ -234,8 +231,8 @@ namespace testOfHelperFunctions
                 :m_bStarted(false)
             {
             }
-        
-        void start() 
+
+        void start()
             {
                 m_bStarted = true;
                 osl_getSystemTime(&m_aStartTime);
@@ -293,11 +290,11 @@ namespace testOfHelperFunctions
                 }
                 return sBack;
             }
-        
+
         void  showTime(const rtl::OString & aWhatStr)
             {
                 OSL_ENSURE(!m_bStarted, "Not Stopped.");
-                
+
                 sal_Int32 nSeconds = m_aEndTime.Seconds - m_aStartTime.Seconds;
                 sal_Int32 nNanoSec = sal_Int32(m_aEndTime.Nanosec) - sal_Int32(m_aStartTime.Nanosec);
                 // printf("Seconds: %d Nanosec: %d ", nSeconds, nNanoSec);
@@ -322,16 +319,16 @@ namespace testOfHelperFunctions
                 aStr += makeThreeDigits(rtl::OString::valueOf((nNanoSec % 1000000) / 1000));
                 aStr += ":";
                 aStr += makeThreeDigits(rtl::OString::valueOf((nNanoSec % 1000)));
-                
+
                 printf("%s\n", aStr.getStr());
                 // cout << aStr.getStr() << endl;
             }
-        
+
     };
-    
+
 static sal_Bool isEqualTimeValue ( const TimeValue* time1,  const TimeValue* time2)
 {
-    if( time1->Seconds == time2->Seconds && 
+    if( time1->Seconds == time2->Seconds &&
         time1->Nanosec == time2->Nanosec)
         return sal_True;
     else
@@ -375,11 +372,11 @@ bool isBTimeGreaterATime(TimeValue const& A, TimeValue const& B)
     class test_TimeValues : public CppUnit::TestFixture
     {
     public:
-        
+
         void t_time1();
         void t_time2();
         void t_time3();
-        
+
         CPPUNIT_TEST_SUITE( test_TimeValues );
         CPPUNIT_TEST( t_time1 );
         CPPUNIT_TEST( t_time2 );
@@ -433,7 +430,7 @@ void test_TimeValues::t_time3()
     //     osl_getSystemTime(&aStartTime);
     //     // testSession(xORB, false);
     //     osl_getSystemTime(&aEndTime);
-    //     
+    //
     //     sal_Int32 nSeconds = aEndTime.Seconds - aStartTime.Seconds;
     //     sal_Int32 nNanoSec = aEndTime.Nanosec - aStartTime.Nanosec;
     //     if (nNanoSec < 0)
@@ -441,10 +438,10 @@ void test_TimeValues::t_time3()
     //         nNanoSec = 1000000000 - nNanoSec;
     //         nSeconds++;
     //     }
-    //     
+    //
     //     // cout << "Time: " << nSeconds << ". " << nNanoSec << endl;
     // }
-    
+
 
 } // namespace testOfHelperFunctions
 

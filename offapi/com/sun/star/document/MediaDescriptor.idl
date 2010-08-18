@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: MediaDescriptor.idl,v $
- * $Revision: 1.24 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -54,6 +51,10 @@
 #include <com/sun/star/task/XStatusIndicator.idl>
 #endif
 
+#ifndef __com_sun_star_frame_XFrame_idl__
+#include <com/sun/star/frame/XFrame.idl>
+#endif
+
 //=============================================================================
 
 module com { module sun { module star { module document {
@@ -83,6 +84,12 @@ module com { module sun { module star { module document {
  */
 published service MediaDescriptor
 {
+    //-------------------------------------------------------------------------
+    /** May be set by filters or detection services if user has choosen to
+        abort loading/saving, e.g. while entering a password.
+     */
+    [optional,property] boolean Aborted;
+
     //-------------------------------------------------------------------------
     /** document is a template
 
@@ -134,9 +141,14 @@ published service MediaDescriptor
         for a special component type. Format of that depends from real
         type of adressed component.
         </p>
+        
+        <p>
+        For extensibility, it is recommended to use values of type
+        sequence<com.sun.star.beans.PropertyValue> with this property.
+        </p>
      */
     [optional,property] any ComponentData;
-    
+
     //-------------------------------------------------------------------------
     /** The base URL of the document to be used to resolve relative links.
      */
@@ -439,7 +451,7 @@ published service MediaDescriptor
     /** let the document be opened in repair mode
 
         <p>
-        For loading of corrupted zip packages: Setting this to <TRUE/> let the document 
+        For loading of corrupted zip packages: Setting this to <TRUE/> let the document
         be opened in repair mode, so as much as possible information will be retrieved.
         </p>
 
@@ -591,6 +603,11 @@ published service MediaDescriptor
         @since OOo 3.0
      */
     [optional,property] string ViewControllerName;
+    //-------------------------------------------------------------------------
+
+    /** specifies the frame containing the document. May be empty.
+     */
+    [optional,property] com::sun::star::frame::XFrame Frame;
 };
 
 //=============================================================================

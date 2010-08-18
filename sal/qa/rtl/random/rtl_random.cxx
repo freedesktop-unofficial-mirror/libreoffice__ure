@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_random.cxx,v $
- * $Revision: 1.5 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -35,7 +32,7 @@
 
 #include <algorithm> // STL
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <rtl/random.h>
 
 namespace rtl_random
@@ -58,7 +55,7 @@ public:
     void createPool_001()
     {
         // this is demonstration code
-        
+
         rtlRandomPool aPool = rtl_random_createPool();
 
         // LLA: seems to be that an other test is not possible for createPool()
@@ -67,8 +64,8 @@ public:
         rtl_random_destroyPool(aPool);
     }
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(createPool);
@@ -105,8 +102,8 @@ public:
 
         rtl_random_destroyPool(aPool);
     }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(destroyPool);
@@ -133,7 +130,7 @@ public:
     void addBytes_000()
     {
         rtlRandomPool aPool = rtl_random_createPool();
-        
+
         sal_uInt32  nBufLen = 4;
         sal_uInt8   *pBuffer = new sal_uInt8[ nBufLen ];
         memset(pBuffer, 0, nBufLen);
@@ -170,8 +167,8 @@ public:
         }
 
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(addBytes);
@@ -184,7 +181,7 @@ public:
 class Statistics
 {
     int m_nDispensation[256];
-    
+
     int m_nMin;
     int m_nMax;
     int m_nAverage;
@@ -204,33 +201,33 @@ public:
             clearDispensation();
         }
     ~Statistics(){}
-    
+
     void addValue(sal_Int16 _nIndex, sal_Int32 _nValue)
         {
             OSL_ASSERT(_nIndex >= 0 && _nIndex < 256);
             m_nDispensation[_nIndex] += _nValue;
         }
-    
+
     void build(sal_Int32 _nCountMax)
         {
             m_nMin = _nCountMax;
             m_nMax = 0;
-            
+
             m_nAverage = _nCountMax / 256;
-            
+
             m_nMinDeviation = _nCountMax;
             m_nMaxDeviation = 0;
-            
+
             for (int i = 0;i < 256;i ++)                        // show dispensation
             {
                 m_nMin = std::min(m_nMin, m_nDispensation[i]);
                 m_nMax = std::max(m_nMax, m_nDispensation[i]);
-                
+
                 m_nMinDeviation = std::min(m_nMinDeviation, abs(m_nAverage - m_nDispensation[i]));
                 m_nMaxDeviation = std::max(m_nMaxDeviation, abs(m_nAverage - m_nDispensation[i]));
             }
         }
-    
+
     void print()
         {
             // LLA: these are only info values
@@ -244,7 +241,7 @@ public:
 
     sal_Int32 getAverage() {return m_nAverage;}
     sal_Int32 getMaxDeviation() {return m_nMaxDeviation;}
-    
+
 };
 
 class getBytes : public CppUnit::TestFixture
@@ -263,7 +260,7 @@ public:
     void getBytes_000()
     {
         rtlRandomPool aPool = rtl_random_createPool();
-        
+
         sal_uInt32  nBufLen = 4;
         sal_uInt8   *pBuffer = new sal_uInt8[ nBufLen ];
         memset(pBuffer, 0, nBufLen);
@@ -284,7 +281,7 @@ public:
     void getBytes_001()
     {
         rtlRandomPool aPool = rtl_random_createPool();
-        
+
         sal_uInt32  nBufLen = 4;
         sal_uInt8   *pBuffer = new sal_uInt8[ nBufLen ];
         memset(pBuffer, 0, nBufLen);
@@ -301,7 +298,7 @@ public:
     void getBytes_002()
     {
         rtlRandomPool aPool = rtl_random_createPool();
-        
+
         sal_uInt32  nBufLen = 4;
         sal_uInt8   *pBuffer = new sal_uInt8[ nBufLen << 1 ];
         memset(pBuffer, 0, nBufLen << 1);
@@ -314,7 +311,7 @@ public:
         t_print("%2x %2x %2x %2x %2x %2x %2x %2x\n", pBuffer[0], pBuffer[1], pBuffer[2], pBuffer[3], pBuffer[4], pBuffer[5], pBuffer[6], pBuffer[7]);
 
         CPPUNIT_ASSERT_MESSAGE("internal memory overwrite", pBuffer[4] == 0 && pBuffer[5] == 0 && pBuffer[6] == 0 && pBuffer[7] == 0);
-        
+
         rtl_random_destroyPool(aPool);
         delete [] pBuffer;
     }
@@ -322,17 +319,17 @@ public:
     void getBytes_003()
     {
         rtlRandomPool aPool = rtl_random_createPool();
-        
+
         sal_uInt32  nBufLen = 1;
         sal_uInt8   *pBuffer = new sal_uInt8[ nBufLen ];
         memset(pBuffer, 0, nBufLen);
 
         Statistics aStat;
-        
+
         CPPUNIT_ASSERT_MESSAGE("memset failed", pBuffer[0] == 0);
 
         int nCount = 0;
-        
+
         int nCountMax = 1000000;
         for(nCount = 0;nCount < nCountMax; nCount ++)                  // run 100000000 through getBytes(...)
         {
@@ -354,17 +351,17 @@ public:
     void getBytes_003_1()
     {
         rtlRandomPool aPool = rtl_random_createPool();
-        
+
         sal_uInt32  nBufLen = 256;
         sal_uInt8   *pBuffer = new sal_uInt8[ nBufLen ];
         memset(pBuffer, 0, nBufLen);
 
         Statistics aStat;
-        
+
         CPPUNIT_ASSERT_MESSAGE("memset failed", pBuffer[0] == 0);
 
         int nCount = 0;
-        
+
         int nCountMax = 10000;
         for(nCount = 0;nCount < nCountMax; nCount ++)                  // run 100000000 through getBytes(...)
         {
@@ -386,8 +383,8 @@ public:
         delete [] pBuffer;
     }
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(getBytes);

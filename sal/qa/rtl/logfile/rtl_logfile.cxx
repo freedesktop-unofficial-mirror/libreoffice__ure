@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_logfile.cxx,v $
- * $Revision: 1.8 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -43,10 +40,10 @@
 
 #if defined(UNX) || defined(OS2)
 #       include <unistd.h>
-#endif 
+#endif
 
 #include <rtl/logfile.hxx>
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 
 // #ifndef      _OSL_MODULE_HXX_
 // #include <osl/module.hxx>
@@ -113,24 +110,24 @@ inline ::rtl::OUString getCurrentPID(  )
 #else
         nPID = getpid();
 #endif
-        return ( ::rtl::OUString::valueOf( ( long )nPID ) );  
+        return ( ::rtl::OUString::valueOf( ( long )nPID ) );
 }
 
 
 // -----------------------------------------------------------------------------
 /*
- * LLA: 
+ * LLA:
  * check if logfile is create
  * be careful with relative logfiles they will create near the source, maybe it's no write access to it.
  * use absolute path to logfile instead.
  */
 namespace rtl_logfile
 {
-    class logfile : public CppUnit::TestFixture  
+    class logfile : public CppUnit::TestFixture
     {
     public:
-    
-        //directly call rtl_logfile_trace    
+
+        //directly call rtl_logfile_trace
         void logfile_001()
         {
 #ifdef SOLARIS
@@ -154,7 +151,7 @@ namespace rtl_logfile
                 ::osl::File aTestFile( suFilePath );
                 printUString( suFilePath );
                 nError1 = aTestFile.open ( OpenFlag_Read );
-                CPPUNIT_ASSERT_MESSAGE("create the log file: but the logfile does not exist", 
+                CPPUNIT_ASSERT_MESSAGE("create the log file: but the logfile does not exist",
                                        ( ::osl::FileBase::E_NOENT != nError1 ) &&
                                        ( ::osl::FileBase::E_ACCES != nError1 ) );
                 sal_Char       buffer_read[400];
@@ -165,7 +162,7 @@ namespace rtl_logfile
                 aTestFile.sync();
                 aTestFile.close();
                 /*// delete logfile on the disk
-                
+
                 nError1 = osl::File::remove( suFilePath );
                 printError( nError1 );
                 CPPUNIT_ASSERT_MESSAGE( "In deleteTestFile Function: remove ", ( ::osl::FileBase::E_None == nError1 ) || ( nError1 == ::osl::FileBase::E_NOENT ) );
@@ -190,7 +187,7 @@ namespace rtl_logfile
                 RTL_LOGFILE_TRACE3( "trace %d %d %d" , 1 , 2 ,3 );
 // TODO: assertion test!
         }
-        
+
         void logfile_003()
             {
 #ifdef SOLARIS
@@ -209,15 +206,15 @@ namespace rtl_logfile
                 RTL_LOGFILE_CONTEXT_TRACE3 ( foo , "trace %d %d %d" , 1 , 2 , 3);
 // TODO: assertion test!
             }
-        
-        
+
+
         CPPUNIT_TEST_SUITE( logfile );
         CPPUNIT_TEST( logfile_001 );
         CPPUNIT_TEST( logfile_002 );
         CPPUNIT_TEST( logfile_003 );
         CPPUNIT_TEST_SUITE_END( );
     };
- 
+
 } // namespace rtl_logfile
 
 // -----------------------------------------------------------------------------
@@ -226,25 +223,25 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION( rtl_logfile::logfile, "rtl_logfile" );
 // -----------------------------------------------------------------------------
 NOADDITIONAL;
 
-//~ do some clean up work after all test completed. 
+//~ do some clean up work after all test completed.
 class GlobalObject
 {
 public:
     ~GlobalObject()
         {
             try
-            {   
+            {
                 t_print( "\n#Do some clean-ups ... only delete logfile1_*.log here!\n" );
                 rtl::OUString suFilePath = getTempPath();
                 suFilePath +=  rtl::OUString::createFromAscii("logfile1_") + getCurrentPID( );
                 suFilePath +=  rtl::OUString::createFromAscii(".log");
-                
+
                 //if ( ifFileExist( suFilePath )  == sal_True )
                 ::osl::FileBase::RC nError1;
                 nError1 = osl::File::remove( suFilePath );
 #ifdef WNT
                 t_print("Please remove logfile* manully! Error is Permision denied!");
-#endif                        
+#endif
             }
             catch (CppUnit::Exception &e)
             {
@@ -259,5 +256,5 @@ public:
 
 GlobalObject theGlobalObject;
 
-    
+
 

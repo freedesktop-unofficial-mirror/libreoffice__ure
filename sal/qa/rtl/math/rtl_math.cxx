@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_math.cxx,v $
- * $Revision: 1.4 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -37,7 +34,7 @@
 #endif
 
 #include <math.h>
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <rtl/math.h>
 #include <rtl/string.hxx>
 
@@ -68,10 +65,10 @@ public:
             sError += ") but is:(";
             sError += rtl::OString::valueOf(_nResult);
             sError += ")";
-            
+
             CPPUNIT_ASSERT_MESSAGE(sError.getStr(), bEqualResult == true);
         }
-    
+
     // insert your test code here.
     void round_000()
     {
@@ -585,8 +582,8 @@ public:
         equalCheck(nResult, double(-0.2));
     }
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(test);

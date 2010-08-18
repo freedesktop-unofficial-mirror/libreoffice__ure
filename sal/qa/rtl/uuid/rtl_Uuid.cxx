@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_Uuid.cxx,v $
- * $Revision: 1.7 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -34,7 +31,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <rtl/uuid.h>
 #include <rtl/ustring.h>
 #include <rtl/ustring.hxx>
@@ -46,7 +43,7 @@
 
 using namespace rtl;
 
-/** print a UNI_CODE String. And also print some comments of the string. 
+/** print a UNI_CODE String. And also print some comments of the string.
 */
 inline void printUString( const ::rtl::OUString & str, const sal_Char * msg = "" )
 {
@@ -88,8 +85,8 @@ public:
 
     void tearDown()
     {
-    }    
-    
+    }
+
 #define TEST_UUID 20
     void createUuid_001()
     {
@@ -142,7 +139,7 @@ public:
     }
     CPPUNIT_ASSERT_MESSAGE("createUuid: every uuid must be different.", bRes == sal_True );
     }*/
-     
+
     CPPUNIT_TEST_SUITE(createUuid);
     CPPUNIT_TEST(createUuid_001);
     //CPPUNIT_TEST(createUuid_002);
@@ -172,8 +169,8 @@ public:
 
     void tearDown()
     {
-    }    
-    
+    }
+
     void createNamedUuid_001()
     {
         sal_uInt8 NameSpace_DNS[16] = RTL_UUID_NAMESPACE_DNS;
@@ -193,7 +190,7 @@ public:
         rtl_createNamedUuid( pNamedUUID2 , NameSpace_DNS , pName );
         CPPUNIT_ASSERT_MESSAGE( "Same name should generate the same uuid", ! memcmp( pNamedUUID , pNamedUUID2 , 16 ) && rtl_compareUuid( pNamedUUID , pNamedUUID2 ) == 0 );
         CPPUNIT_ASSERT_MESSAGE( "Same name should generate the same uuid", ! memcmp( pNamedUUID  , pPriorCalculatedUUID , 16 ) );
-        
+
         // Different names does not generate the same uuid
         rtl_string_newFromStr( &pName , "this is a bla.blubs.DNS-Namf" );
         rtl_createNamedUuid( pNamedUUID2 , NameSpace_DNS , pName );
@@ -202,7 +199,7 @@ public:
         // the same name with different namespace uuid produces different uuids
         rtl_createNamedUuid( pNamedUUID , NameSpace_URL , pName );
         CPPUNIT_ASSERT_MESSAGE( " same name with different namespace uuid produces different uuids", memcmp( pNamedUUID , pNamedUUID2 , 16 ) && rtl_compareUuid( pNamedUUID , pNamedUUID2 ) != 0);
-        
+
         //test compareUuid
         if ( rtl_compareUuid( pNamedUUID , pNamedUUID2 ) > 0 )
         {	CPPUNIT_ASSERT_MESSAGE( " compare uuids", rtl_compareUuid( pNamedUUID2 , pNamedUUID ) < 0);
@@ -212,7 +209,7 @@ public:
 
         rtl_string_release( pName );
     }
-  
+
     CPPUNIT_TEST_SUITE(createNamedUuid);
     CPPUNIT_TEST(createNamedUuid_001);
     CPPUNIT_TEST_SUITE_END();
@@ -228,4 +225,4 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(rtl_Uuid::createNamedUuid, "rtl_Uuid");
 // to let the user the possibility to also register some functions by hand.
 NOADDITIONAL;
 
-    
+

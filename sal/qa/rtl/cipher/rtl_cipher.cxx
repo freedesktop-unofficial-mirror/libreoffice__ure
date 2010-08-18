@@ -2,12 +2,9 @@
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  * 
- * Copyright 2008 by Sun Microsystems, Inc.
+ * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
- *
- * $RCSfile: rtl_cipher.cxx,v $
- * $Revision: 1.4 $
  *
  * This file is part of OpenOffice.org.
  *
@@ -32,7 +29,7 @@
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_sal.hxx"
 
-#include <cppunit/simpleheader.hxx>
+#include <testshl/simpleheader.hxx>
 #include <rtl/strbuf.hxx>
 #include <rtl/cipher.h>
 
@@ -53,7 +50,7 @@ rtl::OString createHex(sal_uInt8 *_pKeyBuffer, sal_uInt32 _nKeyLen)
         }
         aBuffer.append( nValue, 16 /* radix */ );
     }
-    
+
     return aBuffer.makeStringAndClear();
 }
 
@@ -71,52 +68,52 @@ public:
     {
     }
 
-    void create_001()    
+    void create_001()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmBF, rtl_Cipher_ModeECB);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    void create_002()    
+    void create_002()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmInvalid, rtl_Cipher_ModeECB);
             CPPUNIT_ASSERT_MESSAGE("create provide wrong object.", aCipher == NULL);
         }
-    void create_003()    
+    void create_003()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmBF, rtl_Cipher_ModeCBC);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    void create_004()    
+    void create_004()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmInvalid, rtl_Cipher_ModeCBC);
             CPPUNIT_ASSERT_MESSAGE("create provide wrong object.", aCipher == NULL);
         }
-    void create_005()    
-        {    
+    void create_005()
+        {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmBF, rtl_Cipher_ModeStream);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    void create_006()    
+    void create_006()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmInvalid, rtl_Cipher_ModeStream);
             CPPUNIT_ASSERT_MESSAGE("create provide wrong object.", aCipher == NULL);
         }
-    void create_007()    
-        {   
+    void create_007()
+        {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmBF, rtl_Cipher_ModeInvalid);
             CPPUNIT_ASSERT_MESSAGE("create provide wrong object.", aCipher == NULL);
         }
-    void create_008()    
+    void create_008()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmInvalid, rtl_Cipher_ModeInvalid);
             CPPUNIT_ASSERT_MESSAGE("create provide wrong object.", aCipher == NULL);
         }
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(create);
@@ -144,32 +141,32 @@ public:
     {
     }
 
-    void createBF_001()    
+    void createBF_001()
         {
             rtlCipher aCipher = rtl_cipher_createBF(rtl_Cipher_ModeECB);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    void createBF_002()    
+    void createBF_002()
         {
             rtlCipher aCipher = rtl_cipher_createBF(rtl_Cipher_ModeCBC);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    void createBF_003()    
+    void createBF_003()
         {
             rtlCipher aCipher = rtl_cipher_createBF(rtl_Cipher_ModeStream);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    void createBF_004()    
+    void createBF_004()
         {
             rtlCipher aCipher = rtl_cipher_createBF(rtl_Cipher_ModeInvalid);
             CPPUNIT_ASSERT_MESSAGE("create provide wrong object.", aCipher == NULL);
             // rtl_cipher_destroy(aCipher);
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(createBF);
@@ -236,25 +233,25 @@ public:
 
             /* rtlCipherError */ aError = rtl_cipher_decode(aCipher, pCipherBuffer, nCipherLen, pPlainText2Buffer, nPlainText2Len);
             CPPUNIT_ASSERT_MESSAGE("decode should not work", aError != rtl_Cipher_E_None);
-            
+
             // rtl::OString sPlainText2Str((char*)pPlainText2Buffer, nPlainText2Len);
             // t_print(T_VERBOSE, " Plain: %s\n", createHex(pPlainText2Buffer, nPlainText2Len).getStr());
             // t_print(T_VERBOSE, " ascii: %s\n", sPlainText2Str.getStr());
-            // 
+            //
             // // t_print("   Buf: %s\n", createHex(pCipherBuffer, nCipherLen).getStr());
-            // 
+            //
             // sal_Int32 nCompare = memcmp(pPlainTextBuffer, pPlainText2Buffer, 16);
-            // 
+            //
             // CPPUNIT_ASSERT_MESSAGE("compare between plain and decoded plain failed", nCompare == 0);
-            // 
+            //
             // delete [] pPlainText2Buffer;
-            // 
+            //
             // delete [] pCipherBuffer;
             // delete [] pPlainTextBuffer;
-            // 
+            //
             // delete [] pArgBuffer;
             // delete [] pKeyBuffer;
-            // 
+            //
             // rtl_cipher_destroy(aCipher);
         }
 
@@ -302,7 +299,7 @@ public:
 
             /* rtlCipherError */ aError = rtl_cipher_decode(aCipher, pCipherBuffer, nCipherLen, pPlainText2Buffer, nPlainText2Len);
             CPPUNIT_ASSERT_MESSAGE("wrong decode", aError == rtl_Cipher_E_None);
-            
+
             rtl::OString sPlainText2Str((char*)pPlainText2Buffer, nPlainText2Len);
             t_print(T_VERBOSE, "     Plain: %s\n", createHex(pPlainText2Buffer, nPlainText2Len).getStr());
             t_print(T_VERBOSE, "  as ascii: %s\n", sPlainText2Str.getStr());
@@ -310,7 +307,7 @@ public:
             // t_print("   Buf: %s\n", createHex(pCipherBuffer, nCipherLen).getStr());
 
             sal_Int32 nCompare = memcmp(pPlainTextBuffer, pPlainText2Buffer, 16);
-            
+
             CPPUNIT_ASSERT_MESSAGE("compare between plain and decoded plain failed", nCompare == 0);
 
             delete [] pPlainText2Buffer;
@@ -339,8 +336,8 @@ public:
             test_encode(1,0,"B2Aahg5B");
             test_encode(1,2,"Longer text string");
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(decode);
@@ -361,11 +358,11 @@ public:
     {
     }
 
-    void decodeBF_001()    
+    void decodeBF_001()
         {
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(decodeBF);
@@ -385,14 +382,14 @@ public:
     {
     }
 
-    void destroy_001()    
+    void destroy_001()
         {
             rtlCipher aCipher = rtl_cipher_create(rtl_Cipher_AlgorithmBF, rtl_Cipher_ModeCBC);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
             rtl_cipher_destroy(aCipher);
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(destroy);
@@ -412,7 +409,7 @@ public:
     {
     }
 
-    void destroyBF_001()    
+    void destroyBF_001()
         {
             rtlCipher aCipher = rtl_cipher_createBF(rtl_Cipher_ModeECB);
             CPPUNIT_ASSERT_MESSAGE("create failed.", aCipher != NULL);
@@ -420,8 +417,8 @@ public:
             // more proforma
             // should not GPF
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(destroyBF);
@@ -501,8 +498,8 @@ public:
             test_encode(1,1,1);
         }
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(encode);
@@ -522,11 +519,11 @@ public:
     {
     }
 
-    void encodeBF_001()    
+    void encodeBF_001()
         {
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(encodeBF);
@@ -659,8 +656,8 @@ public:
 
             rtl_cipher_destroy(aCipher);
         }
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(init);
@@ -683,13 +680,13 @@ public:
     {
     }
 
-    void initBF_001()    
+    void initBF_001()
         {
             // seems to be the same as init, so empty
         }
 
-    // Change the following lines only, if you add, remove or rename 
-    // member functions of the current class, 
+    // Change the following lines only, if you add, remove or rename
+    // member functions of the current class,
     // because these macros are need by auto register mechanism.
 
     CPPUNIT_TEST_SUITE(initBF);
