@@ -84,19 +84,6 @@ public class PipedConnection implements XConnection {
         
         return xSingleServiceFactory;
     }
-    
-    /**
-     * Writes the service information into the given registry key.
-     * This method is called by the <code>JavaLoader</code>
-     * <p>
-     * @return  returns true if the operation succeeded
-     * @param   regKey       the registryKey
-     * @see                  com.sun.star.comp.loader.JavaLoader
-     */
-    public static boolean __writeRegistryServiceInfo(XRegistryKey regKey) {
-        return FactoryHelper.writeRegistryServiceInfo(PipedConnection.class.getName(), __serviceName, regKey);
-    }
-
 
     /**
      * The amount of time in milliseconds, to wait to
