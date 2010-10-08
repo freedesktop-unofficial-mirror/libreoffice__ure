@@ -64,7 +64,9 @@ SAL_CALL loadSharedLibComponentFactory(
     (e.g. xxx.dll).  You can give parameter rPath to force lookup of the library in a specific
     directory.  The resulting path of the library will be checked against environment variable
     CPLD_ACCESSPATH if set.
-    
+
+    @obsolete component_writeInfo should no longer be used in new components
+
     @param rLibName name of the library
     @param rPath optional path
     @param xMgr service manager to be provided to the component
