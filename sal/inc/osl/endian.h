@@ -104,11 +104,15 @@ extern "C" {
 #endif
 
 #ifdef AIX
-#	include <sys/machine.h>
+#   include <sys/machine.h>
 #   if BYTE_ORDER == LITTLE_ENDIAN
-#   	define _LITTLE_ENDIAN
+#       ifndef _LITTLE_ENDIAN
+#   	    define _LITTLE_ENDIAN
+#       endif
 #   elif BYTE_ORDER == BIG_ENDIAN
-#   	define _BIG_ENDIAN
+#   	ifndef _BIG_ENDIAN
+#   	    define _BIG_ENDIAN
+#       endif
 #   elif BYTE_ORDER == PDP_ENDIAN
 #   	define _PDP_ENDIAN
 #   endif
