@@ -24,14 +24,10 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 
 #ifndef _SOCKETHELPER_HXX_
 #define _SOCKETHELPER_HXX_
 
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 #include <sal/types.h>
 #include <rtl/textenc.h>
 #include <rtl/ustring.hxx>
@@ -69,7 +65,7 @@ extern "C"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <netinet/in.h>           
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #endif
@@ -78,16 +74,12 @@ extern "C"
 
 #if ( defined WNT )                     // Windows
 #include <tools/prewin.h>
-// #include <windows.h> 
 #include <winsock.h> 
 #include <string.h>
 #include <tools/postwin.h>
 #endif
 
 #endif
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 
 #ifdef __cplusplus
 }
