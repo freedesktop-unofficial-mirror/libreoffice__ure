@@ -79,8 +79,15 @@ void SAL_CALL typelib_typedescriptionreference_getByName(
  */
 struct AlignSize_Impl
 {
-    sal_Int16	nInt16;
-    double		dDouble;
+    sal_Int16 nInt16;
+#ifdef AIX
+    //double: doubleword aligned if -qalign=natural/-malign=natural
+    //which isn't the default ABI. Otherwise word aligned, While a long long int
+    //is always doubleword aligned, so use that instead.
+    sal_Int64   dDouble;
+#else
+    double dDouble;
+#endif
 };
 
 #ifdef SAL_W32
@@ -253,7 +260,7 @@ typelib_TypeDescriptionReference ** SAL_CALL typelib_static_type_getByTypeClass(
                     ::typelib_typedescription_register( &pTD1 );
                     ::typelib_typedescription_release( pTD1 );
                     }
-                    // XInterface members	
+                    // XInterface members
                     typelib_InterfaceMethodTypeDescription * pMethod = 0;
                     typelib_Parameter_Init aParameters[1];
                     OUString sParamName0( RTL_CONSTASCII_USTRINGPARAM("aType") );
@@ -492,7 +499,7 @@ void SAL_CALL typelib_static_mi_interface_type_init(
             OUString aTypeName( OUString::createFromAscii( pTypeName ) );
             *ppRef = igetTypeByName( aTypeName.pData );
             if (!*ppRef)
-            {			
+            {
                 typelib_InterfaceTypeDescription * pIface = 0;
                 ::typelib_typedescription_newEmpty(
                     (typelib_TypeDescription **)&pIface, typelib_TypeClass_INTERFACE, aTypeName.pData );
