@@ -26,8 +26,7 @@
  ************************************************************************/
 
 #include "system.h"
-
-// YD #define min(a,b) (((a) < (b)) ? (a) : (b))
+#include <sal/macros.h>
 
 #include <osl/security.h>
 #include <osl/diagnose.h>
@@ -1347,7 +1346,7 @@ static sal_Bool getLine(osl_TFile* pFile, const sal_Char *pszLine, int MaxLen)
              (pChr < (pFile->m_ReadBuf + sizeof(pFile->m_ReadBuf) - 1));
              pChr++);
 
-        Max = min(pChr - pFile->m_pReadPtr, MaxLen);
+        Max = SAL_MIN(pChr - pFile->m_pReadPtr, MaxLen);
         memcpy(pLine, pFile->m_pReadPtr, Max);
         MaxLen -= Max;
         pLine  += Max;
@@ -1986,7 +1985,6 @@ static sal_Bool releaseProfile(osl_TProfileImpl* pProfile)
 }
 
 #if 0 // YD
-
 static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, sal_Char *pPath)
 {
     sal_Char *pChr, *pStr;
@@ -2023,7 +2021,7 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
             oslProfile hProfile;
 
             /* open sversion.ini in the system directory, and try to locate the entry
-               with the highest version for StarOffice */														   
+               with the highest version for StarOffice */
             if ((osl_getProfileName(SVERSION_FALLBACK, SVERSION_NAME, Profile, sizeof(Profile))) &&
                 (hProfile = osl_openProfile(Profile, osl_Profile_READLOCK)))
             {
@@ -2048,7 +2046,7 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
             }
 
             /* open sversion.ini in the users directory, and try to locate the entry
-               with the highest version for StarOffice */														   
+               with the highest version for StarOffice */
             if ((strcmp(SVERSION_LOCATION, SVERSION_FALLBACK) != 0) &&
                 (osl_getProfileName(SVERSION_LOCATION, SVERSION_NAME, Profile, sizeof(Profile))) &&
                 (hProfile = osl_openProfile(Profile, osl_Profile_READLOCK)))
@@ -2075,7 +2073,7 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
 
             /* remove any trailing build number */
             if ((pChr = strrchr(Product, '/')) != NULL)
-                *pChr = '\0';			
+                *pChr = '\0';
         }
     }
 
@@ -2169,7 +2167,7 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
 
             int i = 0;
 
-            for (i = 0; i < (sizeof(SubDirs) / sizeof(SubDirs[0])); i++)
+            for (i = 0; i < SAL_N_ELEMENTS(SubDirs); i++)
                 if (strnicmp(pStr + 1, SubDirs[i], strlen(SubDirs[i])) == 0)
                 {
                     if ( strlen(pszPath) <= 0)
@@ -2203,7 +2201,7 @@ static sal_Bool lookupProfile(const sal_Char *pszPath, const sal_Char *pszFile, 
             *pChr = '\0';
 
             /* open sversion.ini in the system directory, and try to locate the entry
-               with the highest version for StarOffice */														   
+               with the highest version for StarOffice */
             if ((osl_getProfileName(SVERSION_LOCATION, SVERSION_NAME, Profile, sizeof(Profile))) &&
                 (hProfile = osl_openProfile(Profile, osl_Profile_READLOCK)))
             {
