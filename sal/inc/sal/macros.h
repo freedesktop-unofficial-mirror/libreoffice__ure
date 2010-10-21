@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -26,7 +26,7 @@
  ************************************************************************/
 
 #ifndef _SAL_MACROS_H_
-#define _SAL_MACROS_H_ 
+#define _SAL_MACROS_H_
 
 #ifndef SAL_MAX
 #    define SAL_MAX(a,b)            (((a) > (b)) ? (a) : (b))
@@ -42,6 +42,14 @@
 
 #ifndef SAL_N_ELEMENTS
 #    define SAL_N_ELEMENTS(arr)     (sizeof (arr) / sizeof ((arr)[0]))
+#endif
+
+#ifndef SAL_BOUND
+#    define SAL_BOUND(x,l,h)        ((x) <= (l) ? (l) : ((x) >= (h) ? (h) : (x)))
+#endif
+
+#ifndef SAL_ABS
+#    define SAL_ABS(a)              (((a) < 0) ? (-(a)) : (a))
 #endif
 
 #endif
