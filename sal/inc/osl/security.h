@@ -35,8 +35,8 @@ extern "C" {
 #endif
 
 typedef enum {
-    osl_Security_E_None,				
-    osl_Security_E_UserUnknown,			
+    osl_Security_E_None,
+    osl_Security_E_UserUnknown,
     osl_Security_E_WrongPassword,
     osl_Security_E_Unknown,
     osl_Security_E_FORCE_EQUAL_SIZE = SAL_MAX_ENUM
@@ -57,7 +57,8 @@ typedef void* oslSecurity;
 */
 oslSecurity SAL_CALL osl_getCurrentSecurity(void);
 
-/** Create a security handle for the denoted user.
+/** Deprecated API
+    Create a security handle for the denoted user.
     Try to log in the user on the local system.
     @param strzUserName [in] denotes the name of the user to logg in.
     @param strPasswd [in] the password for this user.
