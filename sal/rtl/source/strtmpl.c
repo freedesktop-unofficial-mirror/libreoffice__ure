@@ -989,6 +989,14 @@ static IMPL_RTL_STRCODE* IMPL_RTL_STRINGNAME( ImplNewCopy )( IMPL_RTL_STRINGDATA
 {                                                               \
     if (!SAL_STRING_IS_STATIC (pThis))                          \
         osl_incrementInterlockedCount( &((pThis)->refCount) );  \
+    /*We can be sure that the special case of a 0 length STATIC string will*/ \
+    /*always exist. The other however may be on the stack */ \
+    else \
+    { \
+        OSL_ASSERT((pThis)->length == 0); \
+        if ((pThis)->length) \
+            exit(-10); \
+    } \
 }
 
 /* ----------------------------------------------------------------------- */

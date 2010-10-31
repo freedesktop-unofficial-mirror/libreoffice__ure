@@ -931,6 +931,27 @@ struct OStringHash
         { return (size_t)rString.hashCode(); }
 };
 
+//Must match the layout of _rtl_String
+template <size_t len> struct Stack__rtl_String__Tmpl
+{
+    const oslInterlockedCount refCount;
+    const sal_Int32 length;
+    const char buffer[len];
+
+    operator const _rtl_String&() const { return *reinterpret_cast<const _rtl_String*>(this); }
+};
+
+template <size_t len> struct Stack_OString__Tmpl
+{
+    const Stack__rtl_String__Tmpl<len> *pData;
+    operator const ::rtl::OString&() const { return *reinterpret_cast<const ::rtl::OString*>(this); }
+};
+
+#define Stack_OString(name, str) \
+    const ::rtl::Stack__rtl_String__Tmpl<sizeof(str)> name##_aImpl = \
+        {SAL_STRING_STATIC_FLAG|1, sizeof(str)-1, { str } }; \
+    const ::rtl::Stack_OString__Tmpl<sizeof(str)> name = {&name##_aImpl}
+
 /* ======================================================================= */
 
 } /* Namespace */

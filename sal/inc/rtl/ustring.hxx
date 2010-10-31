@@ -1530,6 +1530,44 @@ inline OString OUStringToOString( const OUString & rUnicode,
     return OString( rUnicode.getStr(), rUnicode.getLength(), encoding, convertFlags );
 }
 
+#ifdef SAL_DECLARE_UTF16
+
+//Must match the layout of _rtl_uString
+template <size_t len> struct Stack__rtl_uString__Tmpl
+{
+#if defined __GXX_EXPERIMENTAL_CXX0X__
+//Is there a better more generic hook to detect C++Ox at compile time ?
+    typedef char16_t utf16_type;
+#elif (defined(__SUNPRO_CC) && __SUNPRO_CC >= 0x550)
+    typedef unsigned short utf16_type;
+#elif !defined(SAL_UNICODE_NOTEQUAL_WCHAR_T)
+    typedef wchar_t utf16_type;
+#else
+    typedef unsigned short utf16_type;
+#endif
+
+    const oslInterlockedCount refCount;
+    const sal_Int32 length;
+    const utf16_type buffer[len];
+
+    operator const _rtl_uString&() const { return *reinterpret_cast<const _rtl_uString*>(this); }
+};
+
+template <size_t len> struct Stack_OUString__Tmpl
+{
+    const Stack__rtl_uString__Tmpl<len> *pData;
+    operator const ::rtl::OUString&() const { return *reinterpret_cast<const ::rtl::OUString*>(this); }
+};
+
+#  define Stack_OUString(name, str) \
+    const ::rtl::Stack__rtl_uString__Tmpl<sizeof(SAL_DECLARE_UTF16(str))/sizeof(unsigned short)> name##_aImpl = \
+        {SAL_STRING_STATIC_FLAG|1, sizeof(SAL_DECLARE_UTF16(str))/sizeof(unsigned short)-1, { SAL_DECLARE_UTF16(str) } }; \
+    const ::rtl::Stack_OUString__Tmpl<sizeof(SAL_DECLARE_UTF16(str))/sizeof(unsigned short)> name = {&name##_aImpl}
+#else
+#  define Stack_OUString(name, str) \
+    const ::rtl::OUString name(RTL_CONSTASCII_USTRINGPARAM(str));
+#endif
+
 /* ======================================================================= */
 
 } /* Namespace */

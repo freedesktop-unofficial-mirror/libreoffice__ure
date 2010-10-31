@@ -1654,6 +1654,16 @@ sal_Bool SAL_CALL rtl_convertStringToUString(
     rtl_uString ** target, char const * source, sal_Int32 length,
     rtl_TextEncoding encoding, sal_uInt32 flags) SAL_THROW_EXTERN_C();
 
+#if defined __GXX_EXPERIMENTAL_CXX0X__
+//Is there a better more generic hook to detect C++Ox at compile time ?
+#  define SAL_DECLARE_UTF16(str) u ## str
+#elif (defined(__SUNPRO_CC) && __SUNPRO_CC >= 0x550)
+#  define SAL_DECLARE_UTF16(str) U ## str
+#elif !defined(SAL_UNICODE_NOTEQUAL_WCHAR_T)
+#  define SAL_DECLARE_UTF16(str) L ## str
+#else
+#endif
+
 #ifdef __cplusplus
 }
 #endif

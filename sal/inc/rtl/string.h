@@ -1187,6 +1187,8 @@ sal_Bool SAL_CALL rtl_convertUStringToString(rtl_String ** pTarget,
                                              sal_uInt32 nFlags)
     SAL_THROW_EXTERN_C();
 
+#define SAL_STRING_STATIC_FLAG 0x40000000
+
 #ifdef __cplusplus
 }
 #endif

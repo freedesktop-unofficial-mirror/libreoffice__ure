@@ -76,7 +76,7 @@ namespace
     struct s_threadMap : public rtl::Static< ThreadMap, s_threadMap > {};
 }
 
-static rtl::OUString s_uno_envDcp(RTL_CONSTASCII_USTRINGPARAM(UNO_LB_UNO));
+Stack_OUString (s_uno_envDcp, UNO_LB_UNO);
 
 static void s_setCurrent(uno_Environment * pEnv)
 {
