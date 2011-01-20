@@ -102,8 +102,8 @@ typedef hash_map< OUString, void *, OUStringHash, equal_to< OUString > > t_strin
 //==================================================================================================
 class RTTInfos
 {
-    Mutex				_aMutex;
-    t_string2PtrMap		_allRTTI;
+    Mutex               _aMutex;
+    t_string2PtrMap     _allRTTI;
 
     static OUString toRawName( OUString const & rUNOname ) throw ();
 public:
@@ -238,9 +238,9 @@ ObjectFunction::ObjectFunction( typelib_TypeDescription * pTypeDescr, void * fpF
     *pCode++ = 0x68;
     *(void **)pCode = this;
     pCode += sizeof(void *);
-    // jmp rel32 fpFunc
+    // jmp rel64 fpFunc
     *pCode++ = 0xe9;
-    *(sal_Int32 *)pCode = ((unsigned char *)fpFunc) - pCode - sizeof(sal_Int32);
+    *(sal_Int64 *)pCode = ((unsigned char *)fpFunc) - pCode - sizeof(sal_Int64);
 }
 //__________________________________________________________________________________________________
 ObjectFunction::~ObjectFunction() throw ()
@@ -249,56 +249,34 @@ ObjectFunction::~ObjectFunction() throw ()
 }
 
 //==================================================================================================
-static void * __cdecl __copyConstruct( void * pExcThis, void * pSource, ObjectFunction * pThis )
+void * __cdecl __copyConstruct( void * pExcThis, void * pSource, ObjectFunction * pThis )
     throw ()
 {
     ::uno_copyData( pExcThis, pSource, pThis->_pTypeDescr, cpp_acquire );
     return pExcThis;
 }
 //==================================================================================================
-static void * __cdecl __destruct( void * pExcThis, ObjectFunction * pThis )
+void * __cdecl __destruct( void * pExcThis, ObjectFunction * pThis )
     throw ()
 {
     ::uno_destructData( pExcThis, pThis->_pTypeDescr, cpp_release );
     return pExcThis;
 }
 
-// these are non virtual object methods; there is no this ptr on stack => ecx supplies _this_ ptr
 
-//==================================================================================================
-static __declspec(naked) void copyConstruct() throw ()
-{
-    __asm
-    {
-        // ObjectFunction this already on stack
-        push [esp+8]  // source exc object this
-        push ecx	  // exc object
-        call __copyConstruct
-        add  esp, 12  // + ObjectFunction this
-        ret  4
-    }
-}
-//==================================================================================================
-static __declspec(naked) void destruct() throw ()
-{
-    __asm
-    {
-        // ObjectFunction this already on stack
-        push ecx	// exc object
-        call __destruct
-        add  esp, 8 // + ObjectFunction this
-        ret
-    }
-}
+// These are machine code snippets in asmbits.asm
+
+extern void *copyConstruct;
+extern void *destruct;
 
 //==================================================================================================
 struct ExceptionType
 {
-    sal_Int32			_n0;
-    type_info *			_pTypeInfo;
-    sal_Int32			_n1, _n2, _n3, _n4;
-    ObjectFunction *	_pCopyCtor;
-    sal_Int32			_n5;
+    sal_Int32           _n0;
+    type_info *         _pTypeInfo;
+    sal_Int32           _n1, _n2, _n3, _n4;
+    ObjectFunction *    _pCopyCtor;
+    sal_Int32           _n5;
 
     inline ExceptionType( typelib_TypeDescription * pTypeDescr ) throw ()
         : _n0( 0 )
@@ -315,11 +293,11 @@ struct ExceptionType
 //==================================================================================================
 struct RaiseInfo
 {
-    sal_Int32			_n0;
-    ObjectFunction *	_pDtor;
-    sal_Int32			_n2;
-    void *				_types;
-    sal_Int32			_n3, _n4;
+    sal_Int32           _n0;
+    ObjectFunction *    _pDtor;
+    sal_Int32           _n2;
+    void *              _types;
+    sal_Int32           _n3, _n4;
 
     RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ();
     ~RaiseInfo() throw ();
@@ -332,9 +310,6 @@ RaiseInfo::RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ()
     , _n3( 0 )
     , _n4( 0 )
 {
-    // a must be
-    OSL_ENSURE( sizeof(sal_Int32) == sizeof(ExceptionType *), "### pointer size differs from sal_Int32!" );
-
     typelib_CompoundTypeDescription * pCompTypeDescr;
 
     // info count
@@ -346,10 +321,10 @@ RaiseInfo::RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ()
     }
 
     // info count accompanied by type info ptrs: type, base type, base base type, ...
-    _types = ::rtl_allocateMemory( sizeof(sal_Int32) + (sizeof(ExceptionType *) * nLen) );
-    *(sal_Int32 *)_types = nLen;
+    _types = ::rtl_allocateMemory( sizeof(sal_Int64) + (sizeof(ExceptionType *) * nLen) );
+    *(sal_Int64 *)_types = nLen;
 
-    ExceptionType ** ppTypes = (ExceptionType **)((sal_Int32 *)_types + 1);
+    ExceptionType ** ppTypes = (ExceptionType **)((sal_Int64 *)_types + 1);
 
     sal_Int32 nPos = 0;
     for ( pCompTypeDescr = (typelib_CompoundTypeDescription*)pTypeDescr;
@@ -361,8 +336,8 @@ RaiseInfo::RaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ()
 //__________________________________________________________________________________________________
 RaiseInfo::~RaiseInfo() throw ()
 {
-    ExceptionType ** ppTypes = (ExceptionType **)((sal_Int32 *)_types + 1);
-    for ( sal_Int32 nTypes = *(sal_Int32 *)_types; nTypes--; )
+    ExceptionType ** ppTypes = (ExceptionType **)((sal_Int64 *)_types + 1);
+    for ( sal_Int32 nTypes = *(sal_Int64 *)_types; nTypes--; )
     {
         delete ppTypes[nTypes];
     }
@@ -374,8 +349,8 @@ RaiseInfo::~RaiseInfo() throw ()
 //==================================================================================================
 class ExceptionInfos
 {
-    Mutex			_aMutex;
-    t_string2PtrMap	_allRaiseInfos;
+    Mutex           _aMutex;
+    t_string2PtrMap _allRaiseInfos;
 
 public:
     static void * getRaiseInfo( typelib_TypeDescription * pTypeDescr ) throw ();
@@ -486,14 +461,10 @@ void mscx_raiseException( uno_Any * pUnoExc, uno_Mapping * pUno2Cpp )
     void * pCppExc = alloca( pTypeDescr->nSize );
     ::uno_copyAndConvertData( pCppExc, pUnoExc->pData, pTypeDescr, pUno2Cpp );
 
-    // a must be
-    OSL_ENSURE(
-        sizeof(sal_Int32) == sizeof(void *),
-        "### pointer size differs from sal_Int32!" );
-    DWORD arFilterArgs[3];
+    ULONG_PTR arFilterArgs[3];
     arFilterArgs[0] = MSVC_magic_number;
-    arFilterArgs[1] = (DWORD)pCppExc;
-    arFilterArgs[2] = (DWORD)ExceptionInfos::getRaiseInfo( pTypeDescr );
+    arFilterArgs[1] = (ULONG_PTR)pCppExc;
+    arFilterArgs[2] = (ULONG_PTR)ExceptionInfos::getRaiseInfo( pTypeDescr );
 
     // destruct uno exception
     ::uno_any_destruct( pUnoExc, 0 );
@@ -514,13 +485,9 @@ int mscx_filterCppException(
     if (pRecord == 0 || pRecord->ExceptionCode != MSVC_ExceptionCode)
         return EXCEPTION_CONTINUE_SEARCH;
     
-#if _MSC_VER < 1300 // MSVC -6
-    bool rethrow = (pRecord->NumberParameters < 3 ||
-                    pRecord->ExceptionInformation[ 2 ] == 0);
-#else
     bool rethrow = __CxxDetectRethrow( &pRecord );
     OSL_ASSERT( pRecord == pPointers->ExceptionRecord );
-#endif
+
     if (rethrow && pRecord == pPointers->ExceptionRecord)
     {
         // hack to get msvcrt internal _curexception field:
@@ -532,14 +499,12 @@ int mscx_filterCppException(
             // crt\src\mtdll.h:
             // offsetof (_tiddata, _curexception) -
             // offsetof (_tiddata, _tpxcptinfoptrs):
-#if _MSC_VER < 1300
-            0x18 // msvcrt,dll
-#elif _MSC_VER < 1310
-            0x20 // msvcr70.dll
-#elif _MSC_VER < 1400
-            0x24 // msvcr71.dll
+#if _MSC_VER < 1500
+            error, this compiler version is not supported
+#elif _MSC_VER < 1600
+            0x48 // msvcr90.dll
 #else
-            0x28 // msvcr80.dll
+            error, please find value for this compiler version
 #endif
             );
     }
@@ -548,7 +513,7 @@ int mscx_filterCppException(
         return EXCEPTION_CONTINUE_SEARCH;
     
     if (pRecord->NumberParameters == 3 &&
-//  		pRecord->ExceptionInformation[ 0 ] == MSVC_magic_number &&
+//          pRecord->ExceptionInformation[ 0 ] == MSVC_magic_number &&
         pRecord->ExceptionInformation[ 1 ] != 0 &&
         pRecord->ExceptionInformation[ 2 ] != 0)
     {
