@@ -41,6 +41,10 @@
 
 #include "mscx.hxx"
 
+#if OSL_DEBUG_LEVEL > 1
+#include <stdio.h>
+#endif
+
 using namespace ::rtl;
 using namespace ::com::sun::star::uno;
 
@@ -102,6 +106,8 @@ static void cpp_call(
     void * pUnoReturn, void * pUnoArgs[], uno_Any ** ppUnoExc ) throw ()
 {
     const int MAXPARAMS = 20;
+
+    MessageBoxA (NULL, "Whoa!", "cpp_call in uno2cpp.cxx", MB_OK);
 
     if (nParams > MAXPARAMS)
     {
@@ -236,12 +242,12 @@ static void cpp_call(
             (((sal_Int64 *)pCppThis) + aVtableSlot.index);
 
         // Pass parameters 2..4 as double so that it gets put in both XMM and integer
-        // registers per the 
+        // registers per the
         uRetVal.i =
             pMethod (aCppParams[0].i, aCppParams[1].d, aCppParams[2].d, aCppParams[3].d,
-                     aCppParams[4].i, aCppParams[5].i, aCppParams[6].i, aCppParams[7].i, 
-                     aCppParams[8].i, aCppParams[9].i, aCppParams[10].i, aCppParams[11].i, 
-                     aCppParams[12].i, aCppParams[13].i, aCppParams[14].i, aCppParams[15].i, 
+                     aCppParams[4].i, aCppParams[5].i, aCppParams[6].i, aCppParams[7].i,
+                     aCppParams[8].i, aCppParams[9].i, aCppParams[10].i, aCppParams[11].i,
+                     aCppParams[12].i, aCppParams[13].i, aCppParams[14].i, aCppParams[15].i,
                      aCppParams[16].i, aCppParams[17].i, aCppParams[18].i, aCppParams[19].i );
     }
     __except (CPPU_CURRENT_NAMESPACE::mscx_filterCppException(
