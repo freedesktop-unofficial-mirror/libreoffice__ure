@@ -1,7 +1,6 @@
 /*************************************************************************
- *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -25,23 +24,35 @@
  *
  ************************************************************************/
 
-#ifndef __com_sun_star_script_ModuleInfo_idl__
-#define __com_sun_star_script_ModuleInfo_idl__
+#ifndef __com_sun_star_awt_AnimatedImagesControl_idl__
+#define __com_sun_star_awt_AnimatedImagesControl_idl__
 
-#ifndef __com_sun_star_uno_XInterface_idl__
-#include <com/sun/star/uno/XInterface.idl>
-#endif
+#include <com/sun/star/awt/UnoControl.idl>
 
-//=============================================================================
-module com {  module sun {  module star { module script {
-struct ModuleInfo
+//======================================================================================================================
+
+module com { module sun { module star { module awt {
+
+interface XAnimation;
+
+//======================================================================================================================
+
+/** is the default control used for an <type>AnimatedImagesControlModel</type>, displayed a series of
+    images.
+
+    @since OOo 3.4
+ */
+service AnimatedImagesControl
 {
-    com::sun::star::uno::XInterface ModuleObject; 
-    long ModuleType;
+    service com::sun::star::awt::UnoControl;
+
+    interface XAnimation;
 };
 
-//=============================================================================
+//======================================================================================================================
 
 }; }; }; };
+
+//======================================================================================================================
 
 #endif
