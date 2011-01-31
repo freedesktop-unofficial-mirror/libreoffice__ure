@@ -24,12 +24,8 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef com_sun_star_chart_StandardDiagramCreationParameters_idl
-#define com_sun_star_chart_StandardDiagramCreationParameters_idl
-
-#ifndef __com_sun_star_beans_PropertyValue_idl__
-#include <com/sun/star/beans/PropertyValue.idl>
-#endif
+#ifndef com_sun_star_chart_ChartAxisType_idl
+#define com_sun_star_chart_ChartAxisType_idl
 
 module com
 {
@@ -37,28 +33,25 @@ module sun
 {
 module star
 {
-module chart2
+module chart
 {
-
-/** parameters that may be passed to
-    <member>XChartTypeTemplate::createDiagramByDataSource</member>.
- */
-service StandardDiagramCreationParameters
+/** @since OOo 3.4
+*/
+published constants ChartAxisType
 {
-    /** States whether the first <type>XLabeledDataSequence</type> in
-        a data-source is used as categories.
+    /** the type of the axis is choosen automatically dependent on the chart type, the dimension and the underlying data
      */
-    [optional, property]    boolean       HasCategories;
+    const long AUTOMATIC = 0; 
 
-    /** If categories are given they should be used as x values also if a chart type requires x values.
-    Default is true.
+    /** the axis represent discrete category texts if chart type and the dimension allows
      */
-    [optional, property]    boolean       UseCategoriesAsX;
+    const long CATEGORY = 1;
+
+    /** the axis shows dates if the given data and chart type and the dimension allows
+     */
+    const long DATE = 2;
 };
 
-} ; // chart2
-} ; // com
-} ; // sun
-} ; // star
+}; }; }; };
 
 #endif

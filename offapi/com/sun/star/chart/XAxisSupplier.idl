@@ -24,41 +24,38 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef com_sun_star_chart_StandardDiagramCreationParameters_idl
-#define com_sun_star_chart_StandardDiagramCreationParameters_idl
+#ifndef com_sun_star_chart_XAxisSupplier_idl
+#define com_sun_star_chart_XAxisSupplier_idl
 
-#ifndef __com_sun_star_beans_PropertyValue_idl__
-#include <com/sun/star/beans/PropertyValue.idl>
+#ifndef __com_sun_star_chart_XAxis_idl__ 
+#include <com/sun/star/chart/XAxis.idl> 
 #endif
 
-module com
-{
-module sun
-{
-module star
-{
-module chart2
-{
+module com {  module sun {  module star {  module chart {
 
-/** parameters that may be passed to
-    <member>XChartTypeTemplate::createDiagramByDataSource</member>.
- */
-service StandardDiagramCreationParameters
-{
-    /** States whether the first <type>XLabeledDataSequence</type> in
-        a data-source is used as categories.
-     */
-    [optional, property]    boolean       HasCategories;
+/** Easier access to the different axes within a chart.
+@since OOo 3.4
+*/
 
-    /** If categories are given they should be used as x values also if a chart type requires x values.
-    Default is true.
+interface XAxisSupplier : ::com::sun::star::uno::XInterface
+{
+    /** @returns
+            the primary axis of the specified dimension. The returned object supports service <type>ChartAxis</type>.
+
+        @param nDimensionIndex
+            Parameter nDimensionIndex says wether it is a x, y or z-axis (0 for x).
      */
-    [optional, property]    boolean       UseCategoriesAsX;
+    com::sun::star::chart::XAxis getAxis( [in] long nDimensionIndex );
+
+    /** @returns
+            the secondary axis of the specified dimension. The returned object supports service <type>ChartAxis</type>.
+
+        @param nDimensionIndex
+            Parameter nDimensionIndex says wether it is a x, y or z-axis (0 for x).
+     */
+    com::sun::star::chart::XAxis getSecondaryAxis( [in] long nDimensionIndex );
 };
 
-} ; // chart2
-} ; // com
-} ; // sun
-} ; // star
+}; }; }; };
 
 #endif

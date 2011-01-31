@@ -24,41 +24,37 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef com_sun_star_chart_StandardDiagramCreationParameters_idl
-#define com_sun_star_chart_StandardDiagramCreationParameters_idl
+#ifndef com_sun_star_chart_XAxis_idl
+#define com_sun_star_chart_XAxis_idl
 
-#ifndef __com_sun_star_beans_PropertyValue_idl__
-#include <com/sun/star/beans/PropertyValue.idl>
-#endif
+#ifndef __com_sun_star_beans_XPropertySet_idl__ 
+#include <com/sun/star/beans/XPropertySet.idl> 
+#endif 
 
-module com
-{
-module sun
-{
-module star
-{
-module chart2
-{
+module com {  module sun {  module star {  module chart {
 
-/** parameters that may be passed to
-    <member>XChartTypeTemplate::createDiagramByDataSource</member>.
- */
-service StandardDiagramCreationParameters
+/** Allows easier access to the different subelements of an axis.
+@since OOo 3.4
+*/
+
+interface XAxis : ::com::sun::star::uno::XInterface
 {
-    /** States whether the first <type>XLabeledDataSequence</type> in
-        a data-source is used as categories.
+    /** @returns
+            the title of the axis. The returned object supports the properties described in service <type>ChartTitle</type>.
      */
-    [optional, property]    boolean       HasCategories;
+    com::sun::star::beans::XPropertySet getAxisTitle(); 
 
-    /** If categories are given they should be used as x values also if a chart type requires x values.
-    Default is true.
-     */
-    [optional, property]    boolean       UseCategoriesAsX;
+    /** @returns 
+            the properties of the major grid of the axis. The returned object supports service <type>ChartGrid</type>.
+    */
+    com::sun::star::beans::XPropertySet getMajorGrid(); 
+     
+    /** @returns 
+            the properties of the minor grid of the axis. The returned object supports service <type>ChartGrid</type>.
+    */
+    com::sun::star::beans::XPropertySet getMinorGrid();
 };
 
-} ; // chart2
-} ; // com
-} ; // sun
-} ; // star
+}; }; }; };
 
 #endif
