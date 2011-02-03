@@ -157,6 +157,19 @@ struct hashModule
     }
 };
 
+#ifdef USE_MSVC_HASH_MAP
+namespace stdext
+{
+    inline size_t hash_value( const oslModule& rkey)
+    {
+        return (size_t)rkey;
+    }
+}
+
+typedef std::hash_map<
+    oslModule,
+    std::pair<sal_uInt32, component_canUnloadFunc> > ModuleMap;
+#else
 typedef std::hash_map<
     oslModule,
     std::pair<sal_uInt32, component_canUnloadFunc>,
@@ -164,6 +177,7 @@ typedef std::hash_map<
     std::equal_to<oslModule>,
     rtl::Allocator<oslModule>
 > ModuleMap;
+#endif
 
 typedef ModuleMap::iterator Mod_IT;
 
@@ -191,7 +205,7 @@ extern "C" sal_Bool rtl_moduleCount_canUnload( rtl_StandardModuleCount * that, T
         {
             rtl_copyMemory(libUnused, &that->unusedSince, sizeof(TimeValue));
         }
-    }	
+    }
     return (that->counter == 0);
 }
 
@@ -283,7 +297,7 @@ extern "C" void SAL_CALL rtl_unloadUnusedModules( TimeValue* libUnused)
                 // mark the module for later removal
                 unloadedModulesList.push_front( it->first);
             }
-        }	
+        }
     }
 
     // remove all entries containing invalid (unloaded) modules
@@ -306,6 +320,11 @@ struct hashListener
     }
 };
 
+#ifdef USE_MSVC_HASH_MAP
+typedef std::hash_map<
+    sal_Int32,
+    std::pair<rtl_unloadingListenerFunc, void*> > ListenerMap;
+#else
 typedef std::hash_map<
     sal_Int32,
     std::pair<rtl_unloadingListenerFunc, void*>,
@@ -313,6 +332,7 @@ typedef std::hash_map<
     std::equal_to<sal_Int32>,
     rtl::Allocator<sal_Int32>
 > ListenerMap;
+#endif
 
 typedef ListenerMap::iterator Lis_IT;
 
@@ -411,7 +431,7 @@ static void rtl_notifyUnloadingListeners()
 {
     ListenerMap& listenerMap= getListenerMap();
     for( Lis_IT it= listenerMap.begin(); it != listenerMap.end(); ++it)
-    {	
+    {
         rtl_unloadingListenerFunc callbackFunc= it->second.first;
         callbackFunc( it->second.second);
     }
