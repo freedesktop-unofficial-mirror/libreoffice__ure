@@ -2,7 +2,7 @@
  /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -28,14 +28,14 @@
 
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_sal.hxx"
- 
+
 //------------------------------------------------------------------------
 // include files
 //------------------------------------------------------------------------
-#include <osl_Module_Const.h> 
+#include <osl_Module_Const.h>
 
-using namespace	osl;
-using namespace	rtl;
+using namespace osl;
+using namespace rtl;
 
 
 //------------------------------------------------------------------------
@@ -46,31 +46,32 @@ using namespace	rtl;
 */
 inline void printBool( sal_Bool bOk )
 {
-    t_print("#printBool# " );
-    ( sal_True == bOk ) ? t_print("TRUE!\n" ): t_print("FALSE!\n" );		
+    printf("#printBool# " );
+    ( sal_True == bOk ) ? printf( "TRUE!\n" )
+                        : printf( "FALSE!\n" );
 }
 
 /** print a UNI_CODE String.
 */
 inline void printUString( const ::rtl::OUString & str )
 {
-    rtl::OString aString; 
+    rtl::OString aString;
 
-    t_print("#printUString_u# " );
+    printf("#printUString_u# " );
     aString = ::rtl::OUStringToOString( str, RTL_TEXTENCODING_ASCII_US );
-    t_print("%s\n", aString.getStr( ) );
+    printf("%s\n", aString.getStr( ) );
 }
 
 /** get dll file URL.
 */
 inline ::rtl::OUString getDllURL( void )
 {
-#if ( defined WNT )	       // lib in Unix and lib in Windows are not same in file name.
+#if ( defined WNT )        // lib in Unix and lib in Windows are not same in file name.
     ::rtl::OUString libPath( RTL_CONSTASCII_USTRINGPARAM("Module_DLL.dll") );
 #else
     ::rtl::OUString libPath( RTL_CONSTASCII_USTRINGPARAM("libModule_DLL.so") );
 #endif
-    
+
     ::rtl::OUString dirPath, dllPath;
     osl::Module::getUrlFromAddress( ( void* ) &getDllURL, dirPath );
     dirPath = dirPath.copy( 0, dirPath.lastIndexOf('/') + 1);
@@ -85,9 +86,9 @@ inline void printFileName( const ::rtl::OUString & str )
 {
     rtl::OString aString;
 
-    t_print("#printFileName_u# " );
+    printf("#printFileName_u# " );
     aString = ::rtl::OUStringToOString( str, RTL_TEXTENCODING_ASCII_US );
-    t_print("%s\n", aString.getStr( ) );
+    printf("%s\n", aString.getStr( ) );
 }
 
 inline sal_Bool isURL( const ::rtl::OUString pathname )
@@ -180,11 +181,11 @@ namespace osl_Module
     public:
         static void myFunc()
         {
-            t_print("#Sun Microsystem\n");
+            printf("#Sun Microsystem\n");
         };
     };
 
-    
+
     /** testing the methods:
         Module();
         Module( const ::rtl::OUString& strModuleName, sal_Int32 nRtldMode = SAL_LOADMODULE_DEFAULT);
@@ -487,39 +488,39 @@ namespace osl_Module
         void getFunctionSymbol_001( )
         {
             ::osl::Module aMod( getDllURL( ) );
-            oslGenericFunction oslFunc = aMod.getFunctionSymbol( rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("firstfunc")) ); 
+            oslGenericFunction oslFunc = aMod.getFunctionSymbol( rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("firstfunc")) );
             ::rtl::OUString aLibraryURL;
             bRes = ::osl::Module::getUrlFromAddress( oslFunc, aLibraryURL);
             aMod.unload();
             printFileName( aLibraryURL );
 
-            CPPUNIT_ASSERT_MESSAGE( "#test comment#: load a dll and get its function addr and get its URL.", 
+            CPPUNIT_ASSERT_MESSAGE( "#test comment#: load a dll and get its function addr and get its URL.",
                  sal_True == bRes && aLibraryURL.equalsIgnoreAsciiCase( getDllURL() ) );
         }
-        
+
         CPPUNIT_TEST_SUITE( getFunctionSymbol );
         CPPUNIT_TEST( getFunctionSymbol_001 );
         //CPPUNIT_TEST( getFunctionSymbol_002 );
-        CPPUNIT_TEST_SUITE_END( );   
+        CPPUNIT_TEST_SUITE_END( );
     }; // class getFunctionSymbol
-    
+
 // -----------------------------------------------------------------------------
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::ctors, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::getUrlFromAddress, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::load, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::unload, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::is, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::getSymbol, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::optr_oslModule, "osl_Module");
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_Module::getFunctionSymbol, "osl_Module");
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::ctors);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::getUrlFromAddress);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::load);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::unload);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::is);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::getSymbol);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::optr_oslModule);
+CPPUNIT_TEST_SUITE_REGISTRATION(osl_Module::getFunctionSymbol);
 // -----------------------------------------------------------------------------
-    
+
 } // namespace osl_Module
 
 // -----------------------------------------------------------------------------
 
 // this macro creates an empty function, which will called by the RegisterAllFunctions()
 // to let the user the possibility to also register some functions by hand.
-NOADDITIONAL;
+CPPUNIT_PLUGIN_IMPLEMENT();
 
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */
