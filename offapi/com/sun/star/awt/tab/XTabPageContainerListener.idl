@@ -24,23 +24,34 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef com_sun_star_chart2_Break_idl
-#define com_sun_star_chart2_Break_idl
+#ifndef __com_sun_star_awt_tab_XTabPageContainerListener_idl__ 
+#define __com_sun_star_awt_tab_XTabPageContainerListener_idl__ 
 
-//=============================================================================
+#include <com/sun/star/lang/XEventListener.idl> 
+#include <com/sun/star/awt/tab/TabPageActivatedEvent.idl>  
+ 
+//============================================================================= 
+ 
+module com {  module sun {  module star {  module awt { module tab {  
+ 
+//============================================================================= 
 
-module com {  module sun {  module star {  module chart2 {
+/** An instance of this interface is used by the <type>XTabPageContainer</type> to
+    get notifications about changes in activation of tab pages.
 
-//=============================================================================
-
-struct Break
-{
-    double Min;
-    double Max;
-};
-
-//=============================================================================
-
-}; }; }; };
-
-#endif
+    @since OOo 3.4
+ */      
+interface XTabPageContainerListener: com::sun::star::lang::XEventListener
+{ 
+    //------------------------------------------------------------------------- 
+    /** Invoked after a tab page was activated.
+     */    
+    [oneway] void tabPageActivated( [in] TabPageActivatedEvent tabPageActivatedEvent); 
+ 
+}; 
+ 
+//============================================================================= 
+ 
+}; }; }; }; };
+ 
+#endif 
