@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -250,7 +251,7 @@ void SAL_CALL dispatchRemote2UnoProxy(
     else
     {
         // -----------------------
-        // an exception occured
+        // an exception occurred
         // -----------------------
         typelib_TypeDescription *pAnyType = 0;
         getCppuType( (::com::sun::star::uno::Any*) 0 ).getDescription( &pAnyType );
@@ -336,3 +337,5 @@ Remote2UnoProxy::~Remote2UnoProxy()
 }
 
 } // end namespace bridge_remote
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

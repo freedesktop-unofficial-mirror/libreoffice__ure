@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -116,17 +117,17 @@ public:
 
     inline void setBridgePropertyCall()
         { m_bBridgePropertyCall = sal_True; }
-    inline sal_Bool isBridgePropertyCall()
+    inline sal_Bool isBridgePropertyCall() const
         { return m_bBridgePropertyCall; }
-    inline sal_Bool isOneway()
+    inline sal_Bool isOneway() const
         { return m_bOneway; }
 
-        inline void setUnmarshal( Unmarshal *p )
-                { m_pUnmarshal = p; }
+    inline void setUnmarshal( Unmarshal *p )
+        { m_pUnmarshal = p; }
 public:
     typelib_InterfaceMethodTypeDescription    *m_pMethodType;
     typelib_InterfaceAttributeTypeDescription *m_pAttributeType;
-    sal_Bool m_bExceptionOccured;
+    sal_Bool m_bExceptionOccurred;
 
 private:
     void     **m_ppArgs;
@@ -247,7 +248,7 @@ public:
             m_aEntries[m_nCalls].m_bIgnoreCache = bIgnoreCache;
         }
 
-    inline sal_Bool isFull()
+    inline sal_Bool isFull() const
         { return m_nCalls >= m_nMaxMessages; }
 
     inline sal_Int8 *getHeap( sal_Int32 nSizeToAlloc )
@@ -377,3 +378,5 @@ inline ClientJob::ClientJob(
 
 }
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

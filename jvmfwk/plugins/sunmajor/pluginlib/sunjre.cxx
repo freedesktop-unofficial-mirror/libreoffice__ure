@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -68,7 +69,9 @@ char const* const* SunInfo::getRuntimePaths(int * size)
 #if defined(WNT)
         "/bin/client/jvm.dll",
         "/bin/hotspot/jvm.dll",
-        "/bin/classic/jvm.dll"
+        "/bin/classic/jvm.dll",
+        // The 64-bit JRE has the jvm in bin/server
+        "/bin/server/jvm.dll"
 #elif defined(OS2)
         "/bin/classic/jvm.dll",
 #elif UNX
@@ -88,6 +91,9 @@ char const* const* SunInfo::getLibraryPaths(int* size)
     static char const * ar[] = {
 
         "/lib/" JFW_PLUGIN_ARCH "/client",
+#if defined(OPENBSD)
+        "/lib/" JFW_PLUGIN_ARCH "/server",
+#endif
         "/lib/" JFW_PLUGIN_ARCH "/native_threads", 
         "/lib/" JFW_PLUGIN_ARCH
 
@@ -122,3 +128,5 @@ int SunInfo::compareVersions(const rtl::OUString& sSecond) const
 
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -159,7 +160,7 @@ UnoInterfaceReference FactoryImpl::binuno_queryInterface(
     }
     else
     {
-        // exception occured:
+        // exception occurred:
         OSL_ENSURE(
             typelib_typedescriptionreference_isAssignableFrom(
                 ::getCppuType( reinterpret_cast<
@@ -535,3 +536,4 @@ void * SAL_CALL component_getFactory(
 
 }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

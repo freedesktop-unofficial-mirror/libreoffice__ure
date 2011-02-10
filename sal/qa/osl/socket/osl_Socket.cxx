@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -59,9 +60,7 @@
 // include files
 //------------------------------------------------------------------------
 
-#ifndef _OSL_SOCKET_CONST_H_
 #include <osl_Socket_Const_orig.h>
-#endif
 
 #include <testshl/simpleheader.hxx>
 
@@ -196,11 +195,11 @@ inline ::rtl::OUString outputError( const ::rtl::OUString & returnVal, const ::r
     if ( returnVal.equals( rightVal ) )
         return aUString;
     aUString += ::rtl::OUString::createFromAscii(msg);
-    aUString += ::rtl::OUString::createFromAscii(": the returned value is '");
+    aUString += ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(": the returned value is '"));
     aUString += returnVal;
-    aUString += ::rtl::OUString::createFromAscii("', but the value should be '");
+    aUString += ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("', but the value should be '"));
     aUString += rightVal;
-    aUString += ::rtl::OUString::createFromAscii("'.");
+    aUString += ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("'."));
     return aUString;
 }
 
@@ -745,11 +744,11 @@ namespace osl_SocketAddr
 
             sal_Bool bOk = compareUString(suHost, suHost2);
 
-            rtl::OUString suError = rtl::OUString::createFromAscii("Host names should be the same. From SocketAddr.getLocalHostname() it is'");
+            rtl::OUString suError (RTL_CONSTASCII_USTRINGPARAM("Host names should be the same. From SocketAddr.getLocalHostname() it is'"));
             suError += suHost;
-            suError += rtl::OUString::createFromAscii("', from getThisHostname() it is '");
+            suError += rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("', from getThisHostname() it is '"));
             suError += suHost2;
-            suError += rtl::OUString::createFromAscii("'.");
+            suError += rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("'."));
 
             CPPUNIT_ASSERT_MESSAGE(suError, sal_True == bOk);
         }
@@ -768,16 +767,7 @@ namespace osl_SocketAddr
 
         void ctors_copy_no_001()
         {
-#if 0
-            ::osl::SocketAddr saSocketAddr( aHostName1, IP_PORT_HTTP1 );
-            oslSocketAddr psaOSLSocketAddr = saSocketAddr.getHandle( );
 
-            ::osl::SocketAddr saSocketAddrCopy( psaOSLSocketAddr, SAL_NO_COPY );
-            saSocketAddrCopy.setPort( IP_PORT_HTTP2 );
-
-            CPPUNIT_ASSERT_MESSAGE("test for SocketAddr no copy constructor function: do a no copy constructor on a given SocketAddr instance, modify the new instance's port, check the original one.",
-                                    saSocketAddr.getPort( ) == IP_PORT_HTTP2 );
-#endif
             ::osl::SocketAddr* pSocketAddr = new ::osl::SocketAddr( aHostName1, IP_PORT_HTTP1 );
             CPPUNIT_ASSERT_MESSAGE("check for new SocketAddr", pSocketAddr != NULL);
 
@@ -946,7 +936,7 @@ namespace osl_SocketAddr
 // LLA: this function does not work in company (Linux, Windows) but at home
         void getHostname_002()
         {
-            rtl::OUString suHostname = rtl::OUString::createFromAscii("cn-1.germany.sun.com");
+            rtl::OUString suHostname (RTL_CONSTASCII_USTRINGPARAM("cn-1.germany.sun.com"));
             rtl::OUString aHostIP    = getIPbyName( oustring2char( suHostname ) );
 
             ::osl::SocketAddr saSocketAddr( aHostName1, IP_PORT_FTP );
@@ -1355,7 +1345,7 @@ namespace osl_SocketAddr
             // LLA: IMHO localhost, or hostname by itself should be ok.
             rtl::OUString suThisHost = getThisHostname( );
             bool bOk = false;
-            if (suThisHost.equals(rtl::OUString::createFromAscii("localhost")))
+            if (suThisHost.equals(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("localhost"))))
             {
                 bOk = true;
             }
@@ -1412,7 +1402,7 @@ namespace osl_SocketAddr
     /** testing the method:
         static inline sal_Int32 SAL_CALL getServicePort(
             const ::rtl::OUString& strServiceName,
-            const ::rtl::OUString & strProtocolName= ::rtl::OUString::createFromAscii( "tcp" ) );
+            const ::rtl::OUString & strProtocolName= ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("tcp")) );
     */
 
     class gettheServicePort : public CppUnit::TestFixture
@@ -1440,7 +1430,7 @@ namespace osl_SocketAddr
         void gettheServicePort_004()
         {
             CPPUNIT_ASSERT_MESSAGE( "test for getServicePort() function: try to get a service port which is not exist.",
-                                      OSL_INVALID_PORT == ::osl::SocketAddr::getServicePort( ::rtl::OUString::createFromAscii( "notexist" ), aProtocolUDP ) );
+                                      OSL_INVALID_PORT == ::osl::SocketAddr::getServicePort( ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("notexist")), aProtocolUDP ) );
         }
 
         CPPUNIT_TEST_SUITE( gettheServicePort );
@@ -1515,7 +1505,7 @@ namespace osl_Socket
             /// Socket constructor.
             // ::osl::Socket sSocket;
 
-            CPPUNIT_ASSERT_MESSAGE( "test for ctors_none constructor function: check if the socket was created successfully, if no exception occured",
+            CPPUNIT_ASSERT_MESSAGE( "test for ctors_none constructor function: check if the socket was created successfully, if no exception occurred",
                                     1 == 1 );
         }
 
@@ -1782,7 +1772,7 @@ namespace osl_Socket
             sSocket.setOption( osl_Socket_OptionReuseAddr, 1 ); //sal_True);
 
             sal_Bool bOK1 = sSocket.bind( saBindSocketAddr );
-            ::rtl::OUString suError1 = ::rtl::OUString::createFromAscii("Socket bind fail:") + sSocket.getErrorAsString();
+            ::rtl::OUString suError1 = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Socket bind fail:")) + sSocket.getErrorAsString();
             CPPUNIT_ASSERT_MESSAGE( suError1, sal_True == bOK1 );
 
             sSocket.getLocalAddr( saLocalSocketAddr );
@@ -1830,7 +1820,7 @@ namespace osl_Socket
             sSocket.setOption( osl_Socket_OptionReuseAddr, 1 ); //sal_True);
 
             sal_Bool bOK1 = sSocket.bind( saBindSocketAddr );
-            ::rtl::OUString suError1 = ::rtl::OUString::createFromAscii("Socket bind fail:") + sSocket.getErrorAsString();
+            ::rtl::OUString suError1 = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Socket bind fail:")) + sSocket.getErrorAsString();
             CPPUNIT_ASSERT_MESSAGE( suError1, sal_True == bOK1 );
             sal_Bool bOK = ( IP_PORT_MYPORT7 == sSocket.getLocalPort( )  );
 
@@ -1861,7 +1851,7 @@ namespace osl_Socket
             (void)bOK;
 #else
             //on Unix, if Addr is not an address of type osl_Socket_FamilyInet, it returns OSL_INVALID_PORT
-            ::rtl::OUString suError = ::rtl::OUString::createFromAscii( "on Unix, if Addr is not an address of type osl_Socket_FamilyInet, it returns OSL_INVALID_PORT, but can not create Addr of that case");
+            ::rtl::OUString suError (RTL_CONSTASCII_USTRINGPARAM("on Unix, if Addr is not an address of type osl_Socket_FamilyInet, it returns OSL_INVALID_PORT, but can not create Addr of that case"));
 #endif
             CPPUNIT_ASSERT_MESSAGE( suError, sal_False );
 
@@ -1875,10 +1865,10 @@ namespace osl_Socket
             sSocket.setOption( osl_Socket_OptionReuseAddr, 1 ); //sal_True);
 
             sal_Bool bOK1 = sSocket.bind( saBindSocketAddr );
-            ::rtl::OUString suError1 = ::rtl::OUString::createFromAscii("Socket bind fail:") + sSocket.getErrorAsString();
+            ::rtl::OUString suError1 = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Socket bind fail:")) + sSocket.getErrorAsString();
             CPPUNIT_ASSERT_MESSAGE( suError1, sal_True == bOK1 );
             ::rtl::OUString suError = outputError(::rtl::OUString::valueOf(sSocket.getLocalPort( )),
-                ::rtl::OUString::createFromAscii("34463"),
+                ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("34463")),
                 "test for getLocalPort function: first create a new socket, then an invalid socket address, bind them, and check the port assigned");
             sal_Bool bOK = ( sSocket.getLocalPort( ) >= 1 &&  sSocket.getLocalPort( ) <= 65535);
 
@@ -1927,7 +1917,7 @@ namespace osl_Socket
             sSocket.setOption( osl_Socket_OptionReuseAddr, 1 ); //sal_True);
 
             sal_Bool bOK1 = sSocket.bind( saBindSocketAddr );
-            ::rtl::OUString suError1 = ::rtl::OUString::createFromAscii("Socket bind fail:") + sSocket.getErrorAsString();
+            ::rtl::OUString suError1 = ::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("Socket bind fail:")) + sSocket.getErrorAsString();
             CPPUNIT_ASSERT_MESSAGE( suError1, sal_True == bOK1 );
             sal_Bool bOK;
             ::rtl::OUString suError;
@@ -3367,47 +3357,6 @@ namespace osl_AcceptorSocket
 
     }; // class ctors
 
-#if 0
-    class operator_assign : public CppUnit::TestFixture
-    {
-    public:
-
-        void assign_001()
-        {
-#if defined(LINUX)
-            ::osl::AcceptorSocket asSocket( osl_Socket_FamilyInet, osl_Socket_ProtocolIp, osl_Socket_TypeStream );
-            ::osl::AcceptorSocket asSocketAssign( osl_Socket_FamilyInet, osl_Socket_ProtocolIp, osl_Socket_TypeStream );
-            asSocket.setOption( osl_Socket_OptionReuseAddr, 1);
-            ::osl::SocketAddr saSocketAddr( aHostIp1, IP_PORT_MYPORT4 );
-            asSocket.bind( saSocketAddr );
-
-            AcceptorThread myAcceptorThread( asSocketAssign, aHostIp1 );
-            myAcceptorThread.create();
-
-            thread_sleep( 1 );
-            //when accepting, assign another socket to the socket, the thread will not be closed, so is blocking
-            asSocketAssign = asSocket;
-
-            t_print("#asSocketAssign port number is %d\n", asSocketAssign.getLocalPort() );
-
-            asSocketAssign.shutdown();
-            myAcceptorThread.join();
-
-            CPPUNIT_ASSERT_MESSAGE( "test for close when is accepting: the socket will quit accepting status.",
-                                myAcceptorThread.isOK()	== sal_True );
-
-
-#endif /* LINUX */
-        }
-
-
-        CPPUNIT_TEST_SUITE( operator_assign  );
-        CPPUNIT_TEST( assign_001 );
-        CPPUNIT_TEST_SUITE_END();
-
-    }; // class operator_assign
-#endif
-
     /** testing the method:
         inline sal_Bool SAL_CALL listen(sal_Int32 MaxPendingConnections= -1);
         inline oslSocketResult SAL_CALL acceptConnection( StreamSocket& Connection);
@@ -3721,3 +3670,5 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(osl_DatagramSocket::sendTo_recvFrom, "osl_
 // this macro creates an empty function, which will called by the RegisterAllFunctions()
 // to let the user the possibility to also register some functions by hand.
 NOADDITIONAL;
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

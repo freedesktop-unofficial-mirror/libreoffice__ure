@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -40,17 +41,11 @@
 #include <sal/types.h>
 #include <rtl/ustring.hxx>
 
-#ifndef	_OSL_THREAD_HXX
 #include <osl/thread.hxx>
-#endif
 
-#ifndef	_OSL_MUTEX_HXX
 #include <osl/mutex.hxx>
-#endif
 
-#ifndef	_OSL_MUTEX_HXX
 #include <osl/pipe.hxx>
-#endif
 #include <osl/time.h>
 
 #ifdef UNX
@@ -135,9 +130,9 @@ inline void printPipeError( ::osl::Pipe aPipe )
 //------------------------------------------------------------------------
 // pipe name and transfer contents
 //------------------------------------------------------------------------
-const rtl::OUString aTestPipeName = rtl::OUString::createFromAscii( "testpipe2" );
-const rtl::OUString aTestPipe1 = rtl::OUString::createFromAscii( "testpipe1" );
-const rtl::OUString aTestString = rtl::OUString::createFromAscii( "Sun Microsystems" );
+const rtl::OUString aTestPipeName(RTL_CONSTASCII_USTRINGPARAM("testpipe2"));
+const rtl::OUString aTestPipe1(RTL_CONSTASCII_USTRINGPARAM("testpipe1"));
+const rtl::OUString aTestString(RTL_CONSTASCII_USTRINGPARAM("Sun Microsystems"));
 
 const OString m_pTestString1("Sun Microsystems");
 const OString m_pTestString2("test pipe PASS/OK");
@@ -1058,3 +1053,5 @@ namespace osl_StreamPipe
 } // namespace osl_StreamPipe
 
 CPPUNIT_PLUGIN_IMPLEMENT();
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

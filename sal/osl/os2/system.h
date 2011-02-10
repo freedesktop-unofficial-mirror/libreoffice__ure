@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -356,7 +357,8 @@ char *macxp_tempnam( const char *tmpdir, const char *prefix );
 #if !defined(_WIN32)  && !defined(_WIN16) && !defined(OS2)  && \
     !defined(LINUX)   && !defined(NETBSD) && !defined(FREEBSD) && !defined(SCO)  && \
     !defined(AIX)     && !defined(HPUX)   && \
-    !defined(SOLARIS) && !defined(MACOSX)
+    !defined(SOLARIS) && !defined(MAC) && \
+    !defined(MACOSX)
 #	error "Target plattform not specified !"
 #endif
 
@@ -511,3 +513,4 @@ struct hostent *gethostbyname_r(const char *name, struct hostent *result,
 
 #endif /* __OSL_SYSTEM_H__ */
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

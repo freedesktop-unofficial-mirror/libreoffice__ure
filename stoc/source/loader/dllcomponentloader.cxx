@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -42,9 +43,7 @@
 #include <cppuhelper/factory.hxx>
 #include <cppuhelper/shlib.hxx>
 #include <cppuhelper/implbase3.hxx>
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX__
 #include <cppuhelper/implementationentry.hxx>
-#endif
 #include <cppuhelper/bootstrap.hxx>
 
 #include <com/sun/star/loader/XImplementationLoader.hpp>
@@ -259,3 +258,4 @@ Reference<XInterface> SAL_CALL DllComponentLoader_CreateInstance( const Referenc
 
 }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

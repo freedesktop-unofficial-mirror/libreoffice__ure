@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -61,8 +62,8 @@ extern "C" oslFileHandle SAL_CALL osl_createFileHandleFromOSHandle( HANDLE hFile
 //#################################################
 const sal_Unicode NAME_VALUE_SEPARATOR = TEXT('=');
 const sal_Char* SPACE = " ";
-const rtl::OUString ENV_COMSPEC = rtl::OUString::createFromAscii("COMSPEC");    
-const rtl::OUString QUOTE = rtl::OUString::createFromAscii("\"");
+const rtl::OUString ENV_COMSPEC (RTL_CONSTASCII_USTRINGPARAM("COMSPEC"));    
+const rtl::OUString QUOTE(RTL_CONSTASCII_USTRINGPARAM("\""));
 
 namespace /* private */
 {
@@ -591,7 +592,7 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
         }
     }
     
-    /* if an error occured we have to close the server side pipe ends too */
+    /* if an error occurred we have to close the server side pipe ends too */
 
     if (hInputWrite)
         CloseHandle(hInputWrite);
@@ -604,3 +605,5 @@ oslProcessError SAL_CALL osl_executeProcess_WithRedirectedIO(
 
     return osl_Process_E_Unknown;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -272,7 +273,7 @@ static OUString & getIniFileName_Impl()
             && fileName.copy(fileName.getLength() - progExt.getLength()).equalsIgnoreAsciiCase(progExt))
                 fileName = fileName.copy(0, fileName.getLength() - progExt.getLength());
 
-            progExt = OUString::createFromAscii(".exe");
+            progExt = OUString(RTL_CONSTASCII_USTRINGPARAM(".exe"));
             if(fileName.getLength() > progExt.getLength()
             && fileName.copy(fileName.getLength() - progExt.getLength()).equalsIgnoreAsciiCase(progExt))
                 fileName = fileName.copy(0, fileName.getLength() - progExt.getLength());
@@ -310,9 +311,6 @@ inline void EnsureNoFinalSlash (rtl::OUString & url)
         url = url.copy(0, i - 1);
     }
 }
-
-//----------------------------------------------------------------------------
-//----------------------------------------------------------------------------
 
 struct Bootstrap_Impl
 {
@@ -602,9 +600,6 @@ void Bootstrap_Impl::expandValue(
               LOOKUP_MODE_URE_BOOTSTRAP_EXPANSION : mode),
              requestFile, requestKey, requestStack)).pData);
 }
-
-//----------------------------------------------------------------------------
-//----------------------------------------------------------------------------
 
 namespace {
 
@@ -984,7 +979,7 @@ rtl::OUString expandMacros(
                         rtl::OUString line;
                         rtl::OUString url;
                         // Silently ignore any errors (is that good?):
-                        if (f.open(OpenFlag_Read) == osl::FileBase::E_None &&
+                        if (f.open(osl_File_OpenFlag_Read) == osl::FileBase::E_None &&
                             f.readLine(seq) == osl::FileBase::E_None &&
                             rtl_convertStringToUString(
                                 &line.pData,
@@ -1057,3 +1052,5 @@ rtl::OUString expandMacros(
 }
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

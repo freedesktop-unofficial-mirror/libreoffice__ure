@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -73,7 +74,7 @@ namespace
  * @param subKeyName  name of the subkey to open
  *
  * @return the installation path or NULL, if no installation was found or
- *         if an error occured
+ *         if an error occurred
  */
 WCHAR* getPathFromRegistryKey( HKEY hroot, LPCWSTR subKeyName )
 {
@@ -431,3 +432,5 @@ Bootstrap::defaultBootstrap_InitialComponentContext()
 
 }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

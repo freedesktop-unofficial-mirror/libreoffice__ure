@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -39,6 +40,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <osl/module.hxx>
+#include <sal/macros.h>
 
 #if ( defined WNT )                     // Windows
 #include <tools/prewin.h>
@@ -58,9 +60,9 @@
 #include <string>
 
 #if defined(WNT) || defined(OS2)
-    const rtl::OUString EXECUTABLE_NAME = rtl::OUString::createFromAscii("osl_process_child.exe");
+    const rtl::OUString EXECUTABLE_NAME (RTL_CONSTASCII_USTRINGPARAM("osl_process_child.exe"));
 #else
-    const rtl::OUString EXECUTABLE_NAME = rtl::OUString::createFromAscii("osl_process_child");
+    const rtl::OUString EXECUTABLE_NAME (RTL_CONSTASCII_USTRINGPARAM("osl_process_child"));
 #endif
 
 
@@ -94,7 +96,7 @@ inline ::rtl::OUString getExecutablePath( void )
     osl::Module::getUrlFromAddress( ( void* ) &getExecutablePath, dirPath );
     dirPath = dirPath.copy( 0, dirPath.lastIndexOf('/') );
     dirPath = dirPath.copy( 0, dirPath.lastIndexOf('/') + 1);
-    dirPath += rtl::OUString::createFromAscii("bin");
+    dirPath += rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("bin"));
     return dirPath;
 }
 
@@ -114,15 +116,15 @@ class Test_osl_joinProcess : public CppUnit::TestFixture
 public:
 
     Test_osl_joinProcess() :
-        join_param_(OUString::createFromAscii("-join")),
-        wait_time_(OUString::createFromAscii("1")),
+        join_param_(OUString(RTL_CONSTASCII_USTRINGPARAM("-join"))),
+        wait_time_(OUString(RTL_CONSTASCII_USTRINGPARAM("1"))),
         parameters_count_(2)
     {
         parameters_[0] = join_param_.pData;
         parameters_[1] = wait_time_.pData;
         suCWD = getExecutablePath();
         suExecutableFileURL = suCWD;
-        suExecutableFileURL += rtl::OUString::createFromAscii("/");
+        suExecutableFileURL += rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("/"));
         suExecutableFileURL += EXECUTABLE_NAME;
     }
 
@@ -384,13 +386,13 @@ public:
     //------------------------------------------------
     // ctor
     Test_osl_executeProcess() :
-        env_param_(OUString::createFromAscii("-env")),
+        env_param_(OUString(RTL_CONSTASCII_USTRINGPARAM("-env"))),
         parameters_count_(2)
     {
         parameters_[0] = env_param_.pData;
         suCWD = getExecutablePath();
         suExecutableFileURL = suCWD;
-        suExecutableFileURL += rtl::OUString::createFromAscii("/");
+        suExecutableFileURL += rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("/"));
         suExecutableFileURL += EXECUTABLE_NAME;
     }
 
@@ -549,10 +551,10 @@ public:
     void osl_execProc_merged_child_environment()
     {
         rtl_uString* child_env[4];
-        OUString env1 = OUString::createFromAscii(ENV1);
-        OUString env2 = OUString::createFromAscii(ENV2);
-        OUString env3 = OUString::createFromAscii(ENV3);
-        OUString env4 = OUString::createFromAscii(ENV4);
+        OUString env1(RTL_CONSTASCII_USTRINGPARAM(ENV1));
+        OUString env2(RTL_CONSTASCII_USTRINGPARAM(ENV2));
+        OUString env3(RTL_CONSTASCII_USTRINGPARAM(ENV3));
+        OUString env4(RTL_CONSTASCII_USTRINGPARAM(ENV4));
 
         child_env[0] = env1.pData;
         child_env[1] = env2.pData;
@@ -568,7 +570,7 @@ public:
             NULL,
             suCWD.pData,
             child_env,
-            sizeof(child_env)/sizeof(child_env[0]),
+            SAL_N_ELEMENTS(child_env),
             &process);
 
         CPPUNIT_ASSERT_MESSAGE
@@ -602,7 +604,7 @@ public:
     void osl_execProc_test_batch()
     {
         oslProcess process;
-        rtl::OUString suBatch = suCWD + rtl::OUString::createFromAscii("/") + rtl::OUString::createFromAscii("batch.bat");
+        rtl::OUString suBatch = suCWD + rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("/")) + rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("batch.bat"));
         oslProcessError osl_error = osl_executeProcess(
             suBatch.pData,
             NULL,
@@ -682,3 +684,4 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(Test_osl_executeProcess, "Test_osl_execute
 
 NOADDITIONAL;
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

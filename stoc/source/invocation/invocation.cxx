@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -29,13 +30,9 @@
 #include "precompiled_stoc.hxx"
 #include <osl/mutex.hxx>
 #include <cppuhelper/queryinterface.hxx>
-#ifndef _CPPUHELER_WEAK_HXX_
 #include <cppuhelper/weak.hxx>
-#endif
 #include <cppuhelper/factory.hxx>
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX__
 #include <cppuhelper/implementationentry.hxx>
-#endif
 #include <cppuhelper/typeprovider.hxx>
 #include <cppuhelper/implbase2.hxx>
 
@@ -642,7 +639,7 @@ void Invocation_Impl::setValue( const OUString& PropertyName, const Any& Value )
         catch (Exception & exc)
         {
             throw InvocationTargetException(
-                OUString( RTL_CONSTASCII_USTRINGPARAM("exception occured in setValue(): ") ) +
+                OUString( RTL_CONSTASCII_USTRINGPARAM("exception occurred in setValue(): ") ) +
                 exc.Message, Reference< XInterface >(), makeAny( exc /* though sliced */ ) );
         }
     }
@@ -1260,3 +1257,4 @@ void * SAL_CALL component_getFactory(
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

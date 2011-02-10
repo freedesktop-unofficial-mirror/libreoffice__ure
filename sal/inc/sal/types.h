@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -29,6 +30,7 @@
 #define _SAL_TYPES_H_
 
 #include <sal/config.h>
+#include <sal/macros.h>
 
 /* Grab __SIZEOFxxx constants from typesconfig tool on Unix */
 #if defined UNX
@@ -41,8 +43,12 @@
   #define SAL_TYPES_SIZEOFSHORT		2
   #define SAL_TYPES_SIZEOFINT 		4
   #define SAL_TYPES_SIZEOFLONG		4
-  #define SAL_TYPES_SIZEOFLONGLONG		8
-  #define SAL_TYPES_SIZEOFPOINTER		4
+  #define SAL_TYPES_SIZEOFLONGLONG	8
+  #ifdef _WIN64
+    #define SAL_TYPES_SIZEOFPOINTER	8
+  #else
+    #define SAL_TYPES_SIZEOFPOINTER	4
+  #endif
 #endif
 
 #ifdef __cplusplus
@@ -343,7 +349,9 @@ typedef struct _sal_Sequence
     lack RTTI support, dynamic_cast is not included here).
  */
 #ifdef __cplusplus
-#if defined SAL_W32 || defined SOLARIS || defined LINUX || defined MACOSX || defined FREEBSD || defined NETBSD || defined AIX || defined OS2
+#if defined SAL_W32 || defined SOLARIS || defined LINUX || defined MACOSX || \
+    defined FREEBSD || defined NETBSD || defined AIX || defined OS2 || \
+    defined OPENBSD
 #define SAL_CONST_CAST(type, expr) (const_cast< type >(expr))
 #define SAL_REINTERPRET_CAST(type, expr) (reinterpret_cast< type >(expr))
 #define SAL_STATIC_CAST(type, expr) (static_cast< type >(expr))
@@ -433,3 +441,4 @@ template< typename T1, typename T2 > inline T1 static_int_cast(T2 n) {
 
 #endif /*_SAL_TYPES_H_ */
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

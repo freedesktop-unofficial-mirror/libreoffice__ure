@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -41,13 +42,9 @@
 #include    <unistd.h>
 #endif
 
-#ifndef __REGISTRY_REFLREAD_HXX__
 #include    <registry/reflread.hxx>
-#endif
 
-#ifndef __REGISTRY_REFLWRIT_HXX__
 #include    <registry/reflwrit.hxx>
-#endif
 
 #include "registry/reader.hxx"
 #include "registry/refltype.hxx"
@@ -1758,3 +1755,5 @@ RegError ORegistry::dumpKey(const OUString& sPath, const OUString& sName, sal_In
 
     return REG_NO_ERROR;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

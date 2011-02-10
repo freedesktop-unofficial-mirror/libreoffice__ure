@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -198,7 +199,7 @@ Sequence<OUString> SAL_CALL ExampleComponent2Impl::getSupportedServiceNames_Stat
 OUString SAL_CALL ExampleComponent2Impl::getMessage() throw(RuntimeException)
 {
     Guard< Mutex > aGuard( m_mutex );
-    return OUString::createFromAscii("Alle meine Entchen schwimmen auf dem See, schwimmen auf dem See ...");
+    return OUString(RTL_CONSTASCII_USTRINGPARAM("Alle meine Entchen schwimmen auf dem See, schwimmen auf dem See ..."));
 }	
 
 
@@ -284,3 +285,4 @@ void * SAL_CALL component_getFactory(
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

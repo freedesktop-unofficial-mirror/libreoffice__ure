@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -50,6 +51,10 @@
 #define THIS_OS "NetBSD"
 #elif defined FREEBSD
 #define THIS_OS "FreeBSD"
+#elif defined AIX
+#define THIS_OS "AIX"
+#elif defined OPENBSD
+#define THIS_OS "OpenBSD"
 #endif
 
 #if ! defined THIS_OS
@@ -108,3 +113,4 @@ this is inserted for the case that the preprocessor ignores error
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

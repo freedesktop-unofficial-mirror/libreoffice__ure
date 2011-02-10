@@ -43,20 +43,20 @@ UNOUCROUT=	$(OUT)$/inc$/test
 INCPRE+=	$(OUT)$/inc$/test
 
 OBJFILES=	\
-		$(OBJ)$/testhelper.obj		\
-		$(OBJ)$/testpropshlp.obj 	\
-		$(OBJ)$/testidlclass.obj 	\
-		$(OBJ)$/testproptyphlp.obj	\
-		$(OBJ)$/testimplhelper.obj \
-		$(OBJ)$/testcontainer.obj
+        $(OBJ)$/testhelper.obj		\
+        $(OBJ)$/testpropshlp.obj 	\
+        $(OBJ)$/testidlclass.obj 	\
+        $(OBJ)$/testproptyphlp.obj	\
+        $(OBJ)$/testimplhelper.obj \
+        $(OBJ)$/testcontainer.obj
 
 APP1TARGET=$(TARGET)
 APP1OBJS=$(OBJFILES) 
 
 APP1STDLIBS+=	\
-		$(CPPULIB)	\
-		$(CPPUHELPERLIB) \
-		$(SALLIB)
+        $(CPPULIB)	\
+        $(CPPUHELPERLIB) \
+        $(SALLIB)
 
 APP1DEF=	$(MISC)$/$(APP1TARGET).def
 
@@ -69,7 +69,7 @@ APP2TARGET = testdefaultbootstrapping
 #############################################
 
 SLOFILES= \
-		$(SLO)$/cfg_test.obj
+        $(SLO)$/cfg_test.obj
 LIB1TARGET=$(SLB)$/cfg_test.lib
 LIB1OBJFILES=$(SLOFILES)
 
@@ -86,31 +86,31 @@ ALLIDLFILES:=	helpertest.idl
 
 .IF "$(depend)" == ""
 ALL: $(BIN)$/cpputest.rdb				\
-	 unoheader 					\
-	 $(BIN)$/testrc 				\
-	 $(BIN)$/testdefaultbootstrapping.pl		\
-	ALLTAR 						\
-	 $(BIN)$/$(APP2TARGET).bin  			\
-	 $(BIN)$/$(APP2TARGET).Bin  			\
-	 $(BIN)$/$(APP2TARGET).Exe
+     unoheader 					\
+     $(BIN)$/testrc 				\
+     $(BIN)$/testdefaultbootstrapping.pl		\
+    ALLTAR 						\
+     $(BIN)$/$(APP2TARGET).bin  			\
+     $(BIN)$/$(APP2TARGET).Bin  			\
+     $(BIN)$/$(APP2TARGET).Exe
 
 .IF "$(GUI)"=="UNX"
 ALL:  $(BIN)$/$(APP2TARGET).exe
 
 $(BIN)$/$(APP2TARGET).exe : $(APP2TARGETN)
-	cp $(APP2TARGETN) $@
+    cp $(APP2TARGETN) $@
 
 .ENDIF
 
 
 $(BIN)$/$(APP2TARGET).bin : $(APP2TARGETN)
-	cp $(APP2TARGETN) $@
+    cp $(APP2TARGETN) $@
 
 $(BIN)$/$(APP2TARGET).Bin : $(APP2TARGETN)
-	cp $(APP2TARGETN) $@
+    cp $(APP2TARGETN) $@
 
 $(BIN)$/$(APP2TARGET).Exe : $(APP2TARGETN)
-	cp $(APP2TARGETN) $@
+    cp $(APP2TARGETN) $@
 
 .ELSE
 ALL: 	ALLDEP
@@ -138,30 +138,30 @@ EXT_SO   := .so
 .ENDIF
 
 $(UNO_OUT)$/%$(EXT_SO): $(UNO_PATH)$/%$(EXT_SO)
-	$(COPY) $^ $@
+    $(COPY) $^ $@
 
 $(BIN)$/cpputest.rdb: $(ALLIDLFILES) $(UNO_OUT)$/invocadapt.uno$(EXT_SO) $(UNO_OUT)$/bootstrap.uno$(EXT_SO)
-	idlc -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $(ALLIDLFILES)
-	regmerge $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
-	regmerge $@ / $(UNOUCRRDB)
-	regcomp -register -r $@ -c reflection.uno$(DLLPOST)
-	touch $@
+    $(IDLC) -I$(PRJ) -I$(SOLARIDLDIR) -O$(BIN) $(ALLIDLFILES)
+    $(REGMERGE) $@ /UCR $(BIN)$/{$(?:f:s/.idl/.urd/)}
+    $(REGMERGE) $@ / $(UNOUCRRDB)
+    $(REGCOMP) -register -r $@ -c reflection.uno$(DLLPOST)
+    $(TOUCH) $@
 
 unoheader: $(BIN)$/cpputest.rdb
-	cppumaker $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) -T"$(TYPES);$(HELPERTYPES)" $(BIN)$/cpputest.rdb
-	cppumaker $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) -T"$(FACTORYTYPES)" $(BIN)$/cpputest.rdb
+    $(CPPUMAKER) $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) -T"$(TYPES);$(HELPERTYPES)" $(BIN)$/cpputest.rdb
+    $(CPPUMAKER) $(CPPUMAKERFLAGS) -BUCR -O$(UNOUCROUT) -T"$(FACTORYTYPES)" $(BIN)$/cpputest.rdb
 
 
 $(BIN)$/testdefaultbootstrapping.pl: testdefaultbootstrapping.pl
-	cp testdefaultbootstrapping.pl $@
+    cp testdefaultbootstrapping.pl $@
 
 $(BIN)$/testrc: makefile.mk
 .IF "$(GUI)"=="WNT"
-	echo [Tests] > $@
-	echo TestKey1=com.sun.star.uno.NamingService.rdb >> $@
+    echo [Tests] > $@
+    echo TestKey1=com.sun.star.uno.NamingService.rdb >> $@
 .ELSE
-	echo '[Tests]' > $@
-	echo 'TestKey1=file:///'$(PWD)/$(BIN)'/com.sun.star.uno.NamingService.rdb' >> $@
+    echo '[Tests]' > $@
+    echo 'TestKey1=file:///'$(PWD)/$(BIN)'/com.sun.star.uno.NamingService.rdb' >> $@
 .ENDIF
 
 

@@ -62,7 +62,7 @@ SHL1RPATH = NONE
 #------------------------------- All object files -------------------------------
 # do this here, so we get right dependencies
 SLOFILES=\
-	$(SHL1OBJS)
+    $(SHL1OBJS)
 
 # --- Targets ------------------------------------------------------
 

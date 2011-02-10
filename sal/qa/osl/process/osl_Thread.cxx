@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -32,21 +33,13 @@
 //------------------------------------------------------------------------
 #include <sal/types.h>
 
-#ifndef _RTL_USTRING_HXX_
 #include <rtl/string.hxx>
-#endif
 
-#ifndef _RTL_USTRING_HXX_
 #include <rtl/strbuf.hxx>
-#endif
 
-#ifndef _OSL_THREAD_HXX
 #include <osl/thread.hxx>
-#endif
 
-#ifndef _OSL_MUTEX_HXX
 #include <osl/mutex.hxx>
-#endif
 #include <osl/time.h>
 
 #include <testshl/simpleheader.hxx>
@@ -585,7 +578,7 @@ namespace osl_Thread
                 myThread* newthread = new myThread();
                 sal_Bool res1 = newthread->create();
                 sal_Bool res2 = newthread->create();
-                t_print("In non pro, an assertion should occured. This behaviour is right.\n");
+                t_print("In non pro, an assertion should occurred. This behaviour is right.\n");
                 termAndJoinThread(newthread);
                 delete newthread;
 
@@ -2342,3 +2335,4 @@ namespace osl_ThreadData
 // to let the user the possibility to also register some functions by hand.
 NOADDITIONAL;
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -128,7 +129,7 @@ Sequence<OUString> SAL_CALL ExampleComponent1Impl::getSupportedServiceNames_Stat
 OUString SAL_CALL ExampleComponent1Impl::getMessage() throw(RuntimeException)
 {
     Guard< Mutex > aGuard( m_mutex );
-    return OUString::createFromAscii("Lalelu nur der Mann im Mond schaut zu ...");
+    return OUString(RTL_CONSTASCII_USTRINGPARAM("Lalelu nur der Mann im Mond schaut zu ..."));
 }	
 
 
@@ -213,3 +214,4 @@ void * SAL_CALL component_getFactory(
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

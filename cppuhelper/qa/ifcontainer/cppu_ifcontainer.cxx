@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -128,7 +129,7 @@ namespace cppu_ifcontainer
             for (i = 0; i < nTests; i++)
             {
                 Reference<XEventListener> xRef = new ContainerListener(&aStats);
-                int nNewLen = pContainer->addInterface(xRef);
+                pContainer->addInterface(xRef);
                 aListeners.push_back(xRef);
             }
             Sequence< Reference< XInterface > > aElements;
@@ -281,3 +282,5 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(cppu_ifcontainer::IfTest,
                                       "cppu_ifcontainer");
 
 NOADDITIONAL;
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

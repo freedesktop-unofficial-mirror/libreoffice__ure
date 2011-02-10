@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -40,13 +41,9 @@
 #include <cppuhelper/weakref.hxx>
 #include <cppuhelper/component.hxx>
 #include <cppuhelper/factory.hxx>
-#ifndef _CPPUHELPER_IMPLBASE1_HXX
 #include <cppuhelper/implbase1.hxx>
-#endif
 #include <cppuhelper/typeprovider.hxx>
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX_
 #include <cppuhelper/implementationentry.hxx>
-#endif
 #include <rtl/unload.h>
 #include <cppuhelper/component_context.hxx>
 #include <cppuhelper/bootstrap.hxx>
@@ -932,8 +929,8 @@ void OServiceManager::onUnloadingNotify()
     IT_MM it_end1= m_ServiceMap.end();
     list<IT_MM> listDeleteServiceMap;
     typedef list<IT_MM>::const_iterator CIT_DMM;
-    // find occurences in m_ServiceMap
-    for(IT_MM it_i1= m_ServiceMap.begin(); it_i1 != it_end1; it_i1++)
+    // find occurrences in m_ServiceMap
+    for(IT_MM it_i1= m_ServiceMap.begin(); it_i1 != it_end1; ++it_i1)
     {
         if( m_SetLoadedFactories.find( it_i1->second) != it_SetEnd)
         {
@@ -957,7 +954,7 @@ void OServiceManager::onUnloadingNotify()
     IT_M it_end3= m_ImplementationNameMap.end();
     list<IT_M> listDeleteImplementationNameMap;
     typedef list<IT_M>::const_iterator CIT_DM;
-    for( IT_M it_i3= m_ImplementationNameMap.begin();  it_i3 != it_end3; it_i3++)
+    for( IT_M it_i3= m_ImplementationNameMap.begin();  it_i3 != it_end3; ++it_i3)
     {
         if( m_SetLoadedFactories.find( it_i3->second) != it_SetEnd)
         {
@@ -981,7 +978,7 @@ void OServiceManager::onUnloadingNotify()
     IT_S it_end5= m_ImplementationMap.end();
     list<IT_S> listDeleteImplementationMap;
     typedef list<IT_S>::const_iterator CIT_DS;
-    for( IT_S it_i5= m_ImplementationMap.begin(); it_i5 != it_end5; it_i5++)
+    for( IT_S it_i5= m_ImplementationMap.begin(); it_i5 != it_end5; ++it_i5)
     {
         if( m_SetLoadedFactories.find( *it_i5) != it_SetEnd)
         {
@@ -1004,7 +1001,7 @@ void OServiceManager::onUnloadingNotify()
     IT_S it_end7= m_SetLoadedFactories.end();
 
     Reference<XEventListener> xlistener= getFactoryListener();
-    for( IT_S it_i7= m_SetLoadedFactories.begin(); it_i7 != it_end7; it_i7++)
+    for( IT_S it_i7= m_SetLoadedFactories.begin(); it_i7 != it_end7; ++it_i7)
     {
         Reference<XComponent> xcomp( *it_i7, UNO_QUERY);
         if( xcomp.is())
@@ -1045,7 +1042,7 @@ void OServiceManager::disposing()
         {
 #if OSL_DEBUG_LEVEL > 1
             OString str( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
-            OSL_TRACE( "### RuntimeException occured upon disposing factory: %s", str.getStr() );
+            OSL_TRACE( "### RuntimeException occurred upon disposing factory: %s", str.getStr() );
 #else
             (void) exc; // unused
 #endif
@@ -1267,7 +1264,7 @@ Reference< XInterface > OServiceManager::createInstanceWithContext(
         {
 #if OSL_DEBUG_LEVEL > 1
             OString str( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
-            OSL_TRACE( "### DisposedException occured: %s", str.getStr() );
+            OSL_TRACE( "### DisposedException occurred: %s", str.getStr() );
 #else
             (void) exc; // unused
 #endif
@@ -1331,7 +1328,7 @@ Reference< XInterface > OServiceManager::createInstanceWithArgumentsAndContext(
         {
 #if OSL_DEBUG_LEVEL > 1
             OString str( OUStringToOString( exc.Message, RTL_TEXTENCODING_ASCII_US ) );
-            OSL_TRACE( "### DisposedException occured: %s", str.getStr() );
+            OSL_TRACE( "### DisposedException occurred: %s", str.getStr() );
 #else
             (void) exc; // unused
 #endif
@@ -2057,3 +2054,5 @@ Reference<XInterface > SAL_CALL OServiceManagerWrapper_CreateInstance(
     return (OWeakObject *)new stoc_smgr::OServiceManagerWrapper( xContext );
 }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

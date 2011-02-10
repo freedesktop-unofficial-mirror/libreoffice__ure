@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -33,9 +34,7 @@
 #include <rtl/ustrbuf.hxx>
 #include <bridges/remote/context.h>
 
-#ifndef _BRIDGES_REMOTE_HELPER_HXX_
 #include <bridges/remote/helper.hxx>
-#endif
 #include <com/sun/star/uno/Type.hxx>
 #include "urp_bridgeimpl.hxx"
 
@@ -77,9 +76,9 @@ public:
         remote_createStubFunc callback );
     ~Unmarshal();
 
-    inline sal_Bool finished()
+    inline sal_Bool finished() const
         { return m_base + m_nLength == m_pos; }
-    inline sal_uInt32 getPos()
+    inline sal_uInt32 getPos() const
         { return (sal_uInt32 ) (m_pos - m_base); }
 
     inline sal_Bool setSize( sal_Int32 nSize );
@@ -98,7 +97,7 @@ public:
 
     sal_Int8 *getBuffer()
         { return m_base; }
-    inline sal_Bool isSystemLittleEndian()
+    inline sal_Bool isSystemLittleEndian() const
         { return g_bSystemIsLittleEndian; }
 
 private:
@@ -278,3 +277,5 @@ inline sal_Bool Unmarshal::unpackAny( void *pDest )
 
 }
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

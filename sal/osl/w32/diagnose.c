@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -137,7 +138,7 @@ sal_Bool SAL_CALL osl_assertFailedLine(const sal_Char* pszFileName, sal_Int32 nL
             return sal_True;    /* will cause oslDebugBreak */
     }
 #endif /* NO_DEBUG_CRT */
-    return sal_False;  /* not shure, not care */
+    return sal_False;  /* not sure, don't care */
 }
 
 sal_Int32 SAL_CALL osl_reportError(sal_uInt32 nType, const sal_Char* pszMessage)
@@ -149,8 +150,6 @@ sal_Int32 SAL_CALL osl_reportError(sal_uInt32 nType, const sal_Char* pszMessage)
     HWND hWndParent = GetActiveWindow();
     if (hWndParent != NULL)
         hWndParent = GetLastActivePopup(hWndParent);
-
-    nType = nType; /* avoid warnings */
     
     /* set message box flags */
     nFlags = MB_TASKMODAL | MB_ICONERROR | MB_YESNOCANCEL | MB_DEFBUTTON2 | MB_SETFOREGROUND;
@@ -163,3 +162,4 @@ sal_Int32 SAL_CALL osl_reportError(sal_uInt32 nType, const sal_Char* pszMessage)
     return nDisposition;
 }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

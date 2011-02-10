@@ -51,8 +51,8 @@ LINK=$(WRAPCMD) "$(PSDK_HOME)$/Bin$/Win64$/LINK.EXE"
 .ENDIF
 
 SLOFILES=\
-		$(SLO)$/onlinecheck.obj
-		
+        $(SLO)$/onlinecheck.obj
+        
 
 SHL1TARGET=$(TARGET)
 SHL1IMPLIB=$(SHL1TARGET)
@@ -61,8 +61,8 @@ DEF1NAME=$(SHL1TARGET)
 DEF1EXPORTFILE=$(SHL1TARGET).dxp
 
 DEF1DEPN=\
-		$(DEF1EXPORTFILE)\
-		makefile.mk
+        $(DEF1EXPORTFILE)\
+        makefile.mk
 
 SHL1OBJS=$(SLOFILES)
 
@@ -70,12 +70,11 @@ SHL1OBJS=$(SLOFILES)
 #STDSHL=
 
 SHL1STDLIBS=\
-		$(UNICOWSLIB)\
-		$(KERNEL32LIB)\
-		$(LIBCMT)\
-		$(WININETLIB)
+        $(KERNEL32LIB)\
+        $(LIBCMT)\
+        $(WININETLIB)
 
-		
+        
 .ENDIF
 
 .INCLUDE : target.mk

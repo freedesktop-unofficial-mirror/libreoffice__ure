@@ -70,12 +70,12 @@ UWINAPILIB=
 NO_OFFUH=TRUE
 CPPUMAKERFLAGS =
 UNOTYPES = \
-	com.sun.star.lang.XSingleComponentFactory			\
-	com.sun.star.loader.CannotActivateFactoryException 		\
-	com.sun.star.container.XHierarchicalNameAccess		\
-	com.sun.star.registry.CannotRegisterImplementationException	\
-	com.sun.star.registry.XRegistryKey \
-	com.sun.star.registry.XSimpleRegistry
+    com.sun.star.lang.XSingleComponentFactory			\
+    com.sun.star.loader.CannotActivateFactoryException 		\
+    com.sun.star.container.XHierarchicalNameAccess		\
+    com.sun.star.registry.CannotRegisterImplementationException	\
+    com.sun.star.registry.XRegistryKey \
+    com.sun.star.registry.XSimpleRegistry
 
 #loader lock was solved as of VS 2005 (CCNUMVER = 0014..)
 # When compiling for CLR, disable "warning C4339: use of undefined type detected
@@ -92,24 +92,24 @@ SLOFILES = \
     $(SLO)$/native_bootstrap.obj \
     $(SLO)$/path.obj \
     $(SLO)$/assembly_cppuhelper.obj
-	
+    
 
 SHL1OBJS = $(SLOFILES)
 
 SHL1TARGET = $(TARGET)
 
 SHL1STDLIBS = \
-	$(CPPUHELPERLIB) \
-	$(CPPULIB)		\
-	$(SALLIB)		\
-	delayimp.lib \
-	advapi32.lib \
-	mscoree.lib \
+    $(CPPUHELPERLIB) \
+    $(CPPULIB)		\
+    $(SALLIB)		\
+    delayimp.lib \
+    advapi32.lib \
+    mscoree.lib \
     Advapi32.lib
 
 .IF "$(CCNUMVER)" >= "001399999999"
 SHL1STDLIBS += \
-	msvcmrt.lib
+    msvcmrt.lib
 .ENDIF
 
 SHL1VERSIONMAP = msvc.map
@@ -134,24 +134,24 @@ CFLAGSCXX += -clr:oldSyntax
 .ENDIF
 
 $(ASSEMBLY_ATTRIBUTES) : assembly.cxx $(BIN)$/cliuno.snk $(BIN)$/cliureversion.mk
-	@echo $(ASSEMBLY_KEY_X)
+    @echo $(ASSEMBLY_KEY_X)
     $(GNUCOPY) -p assembly.cxx $@
     echo \
-	'[assembly:System::Reflection::AssemblyVersion( "$(CLI_CPPUHELPER_NEW_VERSION)" )];' \
-	>> $(OUT)$/misc$/assembly_cppuhelper.cxx
+    '[assembly:System::Reflection::AssemblyVersion( "$(CLI_CPPUHELPER_NEW_VERSION)" )];' \
+    >> $(OUT)$/misc$/assembly_cppuhelper.cxx
     echo \
-	'[assembly:System::Reflection::AssemblyKeyFile($(ASSEMBLY_KEY_X))];' \
-	>> $(OUT)$/misc$/assembly_cppuhelper.cxx
-	
-	
+    '[assembly:System::Reflection::AssemblyKeyFile($(ASSEMBLY_KEY_X))];' \
+    >> $(OUT)$/misc$/assembly_cppuhelper.cxx
+    
+    
 
 #make sure we build cli_cppuhelper after the version changed
 $(SHL1OBJS) : $(BIN)$/cli_cppuhelper.config
 
-	
+    
 
 $(SIGN): $(SHL1TARGETN)
-	$(WRAPCMD) sn.exe -R $(BIN)$/$(TARGET).dll	$(BIN)$/cliuno.snk	 && $(TOUCH) $@
+    $(WRAPCMD) sn.exe -R $(BIN)$/$(TARGET).dll	$(BIN)$/cliuno.snk	 && $(TOUCH) $@
 
 #do not forget to deliver cli_cppuhelper.config. It is NOT embedded in the policy file.
 .IF "$(CCNUMVER)" >= "001399999999"		
@@ -161,24 +161,24 @@ $(SIGN): $(SHL1TARGETN)
 # cli_cppuhelper.dll but the system cannot locate it. It possibly assumes that the
 # assembly is also 'MSIL'  like its policy file.
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_cppuhelper.config
-	$(WRAPCMD) AL.exe -out:$@ \
-			-version:$(CLI_CPPUHELPER_POLICY_VERSION) \
-			-keyfile:$(BIN)$/cliuno.snk \
-			-link:$(BIN)$/cli_cppuhelper.config \
-			-platform:x86
+    $(WRAPCMD) AL.exe -out:$@ \
+            -version:$(CLI_CPPUHELPER_POLICY_VERSION) \
+            -keyfile:$(BIN)$/cliuno.snk \
+            -link:$(BIN)$/cli_cppuhelper.config \
+            -platform:x86
 .ELSE
 #.NET 1.1: platform flag not needed
 $(POLICY_ASSEMBLY_FILE) : $(BIN)$/cli_cppuhelper.config
-	$(WRAPCMD) AL.exe -out:$@ \
-			-version:$(CLI_CPPUHELPER_POLICY_VERSION) \
-			-keyfile:$(BIN)$/cliuno.snk \
-			-link:$(BIN)$/cli_cppuhelper.config		
+    $(WRAPCMD) AL.exe -out:$@ \
+            -version:$(CLI_CPPUHELPER_POLICY_VERSION) \
+            -keyfile:$(BIN)$/cliuno.snk \
+            -link:$(BIN)$/cli_cppuhelper.config		
 .ENDIF			
 
 #Create the config file that is used with the policy assembly
 $(BIN)$/cli_cppuhelper.config: cli_cppuhelper_config $(BIN)$/cliureversion.mk 
-	$(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
-	$< $@
-	
+    $(PERL) $(SOLARENV)$/bin$/clipatchconfig.pl \
+    $< $@
+    
 .ENDIF			# "$(BUILD_FOR_CLI)" != ""
 

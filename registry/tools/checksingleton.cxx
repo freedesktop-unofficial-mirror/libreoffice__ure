@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -444,7 +445,7 @@ int _cdecl main( int argc, char * argv[] )
         typeKey = typeRoot;
     }
         
-    if ( indexRoot.createKey(OUString::createFromAscii("SINGLETONS"), singletonKey) )
+    if ( indexRoot.createKey(OUString(RTL_CONSTASCII_USTRINGPARAM("SINGLETONS")), singletonKey) )
     {
         fprintf(stderr, "%s: open/create SINGLETONS key of registry \"%s\" failed\n",
                 options.getProgramName().getStr(), options.getIndexReg().getStr());
@@ -481,3 +482,4 @@ int _cdecl main( int argc, char * argv[] )
 }
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

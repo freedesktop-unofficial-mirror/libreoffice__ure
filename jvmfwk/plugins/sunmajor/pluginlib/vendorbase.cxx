@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -115,7 +116,7 @@ bool VendorBase::initialize(vector<pair<OUString, OUString> > props)
     bool bAccess = false;
     
     typedef vector<pair<OUString, OUString> >::const_iterator it_prop;
-    for (it_prop i = props.begin(); i != props.end(); i++)
+    for (it_prop i = props.begin(); i != props.end(); ++i)
     {
         if(! bVendor && sVendorProperty.equals(i->first))
         {
@@ -168,7 +169,7 @@ bool VendorBase::initialize(vector<pair<OUString, OUString> > props)
     
     bool bRt = false;
     typedef vector<OUString>::const_iterator i_path;
-    for(i_path ip = libpaths.begin(); ip != libpaths.end(); ip++)
+    for(i_path ip = libpaths.begin(); ip != libpaths.end(); ++ip)
     {
         //Construct an absolute path to the possible runtime
         OUString usRt= m_sHome + *ip;
@@ -194,7 +195,7 @@ bool VendorBase::initialize(vector<pair<OUString, OUString> > props)
     OUString sPathSep= OUString::createFromAscii(arSep);
     bool bLdPath = true;
     int c = 0;
-    for(i_path il = ld_paths.begin(); il != ld_paths.end(); il ++, c++)
+    for(i_path il = ld_paths.begin(); il != ld_paths.end(); ++il, ++c)
     {
         OUString usAbsUrl= m_sHome + *il;
         // convert to system path
@@ -274,3 +275,5 @@ int VendorBase::compareVersions(const rtl::OUString& /*sSecond*/) const
         
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

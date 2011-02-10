@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -1586,7 +1587,7 @@ public:
     
             (*iter).second->release();
             (*iter).second = NULL;
-            iter++;
+            ++iter;
         }
     }
 };
@@ -1684,7 +1685,7 @@ public:
          {
             (*iter).second->release();
             (*iter).second = NULL;
-            iter++;
+            ++iter;
         }
     }
 };
@@ -1926,14 +1927,14 @@ Sequence< OUString > ImplIntrospection::getSupportedServiceNames(void) throw()
 // Helper XServiceInfo
 OUString ImplIntrospection::getImplementationName_Static(  ) 
 {
-    return OUString::createFromAscii( IMPLEMENTATION_NAME );
+    return OUString(RTL_CONSTASCII_USTRINGPARAM(IMPLEMENTATION_NAME));
 }
 
 // ORegistryServiceManager_Static
 Sequence< OUString > ImplIntrospection::getSupportedServiceNames_Static(void) throw()
 {
     Sequence< OUString > aSNS( 1 );
-    aSNS.getArray()[0] = OUString::createFromAscii( SERVICE_NAME );
+    aSNS.getArray()[0] = OUString(RTL_CONSTASCII_USTRINGPARAM(SERVICE_NAME));
     return aSNS;
 }
 
@@ -3089,3 +3090,4 @@ void * SAL_CALL component_getFactory(
 }
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

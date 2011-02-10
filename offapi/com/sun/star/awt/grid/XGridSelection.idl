@@ -73,9 +73,19 @@ interface XGridSelection
     */
     [oneway] void deselectRows( [in] sequence< long > rangeOfRows);
 
-    /** Returns the indicies of all selected rows.
+    /** Deselects all selected rows.
+    */
+    [oneway] void deselectAllRows();
+
+    /** Deselects selected rows. Selected rows, which aren't in the range remain selected.
+        @param rangeOfRows
+                array of rows indexes, which will be deselected.
+    */
+    [oneway] void deselectRows( [in] sequence< long > rangeOfRows);
+
+    /** Returns the indices of all selected rows.
         @returns
-            a sequence of indicies.
+            a sequence of indices.
     */
     sequence< long > getSelection();
 

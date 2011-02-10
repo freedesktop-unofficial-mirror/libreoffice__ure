@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -28,6 +29,10 @@
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_cppu.hxx"
  
+#if OSL_DEBUG_LEVEL > 1
+#include <stdio.h>
+#endif
+
 #include <hash_map>
 #include <list>
 #include <set>
@@ -52,9 +57,6 @@ using namespace rtl;
 using namespace std;
 using namespace osl;
 
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 #ifdef SAL_W32
 #pragma pack(push, 8)
 #elif defined(SAL_OS2)
@@ -69,8 +71,15 @@ using namespace osl;
  */
 struct AlignSize_Impl
 {
-    sal_Int16	nInt16;
-    double		dDouble;
+    sal_Int16 nInt16;
+#ifdef AIX
+    //double: doubleword aligned if -qalign=natural/-malign=natural
+    //which isn't the default ABI. Otherwise word aligned, While a long long int
+    //is always doubleword aligned, so use that instead.
+    sal_Int64 dDouble;
+#else
+    double dDouble;
+#endif
 };
 
 #ifdef SAL_W32
@@ -273,7 +282,7 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
         while( aIt != pCache->end() )
         {
             typelib_typedescription_release( (*aIt) );
-            aIt++;
+            ++aIt;
         }
         delete pCache;
         pCache = 0;
@@ -330,7 +339,21 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
         delete pWeakMap;
         pWeakMap = 0;
     }
+#ifndef CPPU_LEAK_STATIC_DATA
 #if OSL_DEBUG_LEVEL > 1
+#define MYASSERT(x) if (x != 0) fprintf(stderr, "### "#x" = %d, should be zero!!!\n", x);
+    MYASSERT (nTypeDescriptionCount );
+    MYASSERT( nCompoundTypeDescriptionCount );
+    MYASSERT( nUnionTypeDescriptionCount );
+    MYASSERT( nIndirectTypeDescriptionCount );
+    MYASSERT( nArrayTypeDescriptionCount );
+    MYASSERT( nEnumTypeDescriptionCount );
+    MYASSERT( nInterfaceMethodTypeDescriptionCount );
+    MYASSERT( nInterfaceAttributeTypeDescriptionCount );
+    MYASSERT( nInterfaceTypeDescriptionCount );
+    MYASSERT( nTypeDescriptionReferenceCount );
+#undef MYASSERT
+
     OSL_ASSERT(	nTypeDescriptionCount == 0 );
     OSL_ASSERT(	nCompoundTypeDescriptionCount == 0 );
     OSL_ASSERT(	nUnionTypeDescriptionCount == 0 );
@@ -356,10 +379,6 @@ TypeDescriptor_Init_Impl::~TypeDescriptor_Init_Impl() SAL_THROW( () )
 
 namespace { struct Init : public rtl::Static< TypeDescriptor_Init_Impl, Init > {}; }
 
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 extern "C" void SAL_CALL typelib_typedescription_registerCallback(
     void * pContext, typelib_typedescription_Callback pCallback )
     SAL_THROW_EXTERN_C()
@@ -399,10 +418,6 @@ extern "C" void SAL_CALL typelib_typedescription_revokeCallback(
     }
 }
 
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
     const typelib_TypeDescription * pTypeDescription,
     sal_Int32 nOffset, sal_Int32 & rMaxIntegralTypeSize )
@@ -1941,7 +1956,13 @@ extern "C" sal_Int32 SAL_CALL typelib_typedescription_getAlignedUnoSize(
                 nSize = rMaxIntegralTypeSize = (sal_Int32)(sizeof( float ));
                 break;
             case typelib_TypeClass_DOUBLE:
+#ifdef AIX
+                //See previous AIX ifdef comment for an explanation
+                nSize = (sal_Int32)(sizeof(double));
+                rMaxIntegralTypeSize = (sal_Int32)(sizeof(void*));
+#else
                 nSize = rMaxIntegralTypeSize = (sal_Int32)(sizeof( double ));
+#endif
                 break;
             case typelib_TypeClass_BYTE:
                 nSize = rMaxIntegralTypeSize = (sal_Int32)(sizeof( sal_Int8 ));
@@ -2188,7 +2209,7 @@ extern "C" void SAL_CALL typelib_typedescription_getByName(
         {
             // Check for derived interface member type:
             sal_Int32 i1 = name.lastIndexOf(
-                rtl::OUString::createFromAscii(":@"));
+                rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(":@")));
             if (i1 >= 0) {
                 sal_Int32 i2 = i1 + RTL_CONSTASCII_LENGTH(":@");
                 sal_Int32 i3 = name.indexOf(',', i2);
@@ -2268,10 +2289,6 @@ extern "C" void SAL_CALL typelib_typedescription_getByName(
     }
 }
 
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 extern "C" void SAL_CALL typelib_typedescriptionreference_newByAsciiName(
     typelib_TypeDescriptionReference ** ppTDR,
     typelib_TypeClass eTypeClass,
@@ -2658,3 +2675,5 @@ extern "C" sal_Bool SAL_CALL typelib_typedescription_complete(
 {
     return complete(ppTypeDescr, true);
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

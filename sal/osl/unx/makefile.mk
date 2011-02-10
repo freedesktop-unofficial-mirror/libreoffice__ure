@@ -52,73 +52,75 @@ CXXFLAGS+= $(LFS_CFLAGS)
 # --- Files --------------------------------------------------------
 
 SLOFILES= \
-			$(SLO)$/conditn.obj  \
-			$(SLO)$/diagnose.obj \
-			$(SLO)$/semaphor.obj \
-			$(SLO)$/socket.obj   \
-			$(SLO)$/interlck.obj \
-			$(SLO)$/mutex.obj    \
-			$(SLO)$/nlsupport.obj \
-			$(SLO)$/thread.obj   \
-			$(SLO)$/module.obj   \
-			$(SLO)$/process.obj  \
-			$(SLO)$/security.obj \
-			$(SLO)$/profile.obj  \
-			$(SLO)$/time.obj     \
-			$(SLO)$/signal.obj   \
-			$(SLO)$/pipe.obj   	 \
-			$(SLO)$/system.obj	 \
-			$(SLO)$/util.obj	 \
-			$(SLO)$/tempfile.obj\
-			$(SLO)$/file.obj     \
-			$(SLO)$/file_misc.obj\
-			$(SLO)$/file_url.obj\
-			$(SLO)$/file_error_transl.obj\
-			$(SLO)$/file_path_helper.obj\
-			$(SLO)$/file_stat.obj \
-			$(SLO)$/file_volume.obj \
-			$(SLO)$/uunxapi.obj\
-			$(SLO)$/process_impl.obj\
-			$(SLO)$/salinit.obj
+            $(SLO)$/conditn.obj  \
+            $(SLO)$/diagnose.obj \
+            $(SLO)$/semaphor.obj \
+            $(SLO)$/socket.obj   \
+            $(SLO)$/interlck.obj \
+            $(SLO)$/mutex.obj    \
+            $(SLO)$/nlsupport.obj \
+            $(SLO)$/thread.obj   \
+            $(SLO)$/module.obj   \
+            $(SLO)$/process.obj  \
+            $(SLO)$/security.obj \
+            $(SLO)$/profile.obj  \
+            $(SLO)$/time.obj     \
+            $(SLO)$/signal.obj   \
+            $(SLO)$/pipe.obj   	 \
+            $(SLO)$/system.obj	 \
+            $(SLO)$/util.obj	 \
+            $(SLO)$/tempfile.obj\
+            $(SLO)$/file.obj     \
+            $(SLO)$/file_misc.obj\
+            $(SLO)$/file_url.obj\
+            $(SLO)$/file_error_transl.obj\
+            $(SLO)$/file_path_helper.obj\
+            $(SLO)$/file_stat.obj \
+            $(SLO)$/file_volume.obj \
+            $(SLO)$/uunxapi.obj\
+            $(SLO)$/process_impl.obj\
+            $(SLO)$/salinit.obj
 
 
 #.IF "$(UPDATER)"=="YES"
 OBJFILES=   $(OBJ)$/conditn.obj  \
-			$(OBJ)$/diagnose.obj \
-			$(OBJ)$/semaphor.obj \
-			$(OBJ)$/socket.obj   \
-			$(OBJ)$/interlck.obj \
-			$(OBJ)$/mutex.obj    \
-			$(OBJ)$/nlsupport.obj \
-			$(OBJ)$/thread.obj   \
-			$(OBJ)$/module.obj   \
-			$(OBJ)$/process.obj  \
-			$(OBJ)$/security.obj \
-			$(OBJ)$/profile.obj  \
-			$(OBJ)$/time.obj     \
-			$(OBJ)$/signal.obj   \
-			$(OBJ)$/pipe.obj   	 \
-			$(OBJ)$/system.obj	 \
-			$(OBJ)$/util.obj	 \
-			$(OBJ)$/tempfile.obj\
-			$(OBJ)$/file.obj     \
-			$(OBJ)$/file_misc.obj\
-			$(OBJ)$/file_url.obj\
-			$(OBJ)$/file_error_transl.obj\
-			$(OBJ)$/file_path_helper.obj\
-			$(OBJ)$/file_stat.obj \
-			$(OBJ)$/file_volume.obj \
-			$(OBJ)$/uunxapi.obj\
-			$(OBJ)$/process_impl.obj\
-			$(OBJ)$/salinit.obj
-			
+            $(OBJ)$/diagnose.obj \
+            $(OBJ)$/semaphor.obj \
+            $(OBJ)$/socket.obj   \
+            $(OBJ)$/interlck.obj \
+            $(OBJ)$/mutex.obj    \
+            $(OBJ)$/nlsupport.obj \
+            $(OBJ)$/thread.obj   \
+            $(OBJ)$/module.obj   \
+            $(OBJ)$/process.obj  \
+            $(OBJ)$/security.obj \
+            $(OBJ)$/profile.obj  \
+            $(OBJ)$/time.obj     \
+            $(OBJ)$/signal.obj   \
+            $(OBJ)$/pipe.obj   	 \
+            $(OBJ)$/system.obj	 \
+            $(OBJ)$/util.obj	 \
+            $(OBJ)$/tempfile.obj\
+            $(OBJ)$/file.obj     \
+            $(OBJ)$/file_misc.obj\
+            $(OBJ)$/file_url.obj\
+            $(OBJ)$/file_error_transl.obj\
+            $(OBJ)$/file_path_helper.obj\
+            $(OBJ)$/file_stat.obj \
+            $(OBJ)$/file_volume.obj \
+            $(OBJ)$/uunxapi.obj\
+            $(OBJ)$/process_impl.obj\
+            $(OBJ)$/salinit.obj
+            
 #.ENDIF
 
 .IF "$(OS)"=="MACOSX"
 SLOFILES += $(SLO)$/osxlocale.obj
 .ENDIF
 
-.IF "$(OS)"=="SOLARIS" || "$(OS)"=="FREEBSD" || "$(OS)"=="NETBSD" || "$(OS)$(CPU)"=="LINUXS" || "$(OS)"=="MACOSX"
+.IF "$(OS)"=="SOLARIS" || "$(OS)"=="FREEBSD" || "$(OS)"=="NETBSD" || \
+	"$(OS)$(CPU)"=="LINUXS" || "$(OS)"=="MACOSX" || \
+	"$(OS)"=="AIX" || "$(OS)"=="OPENBSD"
 SLOFILES += $(SLO)$/backtrace.obj
 OBJFILES += $(OBJ)$/backtrace.obj
 .ENDIF
@@ -130,15 +132,6 @@ APP1STDLIBS+=-lC
 .ENDIF
 
 .IF "$(OS)" == "LINUX"
-.IF "$(PAM)" == "NO"
-CFLAGS+=-DNOPAM
-.IF "$(NEW_SHADOW_API)" == "YES"
-CFLAGS+=-DNEW_SHADOW_API
-.ENDIF
-.ENDIF
-.IF "$(PAM_LINK)" == "YES"
-CFLAGS+=-DPAM_LINK
-.ENDIF
 .IF "$(CRYPT_LINK)" == "YES"
 CFLAGS+=-DCRYPT_LINK
 .ENDIF
@@ -153,37 +146,37 @@ CFLAGS+=-DSAL_ENABLE_CRASH_REPORT
 .IF "$(OS)$(CPU)"=="SOLARISU" || "$(OS)$(CPU)"=="SOLARISS" || "$(OS)$(CPU)"=="NETBSDS" || "$(OS)$(CPU)"=="LINUXS"
 
 $(SLO)$/interlck.obj: $(SLO)$/interlck.o
-	 touch $(SLO)$/interlck.obj
+     touch $(SLO)$/interlck.obj
 
 $(OBJ)$/interlck.obj: $(OBJ)$/interlck.o
-	 touch $(OBJ)$/interlck.obj
+     touch $(OBJ)$/interlck.obj
 
 $(SLO)$/interlck.o: $(MISC)$/interlck_sparc.s
-	$(ASM) $(AFLAGS) -o $@ $<
+    $(ASM) $(AFLAGS) -o $@ $<
 
 $(OBJ)$/interlck.o: $(MISC)$/interlck_sparc.s
-	$(ASM) $(AFLAGS) -o $@ $<
+    $(ASM) $(AFLAGS) -o $@ $<
 
 $(MISC)$/interlck_sparc.s: asm/interlck_sparc.s
-	tr -d "\015" < $< > $@
+    tr -d "\015" < $< > $@
 
 .ENDIF
 
 .IF "$(OS)$(CPU)"=="SOLARISI"
 
 $(SLO)$/interlck.obj: $(SLO)$/interlck.o
-	touch $(SLO)$/interlck.obj
+    touch $(SLO)$/interlck.obj
 
 $(OBJ)$/interlck.obj: $(OBJ)$/interlck.o
-	touch $(OBJ)$/interlck.obj
+    touch $(OBJ)$/interlck.obj
 
 $(SLO)$/interlck.o: $(MISC)$/interlck_x86.s
-	$(ASM) $(AFLAGS) -o $@ $<
+    $(ASM) $(AFLAGS) -o $@ $<
 
 $(OBJ)$/interlck.o: $(MISC)$/interlck_x86.s
-	$(ASM) $(AFLAGS) -o $@ $<
+    $(ASM) $(AFLAGS) -o $@ $<
 
 $(MISC)$/interlck_x86.s: asm/interlck_x86.s
-	tr -d "\015" < $< > $@
+    tr -d "\015" < $< > $@
 
 .ENDIF

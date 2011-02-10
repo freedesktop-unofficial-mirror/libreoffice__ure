@@ -61,7 +61,7 @@ published service UnoControlFormattedFieldModel
 
     //-------------------------------------------------------------------------
 
-    /** specifies the horiztonal alignment of the text in the control. 
+    /** specifies the horizontal alignment of the text in the control.
                 
         <pre>
         0: left
@@ -223,7 +223,7 @@ published service UnoControlFormattedFieldModel
  
     //-------------------------------------------------------------------------
  
-    /** specifies whether the mouse should show repeating behaviour, i.e.
+    /** specifies whether the mouse should show repeating behavior, i.e.
         repeatedly trigger an action when keeping pressed.
 
         @since OOo 2.0.0

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -225,7 +226,7 @@ extern "C" {
                                 (PEXCEPTIONREGISTRATIONRECORD)&(excptstruct.RegRec2)); \
                     } /* end of TRY block */                                    \
                     else                                                        \
-                    { /* exception occured: */                                  \
+                    { /* exception occurred: */                                  \
                         DosUnsetExceptionHandler((PEXCEPTIONREGISTRATIONRECORD)&(excptstruct.RegRec2));
     #endif
 
@@ -234,7 +235,7 @@ extern "C" {
         #define END_CATCH() }
     #else
         #define END_CATCH()                                                     \
-                    } /* end of exception-occured block */                      \
+                    } /* end of exception-occurred block */                      \
                 }
     #endif
 
@@ -253,3 +254,4 @@ extern "C" {
 }
 #endif
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -30,9 +31,7 @@
 
 #ifdef __cplusplus
 
-#ifndef _RTL_DIAGNOSE_H_
 #include <osl/diagnose.h>
-#endif
 #include <rtl/memory.h>
 #include <rtl/textenc.h>
 #include <rtl/string.h>
@@ -939,3 +938,5 @@ struct OStringHash
 #endif /* __cplusplus */
 
 #endif /* _RTL_STRING_HXX_ */
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

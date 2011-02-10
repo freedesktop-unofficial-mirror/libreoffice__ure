@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -303,7 +304,7 @@ bool AdapterImpl::coerce_assign(
             m_pFactory->m_pConverter,
             m_pFactory->m_pConvertToTD, &ret, args, &p_exc );
         
-        if (p_exc) // exception occured
+        if (p_exc) // exception occurred
         {
             OSL_ASSERT(
                 p_exc->pType->eTypeClass == typelib_TypeClass_EXCEPTION );
@@ -1023,3 +1024,5 @@ void * SAL_CALL component_getFactory(
         pImplName, pServiceManager, pRegistryKey , g_entries );
 }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -936,11 +937,6 @@ public:
         close();
     }
 
-    #define OpenFlag_Read   osl_File_OpenFlag_Read
-    #define OpenFlag_Write  osl_File_OpenFlag_Write
-    #define OpenFlag_Create osl_File_OpenFlag_Create
-    #define OpenFlag_NoLock osl_File_OpenFlag_NoLock
-
     /** Open a regular file.
 
         Open a file. Only regular files	can be openend.
@@ -1599,7 +1595,7 @@ public:
 class DirectoryCreationObserver
 {          
 public:    
-    virtual ~DirectoryCreationObserver() {};
+    virtual ~DirectoryCreationObserver() {}
     
     /** This method will be called when a new directory has been
         created and needs to be overwritten by derived classes.
@@ -1697,7 +1693,7 @@ public:
         @see close()
     */
 
-    inline sal_Bool isOpen() { return _pData != NULL; };
+    inline sal_Bool isOpen() { return _pData != NULL; }
 
     /**	Close a directory.
     
@@ -1951,3 +1947,4 @@ public:
 #endif  /* __cplusplus */
 #endif	/* _OSL_FILE_HXX_ */
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

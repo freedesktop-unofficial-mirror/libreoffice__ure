@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -272,7 +273,7 @@ OUString findBoostrapArgument(
 }
 
 Reference< registry::XSimpleRegistry > nestRegistries(
-    const OUString baseDir,
+    const OUString &baseDir,
     const Reference< lang::XSingleServiceFactory > & xSimRegFac,
     const Reference< lang::XSingleServiceFactory > & xNesRegFac,
     OUString csl_rdbs,
@@ -608,7 +609,7 @@ Reference< XComponentContext > SAL_CALL bootstrap()
             case osl_Process_E_NotFound:
                 throw BootstrapException( OUSTR( "image not found!" ) );
             case osl_Process_E_TimedOut:
-                throw BootstrapException( OUSTR( "timout occured!" ) );
+                throw BootstrapException( OUSTR( "timout occurred!" ) );
             case osl_Process_E_NoPermission:
                 throw BootstrapException( OUSTR( "permission denied!" ) );
             case osl_Process_E_Unknown:
@@ -668,3 +669,5 @@ OUString bootstrap_expandUri(OUString const & uri) {
 }
 
 } // namespace cppu
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

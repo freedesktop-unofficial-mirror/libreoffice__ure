@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -231,10 +232,10 @@ namespace {
     Some comments:
 
     For any instantiation of rtl_Instance, at most one call to a create method
-    may occur in the program code:  Each occurance of a create method within
+    may occur in the program code:  Each occurrence of a create method within
     the program code is supposed to return a fresh object instance on the
     first call, and that same object instance on subsequent calls; but
-    independent occurances of create methods are supposed to return
+    independent occurrences of create methods are supposed to return
     independent object instances.  Since there is a one-to-one correspondence
     between object instances and instantiations of rtl_Instance, the
     requirement should be clear.  One measure to enforce the requirement is
@@ -244,7 +245,7 @@ namespace {
     needs a funny "hand coded" prefix "rtl_" instead of a proper namespace
     prefix like "::rtl::".
 
-    A known problem with this template is when two occurences of calls to
+    A known problem with this template is when two occurrences of calls to
     create methods with identical template arguments appear in one translation
     unit.  Those two places will share a single object instance.  This can be
     avoided by using different Init structs (see the above code samples) in
@@ -470,3 +471,5 @@ private:
 } // namespace rtl
 
 #endif // INCLUDED_RTL_INSTANCE_HXX
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

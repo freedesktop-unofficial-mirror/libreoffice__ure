@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 #	include "pipeimpl.h"
 
 #ifndef _INC_MALLOC
@@ -120,10 +121,6 @@ public:
     virtual Pipe *AcceptConnection();
 };
 
-//----------------------------------------------------------------------------
-//	
-//----------------------------------------------------------------------------
-
 HANDLE	Pipe::CreatePipeDataMapping( LPCTSTR lpName )
 {
     HANDLE	hMapping = NULL;
@@ -186,10 +183,6 @@ HANDLE	Pipe::CreatePipeDataMapping( LPCTSTR lpName )
     return hMapping;
 }
 
-//----------------------------------------------------------------------------
-//	
-//----------------------------------------------------------------------------
-
 HANDLE	Pipe::OpenPipeDataMapping( LPCTSTR lpName )
 {
     HANDLE	hMapping = NULL;
@@ -206,10 +199,6 @@ HANDLE	Pipe::OpenPipeDataMapping( LPCTSTR lpName )
     return hMapping;
 }
 
-//----------------------------------------------------------------------------
-//	
-//----------------------------------------------------------------------------
-
 HANDLE	Pipe::CreatePipeDataMutex( LPCTSTR lpName, BOOL bInitialOwner )
 {
     HANDLE	hMutex = NULL;
@@ -225,10 +214,6 @@ HANDLE	Pipe::CreatePipeDataMutex( LPCTSTR lpName, BOOL bInitialOwner )
 
     return hMutex;
 }
-
-//----------------------------------------------------------------------------
-//	
-//----------------------------------------------------------------------------
 
 HANDLE Pipe::CreatePipeConnectionSemaphore( LPCTSTR lpName, LONG lInitialCount, LONG lMaximumCount )
 {
@@ -753,3 +738,5 @@ extern "C" BOOL WINAPI CloseSimplePipe( HANDLE hPipe )
         return FALSE;
     }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -94,6 +95,14 @@ std::ostream & operator <<(std::ostream & out, css::uno::Type const & value) {
 std::ostream & operator <<(std::ostream & out, css::uno::Any const & value) {
     return
         out << "com::sun::star::uno::Any[" << value.getValueType() << ", ...]";
+}
+
+rtl::OUString getArgument(rtl::OUString const & name) {
+    rtl::OUString val;
+    CPPUNIT_ASSERT(
+        rtl::Bootstrap::get(
+            rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("arg-")) + name, val));
+    return val;
 }
 
 class BoundListener:
@@ -650,3 +659,5 @@ CPPUNIT_TEST_SUITE_REGISTRATION(Test);
 }
 
 CPPUNIT_PLUGIN_IMPLEMENT();
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

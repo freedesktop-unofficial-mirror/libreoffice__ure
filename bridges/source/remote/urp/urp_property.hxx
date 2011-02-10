@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -26,9 +27,7 @@
  ************************************************************************/
 #ifndef _URP_PROPERTY_HXX_
 #define _URP_PROPERTY_HXX_
-#ifndef _BRIDGES_REMOTE_REMOTE_H_
 #include <bridges/remote/remote.h>
-#endif
 #include <rtl/ustring.hxx>
 #include <rtl/byteseq.hxx>
 
@@ -91,3 +90,5 @@ namespace bridges_urp
     };
 } // end namespace bridges_urp
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

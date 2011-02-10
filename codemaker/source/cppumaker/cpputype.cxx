@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -1200,7 +1201,7 @@ void CppuType::dumpConstantValue(FileStream& o, sal_uInt16 index)
             {
                 ::rtl::OUString aUStr(constValue.m_value.aString);
                 ::rtl::OString aStr = ::rtl::OUStringToOString(aUStr, RTL_TEXTENCODING_ASCII_US);
-                o << "::rtl::OUString::createFromAscii(\"" << aStr.getStr() << "\")";
+                o << "::rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(\"" << aStr.getStr() << "\"))";
             }
             break;
     }
@@ -4502,3 +4503,5 @@ OString scopedName(const OString& scope, const OString& type,
     return tmpBuf.makeStringAndClear();
 }	
 */
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

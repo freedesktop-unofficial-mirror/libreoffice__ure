@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -227,7 +228,7 @@ namespace CPPU_CURRENT_NAMESPACE
             OUStringToOString(
                 *reinterpret_cast< OUString const * >( &pUnoExc->pType->pTypeName ),
                 RTL_TEXTENCODING_ASCII_US ) );
-        fprintf( stderr, "> uno exception occured: %s\n", cstr.getStr() );
+        fprintf( stderr, "> uno exception occurred: %s\n", cstr.getStr() );
 #endif
         void * pCppExc;
         type_info * rtti;
@@ -307,7 +308,7 @@ namespace CPPU_CURRENT_NAMESPACE
         OUString unoName( toUNOname( header->exceptionType->name() ) );
 #if OSL_DEBUG_LEVEL > 1
         OString cstr_unoName( OUStringToOString( unoName, RTL_TEXTENCODING_ASCII_US ) );
-        fprintf( stderr, "> c++ exception occured: %s\n", cstr_unoName.getStr() );
+        fprintf( stderr, "> c++ exception occurred: %s\n", cstr_unoName.getStr() );
 #endif
         typelib_typedescription_getByName( &pExcTypeDescr, unoName.pData );
         if (0 == pExcTypeDescr)
@@ -331,4 +332,4 @@ namespace CPPU_CURRENT_NAMESPACE
     }
 }
 
-/* vi:set tabstop=4 shiftwidth=4 expandtab: */
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -42,7 +43,7 @@ struct remote_Connection
       all bytes are available or an error occurs.
       @return Number of bytes read.
               If the return value is less than nSize, an unrecoverable
-              i/o error has occured or the connection was closed.
+              i/o error has occurred or the connection was closed.
                           
      */
     sal_Int32 (SAL_CALL * read)(remote_Connection *, sal_Int8 *pDest, sal_Int32 nSize );
@@ -50,7 +51,7 @@ struct remote_Connection
     /**
       @return Number of bytes written.
               if the return value is less than nSize an unrecoverable
-              i/o error has occured or the connection was closed.
+              i/o error has occurred or the connection was closed.
      */
     sal_Int32 (SAL_CALL * write)(remote_Connection *, const sal_Int8 *pSource, sal_Int32 nSize );
 
@@ -65,3 +66,5 @@ struct remote_Connection
 };
 
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

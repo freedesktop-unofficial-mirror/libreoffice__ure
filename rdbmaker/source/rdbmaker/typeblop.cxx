@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -26,9 +27,7 @@
  ************************************************************************/
 
 #include <rtl/alloc.h>
-#ifndef __REGISTRY_REFLWRIT_HXX__
 #include <registry/reflwrit.hxx>
-#endif
 #include <cppuhelper/servicefactory.hxx>
 #include <com/sun/star/container/XHierarchicalNameAccess.hpp>
 #include <com/sun/star/reflection/XInterfaceTypeDescription.hpp>
@@ -533,3 +532,5 @@ sal_uInt32 SAL_CALL getTypeBlop(const sal_Char* pTypeName, sal_uInt8** pBlop)
 
 
     
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

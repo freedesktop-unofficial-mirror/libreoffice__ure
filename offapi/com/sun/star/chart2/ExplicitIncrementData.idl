@@ -35,13 +35,13 @@ struct ExplicitIncrementData
     before a scaling is applied, which may lead to non equidistant tickmarks
     on the screen.</p>
 
-    <p><member>PostEquidistant</member> rules wether the <member>Distance</member>
+    <p><member>PostEquidistant</member> rules whether the <member>Distance</member>
     is meant to be a value before or after scaling.</p>
     */
     double		Distance;
 
     /**
-    <member>PostEquidistant</member> rules wether the member <member>Distance</member>
+    <member>PostEquidistant</member> rules whether the member <member>Distance</member>
     describes a distance before or after the scaling is applied.
 
     <p>If <member>PostEquidistant</member> equals <TRUE/> <member>Distance</member>
@@ -77,7 +77,7 @@ struct ExplicitIncrementData
     distance between two neighboring main tickmarks is divided for positioning
     of further sub tickmarks. Every following SubIncrement determines the
     positions of subsequent tickmarks in relation to their parent tickmarks
-    iven by the preceding SubIncrement.</p>
+    given by the preceding SubIncrement.</p>
     */
     sequence< ::com::sun::star::chart2::ExplicitSubIncrement > SubIncrements;
 

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -137,18 +138,18 @@ extern "C" {
             {
                 Reference< XRegistryKey > xNewKey(
                     reinterpret_cast< XRegistryKey * >( pRegistryKey )->createKey(
-                        OUString::createFromAscii( "/" IMPLNAME1 "/UNO/SERVICES" ) ) );
+                        OUString(RTL_CONSTASCII_USTRINGPARAM( "/" IMPLNAME1 "/UNO/SERVICES" )) ) );
 
                 xNewKey->createKey( OUString( RTL_CONSTASCII_USTRINGPARAM( SERVICENAME1)));
 
                 xNewKey= 
                     reinterpret_cast< XRegistryKey * >( pRegistryKey )->createKey(
-                        OUString::createFromAscii( "/" IMPLNAME2 "/UNO/SERVICES" ) );
+                        OUString(RTL_CONSTASCII_USTRINGPARAM( "/" IMPLNAME2 "/UNO/SERVICES" )) );
 
                 xNewKey->createKey(OUString( RTL_CONSTASCII_USTRINGPARAM( SERVICENAME2)));
                 xNewKey= 
                     reinterpret_cast< XRegistryKey * >( pRegistryKey )->createKey(
-                        OUString::createFromAscii( "/" IMPLNAME3 "/UNO/SERVICES" )   );
+                        OUString(RTL_CONSTASCII_USTRINGPARAM( "/" IMPLNAME3 "/UNO/SERVICES" ))   );
 
                 xNewKey->createKey(OUString( RTL_CONSTASCII_USTRINGPARAM( SERVICENAME3)));
                 
@@ -234,3 +235,5 @@ extern "C" {
         return globalModuleCount.canUnload( &globalModuleCount, libUnused);
     }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

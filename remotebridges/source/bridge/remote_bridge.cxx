@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -108,7 +109,7 @@ namespace remotebridges_bridge
 
         if( 4 != aArguments.getLength() )
         {
-            throw IllegalArgumentException( rtl::OUString::createFromAscii("wrong number of arguments") ,
+            throw IllegalArgumentException( rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("wrong number of arguments")) ,
                                             Reference< XInterface >(),
                                             0 );
         }
@@ -125,7 +126,7 @@ namespace remotebridges_bridge
 
         if( ! rConnection.is() )
         {
-            throw IllegalArgumentException( rtl::OUString::createFromAscii("connection is missing") ,
+            throw IllegalArgumentException( rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("connection is missing")) ,
                                             Reference < XInterface > (),
                                             2 );
         }
@@ -186,7 +187,7 @@ namespace remotebridges_bridge
             m_pContext = 0;
 
             // forgotten exception when specifying the interface 
-            throw RuntimeException( rtl::OUString::createFromAscii("couldn't create uno-remote-environment") ,
+            throw RuntimeException( rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("couldn't create uno-remote-environment")) ,
                                     Reference < XInterface > () );
         }
     }
@@ -387,9 +388,6 @@ namespace remotebridges_bridge
         m->dispose();
     }
 
-    //---------------------------------
-    //
-    //---------------------------------
     Reference< XInterface > SAL_CALL CreateInstance( const Reference< XComponentContext > &)
     {
         return Reference< XInterface > ( ( OWeakObject * ) new ORemoteBridge );
@@ -420,9 +418,9 @@ namespace remotebridges_bridge
             if( !pNames )
             {
                 static Sequence< OUString > seqNames(3);
-                seqNames.getArray()[0] = OUString::createFromAscii( "com.sun.star.bridge.Bridge" );
-                seqNames.getArray()[1] = OUString::createFromAscii( "com.sun.star.bridge.IiopBridge" );
-                seqNames.getArray()[2] = OUString::createFromAscii( "com.sun.star.bridge.UrpBridge" );
+                seqNames.getArray()[0] = OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.Bridge"));
+                seqNames.getArray()[1] = OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.IiopBridge"));
+                seqNames.getArray()[2] = OUString(RTL_CONSTASCII_USTRINGPARAM("com.sun.star.bridge.UrpBridge"));
                 
                 pNames = &seqNames;
             }
@@ -468,3 +466,4 @@ void * SAL_CALL component_getFactory(
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

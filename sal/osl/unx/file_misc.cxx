@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -69,16 +70,6 @@ typedef struct
     rtl_uString* ustrPath;           /* holds native directory path */
     DIR*         pDirStruct;
 } oslDirectoryImpl;
-
-#if 0
-/* FIXME: reintroducing this may save some extra bytes per Item */
-typedef struct
-{
-    rtl_uString* ustrFileName;       /* holds native file name */
-    rtl_uString* ustrDirPath;        /* holds native dir path */
-    sal_uInt32   RefCount;
-} oslDirectoryItemImpl;
-#endif
 
 DirectoryItem_Impl::DirectoryItem_Impl(
     rtl_uString * ustrFilePath, unsigned char DType)
@@ -706,8 +697,7 @@ static oslFileError oslDoMoveFile( const sal_Char* pszPath, const sal_Char* pszD
 
     if ( tErr != osl_File_E_None )
     {
-        oslFileError tErrRemove;
-        tErrRemove=osl_psz_removeFile(pszDestPath);
+        osl_psz_removeFile(pszDestPath);
         return tErr;
     }
 
@@ -1028,17 +1018,15 @@ static int oslDoCopyFile(const sal_Char* pszSourceFileName, const sal_Char* pszD
     if ( nRemains )
     {	
         /* mmap has problems, try the direct streaming */
-        char pBuffer[0x8000];
+        char pBuffer[0x7FFF];
         size_t nRead = 0;
-
-        nRemains = nSourceSize;
 
         do
         {
             nRead = 0;
             nWritten = 0;
 
-            size_t nToRead = std::min( (size_t)0x8000, nRemains );
+            size_t nToRead = std::min( sizeof(pBuffer), nRemains );
             nRead = read( SourceFileFD, pBuffer, nToRead );
             if ( (size_t)-1 != nRead )
                 nWritten = write( DestFileFD, pBuffer, nRead );
@@ -1064,3 +1052,4 @@ static int oslDoCopyFile(const sal_Char* pszSourceFileName, const sal_Char* pszD
     return nRet;
 }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -31,13 +32,9 @@
 #include <osl/mutex.hxx>
 #include "rtl/ustrbuf.hxx"
 #include <cppuhelper/factory.hxx>
-#ifndef _CPPUHELPER_IMPLBASE5_HXX_
 #include <cppuhelper/compbase5.hxx>
-#endif
 #include <cppuhelper/implbase1.hxx>
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX_
 #include <cppuhelper/implementationentry.hxx>
-#endif
 #include "tdmgr_common.hxx"
 #include "tdmgr_tdenumeration.hxx"
 #include "lrucache.hxx"
@@ -479,7 +476,7 @@ void SAL_CALL ManagerImpl::insert( const Any & rElement )
                     catch (container::NoSuchElementException & exc)
                     {
                         throw lang::IllegalArgumentException(
-                            OUSTR("NoSuchElementException occured: ") +
+                            OUSTR("NoSuchElementException occurred: ") +
                             exc.Message, static_cast<OWeakObject *>(this),
                             -1 /* unknown */ );
                     }
@@ -515,13 +512,13 @@ void SAL_CALL ManagerImpl::insert( const Any & rElement )
             catch (reflection::NoSuchTypeNameException & exc)
             {
                 throw lang::IllegalArgumentException(
-                    OUSTR("NoSuchTypeNameException occured: ") + exc.Message,
+                    OUSTR("NoSuchTypeNameException occurred: ") + exc.Message,
                     static_cast<OWeakObject *>(this), -1 /* unknown */ );
             }
             catch (reflection::InvalidTypeNameException & exc)
             {
                 throw lang::IllegalArgumentException(
-                    OUSTR("InvalidTypeNameException occured: ") + exc.Message,
+                    OUSTR("InvalidTypeNameException occurred: ") + exc.Message,
                     static_cast<OWeakObject *>(this), -1 /* unknown */ );
             }
         }
@@ -588,7 +585,7 @@ ManagerImpl::createTypeDescriptionEnumeration(
         if ( xEnumAccess.is() )
             aStack.push( xEnumAccess );
 
-        it++;
+        ++it;
     }
 
     return Reference< XTypeDescriptionEnumeration >(
@@ -1161,3 +1158,4 @@ Reference< XInterface > SAL_CALL ManagerImpl_create(
 
 }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

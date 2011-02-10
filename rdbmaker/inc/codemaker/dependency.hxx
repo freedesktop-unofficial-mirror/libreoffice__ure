@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -30,9 +31,7 @@
 
 #include 	<hash_map>
 #include	<registry/registry.hxx>
-#ifndef __REGISTRY_REFLREAD_HXX__
 #include	<registry/reflread.hxx>
-#endif
 #include	<codemaker/typemanager.hxx>
 #include	<codemaker/global.hxx>
 #include <osl/diagnose.h>
@@ -168,3 +167,5 @@ protected:
 sal_Bool checkTypeDependencies(TypeManager& typeMgr, TypeDependency& dependencies, const ::rtl::OString& type, sal_Bool bDepend = sal_False);
     
 #endif // _CODEMAKER_DEPENDENCY_HXX_
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

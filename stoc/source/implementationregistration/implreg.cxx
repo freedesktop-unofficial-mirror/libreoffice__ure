@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -36,12 +37,8 @@
 #include <cppuhelper/factory.hxx>
 #include <cppuhelper/weak.hxx>
 #include <cppuhelper/servicefactory.hxx>
-#ifndef _CPPUHELPER_IMPLBASE3_HXX
 #include <cppuhelper/implbase3.hxx>
-#endif
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX_
 #include <cppuhelper/implementationentry.hxx>
-#endif
 
 #include <uno/mapping.hxx>
 #include <osl/thread.h>
@@ -490,14 +487,9 @@ static void	prepareUserLink(const Reference < XSimpleRegistry >& xDest,
                                 const OUString& linkName,
                                 const OUString& linkTarget,
                                 const OUString& implName)
-    // throw ( InvalidRegistryException, RuntimeException )
 {
-    sal_Bool ret = sal_False;
-
     Reference < XRegistryKey > xRootKey;
 
-//  	try
-//  	{
     xRootKey = xDest->getRootKey();
     
     if (xRootKey->getKeyType(linkName) == RegistryKeyType_LINK)
@@ -510,23 +502,9 @@ static void	prepareUserLink(const Reference < XSimpleRegistry >& xDest,
                 linkName + spool().colon_old ), oldImplName);
         }
     }
-//  	}
-//  	catch (InvalidRegistryException&)
-//  	{
-//  	}
 
-//  	try
-//  	{
     if (xRootKey->isValid())
-    {
-        ret = xRootKey->createLink(linkName, linkTarget);
-    }
-//  	}
-//  	catch(InvalidRegistryException&)
-//  	{
-//  	}
-
-//  	return ret;
+        xRootKey->createLink(linkName, linkTarget);
 }
 
 //*************************************************************************
@@ -670,7 +648,6 @@ static void	prepareUserKeys(const Reference < XSimpleRegistry >& xDest,
                                 const Reference < XRegistryKey >& xKey,
                                 const OUString& implName,
                                 sal_Bool bRegister)
-    // throw ( InvalidRegistryException, RuntimeException )
 {
     sal_Bool hasSubKeys = sal_False;
 
@@ -738,7 +715,6 @@ static void	prepareUserKeys(const Reference < XSimpleRegistry >& xDest,
             }
         }
     }
-    return;	
 }
 
 //*************************************************************************
@@ -1923,3 +1899,4 @@ Reference<XInterface> SAL_CALL ImplementationRegistration_CreateInstance(
 
 }
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

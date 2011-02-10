@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -115,7 +116,7 @@ sal_Bool RegistryTypeManager::init(sal_Bool bMerged, const StringVector& regFile
             freeRegistries();
             return sal_False;
         }
-        iter++;
+        ++iter;
     }
 
     if (m_pImpl->m_isMerged)
@@ -144,7 +145,7 @@ sal_Bool RegistryTypeManager::init(sal_Bool bMerged, const StringVector& regFile
                         return sal_False;
                     }
                 }
-                iter++;
+                ++iter;
             }
             
             m_pImpl->m_pMergedRegistry = pTmpReg;
@@ -237,7 +238,7 @@ void RegistryTypeManager::freeRegistries()
     {
         delete *iter;
 
-        iter++;
+        ++iter;
     }	
 
 }	
@@ -264,10 +265,12 @@ RegistryKey	RegistryTypeManager::searchTypeKey(const OString& name)
                     break;
             }
 
-            iter++;
+            ++iter;
         }	
     }
     
     return key;
 }	
     
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

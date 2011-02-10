@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -305,7 +306,7 @@ namespace
     fprintf(stderr, "after dispatch\n");
 #endif
 
-        // in case an exception occured...
+        // in case an exception occurred...
         if (pUnoExc)
         {
             // destruct temporary in/inout params
@@ -326,7 +327,7 @@ namespace
             // is here for dummy
             return typelib_TypeClass_VOID;
         }
-        else // else no exception occured...
+        else // else no exception occurred...
         {
             // temporary params
             for ( ; nTempIndizes--; )
@@ -431,7 +432,7 @@ namespace
         if (nFunctionIndex >= pTypeDescr->nMapFunctionIndexToMemberIndex)
         {
             throw RuntimeException(
-                OUString::createFromAscii("illegal vtable index!"),
+                OUString( RTL_CONSTASCII_USTRINGPARAM( "illegal vtable index!" )),
                 (XInterface *)pCppI );
         }
 
@@ -530,7 +531,7 @@ namespace
         default:
         {
             throw RuntimeException(
-                OUString::createFromAscii("no member description found!"),
+                OUString( RTL_CONSTASCII_USTRINGPARAM( "no member description found!" )),
                 (XInterface *)pCppI );
             // is here for dummy
             eRet = typelib_TypeClass_VOID;
@@ -722,4 +723,4 @@ void bridges::cpp_uno::shared::VtableFactory::flushCode(
     }
 }
 
-/* vi:set tabstop=4 shiftwidth=4 expandtab: */
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

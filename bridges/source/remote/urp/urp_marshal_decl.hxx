@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -86,12 +87,12 @@ namespace bridges_urp
         
         // is only valid, after finish has been called.
         // valid until destructed.
-        inline sal_Int32 getSize();
+        inline sal_Int32 getSize() const;
         
-        inline sal_Int32 getPos()
+        inline sal_Int32 getPos() const
             { return m_pos - m_base; }
     
-        inline sal_Bool isSystemLittleEndian()
+        inline sal_Bool isSystemLittleEndian() const
             { return g_bMarshalSystemIsLittleEndian; }
         
     private:
@@ -104,3 +105,5 @@ namespace bridges_urp
     };
 }
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

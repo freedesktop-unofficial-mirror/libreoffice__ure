@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -25,12 +26,10 @@
  *
  ************************************************************************/
 
-
 #include "system.h"
 
 #include <osl/pipe.h>
 #include <osl/diagnose.h>
-/*#include <osl/signal.h>*/
 #include <osl/thread.h>
 #include <osl/interlck.h>
 
@@ -44,9 +43,6 @@
 
 sal_Bool SAL_CALL osl_psz_getUserIdent(oslSecurity Security, sal_Char *pszIdent, sal_uInt32 nMax);
 oslPipe SAL_CALL osl_psz_createPipe(const sal_Char *pszPipeName, oslPipeOptions Options, oslSecurity Security);
-
-/*#define DEBUG_OSL_PIPE*/
-/*#define TRACE_OSL_PIPE*/
 
 
 /*****************************************************************************/
@@ -539,7 +535,7 @@ oslPipeError SAL_CALL osl_getLastPipeError(oslPipe pPipe)
 
 sal_Int32 SAL_CALL osl_writePipe( oslPipe pPipe, const void *pBuffer , sal_Int32 n )
 {
-    /* loop until all desired bytes were send or an error occured */
+    /* loop until all desired bytes were send or an error occurred */
     sal_Int32 BytesSend= 0;
     sal_Int32 BytesToSend= n;
 
@@ -550,7 +546,7 @@ sal_Int32 SAL_CALL osl_writePipe( oslPipe pPipe, const void *pBuffer , sal_Int32
 
         RetVal= osl_sendPipe(pPipe, pBuffer, BytesToSend);
 
-        /* error occured? */
+        /* error occurred? */
         if(RetVal <= 0)
         {
             break;
@@ -566,7 +562,7 @@ sal_Int32 SAL_CALL osl_writePipe( oslPipe pPipe, const void *pBuffer , sal_Int32
 
 sal_Int32 SAL_CALL osl_readPipe( oslPipe pPipe, void *pBuffer , sal_Int32 n )
 {
-    /* loop until all desired bytes were read or an error occured */
+    /* loop until all desired bytes were read or an error occurred */
     sal_Int32 BytesRead= 0;
     sal_Int32 BytesToRead= n;
 
@@ -576,7 +572,7 @@ sal_Int32 SAL_CALL osl_readPipe( oslPipe pPipe, void *pBuffer , sal_Int32 n )
         sal_Int32 RetVal;
         RetVal= osl_receivePipe(pPipe, pBuffer, BytesToRead);
 
-        /* error occured? */
+        /* error occurred? */
         if(RetVal <= 0)
         {
             break;
@@ -590,3 +586,4 @@ sal_Int32 SAL_CALL osl_readPipe( oslPipe pPipe, void *pBuffer , sal_Int32 n )
 }
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

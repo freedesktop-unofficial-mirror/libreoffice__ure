@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -241,15 +242,6 @@ static OUString makeComponentPath(
     sal_Int32 nEnd = endsWith( rLibName, OUSTR(SAL_DLLEXTENSION) );
     if (nEnd < 0) // !endsWith
     {
-#ifndef OS2
-//this is always triggered with .uno components
-#if (OSL_DEBUG_LEVEL >= 2)
-        OSL_ENSURE(
-            !"### library name has no proper extension!",
-            OUStringToOString( rLibName, RTL_TEXTENCODING_ASCII_US ).getStr() );
-#endif
-#endif // OS2
-
 #if defined SAL_DLLPREFIX
         nEnd = endsWith( rLibName, OUSTR(".uno") );
         if (nEnd < 0) // !endsWith
@@ -607,3 +599,5 @@ void SAL_CALL writeSharedLibComponentInfo(
 }
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

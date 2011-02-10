@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
  /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -615,7 +616,7 @@ Any ComponentContext::lookupMap( OUString const & rName )
         Any caught( getCaughtException() );
         OUStringBuffer buf;
         buf.appendAscii( RTL_CONSTASCII_STRINGPARAM(
-                             "exception occured raising singleton \"") );
+                             "exception occurred raising singleton \"") );
         buf.append( rName );
         buf.appendAscii( RTL_CONSTASCII_STRINGPARAM("\": ") );
         buf.append( exc.Message );
@@ -897,3 +898,5 @@ Reference< XComponentContext > SAL_CALL createComponentContext(
 }
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

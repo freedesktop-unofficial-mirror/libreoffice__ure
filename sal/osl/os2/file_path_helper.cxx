@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -62,11 +63,11 @@
   const sal_Unicode FPH_CHAR_COLON          = (sal_Unicode)':';
   
   inline const rtl::OUString FPH_PATH_SEPARATOR()
-      { return rtl::OUString::createFromAscii("\\"); }
+      { return rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("\\")); }
   inline const rtl::OUString FPH_LOCAL_DIR_ENTRY()
-      { return rtl::OUString::createFromAscii("."); }
+      { return rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(".")); }
   inline const rtl::OUString FPH_PARENT_DIR_ENTRY()
-      { return rtl::OUString::createFromAscii(".."); }
+      { return rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("..")); }
   
  /*******************************************
   *  osl_systemPathRemoveSeparator   
@@ -375,3 +376,5 @@ sal_Bool SAL_CALL osl_searchPath(
     }	
     return bfound;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

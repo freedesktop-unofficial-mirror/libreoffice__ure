@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -29,9 +30,7 @@
 #define _OSL_FILE_PATH_HELPER_HXX_
 
 
-#ifndef _OSL_FILE_PATH_HELPER_H_
 #include "file_path_helper.h"
-#endif
  
 #include <rtl/ustring.hxx>
 
@@ -166,7 +165,7 @@ namespace osl
  
  /*****************************************
     systemPathGetParent
-    Replaces the last occurrance of a path
+    Replaces the last occurrence of a path
     separator with '\0' and returns the 
     position where the '/' was replaced
     
@@ -294,3 +293,5 @@ namespace osl
  
  #endif /* #ifndef _OSL_PATH_HELPER_HXX_ */
  
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

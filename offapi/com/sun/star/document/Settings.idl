@@ -69,7 +69,7 @@ published service Settings
 
         @return the
             <type scope="com::sun::star::i18n">XForbiddenCharacters</type>
-            interface to allow retreival and modification of the
+            interface to allow retrieval and modification of the
             forbidden characters set.
     */
     [optional, property] com::sun::star::i18n::XForbiddenCharacters ForbiddenCharacters;
@@ -277,7 +277,7 @@ published service Settings
 
     // Writer, maybe later other applications, too
     //-------------------------------------------------------------------------
-    /** layout engine should add value of a Font's 'external leading'
+    /** layout engine should add value of a Font's "external leading"
      * attribute to the line spacing.
      */
     [optional, property] boolean AddExternalLeading;

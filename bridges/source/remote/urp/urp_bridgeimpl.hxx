@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -33,19 +34,13 @@
 #include <rtl/ustring.hxx>
 #include <rtl/byteseq.hxx>
 
-#ifndef _UNO_THREADPOOL_H_
 #include <uno/threadpool.h>
-#endif
 #include <bridges/remote/bridgeimpl.hxx>
 
-#ifndef _URP_CACHE_HXX_
 #include "urp_cache.hxx"
-#endif
 #include "urp_marshal_decl.hxx"
 
-#ifndef _URP_REPLYCONTAINER_HXX_
 #include "urp_replycontainer.hxx"
-#endif
 #include "urp_property.hxx"
 
 
@@ -131,3 +126,5 @@ struct urp_BridgeImpl :
 
 }
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -372,7 +373,7 @@ oslFileError SAL_CALL osl_getFileURLFromSystemPath( rtl_uString *ustrSystemPath,
         /* adapt index to pTmp */
         nIndex += pTmp->length - ustrSystemPath->length;
         
-        /* remove all occurances of '//' */
+        /* remove all occurrences of '//' */
         for( nSrcIndex = nIndex + 1; nSrcIndex < pTmp->length; nSrcIndex++ )
         {
             if( ((sal_Unicode) '/' == pTmp->buffer[nSrcIndex]) && ((sal_Unicode) '/' == pTmp->buffer[nIndex]) )
@@ -519,7 +520,6 @@ namespace /* private */
  
     oslFileError _osl_resolvepath(
         /*inout*/ sal_Unicode* path, 
-        /*inout*/ sal_Unicode* current_pos, 
         /*inout*/ bool* failed)
     {
         oslFileError ferr = osl_File_E_None;
@@ -536,7 +536,6 @@ namespace /* private */
                 if (!TextToUnicode(resolved_path, strlen(resolved_path), path, PATH_MAX))		
                     return oslTranslateFileError(OSL_FET_ERROR, ENAMETOOLONG);
                     
-                current_pos = ustrtoend(path) - 1;	    					
             }
             else
             {
@@ -618,7 +617,6 @@ namespace /* private */
                     {
                         ferr = _osl_resolvepath(
                             path_resolved_so_far, 
-                            presolvedsf, 
                             &realpath_failed);
                     
                         if (osl_File_E_None != ferr)
@@ -637,7 +635,6 @@ namespace /* private */
                 {                
                     ferr = _osl_resolvepath(
                         path_resolved_so_far, 
-                        presolvedsf, 
                         &realpath_failed);
             
                     if (osl_File_E_None != ferr)
@@ -663,7 +660,6 @@ namespace /* private */
                 {            
                     ferr = _osl_resolvepath(
                         path_resolved_so_far, 
-                        presolvedsf, 
                         &realpath_failed);
             
                     if (osl_File_E_None != ferr)
@@ -692,6 +688,7 @@ oslFileError osl_getAbsoluteFileURL(rtl_uString*  ustrBaseDirURL, rtl_uString* u
 {
     FileBase::RC  rc;
     rtl::OUString unresolved_path;    
+    static char *allow_symlinks = getenv( "SAL_ALLOW_LINKOO_SYMLINKS" );
     
     rc = FileBase::getSystemPathFromFileURL(rtl::OUString(ustrRelativeURL), unresolved_path);
     
@@ -712,8 +709,33 @@ oslFileError osl_getAbsoluteFileURL(rtl_uString*  ustrBaseDirURL, rtl_uString* u
         unresolved_path = abs_path;        
     }
 
-    rtl::OUString resolved_path;	  
-    rc = (FileBase::RC) osl_getAbsoluteFileURL_impl_(unresolved_path, resolved_path);
+    rtl::OUString resolved_path;
+
+    if (!allow_symlinks)
+    {
+        rc = (FileBase::RC) osl_getAbsoluteFileURL_impl_(unresolved_path, resolved_path);
+    }
+    else
+    {
+        // SAL_ALLOW_LINKOO_SYMLINKS environment variable:
+        // for linkoo to work, we need to let the symlinks to the libraries untouched
+        rtl::OUString base;
+        sal_Int32 last_slash = unresolved_path.lastIndexOf( UNICHAR_SLASH );
+
+        if (last_slash >= 0 && last_slash + 1 < unresolved_path.getLength())
+        {
+            base = unresolved_path.copy(last_slash+1);
+            unresolved_path = unresolved_path.copy(0, last_slash);
+        }
+
+        rc = (FileBase::RC) osl_getAbsoluteFileURL_impl_(unresolved_path, resolved_path);
+
+        if (base.getLength() > 0)
+        {
+            resolved_path += rtl::OUString( UNICHAR_SLASH );
+            resolved_path += base;
+        }
+    }
         
     if (FileBase::E_None == rc)
     {
@@ -738,7 +760,7 @@ namespace /* private */
     bool find_in_PATH(const rtl::OUString& file_path, rtl::OUString& result)
     {	
         bool          bfound = false;		
-        rtl::OUString path   = rtl::OUString::createFromAscii("PATH");
+        rtl::OUString path(RTL_CONSTASCII_USTRINGPARAM("PATH"));
         rtl::OUString env_path;
         
         if (osl_Process_E_None == osl_getEnvironment(path.pData, &env_path.pData))
@@ -960,3 +982,5 @@ int TextToUnicode(
     unic_text[nDestBytes] = '\0';
     return nDestBytes;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

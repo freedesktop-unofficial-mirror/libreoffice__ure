@@ -71,7 +71,6 @@ published struct BorderLine
         double line (in 1/100 mm).
      */
     short LineDistance;
-
 };
 
 //=============================================================================

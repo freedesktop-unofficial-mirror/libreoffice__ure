@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -32,32 +33,18 @@
 // this file is converted to use with testshl2
 // original was placed in sal/test/textenc.cxx
 
-
-// -----------------------------------------------------------------------------
 #include <string.h>
 #include <stdio.h>
 
-// #ifndef _OSL_DIAGNOSE_H_
-// #include <osl/diagnose.h>
-// #endif
-
-#ifndef _RTL_STRING_HXX
 #include <rtl/string.hxx>
-#endif
 
 #include <testshl/simpleheader.hxx>
 
 #define TEST_ENSURE(c, m) CPPUNIT_ASSERT_MESSAGE((m), (c))
 
-// #if OSL_DEBUG_LEVEL > 0
-// #define TEST_ENSHURE(c, m)   OSL_ENSURE(c, m)
-// #else
-// #define TEST_ENSHURE(c, m)   OSL_VERIFY(c)
-// #endif
 
 using namespace rtl;
 
-// -----------------------------------------------------------------------------
 namespace rtl_OString
 {
     class oldtests : public CppUnit::TestFixture
@@ -264,3 +251,4 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION( rtl_OString::oldtests, "rtl_OString" );
 // -----------------------------------------------------------------------------
 NOADDITIONAL;
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

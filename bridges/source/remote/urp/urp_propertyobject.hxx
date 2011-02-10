@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -28,15 +29,11 @@
 #include <osl/interlck.h>
 #include <osl/mutex.hxx>
 
-#ifndef _OSL_CONDITN_H_
 #include <osl/conditn.h>
-#endif
 #include <rtl/string.hxx>
 #include <uno/sequence2.h>
 
-#ifndef _BRIDGES_REMOTE_REMOTE_H_
 #include <bridges/remote/remote.h>
-#endif
 #include "urp_property.hxx"
 
 namespace bridges_urp {
@@ -106,3 +103,5 @@ protected:
 };
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

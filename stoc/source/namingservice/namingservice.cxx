@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -38,9 +39,7 @@
 #include <cppuhelper/factory.hxx>
 #include <cppuhelper/component.hxx>
 #include <cppuhelper/implbase2.hxx>
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX_
 #include <cppuhelper/implementationentry.hxx>
-#endif
 
 #include <com/sun/star/uno/XNamingService.hpp>
 #include <com/sun/star/lang/XServiceInfo.hpp>
@@ -131,7 +130,7 @@ public:
     throw(::com::sun::star::uno::RuntimeException);
     static Sequence< OUString > SAL_CALL getSupportedServiceNames_Static()
     {
-        OUString aStr( OUString::createFromAscii( SERVICENAME ) );
+        OUString aStr( OUString(RTL_CONSTASCII_USTRINGPARAM(SERVICENAME)) );
         return Sequence< OUString >( &aStr, 1 );
     }
 
@@ -244,3 +243,5 @@ void * SAL_CALL component_getFactory(
     return component_getFactoryHelper( pImplName, pServiceManager, pRegistryKey , g_entries );
 }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

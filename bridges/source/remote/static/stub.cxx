@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -227,7 +228,7 @@ void SAL_CALL thisDispatch(
     else
     {
         // -----------------------
-        // an exception occured
+        // an exception occurred
         // -----------------------
         typelib_TypeDescription *pAnyType = 0;
         getCppuType( (Any*) 0 ).getDescription( &pAnyType );
@@ -334,3 +335,5 @@ Uno2RemoteStub::~Uno2RemoteStub()
 }
 
 } // end namespace bridges_remote
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -289,25 +290,6 @@ static oslSocketError osl_SocketErrorFromNative(int nativeType)
 /*****************************************************************************/
 static oslSocketDialupImpl *pDialupImpl = NULL;
 
-#if 0  /* INTERNAL DEBUG ONLY */
-BOOL WINAPI __osl_autodial_Impl (DWORD dwFlags, DWORD dwReserved)
-{
-    return 0;
-}
-
-BOOL WINAPI __osl_autodialHangup_Impl (DWORD dwReserved)
-{
-    return 1;
-}
-
-BOOL WINAPI __osl_getConnectedState_Impl (LPDWORD lpdwFlags, DWORD dwReserved)
-{
-    if (lpdwFlags)
-        *lpdwFlags = 0;
-    return 0;
-}
-#endif /* INTERNAL DEBUG ONLY */
-
 /*
  * __osl_createSocketDialupImpl.
  */
@@ -350,7 +332,7 @@ static void __osl_initSocketDialupImpl (oslSocketDialupImpl *pImpl)
         LeaveCriticalSection (&pImpl->m_hMutex);
     }
 #else
-    pImpl = pImpl; /* avoid warnings */
+    (void)pImpl;
 #endif
 }
 
@@ -1565,7 +1547,7 @@ sal_Int32 SAL_CALL osl_readSocket( oslSocket pSocket, void *pBuffer, sal_Int32 n
 
     OSL_ASSERT( pSocket);
 
-    /* loop until all desired bytes were read or an error occured */
+    /* loop until all desired bytes were read or an error occurred */
     sal_uInt32 BytesRead= 0;
     sal_uInt32 BytesToRead= n;
     while (BytesToRead > 0)
@@ -1576,7 +1558,7 @@ sal_Int32 SAL_CALL osl_readSocket( oslSocket pSocket, void *pBuffer, sal_Int32 n
                                    BytesToRead,
                                    osl_Socket_MsgNormal);
 
-        /* error occured? */
+        /* error occurred? */
         if(RetVal <= 0)
         {
             break;
@@ -1597,7 +1579,7 @@ sal_Int32 SAL_CALL osl_writeSocket( oslSocket pSocket, const void *pBuffer, sal_
 {
     OSL_ASSERT( pSocket );
 
-    /* loop until all desired bytes were send or an error occured */
+    /* loop until all desired bytes were send or an error occurred */
     sal_uInt32 BytesSend= 0;
     sal_uInt32 BytesToSend= n;
     sal_uInt8 *Ptr = ( sal_uInt8 * )pBuffer;
@@ -1607,7 +1589,7 @@ sal_Int32 SAL_CALL osl_writeSocket( oslSocket pSocket, const void *pBuffer, sal_
 
         RetVal= osl_sendSocket( pSocket,Ptr,BytesToSend,osl_Socket_MsgNormal);
 
-        /* error occured? */
+        /* error occurred? */
         if(RetVal <= 0)
         {
             break;
@@ -2188,3 +2170,5 @@ sal_Int32 SAL_CALL osl_demultiplexSocketEvents (
 }
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

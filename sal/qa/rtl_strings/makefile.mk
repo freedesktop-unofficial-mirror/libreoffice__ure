@@ -97,7 +97,7 @@ SHL3VERSIONMAP = $(PRJ)$/qa$/export.map
 
 # BEGIN ----------------------------------------------------------------
 SHL4OBJS=  \
-	$(SLO)$/rtl_old_teststrbuf.obj
+    $(SLO)$/rtl_old_teststrbuf.obj
 
 SHL4TARGET= rtl_old_teststrbuf
 SHL4STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
@@ -110,7 +110,7 @@ SHL4VERSIONMAP = $(PRJ)$/qa$/export.map
 
 # BEGIN ----------------------------------------------------------------
 SHL5OBJS=  \
-	$(SLO)$/rtl_old_testowstring.obj
+    $(SLO)$/rtl_old_testowstring.obj
 
 SHL5TARGET= rtl_old_testowstring
 SHL5STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
@@ -123,7 +123,7 @@ SHL5VERSIONMAP = $(PRJ)$/qa$/export.map
 
 # BEGIN ----------------------------------------------------------------
 SHL6OBJS=  \
-	$(SLO)$/rtl_old_testostring.obj
+    $(SLO)$/rtl_old_testostring.obj
 
 SHL6TARGET= rtl_old_testostring
 SHL6STDLIBS= $(SALLIB) $(CPPUNITLIB) $(TESTSHL2LIB)
@@ -137,12 +137,12 @@ SHL6VERSIONMAP = $(PRJ)$/qa$/export.map
 #------------------------------- All object files -------------------------------
 # do this here, so we get right dependencies
 SLOFILES=\
-	$(SHL1OBJS) \
-	$(SHL2OBJS) \
-	$(SHL3OBJS) \
-	$(SHL4OBJS) \
-	$(SHL5OBJS) \
-	$(SHL6OBJS)
+    $(SHL1OBJS) \
+    $(SHL2OBJS) \
+    $(SHL3OBJS) \
+    $(SHL4OBJS) \
+    $(SHL5OBJS) \
+    $(SHL6OBJS)
 
 # --- Targets ------------------------------------------------------
 

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -32,9 +33,7 @@
 #include <cppuhelper/weak.hxx>
 #include <cppuhelper/component.hxx>
 #include <cppuhelper/factory.hxx>
-#ifndef _CPPUHELPER_IMPLBASE3_HXX
 #include <cppuhelper/implbase3.hxx>
-#endif
 #include <cppuhelper/typeprovider.hxx>
 #include <rtl/unload.h>
 
@@ -66,9 +65,6 @@ using namespace com::sun::star::registry;
 namespace cppu
 {
 
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 class OSingleFactoryHelper
     : public XServiceInfo
     , public XSingleServiceFactory
@@ -276,10 +272,6 @@ Sequence< OUString > OSingleFactoryHelper::getSupportedServiceNames(void)
     return aServiceNames;
 }
 
-
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
-//----------------------------------------------------------------------
 struct OFactoryComponentHelper_Mutex
 {
     Mutex	aMutex;
@@ -552,10 +544,6 @@ sal_Bool SAL_CALL OFactoryComponentHelper::releaseOnNotification() throw(::com::
     return sal_True;
 }
 
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 class ORegistryFactoryHelper : public OFactoryComponentHelper,
                                public OPropertySetHelper
     
@@ -874,7 +862,7 @@ Reference< XInterface > ORegistryFactoryHelper::createModuleFactory()
             // one implementation found -> try to activate
             aLocation = xLocationKey->getAsciiValue();
 
-            // search protocol delemitter
+            // search protocol delimiter
             sal_Int32 nPos = aLocation.indexOf(
                 OUString( RTL_CONSTASCII_USTRINGPARAM("://") ) );
             if( nPos != -1 )
@@ -962,10 +950,6 @@ sal_Bool SAL_CALL ORegistryFactoryHelper::releaseOnNotification() throw(::com::s
     }
     return retVal;
 }
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 
 class OFactoryProxyHelper : public WeakImplHelper3< XServiceInfo, XSingleServiceFactory,
                                                     XUnloadingPreference >
@@ -1056,10 +1040,6 @@ sal_Bool SAL_CALL OFactoryProxyHelper::releaseOnNotification() throw(::com::sun:
     return sal_True;
 }
 
-
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
-//-----------------------------------------------------------------------------
 // global function
 Reference<XSingleServiceFactory > SAL_CALL createSingleFactory(
     const Reference<XMultiServiceFactory > & rServiceManager,
@@ -1094,8 +1074,6 @@ Reference<XSingleServiceFactory > SAL_CALL createOneInstanceFactory(
 {
     return new OFactoryComponentHelper(
         rServiceManager, rImplementationName, pCreateFunction, 0, &rServiceNames, pModCount, sal_True );
-//	return new OFactoryUnloadableComponentHelper(
-//		rServiceManager, rImplementationName, pCreateFunction, 0, &rServiceNames, pModCount, sal_True );
 }
 
 // global function
@@ -1146,3 +1124,4 @@ Reference< lang::XSingleComponentFactory > SAL_CALL createOneInstanceComponentFa
 }
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

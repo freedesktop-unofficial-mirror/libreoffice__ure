@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -125,7 +126,6 @@ namespace cppu_unourl
                    { "abc,def=%22", "abc,def=%22" },
                    { "abc,def=\"", "abc,def=\"" },
                    { "abc,def=%ed%a0%80", "abc,def=%ed%a0%80" } };
-            bool bResult = true;
             for (int i = 0; i < sizeof aTests / sizeof (Test); ++i)
             {
                 bool bValid = false;
@@ -479,3 +479,4 @@ CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(cppu_unourl::UrlTest,
 
 NOADDITIONAL;
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

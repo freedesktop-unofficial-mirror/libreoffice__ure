@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -89,7 +90,7 @@ namespace unoexe
 
 static sal_Bool isFileUrl(const OUString& fileName)
 {
-    if (fileName.indexOf(OUString::createFromAscii("file://")) == 0 )
+    if (fileName.indexOf(OUString(RTL_CONSTASCII_USTRINGPARAM("file://"))) == 0 )
         return sal_True;
     return sal_False;
 }
@@ -131,7 +132,7 @@ static sal_Bool s_quiet = false;
 static inline void out( const sal_Char * pText )
 {
     if (! s_quiet)
-        fprintf( stderr, pText );
+        fprintf( stderr, "%s", pText );
 }
 //--------------------------------------------------------------------------------------------------
 static inline void out( const OUString & rText )
@@ -139,7 +140,7 @@ static inline void out( const OUString & rText )
     if (! s_quiet)
     {
         OString aText( OUStringToOString( rText, RTL_TEXTENCODING_ASCII_US ) );
-        fprintf( stderr, aText.getStr() );
+        fprintf( stderr, "%s", aText.getStr() );
     }
 }
 
@@ -158,7 +159,7 @@ static sal_Bool readOption( OUString * pValue, const sal_Char * pOpt,
                             sal_Int32 * pnIndex, const OUString & aArg)
     throw (RuntimeException)
 {
-    const OUString dash = OUString(RTL_CONSTASCII_USTRINGPARAM("-"));
+    const OUString dash(RTL_CONSTASCII_USTRINGPARAM("-"));
     if(aArg.indexOf(dash) != 0)
         return sal_False;
 
@@ -649,7 +650,7 @@ SAL_IMPLEMENT_MAIN_WITH_ARGS(argc,)
 
             rtl_getAppCommandArg(nPos, &arg.pData);
 
-            const OUString dashdash = OUString(RTL_CONSTASCII_USTRINGPARAM("--"));
+            const OUString dashdash(RTL_CONSTASCII_USTRINGPARAM("--"));
             if (dashdash == arg)
             {
                 ++nPos;
@@ -897,3 +898,4 @@ SAL_IMPLEMENT_MAIN_WITH_ARGS(argc,)
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

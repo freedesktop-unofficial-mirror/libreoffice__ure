@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -27,14 +28,6 @@
 
 #ifndef _SAL_CONFIG_H_
 #define _SAL_CONFIG_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#ifdef __cplusplus
-}
-#endif
 
 #ifndef INCLUDED_STDLIB_H
 #include <stdlib.h>
@@ -99,7 +92,8 @@ extern "C" {
 #define SAL_SYSCONFIGFILE( name ) name ".ini"
 #endif
 
-#if defined(SOLARIS) || defined(LINUX) || defined(NETBSD) || defined(FREEBSD) || defined(SCO)
+#if defined(SOLARIS) || defined(LINUX) || defined(NETBSD) || defined(FREEBSD) || \
+    defined(SCO) || defined(AIX) || defined(OPENBSD)
 #define SAL_UNX
 #define SAL_DLLEXTENSION ".so"
 #define SAL_DLLPREFIX "lib"
@@ -150,3 +144,4 @@ extern "C" {
 #endif /*_SAL_CONFIG_H_ */
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

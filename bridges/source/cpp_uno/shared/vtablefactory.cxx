@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -56,6 +57,7 @@
 #if defined SAL_UNX
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 #include <sys/mman.h>
 #elif defined SAL_W32
 #define WIN32_LEAN_AND_MEAN
@@ -81,7 +83,7 @@ namespace {
 extern "C" void * SAL_CALL allocExec(rtl_arena_type *, sal_Size * size) {
     sal_Size pagesize;
 #if defined SAL_UNX
-#if defined FREEBSD || defined NETBSD
+#if defined FREEBSD || defined NETBSD || defined OPENBSD
     pagesize = getpagesize();
 #else
     pagesize = sysconf(_SC_PAGESIZE);
@@ -262,14 +264,14 @@ bool VtableFactory::createBlock(Block &block, sal_Int32 slotCount) const
     for (int i = strDirectory.getLength() == 0 ? 1 : 0; i < 2; ++i)
     {
         if (!strDirectory.getLength())
-            strDirectory = rtl::OUString::createFromAscii("/tmp");
+            strDirectory = rtl::OUString( RTL_CONSTASCII_USTRINGPARAM( "/tmp" ));
 
-        strDirectory += rtl::OUString::createFromAscii("/.execoooXXXXXX");
+        strDirectory += rtl::OUString( RTL_CONSTASCII_USTRINGPARAM( "/.execoooXXXXXX" ));
         rtl::OString aTmpName = rtl::OUStringToOString(strDirectory, osl_getThreadTextEncoding());
         char *tmpfname = new char[aTmpName.getLength()+1];
         strncpy(tmpfname, aTmpName.getStr(), aTmpName.getLength()+1);
         if ((block.fd = mkstemp(tmpfname)) == -1)
-            perror("creation of executable memory area failed");
+            fprintf(stderr, "mkstemp(\"%s\") failed: %s\n", tmpfname, strerror(errno));
         if (block.fd == -1)
         {
             delete[] tmpfname;
@@ -380,3 +382,5 @@ void VtableFactory::createVtables(
         createVtables(blocks, baseOffset, type->ppBaseTypes[i], i != 0);
     }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -28,9 +29,7 @@
 // MARKER(update_precomp.py): autogen include statement, do not remove
 #include "precompiled_stoc.hxx"
 #include <cppuhelper/queryinterface.hxx>
-#ifndef _CPPUHELPER_IMPLEMENTATIONENTRY_HXX_
 #include <cppuhelper/implementationentry.hxx>
-#endif
 
 #include <com/sun/star/lang/XComponent.hpp>
 #include <com/sun/star/reflection/XTypeDescription.hpp>
@@ -514,3 +513,5 @@ void * SAL_CALL component_getFactory(
     return component_getFactoryHelper( pImplName, pServiceManager, pRegistryKey , g_entries );
 }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

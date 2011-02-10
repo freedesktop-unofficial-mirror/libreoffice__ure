@@ -1,7 +1,8 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -105,7 +106,7 @@ void * binuno_queryInterface( void * pUnoI, typelib_TypeDescriptionReference * p
 #if OSL_DEBUG_LEVEL > 1
         OUStringBuffer buf( 128 );
         buf.appendAscii(
-            RTL_CONSTASCII_STRINGPARAM("### exception occured querying for interface ") );
+            RTL_CONSTASCII_STRINGPARAM("### exception occurred querying for interface ") );
         buf.append( * reinterpret_cast< OUString const * >( &pDestType->pTypeName ) );
         buf.appendAscii( RTL_CONSTASCII_STRINGPARAM(": [") );
         buf.append( * reinterpret_cast< OUString const * >( &pExc->pType->pTypeName ) );
@@ -273,7 +274,7 @@ sal_Bool SAL_CALL uno_type_equalData(
 {
     return _equalData(
         pVal1, pVal1Type, 0,
-        pVal2, pVal2Type, 0,
+        pVal2, pVal2Type,
         queryInterface, release );
 }
 //##################################################################################################
@@ -285,7 +286,7 @@ sal_Bool SAL_CALL uno_equalData(
 {
     return _equalData(
         pVal1, pVal1TD->pWeakRef, pVal1TD,
-        pVal2, pVal2TD->pWeakRef, pVal2TD,
+        pVal2, pVal2TD->pWeakRef,
         queryInterface, release );
 }
 //##################################################################################################
@@ -359,7 +360,8 @@ sal_Bool SAL_CALL uno_type_isAssignableFromData(
 #endif
 
 #if defined(INTEL) \
-    && (defined(__GNUC__) && (defined(LINUX) || defined(FREEBSD) || defined(OS2)) || defined(MACOSX) \
+    && (defined(__GNUC__) && (defined(LINUX) || defined(FREEBSD) || defined(OS2) \
+        || defined(NETBSD) || defined(OPENBSD)) || defined(MACOSX) \
         || defined(__SUNPRO_CC) && defined(SOLARIS))
 #define MAX_ALIGNMENT_4
 #endif
@@ -371,20 +373,8 @@ sal_Bool SAL_CALL uno_type_isAssignableFromData(
 #define BINTEST_VERIFYOFFSET( s, m, n ) \
     if (OFFSET_OF(s, m) != n) { fprintf( stderr, "### OFFSET_OF(" #s ", "  #m ") = %d instead of expected %d!!!\n", OFFSET_OF(s, m), n ); abort(); }
 
-#if OSL_DEBUG_LEVEL > 1
-#if defined(__GNUC__) && (defined(LINUX) || defined(FREEBSD)) && (defined(INTEL) || defined(POWERPC) || defined(X86_64) || defined(S390))
-#define BINTEST_VERIFYSIZE( s, n ) \
-    fprintf( stderr, "> sizeof(" #s ") = %d; __alignof__ (" #s ") = %d\n", sizeof(s), __alignof__ (s) ); \
-    if (sizeof(s) != n) { fprintf( stderr, "### sizeof(" #s ") = %d instead of expected %d!!!\n", sizeof(s), n ); abort(); }
-#else // ! GNUC
-#define BINTEST_VERIFYSIZE( s, n ) \
-    fprintf( stderr, "> sizeof(" #s ") = %d\n", sizeof(s) ); \
-    if (sizeof(s) != n) { fprintf( stderr, "### sizeof(" #s ") = %d instead of expected %d!!!\n", sizeof(s), n ); abort(); }
-#endif
-#else // ! OSL_DEBUG_LEVEL
 #define BINTEST_VERIFYSIZE( s, n ) \
     if (sizeof(s) != n) { fprintf( stderr, "### sizeof(" #s ") = %d instead of expected %d!!!\n", sizeof(s), n ); abort(); }
-#endif
 
 struct C1
 {
@@ -615,3 +605,5 @@ static BinaryCompatible_Impl aTest;
 #endif
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

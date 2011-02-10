@@ -51,10 +51,9 @@ APP1STDLIBS+= -lstdc++
 .ENDIF
 
 APP1STDLIBS+=	\
-			$(CPPULIB)	\
-			$(CPPUHELPERLIB)	\
-			$(VOSLIB)	\
-			$(SALLIB)
+            $(CPPULIB)	\
+            $(CPPUHELPERLIB)	\
+            $(SALLIB)
 
 APP1DEF=	$(MISC)$/$(APP1TARGET).def
 

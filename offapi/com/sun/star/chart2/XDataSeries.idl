@@ -27,8 +27,6 @@
 #ifndef com_sun_star_chart2_XDataSeries_idl
 #define com_sun_star_chart2_XDataSeries_idl
 
-// #include <com/sun/star/chart2/XCoordinateSystem.idl>
-
 #ifndef __com_sun_star_beans_XPropertySet_idl__
 #include <com/sun/star/beans/XPropertySet.idl>
 #endif
@@ -74,7 +72,7 @@ interface XDataSeries : ::com::sun::star::uno::XInterface
      */
     void resetDataPoint( [in] long nIndex );
 
-    /** all data point formattings are cleared
+    /** all data point formatting are cleared
      */
     void resetAllDataPoints();
 };

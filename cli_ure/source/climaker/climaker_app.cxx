@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -722,7 +723,7 @@ SAL_IMPLEMENT_MAIN()
                          osl_getThreadTextEncoding() ) );
         fprintf(
             stderr,
-            "\n> error: .NET exception occured: %s\n> dying abnormally...",
+            "\n> error: .NET exception occurred: %s\n> dying abnormally...",
             msg.getStr() );
         ret = 1;
     }
@@ -747,3 +748,5 @@ SAL_IMPLEMENT_MAIN()
     
     return ret;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -34,16 +35,12 @@
 
 #include <rtl/logfile.h>
 #include <osl/process.h>
-#ifndef _OSL_FILE_H_
 #include <osl/time.h>
-#endif
 #include <osl/time.h>
 #include <osl/mutex.hxx>
 #include <rtl/bootstrap.h>
 #include <rtl/ustring.hxx>
-#ifndef _RTL_STRBUF_HXX_
 #include <rtl/ustrbuf.hxx>
-#endif
 #include <rtl/alloc.h>
 #include "osl/thread.h"
 
@@ -252,3 +249,5 @@ extern "C" sal_Bool SAL_CALL rtl_logfile_hasLogFile( void ) {
     init();
     return g_buffer != 0;
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

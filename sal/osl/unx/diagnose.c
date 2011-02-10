@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -308,3 +309,5 @@ void osl_trace(char const * pszFormat, ...) {
     printTrace((unsigned long) getpid(), pszFormat, args);
     va_end(args);
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

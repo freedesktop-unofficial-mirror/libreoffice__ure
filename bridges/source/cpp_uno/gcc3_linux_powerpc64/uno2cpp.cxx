@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -414,7 +415,7 @@ static void cpp_call(
                         pStackStart, ( pStack - pStackStart ),
                         pGPR, nGPR,
                         pFPR, nFPR );
-        // NO exception occured...
+        // NO exception occurred...
         *ppUnoExc = 0;
         
         // reconvert temporary params
@@ -479,9 +480,8 @@ void unoInterfaceProxyDispatch(
     void * pReturn, void * pArgs[], uno_Any ** ppException )
 {
     // is my surrogate
-        bridges::cpp_uno::shared::UnoInterfaceProxy * pThis 
-            = static_cast< bridges::cpp_uno::shared::UnoInterfaceProxy *> (pUnoI);
-    typelib_InterfaceTypeDescription * pTypeDescr = pThis->pTypeDescr;
+    bridges::cpp_uno::shared::UnoInterfaceProxy * pThis
+        = static_cast< bridges::cpp_uno::shared::UnoInterfaceProxy *> (pUnoI);
     
     switch (pMemberDescr->eTypeClass)
     {
@@ -598,3 +598,5 @@ void unoInterfaceProxyDispatch(
 }
 
 } } }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

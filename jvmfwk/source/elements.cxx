@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -213,7 +214,7 @@ rtl_uString** VersionInfo::getExcludeVersions()
     int j=0;
     typedef std::vector<rtl::OUString>::const_iterator it;
     for (it i = vecExcludeVersions.begin(); i != vecExcludeVersions.end();
-         i++, j++)
+         ++i, ++j)
     {
         arVersions[j] = vecExcludeVersions[j].pData;
     }
@@ -551,7 +552,7 @@ void NodeJava::write() const
         }
 
         typedef std::vector<rtl::OUString>::const_iterator cit;
-        for (cit i = m_vmParameters->begin(); i != m_vmParameters->end(); i++)
+        for (cit i = m_vmParameters->begin(); i != m_vmParameters->end(); ++i)
         {
             xmlNewTextChild(vmParameters, NULL, (xmlChar*) "param",
                             CXmlCharPtr(*i));
@@ -592,7 +593,7 @@ void NodeJava::write() const
         }
 
         typedef std::vector<rtl::OUString>::const_iterator cit;
-        for (cit i = m_JRELocations->begin(); i != m_JRELocations->end(); i++)
+        for (cit i = m_JRELocations->begin(); i != m_JRELocations->end(); ++i)
         {
             xmlNewTextChild(jreLocationsNode, NULL, (xmlChar*) "location",
                             CXmlCharPtr(*i));
@@ -791,7 +792,7 @@ jfw::FileStatus NodeJava::checkSettingsFileStatus() const
 #endif
                         //delete file
                         File f(sURL);
-                        if (File::E_None == f.open(OpenFlag_Write | OpenFlag_Read)
+                        if (File::E_None == f.open(osl_File_OpenFlag_Write | osl_File_OpenFlag_Read)
                             && File::E_None == f.setPos(0, 0)
                             && File::E_None == f.setSize(0))
                                     ret = FILE_DOES_NOT_EXIST;
@@ -1260,7 +1261,7 @@ void MergedSettings::getVmParametersArray(
     int j=0;
     typedef std::vector<rtl::OUString>::const_iterator it;
     for (it i = m_vmParams.begin(); i != m_vmParams.end();
-         i++, j++)
+         ++i, ++j)
     {
         (*parParams)[j] = i->pData;
         rtl_uString_acquire(i->pData);
@@ -1282,7 +1283,7 @@ void MergedSettings::getJRELocations(
     int j=0;
     typedef std::vector<rtl::OUString>::const_iterator it;
     for (it i = m_JRELocations.begin(); i != m_JRELocations.end();
-         i++, j++)
+         ++i, ++j)
     {
         (*parLocations)[j] = i->pData;
         rtl_uString_acquire(i->pData);
@@ -1294,3 +1295,5 @@ const std::vector<rtl::OUString> & MergedSettings::getJRELocations() const
     return m_JRELocations;
 }
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

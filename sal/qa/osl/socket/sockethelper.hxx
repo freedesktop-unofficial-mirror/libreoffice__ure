@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -24,35 +25,23 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 
 #ifndef _SOCKETHELPER_HXX_
 #define _SOCKETHELPER_HXX_
 
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 #include <sal/types.h>
 #include <rtl/textenc.h>
 #include <rtl/ustring.hxx>
 #include <rtl/ustring.h>
 
-#ifndef _OSL_SOCLET_HXX_
 #include <osl/socket.hxx>
-#endif
 #include <osl/socket.h>
 
-#ifndef _OSL_THREAD_HXX
 #include <osl/thread.hxx>
-#endif
 
-#ifndef _OSL_FILE_HXX
 #include <osl/file.hxx>
-#endif
 
-#ifndef _OSL_MUTEX_HXX
 #include <osl/mutex.hxx>
-#endif
 #include <osl/time.h>
 
 #ifdef __cplusplus
@@ -77,7 +66,7 @@ extern "C"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <netinet/in.h>           
+#include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sys/wait.h>
 #endif
@@ -86,16 +75,12 @@ extern "C"
 
 #if ( defined WNT )                     // Windows
 #include <tools/prewin.h>
-// #include <windows.h> 
 #include <winsock.h> 
 #include <string.h>
 #include <tools/postwin.h>
 #endif
 
 #endif
-
-//------------------------------------------------------------------------
-//------------------------------------------------------------------------
 
 #ifdef __cplusplus
 }
@@ -163,3 +148,5 @@ class CloseSocketThread : public Thread
 */
 
 #endif
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

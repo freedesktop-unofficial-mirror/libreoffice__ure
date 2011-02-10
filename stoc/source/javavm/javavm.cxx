@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -534,10 +535,11 @@ static void setTimeZone(stoc_javavm::JVM * pjvm) throw() {
     char * p = tmData->tm_zone;
 #else
     char * p = tzname[0];
+    (void)tmData;
 #endif
 
     if (!strcmp(TIMEZONE, p))
-        pjvm->pushProp(rtl::OUString::createFromAscii("user.timezone=ECT"));
+        pjvm->pushProp(rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("user.timezone=ECT")));
 }
 
 void initVMConfiguration(
@@ -772,7 +774,7 @@ JavaVirtualMachine::getJavaVM(css::uno::Sequence< sal_Int8 > const & rProcessId)
         rtl::OString sJavaOption("-");
         typedef std::vector<rtl::OUString>::const_iterator cit;
         int index = 0;
-        for (cit i = props.begin(); i != props.end(); i++)
+        for (cit i = props.begin(); i != props.end(); ++i)
         {
             rtl::OString sOption = rtl::OUStringToOString(
                 *i, osl_getThreadTextEncoding());
@@ -1774,3 +1776,5 @@ void JavaVirtualMachine::handleJniException(JNIEnv * environment) {
             RTL_CONSTASCII_USTRINGPARAM("JNI exception occurred")),
         static_cast< cppu::OWeakObject * >(this));
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

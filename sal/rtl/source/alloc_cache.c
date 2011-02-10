@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -1188,10 +1189,9 @@ SAL_CALL rtl_cache_alloc (
     if (cache == 0)
         return (0);
 
+    RTL_MEMORY_LOCK_ACQUIRE(&(cache->m_depot_lock));
     if (cache->m_cpu_curr != 0)
     {
-        RTL_MEMORY_LOCK_ACQUIRE(&(cache->m_depot_lock));
-
         for (;;)
         {
             /* take object from magazine layer */
@@ -1229,9 +1229,8 @@ SAL_CALL rtl_cache_alloc (
             /* no full magazine: fall through to slab layer */
             break;
         }
-
-        RTL_MEMORY_LOCK_RELEASE(&(cache->m_depot_lock));
     }
+    RTL_MEMORY_LOCK_RELEASE(&(cache->m_depot_lock));
 
     /* alloc buffer from slab layer */
     obj = rtl_cache_slab_alloc (cache);
@@ -1719,3 +1718,5 @@ rtl_cache_fini (void)
 }
 
 /* ================================================================= */
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

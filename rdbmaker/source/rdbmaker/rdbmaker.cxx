@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -31,9 +32,7 @@
 #include <codemaker/typemanager.hxx>
 #include <codemaker/dependency.hxx>
 
-#ifndef _RTL_OSTRINGBUFFER_HXX_
 #include <rtl/strbuf.hxx>
-#endif
 
 #if defined(SAL_W32) || defined(SAL_OS2)
 #include <io.h>
@@ -143,7 +142,7 @@ sal_Bool checkFilterTypes(const OString& type)
             return sal_True;			
         }
 
-        iter++;
+        ++iter;
     }
 
     return sal_False;
@@ -186,12 +185,12 @@ void cleanUp( sal_Bool bError)
     StringList::reverse_iterator iter = dirEntries.rbegin();
     while ( iter != dirEntries.rend() )
     {
-           if (rmdir((char*)(*iter).getStr()) == -1)
+        if (rmdir((char*)(*iter).getStr()) == -1)
         {
             break;
         }
         
-        iter++;
+        ++iter;
     }
 }	
 
@@ -506,3 +505,4 @@ int _cdecl main( int argc, char * argv[] )
 }
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

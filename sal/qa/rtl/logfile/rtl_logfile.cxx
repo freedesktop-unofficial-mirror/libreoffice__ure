@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -32,8 +33,6 @@
 // this file is converted to use with testshl2
 // original was placed in sal/test/textenc.cxx
 
-
-// -----------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -45,15 +44,9 @@
 #include <rtl/logfile.hxx>
 #include <testshl/simpleheader.hxx>
 
-// #ifndef      _OSL_MODULE_HXX_
-// #include <osl/module.hxx>
-// #endif
 #include <osl/file.hxx>
 #if ( defined WNT )                     // Windows
 #include <tools/prewin.h>
-// #define UNICODE
-// #define WIN32_LEAN_AND_MEAN
-// #include <windows.h>
 #include <tchar.h>
 #include <tools/postwin.h>
 #endif
@@ -78,9 +71,9 @@ inline void printUString( const ::rtl::OUString & str, const sal_Char * msg = ""
 inline ::rtl::OUString getTempPath( void )
 {
 #ifdef UNX
-    rtl::OUString suDirURL(rtl::OUString::createFromAscii("file:///tmp/"));
+    rtl::OUString suDirURL( RTL_CONSTASCII_USTRINGPARAM("file:///tmp/") );
 #else /* Windows */
-    rtl::OUString suDirURL(rtl::OUString::createFromAscii("file:///c:/temp/"));
+    rtl::OUString suDirURL( RTL_CONSTASCII_USTRINGPARAM("file:///c:/temp/") );
 #endif
     return suDirURL;
 }
@@ -91,7 +84,7 @@ bool t_fileExist(rtl::OUString const& _sFilename)
 {
     ::osl::FileBase::RC   nError1;
     ::osl::File aTestFile( _sFilename );
-    nError1 = aTestFile.open ( OpenFlag_Read );
+    nError1 = aTestFile.open ( osl_File_OpenFlag_Read );
     if ( ( ::osl::FileBase::E_NOENT != nError1 ) && ( ::osl::FileBase::E_ACCES != nError1 ) )
     {
         aTestFile.close( );
@@ -144,13 +137,13 @@ namespace rtl_logfile
                 rtl_logfile_trace("trace %d %d %d\n" , 1 , 2 ,3 );
 
                 rtl::OUString suFilePath = getTempPath();
-                suFilePath +=  rtl::OUString::createFromAscii("logfile1_") + getCurrentPID( );
-                suFilePath +=  rtl::OUString::createFromAscii(".log");
+                suFilePath +=  rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("logfile1_")) + getCurrentPID( );
+                suFilePath +=  rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(".log"));
 
                 ::osl::FileBase::RC   nError1;
                 ::osl::File aTestFile( suFilePath );
                 printUString( suFilePath );
-                nError1 = aTestFile.open ( OpenFlag_Read );
+                nError1 = aTestFile.open ( osl_File_OpenFlag_Read );
                 CPPUNIT_ASSERT_MESSAGE("create the log file: but the logfile does not exist",
                                        ( ::osl::FileBase::E_NOENT != nError1 ) &&
                                        ( ::osl::FileBase::E_ACCES != nError1 ) );
@@ -233,8 +226,8 @@ public:
             {
                 t_print( "\n#Do some clean-ups ... only delete logfile1_*.log here!\n" );
                 rtl::OUString suFilePath = getTempPath();
-                suFilePath +=  rtl::OUString::createFromAscii("logfile1_") + getCurrentPID( );
-                suFilePath +=  rtl::OUString::createFromAscii(".log");
+                suFilePath +=  rtl::OUString(RTL_CONSTASCII_USTRINGPARAM("logfile1_")) + getCurrentPID( );
+                suFilePath +=  rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(".log"));
 
                 //if ( ifFileExist( suFilePath )  == sal_True )
                 ::osl::FileBase::RC nError1;
@@ -258,3 +251,4 @@ GlobalObject theGlobalObject;
 
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

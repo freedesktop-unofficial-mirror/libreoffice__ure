@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -619,7 +620,7 @@ int msci_filterCppException(
     RuntimeException exc(
         OUString( RTL_CONSTASCII_USTRINGPARAM(
                       "[msci_uno bridge error] unexpected "
-                      "C++ exception occured!") ),
+                      "C++ exception occurred!") ),
         Reference< XInterface >() );
     uno_type_any_constructAndConvert(
         pUnoExc, &exc, ::getCppuType( &exc ).getTypeLibType(), pCpp2Uno );
@@ -630,3 +631,4 @@ int msci_filterCppException(
 
 #pragma pack(pop)
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

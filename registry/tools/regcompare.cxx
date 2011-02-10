@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -1633,8 +1634,8 @@ static sal_uInt32 checkBlob(const OUString& keyName, typereg::Reader& reader1, s
     }	
 /*
     if ( nError &&
-         (!keyName.compareTo(OUString::createFromAscii("/UCR/drafts"), 11) ||
-          !keyName.compareTo(OUString::createFromAscii("/drafts"), 7)) )
+         (!keyName.compareTo(OUString(RTL_CONSTASCII_USTRINGPARAM("/UCR/drafts")), 11) ||
+          !keyName.compareTo(OUString(RTL_CONSTASCII_USTRINGPARAM("/drafts")), 7)) )
     {
         if ( options.forceOutput() )
         {
@@ -2397,3 +2398,4 @@ int _cdecl main( int argc, char * argv[] )
 }
 
 
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

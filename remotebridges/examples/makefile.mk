@@ -42,10 +42,9 @@ SLOFILES = $(SLO)$/officeclient.obj
 SHL1TARGET= officeclientsample
 
 SHL1STDLIBS= \
-		$(SALLIB)	\
-		$(VOSLIB)	\
-		$(CPPULIB) 	\
-		$(CPPUHELPERLIB) 
+        $(SALLIB)	\
+        $(CPPULIB) 	\
+        $(CPPUHELPERLIB) 
 
 SHL1DEPN=
 SHL1IMPLIB=		i$(SHL1TARGET)

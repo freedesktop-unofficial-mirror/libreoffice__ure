@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -31,6 +32,14 @@
 #include "sal/config.h"
 
 #include <stdlib.h> // wntmsci10 does not like <cstdlib>
+
+#include "preextstl.h"
+#include <cppunit/TestSuite.h>
+#include <cppunit/TestFixture.h>
+#include <cppunit/TestCase.h>
+#include <cppunit/plugin/TestPlugIn.h>
+#include <cppunit/extensions/HelperMacros.h>
+#include "postextstl.h"
 
 #include "Enum1.hpp"
 #include "Enum2.hpp"
@@ -2323,8 +2332,10 @@ void Test::testNull() {
     }
 }
 
-CPPUNIT_TEST_SUITE_NAMED_REGISTRATION(Test, "alltests");
+CPPUNIT_TEST_SUITE_REGISTRATION(Test);
 
 }
 
-NOADDITIONAL;
+CPPUNIT_PLUGIN_IMPLEMENT();
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

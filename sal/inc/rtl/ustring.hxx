@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -30,9 +31,7 @@
 
 #ifdef __cplusplus
 
-#ifndef _RTL_DIAGNOSE_H_
 #include "osl/diagnose.h"
-#endif
 #include <rtl/ustring.h>
 #include <rtl/string.hxx>
 #include <rtl/memory.h>
@@ -50,7 +49,7 @@ namespace rtl
 /**
   This String class provide base functionality for C++ like Unicode
   character array handling. The advantage of this class is, that it
-  handle all the memory managament for you - and it do it
+  handle all the memory management for you - and it do it
   more efficient. If you assign a string to another string, the
   data of both strings are shared (without any copy operation or
   memory allocation) as long as you do not change the string. This class
@@ -277,6 +276,22 @@ public:
                 object.
     */
     sal_Int32 getLength() const SAL_THROW(()) { return pData->length; }
+
+    /**
+      Checks if a string is empty.
+
+      @return   sal_True if the string is empty;
+                sal_False, otherwise.
+
+      @since LibreOffice 3.4
+    */
+    sal_Bool isEmpty() const SAL_THROW(())
+    {
+        if ( pData->length )
+            return sal_False;
+        else
+            return sal_True;
+    }
 
     /**
       Returns a pointer to the Unicode character buffer from this string.
@@ -1538,3 +1553,5 @@ inline OString OUStringToOString( const OUString & rUnicode,
 #endif /* __cplusplus */
 
 #endif /* _RTL_USTRING_HXX */
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */

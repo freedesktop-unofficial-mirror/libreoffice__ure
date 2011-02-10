@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -187,7 +188,7 @@ System::Object* Bridge::call_uno(uno_Interface * pUnoI,
         }
         return 0; // void return
     }
-    else // exception occured
+    else // exception occurred
     {
         // destruct uno in args
         for ( sal_Int32 nPos = 0; nPos < nParams; ++nPos )
@@ -280,7 +281,7 @@ void Bridge::call_cli(
         map_to_uno(
             uno_ret, retInvoke, return_type, false /* no assign */);
     }        
-    // no exception occured
+    // no exception occurred
     *uno_exc = 0;
 }
 
@@ -288,3 +289,5 @@ void Bridge::call_cli(
 
 
 }
+
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */
