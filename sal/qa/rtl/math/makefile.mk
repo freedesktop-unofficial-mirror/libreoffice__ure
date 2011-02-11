@@ -42,6 +42,7 @@ CFLAGS+= $(LFS_CFLAGS)
 CXXFLAGS+= $(LFS_CFLAGS)
 
 CFLAGSCXX += $(CPPUNIT_CFLAGS)
+CPPUNITTESTER=$(AUGMENT_LIBRARY_PATH_LOCAL) $(GDBCPPUNITTRACE) $(VALGRINDTOOL) $(PRJ) $(OUTPATH)$/bin$/cppunittester
 
 #----------------------------------- OStringBuffer -----------------------------------
 
@@ -94,4 +95,3 @@ SHL2VERSIONMAP = $(PRJ)$/qa$/export.map
 
 .INCLUDE :  target.mk
 .INCLUDE : _cppunit.mk
-

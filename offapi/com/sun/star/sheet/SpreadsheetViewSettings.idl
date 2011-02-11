@@ -149,18 +149,24 @@ published service SpreadsheetViewSettings
     //------------------------------------------------------------------------- 
      
     /** enables display of embedded objects in the view.
+
+        @see SpreadsheetViewObjectsMode
      */
     [property] short ShowObjects; 
  
     //------------------------------------------------------------------------- 
      
     /** enables the display of charts in the view.
+
+        @see SpreadsheetViewObjectsMode
      */
     [property] short ShowCharts; 
  
     //------------------------------------------------------------------------- 
      
     /** enables the display of drawing objects in the view.
+
+        @see SpreadsheetViewObjectsMode
      */
     [property] short ShowDrawing; 
  

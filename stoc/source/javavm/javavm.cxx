@@ -227,15 +227,10 @@ rtl::OUString serviceGetImplementationName()
                              "com.sun.star.comp.stoc.JavaVirtualMachine"));
 }
 
-rtl::OUString serviceGetServiceName()
-{
-    return rtl::OUString(RTL_CONSTASCII_USTRINGPARAM(
-                             "com.sun.star.java.JavaVirtualMachine"));
-}
-
 css::uno::Sequence< rtl::OUString > serviceGetSupportedServiceNames()
 {
-    rtl::OUString aServiceName = serviceGetServiceName();
+    rtl::OUString aServiceName(
+        RTL_CONSTASCII_USTRINGPARAM("com.sun.star.java.JavaVirtualMachine"));
     return css::uno::Sequence< rtl::OUString >(&aServiceName, 1);
 }
 
@@ -621,6 +616,7 @@ component_getImplementationEnvironment(sal_Char const ** pEnvTypeName,
     *pEnvTypeName = CPPU_CURRENT_LANGUAGE_BINDING_NAME;
 }
 
+<<<<<<< HEAD
 extern "C" sal_Bool SAL_CALL component_writeInfo(void * pServiceManager,
                                                  void * pRegistryKey)
 {
@@ -649,6 +645,8 @@ extern "C" sal_Bool SAL_CALL component_writeInfo(void * pServiceManager,
     return false;
 }
 
+=======
+>>>>>>> stage/premerge/dev300_m98
 extern "C" void * SAL_CALL component_getFactory(sal_Char const * pImplName,
                                                 void * pServiceManager,
                                                 void * pRegistryKey)

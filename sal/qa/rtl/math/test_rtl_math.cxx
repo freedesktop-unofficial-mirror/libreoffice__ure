@@ -35,7 +35,7 @@
 #include "rtl/string.h"
 #include "rtl/string.hxx"
 #include "rtl/textenc.h"
-#include <testshl/tresstatewrapper.hxx>
+#include <cppunit.h>
 #include "rtl/ustring.hxx"
 #include "sal/types.h"
 #include <sal/macros.h>

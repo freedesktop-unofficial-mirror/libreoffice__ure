@@ -31,7 +31,6 @@
 #include <cppuhelper/queryinterface.hxx>
 #include <cppuhelper/implementationentry.hxx>
 
-#include <com/sun/star/registry/XRegistryKey.hpp>
 #include <com/sun/star/lang/XComponent.hpp>
 #include <com/sun/star/reflection/XTypeDescription.hpp>
 #include "com/sun/star/uno/RuntimeException.hpp"
@@ -508,6 +507,7 @@ void SAL_CALL component_getImplementationEnvironment(
     *ppEnvTypeName = CPPU_CURRENT_LANGUAGE_BINDING_NAME;
 }
 //==================================================================================================
+<<<<<<< HEAD
 sal_Bool SAL_CALL component_writeInfo(
     void * pServiceManager, void * pRegistryKey )
 {
@@ -537,6 +537,8 @@ sal_Bool SAL_CALL component_writeInfo(
     return sal_False;
 }
 //==================================================================================================
+=======
+>>>>>>> stage/premerge/dev300_m98
 void * SAL_CALL component_getFactory(
     const sal_Char * pImplName, void * pServiceManager, void * pRegistryKey )
 {
