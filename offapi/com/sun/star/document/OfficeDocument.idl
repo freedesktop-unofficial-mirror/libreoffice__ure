@@ -193,13 +193,6 @@ published service OfficeDocument
     [optional] interface XDocumentPropertiesSupplier;
 
     //-------------------------------------------------------------------------
-    /** access to the <type>DocumentProperties</type>.
-
-        @since OOo 3.0
-     */
-    [optional] interface XDocumentPropertiesSupplier;
-
-    //-------------------------------------------------------------------------
     /** controls the focus behavior of the form controls in the document
 
         <p>
