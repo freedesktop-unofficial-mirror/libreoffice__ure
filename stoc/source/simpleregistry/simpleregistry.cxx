@@ -1318,4 +1318,6 @@ rtl::OUString simreg_getImplementationName() {
         RTL_CONSTASCII_USTRINGPARAM("com.sun.star.comp.stoc.SimpleRegistry"));
 }
 
+}
+
 /* vim:set shiftwidth=4 softtabstop=4 expandtab: */

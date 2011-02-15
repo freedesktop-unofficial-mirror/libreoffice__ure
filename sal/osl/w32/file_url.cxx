@@ -277,7 +277,6 @@ DWORD IsValidFilePath(rtl_uString *path, LPCTSTR *lppError, DWORD dwFlags, rtl_u
         else if ( 2 == _tcsspn( lpszPath, CHARSET_SEPARATOR ) )
         {
             /* The UNC path notation */
-<<<<<<< HEAD
             lpComponent = lpszPath + 2;
             dwCandidatPathType = PATHTYPE_ABSOLUTE_UNC;
         }
@@ -285,15 +284,6 @@ DWORD IsValidFilePath(rtl_uString *path, LPCTSTR *lppError, DWORD dwFlags, rtl_u
         {
             /* Local path verification. Must start with <drive>: */
             lpComponent = lpszPath + 2;
-=======
-            lpComponent = lpszPath + 2;
-            dwCandidatPathType = PATHTYPE_ABSOLUTE_UNC;
-        }
-        else if ( _istalpha( lpszPath[0] ) && ':' == lpszPath[1] )
-        {
-            /* Local path verification. Must start with <drive>: */
-            lpComponent = lpszPath + 2;
->>>>>>> stage/premerge/dev300_m98
             dwCandidatPathType = PATHTYPE_ABSOLUTE_LOCAL;
         }
 
@@ -438,15 +428,9 @@ static sal_Int32 PathRemoveFileSpec(LPTSTR lpPath, LPTSTR lpFileName, sal_Int32 
                     _tcscpy( lpFileName, lpLastDelimiter + 1 );
                     *(++lpLastDelimiter) = 0;
                     nRemoved = nDelLen - 1;
-<<<<<<< HEAD
                 }
         }
     }
-=======
-                }
-        }
-    }
->>>>>>> stage/premerge/dev300_m98
 
     return nRemoved;
 }

@@ -616,37 +616,6 @@ component_getImplementationEnvironment(sal_Char const ** pEnvTypeName,
     *pEnvTypeName = CPPU_CURRENT_LANGUAGE_BINDING_NAME;
 }
 
-<<<<<<< HEAD
-extern "C" sal_Bool SAL_CALL component_writeInfo(void * pServiceManager,
-                                                 void * pRegistryKey)
-{
-    if (cppu::component_writeInfoHelper(pServiceManager, pRegistryKey,
-                                        aServiceImplementation))
-    {
-        try
-        {
-            css::uno::Reference< css::registry::XRegistryKey >(
-                    reinterpret_cast< css::registry::XRegistryKey * >(
-                        pRegistryKey)->
-                createKey(
-                    rtl::OUString(
-                        RTL_CONSTASCII_USTRINGPARAM(
-                            "com.sun.star.comp.stoc.JavaVirtualMachine"
-                            "/UNO/SINGLETONS/"
-                            "com.sun.star.java.theJavaVirtualMachine"))))->
-                setStringValue(serviceGetServiceName());
-            return true;
-        }
-        catch (css::uno::Exception &)
-        {
-            OSL_ENSURE(false, "com.sun.star.uno.Exception caught");
-        }
-    }
-    return false;
-}
-
-=======
->>>>>>> stage/premerge/dev300_m98
 extern "C" void * SAL_CALL component_getFactory(sal_Char const * pImplName,
                                                 void * pServiceManager,
                                                 void * pRegistryKey)
