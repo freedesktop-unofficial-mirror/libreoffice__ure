@@ -77,6 +77,7 @@ IDLFILES=\
     XLinkCreator.idl\
     XLinkFactory.idl\
     XEncryptionProtectedSource.idl\
+    XEncryptionProtectedSource2.idl\
     XInplaceClient.idl\
     XInsertObjectDialog.idl\
     XWindowSupplier.idl\
