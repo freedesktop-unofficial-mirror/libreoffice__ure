@@ -64,7 +64,6 @@
 #include "com/sun/star/uno/Sequence.hxx"
 #include "com/sun/star/uno/Type.hxx"
 #include "com/sun/star/uno/XInterface.hpp"
-#include "testshl/simpleheader.hxx"
 #include "osl/diagnose.h"
 #include "osl/interlck.h"
 #include "rtl/string.h"
