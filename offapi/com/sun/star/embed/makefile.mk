@@ -93,6 +93,7 @@ IDLFILES=\
     XStorageRawAccess.idl\
     XExtendedStorageStream.idl\
     XHierarchicalStorageAccess.idl\
+    XHierarchicalStorageAccess2.idl\
     XHatchWindowController.idl\
     XHatchWindowFactory.idl\
     XHatchWindow.idl\
