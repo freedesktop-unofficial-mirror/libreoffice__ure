@@ -90,6 +90,7 @@ IDLFILES=\
     XTransferableSupplier.idl\
     XComponentSupplier.idl\
     XStorage.idl\
+    XStorage2.idl\
     XStorageRawAccess.idl\
     XExtendedStorageStream.idl\
     XHierarchicalStorageAccess.idl\
