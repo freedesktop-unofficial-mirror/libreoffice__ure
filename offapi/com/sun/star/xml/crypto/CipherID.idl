@@ -24,36 +24,37 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
- 
-//i20156 - new file for xmlsecurity module
+#ifndef __com_sun_star_xml_crypto_CipherID_idl__
+#define __com_sun_star_xml_crypto_CipherID_idl__
 
-/** -- idl definition -- **/
 
-#ifndef __com_sun_star_xml_crypto_xseinitializer_idl_
-#define __com_sun_star_xml_crypto_xseinitializer_idl_
-
-#include <com/sun/star/uno/XInterface.idl>
-#include <com/sun/star/uno/Exception.idl>
+//============================================================================
 
 module com { module sun { module star { module xml { module crypto {
 
-interface XXMLSecurityContext;
+//============================================================================
+/** The constant set contains identifiers of supported cipher-creation
+    algorithms.
 
-/**
- * Interface to manipulate Security Environment
- */
-interface XSEInitializer : com::sun::star::uno::XInterface
+    @see <type>XCipherContextSupplier</type>
+    @since OOo 3.4
+*/
+constants CipherID
 {
-    /**
-     * Creates a security context.
-     *
-     * @return            the security context created
+    //------------------------------------------------------------------------
+    /** identifier of AES algorithm in CBC mode
      */
-    com::sun::star::xml::crypto::XXMLSecurityContext createSecurityContext();
+    const long AES_CBC = 1;
+
+    //------------------------------------------------------------------------
+    /** identifier of the Blowfish algorithm in 8-bit CFB mode
+     */
+    const long BLOWFISH_CFB_8 = 2;
 };
 
-} ; } ; } ; } ; } ;
+//============================================================================
 
+}; }; }; }; };
 
 #endif
 
