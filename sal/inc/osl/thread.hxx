@@ -150,7 +150,10 @@ public:
     { 
         osl_yieldThread();
     }
-    
+
+    static inline void setName(char const * name) throw () {
+        osl_setThreadName(name);
+    }
 
     virtual sal_Bool SAL_CALL schedule() 
     {
