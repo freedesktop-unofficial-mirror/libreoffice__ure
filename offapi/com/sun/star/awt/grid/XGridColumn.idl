@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -24,26 +24,26 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_awt_grid_XGridColumn_idl__ 
-#define __com_sun_star_awt_grid_XGridColumn_idl__ 
- 
+#ifndef __com_sun_star_awt_grid_XGridColumn_idl__
+#define __com_sun_star_awt_grid_XGridColumn_idl__
+
 #include <com/sun/star/lang/XComponent.idl>
 #include <com/sun/star/style/HorizontalAlignment.idl>
 #include <com/sun/star/lang/IllegalArgumentException.idl>
-#include <com/sun/star/awt/grid/XGridColumnListener.idl> 
-#include <com/sun/star/util/XCloneable.idl> 
- 
-//============================================================================= 
- 
+#include <com/sun/star/awt/grid/XGridColumnListener.idl>
+#include <com/sun/star/util/XCloneable.idl>
+
+//=============================================================================
+
 module com {  module sun {  module star {  module awt {  module grid {
- 
-//============================================================================= 
+
+//=============================================================================
 
 /** The <type>XGridColumn</types> defines the properties and behavior of a column in a grid control
     @since OOo 3.3
- */     
-interface XGridColumn
-{ 
+ */
+published interface XGridColumn
+{
     /** implements life time control for the component
     */
     interface ::com::sun::star::lang::XComponent;
@@ -99,7 +99,7 @@ interface XGridColumn
     /** Specifies the horizontal alignment of the content in the control.
      */
     [attribute] ::com::sun::star::style::HorizontalAlignment HorizontalAlign;
-    
+
     /** A title is displayed in the colum header row if <method>UnoControlGridModel::ShowRowHeader</method> is set to <true/>**/
     [attribute] string Title;
 
@@ -110,7 +110,7 @@ interface XGridColumn
     [attribute] string HelpText;
 
     /** denotes the index of the column within the grid column model it belongs to
-    
+
         <p>If the column is not yet part of a column model, <code>Index</code> is -1.</p>
     */
     [attribute, readonly] long Index;
@@ -132,20 +132,20 @@ interface XGridColumn
     /** Adds a listener for the <type>GridColumnEvent</type> posted after the grid changes.
         @param Listener
             the listener to add.
-    */     
-    void addGridColumnListener( [in] XGridColumnListener  listener); 
- 
-    //------------------------------------------------------------------------- 
+    */
+    void addGridColumnListener( [in] XGridColumnListener  listener);
+
+    //-------------------------------------------------------------------------
 
     /** Removes a listener previously added with <method>addColumnListener()</method>.
         @param Listener
             the listener to remove.
-    */   
-    void removeGridColumnListener( [in] XGridColumnListener listener); 
-}; 
- 
-//============================================================================= 
- 
-}; }; }; }; }; 
- 
-#endif 
+    */
+    void removeGridColumnListener( [in] XGridColumnListener listener);
+};
+
+//=============================================================================
+
+}; }; }; }; };
+
+#endif
