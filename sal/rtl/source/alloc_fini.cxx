@@ -1,3 +1,4 @@
+/* -*- Mode: C++; tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 4 -*- */
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -24,34 +25,34 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __drafts_com_sun_star_form_IncompatibleTypesException_idl__
-#define __drafts_com_sun_star_form_IncompatibleTypesException_idl__
 
-#ifndef __com_sun_star_uno_Exception_idl__
-#include <com/sun/star/uno/Exception.idl>
-#endif
+/*
+  Issue http://udk.openoffice.org/issues/show_bug.cgi?id=92388
 
+  Mac OS X does not seem to support "__cxa__atexit", thus leading
+  to the situation that "__attribute__((destructor))__" functions
+  (in particular "rtl_{memory|cache|arena}_fini") become called
+  _before_ global C++ object d'tors.
 
-//=============================================================================
-
-module drafts { module com {  module sun {  module star {  module form {
-
-//=============================================================================
-
-/** thrown to indicate that the types of an <type>XValueBinding</type> and
-    an <type>XBindableValue</type> are incompatible
-
-    @deprecated
-        This exception is superseded by <type scope="com::sun::star::form::binding">IncompatibleTypesException</type>
+  Using a C++ dummy object instead.
 */
-exception IncompatibleTypesException: com::sun::star::uno::Exception
+
+extern "C" void rtl_memory_fini (void);
+extern "C" void rtl_cache_fini (void);
+extern "C" void rtl_arena_fini (void);
+
+struct RTL_Alloc_Fini
 {
+  ~RTL_Alloc_Fini() ;
 };
 
-//=============================================================================
+RTL_Alloc_Fini::~RTL_Alloc_Fini()
+{
+  rtl_memory_fini();
+  rtl_cache_fini();
+  rtl_arena_fini();
+}
 
-}; }; }; }; };
+static RTL_Alloc_Fini g_RTL_Alloc_Fini;
 
-//=============================================================================
-
-#endif
+/* vim:set shiftwidth=4 softtabstop=4 expandtab: */
