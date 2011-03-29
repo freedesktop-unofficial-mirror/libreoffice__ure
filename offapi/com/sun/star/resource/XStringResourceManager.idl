@@ -71,9 +71,9 @@ module com { module sun { module star { module resource {
     localized dialogs.
     
 */
-interface XStringResourceManager: com::sun::star::resource::XStringResourceResolver
+published interface XStringResourceManager: com::sun::star::resource::XStringResourceResolver
 {
-    /** 
+    /**
         Returns the resource's read only state
 
         @return  <TRUE/> if the resource is read only, otherwise <FALSE/>
@@ -87,16 +87,16 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
             Specifies the current locale to be used.
 
         @param FindClosestMatch
-            <p>If true: If the exact locale that should be set is not available 
+            <p>If true: If the exact locale that should be set is not available
             the method tries to find the closest match. E.g. if en_US is re-
             quired but not available, en would be the next choice. Finally
-            the default locale will be used <TRUE/>. 
-            
-            <p>If false: If the exact locale that should be set is not available 
+            the default locale will be used <TRUE/>.
+
+            <p>If false: If the exact locale that should be set is not available
             a <type scope="com::sun::star::lang">IllegalArgumentException</type>
             is thrown.
-            
-            <p>If false: If the exact locale that should be set is not available 
+
+            <p>If false: If the exact locale that should be set is not available
             a <type scope="com::sun::star::lang">IllegalArgumentException</type>
             is thrown.
     */
@@ -111,8 +111,8 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
     /** Sets the default locale to be used
 
         @param aLocale
-            Specifies the default locale to be used. 
-            If this locale is not available a 
+            Specifies the default locale to be used.
+            If this locale is not available a
             <type scope="com::sun::star::lang">IllegalArgumentException</type>
             is thrown.
 
@@ -153,7 +153,7 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
         associated with it will be overwritten, otherwise a new
         entry will be created.
 
-        It's not recommended to use this method to get the best 
+        It's not recommended to use this method to get the best
         performance as the implementation may be optimized for
         the use of the current locale.
 
@@ -165,7 +165,7 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
 
         @param locale
             The locale the string should be set for.
-            The locale has to match exactly with one of the locales provided by 
+            The locale has to match exactly with one of the locales provided by
             <member>getLocales</member>. A closest match search is not supported.
 
         @throws <type scope="com::sun::star::lang">NoSupportException</type>
@@ -181,7 +181,7 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
 
 
     /**
-        Removes a Resource ID including the corresponding string for 
+        Removes a Resource ID including the corresponding string for
         the current locale.
 
         @param ResourceID
@@ -201,7 +201,7 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
 
 
     /**
-        Removes a Resource ID including the corresponding string for 
+        Removes a Resource ID including the corresponding string for
         s specific locale.
 
         @param ResourceID
@@ -209,7 +209,7 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
 
         @param locale
             The locale the Resource ID should be removed for.
-            The locale has to match exactly with one of the locales provided by 
+            The locale has to match exactly with one of the locales provided by
             <member>getLocales</member>. A closest match search is not supported.
 
         @throws
@@ -226,9 +226,9 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
 
 
     /**
-        Creates a new locale. 
-        
-        <p>For each existing ResourceID an empty string 
+        Creates a new locale.
+
+        <p>For each existing ResourceID an empty string
         will be created. The first locale created will
         automatically be the first default locale.
         Otherwise strings for all already created IDs
@@ -240,7 +240,7 @@ interface XStringResourceManager: com::sun::star::resource::XStringResourceResol
 
         @throws
         <type scope="com::sun::star::lang">IllegalArgumentException</type>
-        if the Locale is not valid.	
+        if the Locale is not valid.
 
         @throws
         <type scope="com::sun::star::lang">NoSupportException</type>
