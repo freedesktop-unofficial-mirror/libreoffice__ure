@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- *
+ * 
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -24,42 +24,49 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
+#ifndef __com_sun_star_xml_crypto_DigestID_idl__
+#define __com_sun_star_xml_crypto_DigestID_idl__
 
-#ifndef __com_sun_star_xml_crypto_xseinitializer_idl_
-#define __com_sun_star_xml_crypto_xseinitializer_idl_
 
-#include <com/sun/star/uno/XInterface.idl>
-#include <com/sun/star/uno/Exception.idl>
+//============================================================================
 
 module com { module sun { module star { module xml { module crypto {
 
-published interface XXMLSecurityContext;
+//============================================================================
+/** The constant set contains identifiers of supported digest-creation
+    algorithms.
 
-/**
- * Interface to manipulate Security Environment
- */
-published interface XSEInitializer : com::sun::star::uno::XInterface
+    @see <type>XDigestContextSupplier</type>
+    @since OOo 3.4
+*/
+constants DigestID
 {
-    /**
-       Creates a security context.
-     
-       @param aString
-            reserved for internal use.
-     
-       @return            the security context created
+    //------------------------------------------------------------------------
+    /** identifier of SHA-1 algorithm
      */
-    ::com::sun::star::xml::crypto::XXMLSecurityContext createSecurityContext( [in] string aString );
+    const long SHA1 = 1;
 
-    /**
-     * Frees a security context.
-     *
-     * @param securityContext      the security context to be freed
+    //------------------------------------------------------------------------
+    /** identifier of SHA-256 algorithm
      */
-    void freeSecurityContext([in] com::sun::star::xml::crypto::XXMLSecurityContext securityContext);
+    const long SHA256 = 2;
+
+    //------------------------------------------------------------------------
+    /** identifier of SHA-1 algorithm that is applied to the first kilobyte
+        of data.
+     */
+    const long SHA1_1K = 3;
+
+    //------------------------------------------------------------------------
+    /** identifier of SHA-256 algorithm that is applied to the first kilobyte
+        of data.
+     */
+    const long SHA256_1K = 4;
 };
 
-} ; } ; } ; } ; } ;
+//============================================================================
 
+}; }; }; }; };
 
 #endif
 
