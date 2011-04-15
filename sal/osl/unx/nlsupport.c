@@ -945,17 +945,13 @@ void _imp_getProcessLocale( rtl_Locale ** ppLocale )
 static int
 _setenv (const char* name, const char* value)
 {
-#if defined( AIX )
     return setenv (name, value, 1);
-#else
-    return setenv (name, value);
-#endif
 }
 
 int _imp_setProcessLocale( rtl_Locale * pLocale )
 {
     char locale_buf[64];
-    
+
     /* convert rtl_Locale to locale string */
     if( NULL != _compose_locale( pLocale, locale_buf, 64 ) )
     {
