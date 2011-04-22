@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -37,22 +37,22 @@
 #endif
 
 
-//============================================================================= 
+//=============================================================================
 
 module com { module sun { module star { module awt {
 
-//============================================================================= 
+//=============================================================================
 
 /** specifies a provider for dialogs implementing the
     <type scope="com::sun::star::awt">XDialog</type> interface.
  */
-service DialogProvider : com::sun::star::awt::XDialogProvider;
+published service DialogProvider : com::sun::star::awt::XDialogProvider;
 
 // service DialogProvider {
     // interface com::sun::star::awt::XDialogProvider;
 // };
 
-//============================================================================= 
+//=============================================================================
 
 }; }; }; };
 
