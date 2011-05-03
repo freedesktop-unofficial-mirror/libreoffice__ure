@@ -162,7 +162,12 @@ interface XFastParser: com::sun::star::uno::XInterface
         <p>Set the language of the error messages. Useful when the parsing 
         errors will be presented to the user.</p>
      */
-    void setLocale( [in] com::sun::star::lang::Locale locale ); 
+    void setLocale( [in] com::sun::star::lang::Locale locale );
+
+    /** Gets the namespace url string.
+      */
+    string getNamespaceURL( [in] string prefix )
+        raises( com::sun::star::lang::IllegalArgumentException );
 }; 
  
 //============================================================================= 
