@@ -255,7 +255,9 @@ PyRef PyUNO_callable_new (
     enum ConversionMode mode )
 {
     PyUNO_callable* self;
-  
+
+    OSL_ENSURE (my_inv.is(), "XInvocation must be valid");
+
     self = PyObject_New (PyUNO_callable, &PyUNO_callable_Type);
     if (self == NULL)
         return NULL; //NULL == Error!
