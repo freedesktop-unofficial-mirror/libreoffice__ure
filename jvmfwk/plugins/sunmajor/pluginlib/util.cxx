@@ -834,7 +834,18 @@ OUString resolveDirPath(const OUString & path)
         FileStatus status(osl_FileStatus_Mask_Type |
                           osl_FileStatus_Mask_LinkTargetURL |
                           osl_FileStatus_Mask_FileURL);
-        
+
+        int nDepth = 0;
+        while (item.getFileStatus(status) == File::E_None &&
+               status.getFileType() == FileStatus::Link)
+        {
+            if (++nDepth == 128)
+                break;
+            sResolved = status.getLinkTargetURL();
+            if (DirectoryItem::get(sResolved, item) != File::E_None)
+                break;
+        }
+
         if (item.getFileStatus(status) == File::E_None
             && status.getFileType() == FileStatus::Directory)
         {
