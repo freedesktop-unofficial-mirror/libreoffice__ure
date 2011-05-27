@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -24,26 +24,26 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_awt_tab_XTabPageModel_idl__ 
-#define __com_sun_star_awt_tab_XTabPageModel_idl__ 
+#ifndef __com_sun_star_awt_tab_XTabPageModel_idl__
+#define __com_sun_star_awt_tab_XTabPageModel_idl__
 
 #include <com/sun/star/uno/XInterface.idl>
 #include <com/sun/star/lang/XMultiServiceFactory.idl>
 #include <com/sun/star/container/XContainer.idl>
 #include <com/sun/star/container/XNameContainer.idl>
 
-//============================================================================= 
- 
+//=============================================================================
+
 module com {  module sun {  module star {  module awt {  module tab {
- 
-//============================================================================= 
- 
+
+//=============================================================================
+
 /** specifies an XTabPageModel interface.
 
     @since OOo 3.4
 */
 
-interface XTabPageModel
+published interface XTabPageModel
 {
     //interface com::sun::star::lang::XMultiServiceFactory;
 
@@ -58,14 +58,14 @@ interface XTabPageModel
 
     /** determines whether a tab page is enabled or disabled.
      */
-    [attribute] boolean Enabled; 
- 
-    //------------------------------------------------------------------------- 
-    
+    [attribute] boolean Enabled;
+
+    //-------------------------------------------------------------------------
+
     /** specifies the text that is displayed in the tab bar of the tab page.
      */
     [attribute] string Title;
-    
+
     //-------------------------------------------------------------------------
 
     /** specifies a URL that references a graphic that should be displayed in the tab bar.
@@ -77,11 +77,11 @@ interface XTabPageModel
     /** specifies a tooltip text that should be displayed in the tab bar.
     */
     [attribute] string Tooltip;
-}; 
+};
 
- 
-//============================================================================= 
- 
+
+//=============================================================================
+
  }; }; }; }; };
- 
-#endif 
+
+#endif

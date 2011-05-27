@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -43,7 +43,7 @@ interface XPropertyHandler;
 
     @since OOo 2.0.3
 */
-interface XObjectInspectorModel
+published interface XObjectInspectorModel
 {
     /** describes a set of factories for creating <type>XPropertyHandler</type>s
 
@@ -79,7 +79,7 @@ interface XObjectInspectorModel
         attribute, which is filled in <member>XPropertyHandler::describePropertyLine</member>
         method of your property handler.<br/>
         Those names provided by the handlers are programmatic names. All other information
-        about categories is part of the <type>PropertyCategoryDescriptor</type>, and 
+        about categories is part of the <type>PropertyCategoryDescriptor</type>, and
         <member>describeCategories</member> assembles information about all categories which
         all property handlers provided by the model use.</p>
 
@@ -131,7 +131,7 @@ interface XObjectInspectorModel
         Additionally, the inspector can optionally display a section dedicated to help
         texts. Clients could use this section to display context-sensitive help, for
         instance short texts explaining the currently selected property.</p>
- 
+
         @since OOo 2.2
     */
     [attribute, readonly] boolean HasHelpSection;
@@ -165,7 +165,7 @@ interface XObjectInspectorModel
     [attribute, readonly] long MaxHelpTextLines;
 
     /** determines whether the object inspector's UI should be read-only.
-    
+
         <p>In this case, the user is able to browse through all properties, but cannot
         change any of them.</p>
 

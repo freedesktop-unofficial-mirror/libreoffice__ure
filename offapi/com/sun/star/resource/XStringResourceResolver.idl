@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -27,20 +27,20 @@
 #ifndef __com_sun_star_resource_XStringResourceResolver_idl__
 #define __com_sun_star_resource_XStringResourceResolver_idl__
 
-#include <com/sun/star/resource/MissingResourceException.idl> 
+#include <com/sun/star/resource/MissingResourceException.idl>
 #include <com/sun/star/util/XModifyBroadcaster.idl>
 #include <com/sun/star/lang/Locale.idl>
 
 
 //=============================================================================
 
-module com { module sun { module star { module resource { 
+module com { module sun { module star { module resource {
 
 //=============================================================================
-/** 
+/**
     Interface to access strings in a resource.
 
-    The interface is derived from 
+    The interface is derived from
     <type scope="com::sun::star::util">XModifyBroadcaster</type>
 
     All registered <type scope="com::sun::star::util">XModifyListener</type>
@@ -52,18 +52,18 @@ module com { module sun { module star { module resource {
     But also changing the locale at runtime can be supported in this way.
 
 */
-interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
+published interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
 {
     /**
-        Resolves the passed ResoureID for the current locale. This 
+        Resolves the passed ResoureID for the current locale. This
         locale is set during initialization of the object implementing
-        this interface or - in case that also the interface 
+        this interface or - in case that also the interface
         <type scope="com::sun::star::resource">XStringResourceManager</type>
-        is supported - by using the <code>XStringResourceManager::setLocale</code> 
+        is supported - by using the <code>XStringResourceManager::setLocale</code>
         method.
 
         @param ResourceID
-            ID to specify the string inside the resource. 
+            ID to specify the string inside the resource.
             The ID can - but not needs to - be a hierarchical
             name like "foo.nothing.invalid".
 
@@ -78,18 +78,18 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
 
     /** Resolves the passed ResoureID for a specific locale.
 
-        It's not recommended to use this method to get the best 
+        It's not recommended to use this method to get the best
         performance as the implementation may be optimized for
         the use of the current locale.
 
         @param ResourceID
-            ID to specify the string inside the resource. 
+            ID to specify the string inside the resource.
             The ID can - but not needs to - be a hierarchical
             name like "foo.nothing.invalid".
 
         @param locale
             The locale the string should be resolved for.
-            The locale has to match exactly with one of the locales provided by 
+            The locale has to match exactly with one of the locales provided by
             <member>getLocales</member>. A closest match search is not supported.
 
         @return  the localized string for the specified ID and Locale
@@ -106,7 +106,7 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
         and current locale.
 
         @param ResourceID
-            ID to specify the string inside the resource. 
+            ID to specify the string inside the resource.
 
         @return  <TRUE/> if an entry exists, otherwise <FALSE/>
 
@@ -117,16 +117,16 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
     /**
         Checks if the resource contains an entry for the given ResourceID and locale.
 
-        It's not recommended to use this method to get the best 
+        It's not recommended to use this method to get the best
         performance as the implementation may be optimized for
         the use of the current locale.
 
         @param ResourceID
-            ID to specify the string inside the resource. 
+            ID to specify the string inside the resource.
 
         @param locale
             The locale the entry should be checked for.
-            The locale has to match exactly with one of the locales provided by 
+            The locale has to match exactly with one of the locales provided by
             <member>getLocales</member>. A closest match search is not supported.
 
         @return  <TRUE/> if an entry exists, otherwise <FALSE/>
@@ -145,13 +145,13 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
     /**
         Returns a sequence of all valid Resource IDs for a specific locale
 
-        It's not recommended to use this method to get the best 
+        It's not recommended to use this method to get the best
         performance as the implementation may be optimized for
         the use of the current locale.
 
         @param locale
             The locale the ResourceIDs should be returned for.
-            The locale has to match exactly with one of the locales provided by 
+            The locale has to match exactly with one of the locales provided by
             <member>getLocales</member>. A closest match search is not supported.
 
         @return  a sequence of all valid Resource IDs
@@ -160,7 +160,7 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
 
 
     /** Returns the current locale specified in the accessed resource.
-        
+
         If no locale is available, the returned Locale structure
         only contains empty strings.
 
@@ -170,7 +170,7 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
 
 
     /** Returns the default locale of the accessed resource. In many
-        cases this will be the locale of the Office initially used 
+        cases this will be the locale of the Office initially used
         to create the resource.
 
         @return  the used locale
@@ -188,6 +188,6 @@ interface XStringResourceResolver: com::sun::star::util::XModifyBroadcaster
 
 //=============================================================================
 
-}; }; }; }; 
+}; }; }; };
 
 #endif

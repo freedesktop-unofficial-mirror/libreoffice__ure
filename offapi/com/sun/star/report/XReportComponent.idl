@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -24,46 +24,48 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_report_XReportComponent_idl__ 
-#define __com_sun_star_report_XReportComponent_idl__ 
- 
-#include <com/sun/star/container/XChild.idl> 
- 
-#include <com/sun/star/lang/XComponent.idl> 
- 
-#include <com/sun/star/container/XNamed.idl> 
- 
-#include <com/sun/star/beans/XPropertySet.idl> 
+#ifndef __com_sun_star_report_XReportComponent_idl__
+#define __com_sun_star_report_XReportComponent_idl__
+
+#include <com/sun/star/container/XChild.idl>
+
+#include <com/sun/star/lang/XComponent.idl>
+
+#include <com/sun/star/container/XNamed.idl>
+
+#include <com/sun/star/beans/XPropertySet.idl>
 #include <com/sun/star/util/XCloneable.idl>
-#include <com/sun/star/awt/XControlModel.idl> 
+#include <com/sun/star/awt/XControlModel.idl>
 #include <com/sun/star/drawing/XShape.idl>
- 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module report {  
- interface XSection;
-//============================================================================= 
+
+//=============================================================================
+
+ module com {  module sun {  module star {  module report {
+
+published interface XSection;
+
+//=============================================================================
 /** describes a component which may be part of a report.
-    
+
     @see XReportDefinition
  */
-interface XReportComponent
-{ 
+published interface XReportComponent
+{
     interface com::sun::star::util::XCloneable;
     /** identifies the component as a candidate for being part of a report.
         <p>This interface also provides the access to the component's parent.</p>
      */
-    interface com::sun::star::container::XChild; 
-     
+    interface com::sun::star::container::XChild;
+
     /** allows life-time control of report components.
      */
-    interface com::sun::star::lang::XComponent; 
+    interface com::sun::star::lang::XComponent;
 
-    interface com::sun::star::drawing::XShape; 
-          
+    interface com::sun::star::drawing::XShape;
+
     /** gives access to the properties.
     */
-    interface com::sun::star::beans::XPropertySet; 
+    interface com::sun::star::beans::XPropertySet;
 
     /** the name of the component.
      */
@@ -74,12 +76,12 @@ interface XReportComponent
 
     /** specifies the height of the control.
      */
-    [attribute,bound] long Height; 
- 
+    [attribute,bound] long Height;
+
     /** specifies the horizontal position of the control.
      */
     [attribute,bound] long PositionX;
-    
+
     /** specifies the vertical position of the control.
      */
     [attribute,bound] long PositionY;
@@ -131,7 +133,7 @@ interface XReportComponent
     it's data based on the values of the master fields.</p>
     <p>If the report is no sub report (e.g. it's parent is not a report itself), this
     property is not evaluated.</p>
-    
+
     */
     [attribute,bound] sequence<string> MasterFields
     {
@@ -160,7 +162,7 @@ interface XReportComponent
     fields or their aliases of the detail report.</p>
     <p>If the report is no sub report (e.g. it's parent is not a report itself), this
     property is not evaluated.</p>
-    * 
+    *
     */
     [attribute,bound] sequence<string> DetailFields
     {
@@ -174,13 +176,13 @@ interface XReportComponent
         This value is <NULL/> when the control was not inserted in any section.
     */
     [attribute,readonly] com::sun::star::report::XSection Section;
-}; 
- 
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-=============================================================================*/ 
-#endif 
+};
+
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
+=============================================================================*/
+#endif

@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -24,15 +24,15 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
-#ifndef __com_sun_star_report_XReportDefinition_idl__ 
-#define __com_sun_star_report_XReportDefinition_idl__ 
- 
-#include <com/sun/star/report/XReportComponent.idl> 
+#ifndef __com_sun_star_report_XReportDefinition_idl__
+#define __com_sun_star_report_XReportDefinition_idl__
+
+#include <com/sun/star/report/XReportComponent.idl>
 #include <com/sun/star/report/XFunctionsSupplier.idl>
-#include <com/sun/star/view/PaperOrientation.idl> 
+#include <com/sun/star/view/PaperOrientation.idl>
 #include <com/sun/star/container/NoSuchElementException.idl>
 #include <com/sun/star/style/GraphicLocation.idl>
-#include <com/sun/star/view/PaperFormat.idl> 
+#include <com/sun/star/view/PaperFormat.idl>
 #include <com/sun/star/util/XCloseable.idl>
 #include <com/sun/star/ui/XUIConfigurationManagerSupplier.idl>
 #include <com/sun/star/document/XDocumentSubStorageSupplier.idl>
@@ -47,17 +47,17 @@
 #include <com/sun/star/lang/DisposedException.idl>
 #include <com/sun/star/style/XStyleFamiliesSupplier.idl>
 
-module com {  module sun {  module star {  module sdbc { 
-published interface XConnection; 
-};};};}; 
-//============================================================================= 
- 
- module com {  module sun {  module star {  module report {  
- 
-     interface XSection;
-     interface XGroups;
-//============================================================================= 
- 
+module com {  module sun {  module star {  module sdbc {
+published interface XConnection;
+};};};};
+//=============================================================================
+
+ module com {  module sun {  module star {  module report {
+
+     published interface XSection;
+     published interface XGroups;
+//=============================================================================
+
 /** identifies a <type>XReportComponent</type> as being a (sub-) report.
 
     <p>This interface does not really provide an own functionality, it is only for easier
@@ -69,8 +69,8 @@ published interface XConnection;
 
     @see XReportComponent
  */
-interface XReportDefinition
-{ 
+published interface XReportDefinition
+{
     /** allows the access to the model embedded in the database storage.
     */
     interface com::sun::star::frame::XModel;
@@ -143,8 +143,8 @@ interface XReportDefinition
         raises( ::com::sun::star::lang::DisposedException,
                 ::com::sun::star::uno::Exception );
 
-    //------------------------------------------------------------------------- 
-    
+    //-------------------------------------------------------------------------
+
     /** Represents the output format (media (mime) type) of the resulting document when executing this report.
     */
     [attribute,bound] string MimeType
@@ -186,8 +186,8 @@ interface XReportDefinition
     The default value for <member scope="com::sun::star::sdbc">RowSet::EscapeProcessing</member>
     is <TRUE/>. By switching it to <FALSE/>, you can pass backend-specific SQL statements,
     which are not standard SQL, to your database.</p>
-    
-    
+
+
     @see com::sun::star::sdb::CommandType
     */
     [attribute,bound] string Command;
@@ -265,7 +265,7 @@ interface XReportDefinition
 
     /** Represents the groups of the report.
     */
-    [attribute,readonly] com::sun::star::report::XGroups Groups; 
+    [attribute,readonly] com::sun::star::report::XGroups Groups;
 
     /** returns the report header if the <member>ReportHeaderOn</member>is <TRUE/>.
         @throws <type scope="com::sun::star::container">NoSuchElementException</type>
@@ -274,7 +274,7 @@ interface XReportDefinition
     */
     [attribute,readonly] com::sun::star::report::XSection ReportHeader
     {
-        get raises (com::sun::star::container::NoSuchElementException); 
+        get raises (com::sun::star::container::NoSuchElementException);
     };
 
     /** returns the page header if the <member>PageHeaderOn</member>is <TRUE/>.
@@ -284,7 +284,7 @@ interface XReportDefinition
     */
     [attribute,readonly] com::sun::star::report::XSection PageHeader
     {
-        get raises (com::sun::star::container::NoSuchElementException); 
+        get raises (com::sun::star::container::NoSuchElementException);
     };
 
     /** returns the detail section.
@@ -299,7 +299,7 @@ interface XReportDefinition
     */
     [attribute,readonly] com::sun::star::report::XSection PageFooter
     {
-        get raises (com::sun::star::container::NoSuchElementException); 
+        get raises (com::sun::star::container::NoSuchElementException);
     };
 
     /** returns the report footer if the <member>ReportFooterOn</member>is <TRUE/>.
@@ -309,16 +309,16 @@ interface XReportDefinition
     */
     [attribute,readonly] com::sun::star::report::XSection ReportFooter
     {
-        get raises (com::sun::star::container::NoSuchElementException); 
+        get raises (com::sun::star::container::NoSuchElementException);
     };
-}; 
- 
-service ReportDefinition : XReportDefinition;
-//============================================================================= 
- 
-}; }; }; };  
- 
-/*============================================================================= 
- 
-=============================================================================*/ 
-#endif 
+};
+
+published service ReportDefinition : XReportDefinition;
+//=============================================================================
+
+}; }; }; };
+
+/*=============================================================================
+
+=============================================================================*/
+#endif

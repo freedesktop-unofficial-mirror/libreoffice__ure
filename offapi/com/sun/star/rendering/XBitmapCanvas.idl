@@ -1,7 +1,7 @@
 /*************************************************************************
  *
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
- * 
+ *
  * Copyright 2000, 2010 Oracle and/or its affiliates.
  *
  * OpenOffice.org - a multi-platform office productivity suite
@@ -27,7 +27,7 @@
 #ifndef __com_sun_star_rendering_XBitmapCanvas_idl__
 #define __com_sun_star_rendering_XBitmapCanvas_idl__
 
-#include <com/sun/star/uno/XInterface.idl> 
+#include <com/sun/star/uno/XInterface.idl>
 #include <com/sun/star/lang/IllegalArgumentException.idl>
 #include <com/sun/star/geometry/RealRectangle2D.idl>
 #include <com/sun/star/rendering/RenderState.idl>
@@ -47,7 +47,7 @@ module com { module sun { module star { module rendering {
 
     @since OOo 2.0
  */
-interface XBitmapCanvas : XCanvas
+published interface XBitmapCanvas : XCanvas
 {
     /** This method copies a rectangular area from a place of one
         canvas to a place on another.<p>
@@ -60,7 +60,7 @@ interface XBitmapCanvas : XCanvas
         operation. The device color for both source and destination
         render state is ignored, the compositing mode only for the
         source render state.<p>
-        
+
         @param sourceCanvas
         Canvas from which to copy the bitmap data. Can be identical to
         the canvas this method is called on, but must be valid.
@@ -106,12 +106,12 @@ interface XBitmapCanvas : XCanvas
 
         @throws <type>com::sun::star::lang::IllegalArgumentException</type>
         if one of the parameters are not within the specified range.
-     */	
-    void copyRect( [in] XBitmapCanvas sourceCanvas, 
+     */
+    void copyRect( [in] XBitmapCanvas sourceCanvas,
                    [in] ::com::sun::star::geometry::RealRectangle2D sourceRect, [in] ViewState sourceViewState, [in] RenderState sourceRenderState,
                    [in] ::com::sun::star::geometry::RealRectangle2D destRect, [in] ViewState destViewState, [in] RenderState destRenderState )
         raises (com::sun::star::lang::IllegalArgumentException,
-                VolatileContentDestroyedException);  
+                VolatileContentDestroyedException);
 
 };
 

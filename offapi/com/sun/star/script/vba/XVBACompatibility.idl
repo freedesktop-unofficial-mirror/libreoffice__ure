@@ -28,18 +28,35 @@
 #ifndef __com_sun_star_script_vba_XVBACompatibility_idl__
 #define __com_sun_star_script_vba_XVBACompatibility_idl__
 
-#include <com/sun/star/uno/XInterface.idl>
+#include <com/sun/star/frame/XModel.idl>
+#include <com/sun/star/script/vba/XVBAScriptListener.idl>
 
 //=============================================================================
- 
+
 module com {  module sun {  module star {  module script { module vba {
- 
+
 interface XVBACompatibility
 {
     //-------------------------------------------------------------------------
 
     [attribute] boolean VBACompatibilityMode;
     [attribute ] string  ProjectName;
+
+    //-------------------------------------------------------------------------
+
+    [attribute, readonly] long RunningVBAScripts;
+
+    //-------------------------------------------------------------------------
+
+    [oneway] void addVBAScriptListener( [in] XVBAScriptListener Listener );
+
+    //-------------------------------------------------------------------------
+
+    [oneway] void removeVBAScriptListener( [in] XVBAScriptListener Listener );
+
+    //-------------------------------------------------------------------------
+
+    void broadcastVBAScriptEvent( [in] long Identifier, [in] string ModuleName );
 
     //-------------------------------------------------------------------------
 };
