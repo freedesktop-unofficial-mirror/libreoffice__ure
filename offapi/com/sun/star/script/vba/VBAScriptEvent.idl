@@ -24,7 +24,7 @@
  * for a copy of the LGPLv3 License.
  *
  ************************************************************************/
- 
+
 #ifndef __com_sun_star_script_vba_VBAScriptEvent_idl__
 #define __com_sun_star_script_vba_VBAScriptEvent_idl__
 
@@ -46,7 +46,7 @@ module com {  module sun {  module star { module script { module vba {
 struct VBAScriptEvent : ::com::sun::star::lang::EventObject
 {
     //-------------------------------------------------------------------------
-    
+
     /** Identifies the type of the event.
 
         @see VBAScriptEventId
@@ -56,7 +56,7 @@ struct VBAScriptEvent : ::com::sun::star::lang::EventObject
     //-------------------------------------------------------------------------
 
     /** Contains the name of the involved VBA module.
-    
+
         @see VBAScriptEventId
      */
     string ModuleName;
