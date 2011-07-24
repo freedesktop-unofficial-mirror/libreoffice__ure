@@ -178,9 +178,9 @@ published service Shape
     */
     [optional, property] long NavigationOrder;
 
-	/** this property lets you get and set a hyperlink for this shape.
-	 */
-	[optional, property] string Hyperlink;
+    /** this property lets you get and set a hyperlink for this shape.
+     */
+    [optional, property] string Hyperlink;
 };
 
 //=============================================================================

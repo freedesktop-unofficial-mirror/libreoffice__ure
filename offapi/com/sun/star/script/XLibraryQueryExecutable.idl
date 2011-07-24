@@ -35,7 +35,7 @@ module com {  module sun {  module star {  module script {
  
 interface XLibraryQueryExecutable: com::sun::star::uno::XInterface
 { 
-	boolean HasExecutableCode( [in] string name );
+    boolean HasExecutableCode( [in] string name );
 };
 
 //============================================================================= 
