@@ -192,7 +192,6 @@ Reference< XInterface > CreateInstance( const Reference< XComponentContext > & c
     sPath = rtl::OUStringBuffer(sPath).
         append(static_cast<sal_Unicode>(SAL_PATHSEPARATOR)).
         append(sBrandLocation).makeStringAndClear();
-    osl_trace("***** adding python related path %s", rtl::OUStringToOString( sPath, RTL_TEXTENCODING_UTF8 ).getStr() );
     osl_setEnvironment(sEnvName.pData, sPath.pData);
 #endif
         
